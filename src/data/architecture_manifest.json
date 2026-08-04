@@ -1,0 +1,1286 @@
+{
+  "generated_from": {
+    "migrations": [
+      "0001_init.sql",
+      "0002_expand_roadmap_schema.sql",
+      "0003_public_profile.sql",
+      "0004_part_one_reference.sql",
+      "0005_revision_tiers.sql",
+      "0006_learning_journal.sql",
+      "0007_developer_mode.sql",
+      "0008_roadmap_snapshots.sql",
+      "0009_topic_resources.sql"
+    ],
+    "hook_files_scanned": [
+      "use-career",
+      "use-daily-logs",
+      "use-developer-mode",
+      "use-dsa",
+      "use-notifications",
+      "use-projects",
+      "use-roadmap",
+      "use-theme",
+      "use-user"
+    ],
+    "hook_functions_scanned": 50,
+    "routes_scanned": 28
+  },
+  "tables": [
+    {
+      "name": "build_in_public_status",
+      "columns": 7,
+      "references": [
+        "phases"
+      ],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "capstones",
+      "columns": 7,
+      "references": [
+        "phases"
+      ],
+      "migration": "0002_expand_roadmap_schema.sql"
+    },
+    {
+      "name": "career_tracker",
+      "columns": 13,
+      "references": [],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "clientsync_milestones",
+      "columns": 5,
+      "references": [
+        "phases"
+      ],
+      "migration": "0002_expand_roadmap_schema.sql"
+    },
+    {
+      "name": "companies",
+      "columns": 4,
+      "references": [],
+      "migration": "0002_expand_roadmap_schema.sql"
+    },
+    {
+      "name": "daily_logs",
+      "columns": 7,
+      "references": [],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "difficulty_ramp",
+      "columns": 6,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "dsa_progress",
+      "columns": 11,
+      "references": [],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "exit_ladder",
+      "columns": 9,
+      "references": [
+        "phases"
+      ],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "hours_breakdown",
+      "columns": 8,
+      "references": [
+        "master_phase_table"
+      ],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "master_phase_table",
+      "columns": 9,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "month_by_month",
+      "columns": 7,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "navigation_notes",
+      "columns": 4,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "orientation",
+      "columns": 14,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "phase_checklist",
+      "columns": 6,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "phases",
+      "columns": 12,
+      "references": [],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "program_total",
+      "columns": 6,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "project_progress",
+      "columns": 11,
+      "references": [
+        "phases"
+      ],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "roadmap_metadata",
+      "columns": 12,
+      "references": [],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "roadmap_snapshot_entities",
+      "columns": 9,
+      "references": [
+        "roadmap_snapshots"
+      ],
+      "migration": "0008_roadmap_snapshots.sql"
+    },
+    {
+      "name": "roadmap_snapshots",
+      "columns": 9,
+      "references": [],
+      "migration": "0008_roadmap_snapshots.sql"
+    },
+    {
+      "name": "skill_tracks",
+      "columns": 5,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "source_discrepancies",
+      "columns": 5,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    },
+    {
+      "name": "stage_exercises",
+      "columns": 5,
+      "references": [
+        "stages"
+      ],
+      "migration": "0002_expand_roadmap_schema.sql"
+    },
+    {
+      "name": "stage_projects",
+      "columns": 7,
+      "references": [
+        "stages"
+      ],
+      "migration": "0002_expand_roadmap_schema.sql"
+    },
+    {
+      "name": "stages",
+      "columns": 9,
+      "references": [
+        "phases"
+      ],
+      "migration": "0002_expand_roadmap_schema.sql"
+    },
+    {
+      "name": "topic_group_bullets",
+      "columns": 5,
+      "references": [
+        "topic_groups"
+      ],
+      "migration": "0002_expand_roadmap_schema.sql"
+    },
+    {
+      "name": "topic_groups",
+      "columns": 6,
+      "references": [
+        "topics"
+      ],
+      "migration": "0002_expand_roadmap_schema.sql"
+    },
+    {
+      "name": "topic_notes",
+      "columns": 6,
+      "references": [
+        "topics"
+      ],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "topic_progress",
+      "columns": 12,
+      "references": [
+        "topics"
+      ],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "topic_resources",
+      "columns": 9,
+      "references": [
+        "topics"
+      ],
+      "migration": "0009_topic_resources.sql"
+    },
+    {
+      "name": "topics",
+      "columns": 7,
+      "references": [
+        "phases",
+        "stages"
+      ],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "user_settings",
+      "columns": 9,
+      "references": [],
+      "migration": "0001_init.sql"
+    },
+    {
+      "name": "why_this_works",
+      "columns": 5,
+      "references": [],
+      "migration": "0004_part_one_reference.sql"
+    }
+  ],
+  "hook_functions": {
+    "addDsaProblem": {
+      "tables": [
+        "dsa_progress"
+      ],
+      "module": "use-dsa"
+    },
+    "addTopicResource": {
+      "tables": [
+        "topic_resources"
+      ],
+      "module": "use-roadmap"
+    },
+    "computeStreak": {
+      "tables": [],
+      "module": "use-daily-logs"
+    },
+    "deleteCareerEntry": {
+      "tables": [
+        "career_tracker"
+      ],
+      "module": "use-career"
+    },
+    "deleteDsaProblem": {
+      "tables": [
+        "dsa_progress"
+      ],
+      "module": "use-dsa"
+    },
+    "deleteTopicResource": {
+      "tables": [
+        "topic_resources"
+      ],
+      "module": "use-roadmap"
+    },
+    "logStudySession": {
+      "tables": [
+        "daily_logs"
+      ],
+      "module": "use-daily-logs"
+    },
+    "saveJournalEntry": {
+      "tables": [
+        "daily_logs"
+      ],
+      "module": "use-daily-logs"
+    },
+    "toggleDsaComplete": {
+      "tables": [
+        "dsa_progress"
+      ],
+      "module": "use-dsa"
+    },
+    "toggleTopicComplete": {
+      "tables": [
+        "topic_progress"
+      ],
+      "module": "use-roadmap"
+    },
+    "updateTopicProgress": {
+      "tables": [
+        "topic_progress"
+      ],
+      "module": "use-roadmap"
+    },
+    "upsertBuildInPublic": {
+      "tables": [
+        "build_in_public_status"
+      ],
+      "module": "use-projects"
+    },
+    "upsertCareerEntry": {
+      "tables": [
+        "career_tracker"
+      ],
+      "module": "use-career"
+    },
+    "upsertProjectProgress": {
+      "tables": [
+        "project_progress"
+      ],
+      "module": "use-projects"
+    },
+    "useAllTopicNotes": {
+      "tables": [
+        "topic_notes"
+      ],
+      "module": "use-roadmap"
+    },
+    "useBuildInPublicStatus": {
+      "tables": [
+        "build_in_public_status"
+      ],
+      "module": "use-projects"
+    },
+    "useCareerTracker": {
+      "tables": [
+        "career_tracker"
+      ],
+      "module": "use-career"
+    },
+    "useClientSyncMilestones": {
+      "tables": [
+        "clientsync_milestones"
+      ],
+      "module": "use-roadmap"
+    },
+    "useCompanies": {
+      "tables": [
+        "companies"
+      ],
+      "module": "use-roadmap"
+    },
+    "useCompany": {
+      "tables": [
+        "companies"
+      ],
+      "module": "use-roadmap"
+    },
+    "useDailyLogs": {
+      "tables": [
+        "daily_logs"
+      ],
+      "module": "use-daily-logs"
+    },
+    "useDeveloperMode": {
+      "tables": [
+        "user_settings"
+      ],
+      "module": "use-developer-mode"
+    },
+    "useDifficultyRamp": {
+      "tables": [
+        "difficulty_ramp"
+      ],
+      "module": "use-roadmap"
+    },
+    "useDsaProgress": {
+      "tables": [
+        "dsa_progress"
+      ],
+      "module": "use-dsa"
+    },
+    "useExitLadder": {
+      "tables": [
+        "exit_ladder"
+      ],
+      "module": "use-roadmap"
+    },
+    "useHoursBreakdown": {
+      "tables": [
+        "hours_breakdown"
+      ],
+      "module": "use-roadmap"
+    },
+    "useMasterPhaseTable": {
+      "tables": [
+        "master_phase_table"
+      ],
+      "module": "use-roadmap"
+    },
+    "useMonthByMonth": {
+      "tables": [
+        "month_by_month"
+      ],
+      "module": "use-roadmap"
+    },
+    "useNavigationNotes": {
+      "tables": [
+        "navigation_notes"
+      ],
+      "module": "use-roadmap"
+    },
+    "useNotifications": {
+      "tables": [],
+      "module": "use-notifications"
+    },
+    "useOrientation": {
+      "tables": [
+        "orientation"
+      ],
+      "module": "use-roadmap"
+    },
+    "usePhaseChecklist": {
+      "tables": [
+        "phase_checklist"
+      ],
+      "module": "use-roadmap"
+    },
+    "usePhasesWithProgress": {
+      "tables": [
+        "capstones",
+        "phases",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "module": "use-roadmap"
+    },
+    "useProgramTotal": {
+      "tables": [
+        "program_total"
+      ],
+      "module": "use-roadmap"
+    },
+    "useProgress": {
+      "tables": [
+        "topic_progress"
+      ],
+      "module": "use-roadmap"
+    },
+    "useProjectProgress": {
+      "tables": [
+        "project_progress"
+      ],
+      "module": "use-projects"
+    },
+    "useRoadmap": {
+      "tables": [
+        "capstones",
+        "phases",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topics"
+      ],
+      "module": "use-roadmap"
+    },
+    "useRoadmapMetadata": {
+      "tables": [
+        "roadmap_metadata"
+      ],
+      "module": "use-roadmap"
+    },
+    "useRoadmapSnapshots": {
+      "tables": [
+        "roadmap_snapshots"
+      ],
+      "module": "use-roadmap"
+    },
+    "useSkillTracks": {
+      "tables": [
+        "skill_tracks"
+      ],
+      "module": "use-roadmap"
+    },
+    "useSnapshotEntities": {
+      "tables": [
+        "roadmap_snapshot_entities"
+      ],
+      "module": "use-roadmap"
+    },
+    "useSourceDiscrepancies": {
+      "tables": [
+        "source_discrepancies"
+      ],
+      "module": "use-roadmap"
+    },
+    "useStageDetail": {
+      "tables": [
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topics"
+      ],
+      "module": "use-roadmap"
+    },
+    "useTheme": {
+      "tables": [
+        "user_settings"
+      ],
+      "module": "use-theme"
+    },
+    "useTopicDetail": {
+      "tables": [
+        "topics"
+      ],
+      "module": "use-roadmap"
+    },
+    "useTopicResources": {
+      "tables": [
+        "topic_resources"
+      ],
+      "module": "use-roadmap"
+    },
+    "useUser": {
+      "tables": [],
+      "module": "use-user"
+    },
+    "useWhyThisWorks": {
+      "tables": [
+        "why_this_works"
+      ],
+      "module": "use-roadmap"
+    },
+    "weeklyBreakdown": {
+      "tables": [],
+      "module": "use-daily-logs"
+    },
+    "weeklyHours": {
+      "tables": [],
+      "module": "use-daily-logs"
+    }
+  },
+  "routes": [
+    {
+      "path": "/",
+      "file": "src/app/page.tsx",
+      "client_component": false,
+      "hooks_imported": [],
+      "hook_functions_called": [],
+      "tables_touched": [],
+      "queries_directly": []
+    },
+    {
+      "path": "/achievements",
+      "file": "src/app/(app)/achievements/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-daily-logs",
+        "use-dsa",
+        "use-projects",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "computeStreak",
+        "useDailyLogs",
+        "useDsaProgress",
+        "usePhasesWithProgress",
+        "useProjectProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "daily_logs",
+        "dsa_progress",
+        "phases",
+        "project_progress",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/architecture",
+      "file": "src/app/(app)/architecture/page.tsx",
+      "client_component": true,
+      "hooks_imported": [],
+      "hook_functions_called": [],
+      "tables_touched": [],
+      "queries_directly": []
+    },
+    {
+      "path": "/career",
+      "file": "src/app/(app)/career/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-career",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "deleteCareerEntry",
+        "upsertCareerEntry",
+        "useCareerTracker",
+        "useUser"
+      ],
+      "tables_touched": [
+        "career_tracker"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/clientsync",
+      "file": "src/app/(app)/clientsync/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-projects",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "upsertProjectProgress",
+        "useClientSyncMilestones",
+        "usePhasesWithProgress",
+        "useProjectProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "clientsync_milestones",
+        "phases",
+        "project_progress",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/companies",
+      "file": "src/app/(app)/companies/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-roadmap"
+      ],
+      "hook_functions_called": [
+        "useCompanies",
+        "useExitLadder"
+      ],
+      "tables_touched": [
+        "companies",
+        "exit_ladder"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/companies/[id]",
+      "file": "src/app/(app)/companies/[id]/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-career",
+        "use-dsa",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "useCareerTracker",
+        "useCompany",
+        "useDsaProgress",
+        "useExitLadder",
+        "usePhasesWithProgress",
+        "useRoadmapMetadata",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "career_tracker",
+        "companies",
+        "dsa_progress",
+        "exit_ladder",
+        "phases",
+        "roadmap_metadata",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/dashboard",
+      "file": "src/app/(app)/dashboard/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-career",
+        "use-daily-logs",
+        "use-dsa",
+        "use-projects",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "computeStreak",
+        "logStudySession",
+        "toggleTopicComplete",
+        "useCareerTracker",
+        "useDailyLogs",
+        "useDsaProgress",
+        "useExitLadder",
+        "usePhasesWithProgress",
+        "useProjectProgress",
+        "useRoadmapMetadata",
+        "useUser",
+        "weeklyHours"
+      ],
+      "tables_touched": [
+        "capstones",
+        "career_tracker",
+        "daily_logs",
+        "dsa_progress",
+        "exit_ladder",
+        "phases",
+        "project_progress",
+        "roadmap_metadata",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/dependency-graph",
+      "file": "src/app/(app)/dependency-graph/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "usePhasesWithProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "phases",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/dsa",
+      "file": "src/app/(app)/dsa/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-dsa",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "addDsaProblem",
+        "deleteDsaProblem",
+        "toggleDsaComplete",
+        "useDsaProgress",
+        "useRoadmapMetadata",
+        "useUser"
+      ],
+      "tables_touched": [
+        "dsa_progress",
+        "roadmap_metadata"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/exit-ladder",
+      "file": "src/app/(app)/exit-ladder/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "useExitLadder",
+        "usePhasesWithProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "exit_ladder",
+        "phases",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/interviews",
+      "file": "src/app/(app)/interviews/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-career",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "upsertCareerEntry",
+        "useCareerTracker",
+        "useUser"
+      ],
+      "tables_touched": [
+        "career_tracker"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/journal",
+      "file": "src/app/(app)/journal/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-daily-logs",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "saveJournalEntry",
+        "useDailyLogs",
+        "useUser"
+      ],
+      "tables_touched": [
+        "daily_logs"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/login",
+      "file": "src/app/login/page.tsx",
+      "client_component": true,
+      "hooks_imported": [],
+      "hook_functions_called": [],
+      "tables_touched": [],
+      "queries_directly": []
+    },
+    {
+      "path": "/portfolio",
+      "file": "src/app/(app)/portfolio/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-projects",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "usePhasesWithProgress",
+        "useProjectProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "phases",
+        "project_progress",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/projects",
+      "file": "src/app/(app)/projects/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-projects",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "upsertProjectProgress",
+        "usePhasesWithProgress",
+        "useProjectProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "phases",
+        "project_progress",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/reference",
+      "file": "src/app/(app)/reference/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-roadmap"
+      ],
+      "hook_functions_called": [
+        "useCompanies",
+        "useDifficultyRamp",
+        "useExitLadder",
+        "useHoursBreakdown",
+        "useMasterPhaseTable",
+        "useMonthByMonth",
+        "useNavigationNotes",
+        "useOrientation",
+        "usePhaseChecklist",
+        "useProgramTotal",
+        "useRoadmapMetadata",
+        "useSkillTracks",
+        "useSourceDiscrepancies",
+        "useWhyThisWorks"
+      ],
+      "tables_touched": [
+        "companies",
+        "difficulty_ramp",
+        "exit_ladder",
+        "hours_breakdown",
+        "master_phase_table",
+        "month_by_month",
+        "navigation_notes",
+        "orientation",
+        "phase_checklist",
+        "program_total",
+        "roadmap_metadata",
+        "skill_tracks",
+        "source_discrepancies",
+        "why_this_works"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/resume",
+      "file": "src/app/(app)/resume/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-dsa",
+        "use-projects",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "useDsaProgress",
+        "usePhasesWithProgress",
+        "useProjectProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "dsa_progress",
+        "phases",
+        "project_progress",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/revision",
+      "file": "src/app/(app)/revision/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "updateTopicProgress",
+        "usePhasesWithProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "phases",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/roadmap",
+      "file": "src/app/(app)/roadmap/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-developer-mode",
+        "use-projects",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "toggleTopicComplete",
+        "updateTopicProgress",
+        "upsertBuildInPublic",
+        "useBuildInPublicStatus",
+        "useDeveloperMode",
+        "usePhasesWithProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "build_in_public_status",
+        "capstones",
+        "phases",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics",
+        "user_settings"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/roadmap-diff",
+      "file": "src/app/(app)/roadmap-diff/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-roadmap"
+      ],
+      "hook_functions_called": [
+        "useRoadmapSnapshots",
+        "useSnapshotEntities"
+      ],
+      "tables_touched": [
+        "roadmap_snapshot_entities",
+        "roadmap_snapshots"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/roadmap/stage/[id]",
+      "file": "src/app/(app)/roadmap/stage/[id]/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "toggleTopicComplete",
+        "useProgress",
+        "useStageDetail",
+        "useUser"
+      ],
+      "tables_touched": [
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/roadmap/topic/[id]",
+      "file": "src/app/(app)/roadmap/topic/[id]/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "addTopicResource",
+        "deleteTopicResource",
+        "updateTopicProgress",
+        "useAllTopicNotes",
+        "useProgress",
+        "useRoadmap",
+        "useTopicDetail",
+        "useTopicResources",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "phases",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_notes",
+        "topic_progress",
+        "topic_resources",
+        "topics"
+      ],
+      "queries_directly": [
+        "topic_notes"
+      ]
+    },
+    {
+      "path": "/settings",
+      "file": "src/app/(app)/settings/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-career",
+        "use-daily-logs",
+        "use-developer-mode",
+        "use-dsa",
+        "use-roadmap",
+        "use-theme",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "useCareerTracker",
+        "useDailyLogs",
+        "useDeveloperMode",
+        "useDsaProgress",
+        "usePhasesWithProgress",
+        "useTheme",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "career_tracker",
+        "daily_logs",
+        "dsa_progress",
+        "phases",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics",
+        "user_settings"
+      ],
+      "queries_directly": [
+        "user_settings"
+      ]
+    },
+    {
+      "path": "/skills",
+      "file": "src/app/(app)/skills/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-dsa",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "useDsaProgress",
+        "usePhasesWithProgress",
+        "useUser"
+      ],
+      "tables_touched": [
+        "capstones",
+        "dsa_progress",
+        "phases",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/statistics",
+      "file": "src/app/(app)/statistics/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-daily-logs",
+        "use-dsa",
+        "use-projects",
+        "use-roadmap",
+        "use-user"
+      ],
+      "hook_functions_called": [
+        "computeStreak",
+        "useClientSyncMilestones",
+        "useDailyLogs",
+        "useDsaProgress",
+        "usePhasesWithProgress",
+        "useProjectProgress",
+        "useUser",
+        "weeklyBreakdown",
+        "weeklyHours"
+      ],
+      "tables_touched": [
+        "capstones",
+        "clientsync_milestones",
+        "daily_logs",
+        "dsa_progress",
+        "phases",
+        "project_progress",
+        "stage_exercises",
+        "stage_projects",
+        "stages",
+        "topic_progress",
+        "topics"
+      ],
+      "queries_directly": []
+    },
+    {
+      "path": "/u/[slug]",
+      "file": "src/app/u/[slug]/page.tsx",
+      "client_component": false,
+      "hooks_imported": [],
+      "hook_functions_called": [],
+      "tables_touched": [
+        "capstones",
+        "dsa_progress",
+        "phases",
+        "project_progress",
+        "topic_progress",
+        "topics",
+        "user_settings"
+      ],
+      "queries_directly": [
+        "capstones",
+        "dsa_progress",
+        "phases",
+        "project_progress",
+        "topic_progress",
+        "topics",
+        "user_settings"
+      ]
+    },
+    {
+      "path": "/welcome",
+      "file": "src/app/welcome/page.tsx",
+      "client_component": true,
+      "hooks_imported": [
+        "use-roadmap"
+      ],
+      "hook_functions_called": [
+        "useMasterPhaseTable",
+        "useNavigationNotes",
+        "useOrientation",
+        "useWhyThisWorks"
+      ],
+      "tables_touched": [
+        "master_phase_table",
+        "navigation_notes",
+        "orientation",
+        "why_this_works"
+      ],
+      "queries_directly": []
+    }
+  ]
+}

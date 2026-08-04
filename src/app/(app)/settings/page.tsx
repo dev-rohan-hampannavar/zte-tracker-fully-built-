@@ -1,0 +1,583 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useUser } from "@/lib/hooks/use-user";
+import { usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
+import { useAllTopicNotes, updateTopicProgress } from "@/lib/hooks/use-roadmap";
+import { useUserSettings } from "@/lib/hooks/use-user-settings";
+import { useDailyLogs } from "@/lib/hooks/use-daily-logs";
+import { useDsaProgress } from "@/lib/hooks/use-dsa";
+import { useCareerTracker } from "@/lib/hooks/use-career";
+import { useProjectProgress, upsertProjectProgress } from "@/lib/hooks/use-projects";
+import { createClient } from "@/lib/supabase/client";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
+import { Download, Loader2, Sun, Moon, Monitor, Share2, Copy, Check, Upload, AlertTriangle } from "lucide-react";
+import { useTheme } from "@/lib/hooks/use-theme";
+import { useDeveloperMode } from "@/lib/hooks/use-developer-mode";
+import { useTopicLockingDisabled } from "@/lib/hooks/use-topic-locking";
+import { Switch } from "@/components/ui/switch";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import type {
+  TopicNote,
+  DailyLog,
+  DsaProgressRow,
+  CareerTrackerRow,
+  ProjectProgress,
+} from "@/types/database";
+
+
+export default function SettingsPage() {
+  const { user } = useUser();
+  const { data: settings, mutate, isLoading } = useUserSettings(user?.id);
+  const { phases, mutateProgress } = usePhasesWithProgress(user?.id);
+  const { data: logs, mutate: mutateLogs } = useDailyLogs(user?.id);
+  const { data: dsa, mutate: mutateDsa } = useDsaProgress(user?.id);
+  const { data: career, mutate: mutateCareer } = useCareerTracker(user?.id);
+  const { data: notes, mutate: mutateNotes } = useAllTopicNotes(user?.id);
+  const { data: projectProgress, mutate: mutateProjects } = useProjectProgress(user?.id);
+
+  const [goalType, setGoalType] = useState<"hours" | "topics">("hours");
+  const [goalValue, setGoalValue] = useState("20");
+  const [saving, setSaving] = useState(false);
+  const { theme, setTheme } = useTheme(user?.id);
+  const { enabled: devMode, setEnabled: setDevMode } = useDeveloperMode(user?.id);
+  const { disabled: topicLockingDisabled, setDisabled: setTopicLockingDisabled } = useTopicLockingDisabled(user?.id);
+  const [publicToggling, setPublicToggling] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [displayName, setDisplayName] = useState("");
+
+  useEffect(() => {
+    if (settings) {
+      setGoalType(settings.weekly_goal_type);
+      setGoalValue(String(settings.weekly_goal_value));
+      setDisplayName(settings.display_name ?? "");
+    }
+  }, [settings]);
+
+  async function togglePublicProfile(enabled: boolean) {
+    if (!user) return;
+    setPublicToggling(true);
+    const supabase = createClient();
+    try {
+      if (enabled && !settings?.public_profile_slug) {
+        const { data: slug, error: slugErr } = (await supabase.rpc(
+          "ensure_profile_slug" as never,
+          { uid: user.id } as never
+        )) as { data: string | null; error: Error | null };
+        if (slugErr) throw slugErr;
+        const { error } = await supabase
+          .from("user_settings")
+          .update({ public_profile_enabled: true, public_profile_slug: slug } as never)
+          .eq("user_id", user.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("user_settings")
+          .update({ public_profile_enabled: enabled } as never)
+          .eq("user_id", user.id);
+        if (error) throw error;
+      }
+      await mutate();
+      toast.success(enabled ? "Public profile enabled" : "Public profile disabled");
+    } catch {
+      toast.error("Couldn't update public profile setting.");
+    } finally {
+      setPublicToggling(false);
+    }
+  }
+
+  async function saveDisplayName() {
+    if (!user) return;
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("user_settings")
+      .update({ display_name: displayName || null } as never)
+      .eq("user_id", user.id);
+    if (error) {
+      toast.error("Couldn't save display name.");
+      return;
+    }
+    await mutate();
+    toast.success("Display name saved");
+  }
+
+  async function copyProfileLink() {
+    if (!settings?.public_profile_slug) return;
+    const url = `${window.location.origin}/u/${settings.public_profile_slug}`;
+    await navigator.clipboard.writeText(url);
+    setLinkCopied(true);
+    toast.success("Link copied");
+    setTimeout(() => setLinkCopied(false), 1500);
+  }
+
+  async function handleSaveGoal() {
+    if (!user) return;
+    setSaving(true);
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("user_settings")
+      .upsert(
+        { user_id: user.id, weekly_goal_type: goalType, weekly_goal_value: parseInt(goalValue, 10) || 20 } as never,
+        { onConflict: "user_id" }
+      );
+    setSaving(false);
+    if (error) {
+      toast.error("Couldn't save goal.");
+      return;
+    }
+    await mutate();
+    toast.success("Weekly goal updated");
+  }
+
+  // Versioned, flat export shape — deliberately not `{ phases, ... }` (the
+  // old shape) since nested phase/topic data is derived/joined, not a raw
+  // table a re-import could upsert against. Each key here maps 1:1 to a
+  // table this person owns rows in, matching the plan's field list
+  // (topic_progress, daily_logs, topic_notes, project_progress) plus the
+  // two extra domains this app already tracks (dsa_progress, career_tracker).
+  const EXPORT_VERSION = 1;
+
+  function buildExportPayload() {
+    const topicProgress = phases.flatMap((p) =>
+      p.topics
+        .filter((t) => t.progress)
+        .map((t) => ({ ...t.progress, topic_id: t.id }))
+    );
+    return {
+      export_version: EXPORT_VERSION,
+      exported_at: new Date().toISOString(),
+      topic_progress: topicProgress,
+      daily_logs: logs ?? [],
+      topic_notes: notes ?? [],
+      project_progress: projectProgress ?? [],
+      dsa_progress: dsa ?? [],
+      career_tracker: career ?? [],
+    };
+  }
+
+  function exportJSON() {
+    downloadFile(JSON.stringify(buildExportPayload(), null, 2), "zte-tracker-export.json", "application/json");
+    toast.success("JSON export downloaded");
+  }
+
+  function exportCSV() {
+    const allTopics = phases.flatMap((p) =>
+      p.topics.map((t) => ({
+        phase: p.phase_number,
+        phase_title: p.title,
+        topic: t.title,
+        completed: t.progress?.completed ?? false,
+        completed_at: t.progress?.completed_at ?? "",
+        difficulty: t.progress?.difficulty ?? "",
+        bookmarked: t.progress?.bookmarked ?? false,
+      }))
+    );
+    const header = "phase,phase_title,topic,completed,completed_at,difficulty,bookmarked";
+    const rows = allTopics.map((t) =>
+      [t.phase, `"${t.phase_title.replace(/"/g, '""')}"`, `"${t.topic.replace(/"/g, '""')}"`, t.completed, t.completed_at, t.difficulty, t.bookmarked].join(",")
+    );
+    downloadFile([header, ...rows].join("\n"), "zte-tracker-progress.csv", "text/csv");
+    toast.success("CSV export downloaded");
+  }
+
+  function downloadFile(content: string, filename: string, mime: string) {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // --- Import ---------------------------------------------------------
+  // Upserts each domain back in via the same upsert helpers/conflict keys
+  // the rest of the app already uses to write these tables, so a re-import
+  // behaves identically to the person re-doing those actions by hand — it
+  // overwrites matching rows (same user_id + natural key) and leaves
+  // everything else untouched.
+
+  type ImportPayload = {
+    export_version?: number;
+    topic_progress?: Array<Record<string, unknown> & { topic_id: string }>;
+    daily_logs?: DailyLog[];
+    topic_notes?: TopicNote[];
+    project_progress?: ProjectProgress[];
+    dsa_progress?: DsaProgressRow[];
+    career_tracker?: CareerTrackerRow[];
+  };
+
+  const [importOpen, setImportOpen] = useState(false);
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [importPreview, setImportPreview] = useState<ImportPayload | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
+
+  async function handleImportFileSelected(file: File) {
+    setImportFile(file);
+    setImportError(null);
+    setImportPreview(null);
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text) as ImportPayload;
+      if (!parsed || typeof parsed !== "object") throw new Error("not an object");
+      setImportPreview(parsed);
+    } catch {
+      setImportError("This doesn't look like a valid ZTE Tracker export file — couldn't parse it as JSON.");
+    }
+  }
+
+  async function runImport() {
+    if (!user || !importPreview) return;
+    setImporting(true);
+    const supabase = createClient();
+    let failures = 0;
+
+    try {
+      // topic_progress — upsert per row via the same helper the roadmap
+      // page uses, keyed on (user_id, topic_id).
+      for (const row of importPreview.topic_progress ?? []) {
+        try {
+          const { topic_id, user_id: _u, ...patch } = row as Record<string, unknown> & { topic_id: string };
+          void _u;
+          await updateTopicProgress(user.id, topic_id, patch as never);
+        } catch {
+          failures++;
+        }
+      }
+
+      // daily_logs — full-row upsert keyed on (user_id, date); this is a
+      // raw table write rather than the narrower logStudySession/
+      // saveJournalEntry helpers, since those merge into today's row by
+      // design and an import needs to restore historical dates as-is.
+      if ((importPreview.daily_logs ?? []).length) {
+        const rows = (importPreview.daily_logs ?? []).map((log) => ({ ...log, user_id: user.id }));
+        const { error } = await supabase.from("daily_logs").upsert(rows as never, { onConflict: "user_id,date" });
+        if (error) failures++;
+      }
+
+      // topic_notes — has its own id; upsert on id so re-importing the
+      // same file doesn't create duplicate notes.
+      if ((importPreview.topic_notes ?? []).length) {
+        const rows = (importPreview.topic_notes ?? []).map((note) => ({ ...note, user_id: user.id }));
+        const { error } = await supabase.from("topic_notes").upsert(rows as never, { onConflict: "id" });
+        if (error) failures++;
+      }
+
+      // project_progress — same helper/conflict key as the Projects and
+      // ClientSync pages use.
+      for (const row of importPreview.project_progress ?? []) {
+        try {
+          const { phase_id, user_id: _u, ...patch } = row as ProjectProgress;
+          void _u;
+          await upsertProjectProgress(user.id, phase_id, patch as never);
+        } catch {
+          failures++;
+        }
+      }
+
+      // dsa_progress — upsert on id (not addDsaProblem, which always
+      // inserts and would duplicate every problem on re-import).
+      if ((importPreview.dsa_progress ?? []).length) {
+        const rows = (importPreview.dsa_progress ?? []).map((row) => ({ ...row, user_id: user.id }));
+        const { error } = await supabase.from("dsa_progress").upsert(rows as never, { onConflict: "id" });
+        if (error) failures++;
+      }
+
+      // career_tracker — upsert on id, same reasoning as dsa_progress.
+      if ((importPreview.career_tracker ?? []).length) {
+        const rows = (importPreview.career_tracker ?? []).map((row) => ({ ...row, user_id: user.id }));
+        const { error } = await supabase.from("career_tracker").upsert(rows as never, { onConflict: "id" });
+        if (error) failures++;
+      }
+
+      await Promise.all([mutateProgress(), mutateLogs(), mutateNotes(), mutateProjects(), mutateDsa(), mutateCareer()]);
+
+      if (failures > 0) {
+        toast.error(`Import finished with ${failures} row failure${failures === 1 ? "" : "s"} — see console for details.`);
+      } else {
+        toast.success("Import complete");
+      }
+      setImportOpen(false);
+      setImportFile(null);
+      setImportPreview(null);
+    } catch {
+      toast.error("Import failed.");
+    } finally {
+      setImporting(false);
+    }
+  }
+
+  if (isLoading) return <Skeleton className="h-64 w-full" />;
+
+
+  return (
+    <div className="flex flex-col gap-6 max-w-2xl">
+      <div>
+        <h1 className="text-xl font-semibold tracking-tight">Settings</h1>
+        <p className="text-sm text-muted">Goals, export, and preferences.</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Weekly goal</CardTitle>
+          <CardDescription>Track against hours or topics per week.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex items-end gap-3">
+          <div>
+            <Label>Type</Label>
+            <Select value={goalType} onValueChange={(v) => setGoalType(v as "hours" | "topics")}>
+              <SelectTrigger className="mt-1 w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="hours">Hours</SelectItem>
+                <SelectItem value="topics">Topics</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Target</Label>
+            <Input
+              type="number"
+              className="mt-1 w-28"
+              value={goalValue}
+              onChange={(e) => setGoalValue(e.target.value)}
+            />
+          </div>
+          <Button onClick={handleSaveGoal} disabled={saving}>
+            {saving && <Loader2 className="h-4 w-4 animate-spin" />}
+            Save
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Theme</CardTitle>
+          <CardDescription>Light, dark, or follow your system.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex gap-2">
+          {(
+            [
+              { value: "light" as const, label: "Light", icon: Sun },
+              { value: "dark" as const, label: "Dark", icon: Moon },
+              { value: "system" as const, label: "System", icon: Monitor },
+            ]
+          ).map((opt) => (
+            <Button
+              key={opt.value}
+              variant={theme === opt.value ? "default" : "secondary"}
+              size="sm"
+              onClick={() => setTheme(opt.value)}
+            >
+              <opt.icon className="h-4 w-4" /> {opt.label}
+            </Button>
+          ))}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Developer mode</CardTitle>
+          <CardDescription>
+            Show raw internal IDs (phase, topic, stage) throughout the app, for debugging or curiosity.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="dev-mode-toggle" className="text-sm font-normal">
+              Enable developer mode
+            </Label>
+            <Switch id="dev-mode-toggle" checked={devMode} onCheckedChange={setDevMode} />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Topic locking</CardTitle>
+          <CardDescription>
+            By default, a topic within a stage is locked until the previous topic in that stage is
+            marked complete. Disable this if you want to work out of order.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="topic-lock-toggle" className="text-sm font-normal">
+              Disable topic locking
+            </Label>
+            <Switch
+              id="topic-lock-toggle"
+              checked={topicLockingDisabled}
+              onCheckedChange={setTopicLockingDisabled}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Export & backup</CardTitle>
+          <CardDescription>Download your progress data, or restore it from a previous export.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3">
+          <div className="flex gap-2 flex-wrap">
+            <Button variant="secondary" onClick={exportJSON}>
+              <Download className="h-4 w-4" /> Export JSON
+            </Button>
+            <Button variant="secondary" onClick={exportCSV}>
+              <Download className="h-4 w-4" /> Export CSV
+            </Button>
+            <Button variant="outline" onClick={() => setImportOpen(true)}>
+              <Upload className="h-4 w-4" /> Import JSON
+            </Button>
+          </div>
+          <p className="text-xs text-muted">
+            Import expects a JSON file downloaded from &quot;Export JSON&quot; above. It restores
+            topic progress, daily logs, notes, project links, DSA problems, and career tracker
+            entries — matching rows are overwritten, nothing else is touched.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Dialog open={importOpen} onOpenChange={(open) => {
+        setImportOpen(open);
+        if (!open) {
+          setImportFile(null);
+          setImportPreview(null);
+          setImportError(null);
+        }
+      }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Upload className="h-4 w-4" /> Import data
+            </DialogTitle>
+            <DialogDescription>
+              Choose a JSON file exported from this app. Rows matching your existing progress
+              (by topic, date, note, project, problem, or application) will be overwritten.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-3">
+            <Input
+              type="file"
+              accept="application/json"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleImportFileSelected(file);
+              }}
+            />
+
+            {importError && (
+              <div className="flex items-start gap-2 rounded-md border border-danger/40 bg-danger/5 px-3 py-2 text-xs text-danger">
+                <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+                {importError}
+              </div>
+            )}
+
+            {importPreview && !importError && (
+              <div className="flex flex-col gap-2">
+                <div className="flex items-start gap-2 rounded-md border border-warning/40 bg-warning/5 px-3 py-2 text-xs text-warning">
+                  <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
+                  This will overwrite any existing rows that match by topic, date, note, project,
+                  problem, or application. This can&apos;t be undone.
+                </div>
+                <div className="rounded-md border border-border px-3 py-2 text-xs text-muted flex flex-col gap-1">
+                  <p>{importFile?.name}</p>
+                  <p>{(importPreview.topic_progress ?? []).length} topic progress rows</p>
+                  <p>{(importPreview.daily_logs ?? []).length} daily logs</p>
+                  <p>{(importPreview.topic_notes ?? []).length} notes</p>
+                  <p>{(importPreview.project_progress ?? []).length} project links</p>
+                  <p>{(importPreview.dsa_progress ?? []).length} DSA problems</p>
+                  <p>{(importPreview.career_tracker ?? []).length} career tracker entries</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setImportOpen(false)} disabled={importing}>
+              Cancel
+            </Button>
+            <Button onClick={runImport} disabled={!importPreview || !!importError || importing}>
+              {importing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+              Import & overwrite
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-1.5">
+            <Share2 className="h-4 w-4" /> Public profile
+          </CardTitle>
+          <CardDescription>
+            Share a read-only page showing completed phases, DSA stats, and shipped projects —
+            application data stays private.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="public-toggle" className="text-sm font-normal">
+              Enable public profile
+            </Label>
+            <Switch
+              id="public-toggle"
+              checked={settings?.public_profile_enabled ?? false}
+              disabled={publicToggling}
+              onCheckedChange={togglePublicProfile}
+            />
+          </div>
+          <div>
+            <Label>Display name (shown on profile instead of your email)</Label>
+            <div className="flex gap-2 mt-1">
+              <Input
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="e.g. Rohan K."
+              />
+              <Button variant="secondary" size="sm" onClick={saveDisplayName}>
+                Save
+              </Button>
+            </div>
+          </div>
+          {settings?.public_profile_enabled && settings?.public_profile_slug && (
+            <div className="flex items-center gap-2 rounded-md border border-border bg-surface-2 px-3 py-2">
+              <code className="text-xs flex-1 truncate text-muted">
+                /u/{settings.public_profile_slug}
+              </code>
+              <Button variant="ghost" size="sm" onClick={copyProfileLink}>
+                {linkCopied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Account</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted">Signed in as {user?.email}</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
