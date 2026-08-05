@@ -128,7 +128,7 @@ export default function DashboardPage() {
     }
     if (nextDsaProblem) parts.push(`log 1 DSA problem (${nextDsaProblem.problem_name})`);
     if (currentProject) parts.push(`push ${currentProject.phase.title} forward`);
-    if (parts.length === 0) return "Nothing queued — you're caught up.";
+    if (parts.length === 0) return "Nothing due yet — you're caught up.";
     return parts.join(", ").replace(/^./, (c) => c.toUpperCase()) + ".";
   }, [nextTopic, overdueRevisions, nextDsaProblem, currentProject]);
 
@@ -189,13 +189,55 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-4">
-        <Skeleton className="h-32 w-full" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Skeleton className="h-24" />
-          <Skeleton className="h-24" />
-          <Skeleton className="h-24" />
+      <div className="flex flex-col gap-6">
+        <div>
+          <Skeleton className="h-6 w-40" />
+          <Skeleton className="h-4 w-64 mt-2" />
         </div>
+
+        {/* Daily Mission shape: badge+label row, title line, action button,
+            collapse toggle, footer line — mirrors the real card below. */}
+        <Card className="border-accent/30">
+          <CardHeader>
+            <Skeleton className="h-4 w-32" />
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-5 w-10" />
+                  <Skeleton className="h-3 w-24" />
+                </div>
+                <Skeleton className="h-5 w-56" />
+                <Skeleton className="h-3 w-32" />
+              </div>
+              <Skeleton className="h-9 w-36 shrink-0" />
+            </div>
+            <Skeleton className="h-3 w-48 mt-1" />
+            <Skeleton className="h-3 w-2/3 mt-1" />
+          </CardContent>
+        </Card>
+
+        {/* Engineering OS 3-card stat grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[0, 1, 2].map((i) => (
+            <Card key={i}>
+              <CardContent className="pt-4 flex flex-col gap-2">
+                <Skeleton className="h-3 w-28" />
+                <Skeleton className="h-5 w-32 mt-1" />
+                <Skeleton className="h-3 w-20" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Streak/heatmap block */}
+        <Card>
+          <CardContent className="pt-4 flex flex-col gap-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-20 w-full mt-1" />
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -275,7 +317,7 @@ export default function DashboardPage() {
                   <Link href="/dsa" className="flex items-center gap-2 text-xs hover:text-accent transition-colors">
                     <Code2 className="h-3.5 w-3.5 text-muted shrink-0" />
                     <span className="text-muted truncate">
-                      {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems queued"}
+                      {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems yet"}
                     </span>
                   </Link>
                 </div>
@@ -309,7 +351,7 @@ export default function DashboardPage() {
               </>
             ) : (
               <>
-                <p className="text-sm text-muted mt-1">Nothing marked in progress</p>
+                <p className="text-sm text-muted mt-1">No project in progress yet</p>
                 <Link href="/projects" className="text-xs text-accent hover:underline mt-1 inline-block">
                   Start one →
                 </Link>
@@ -440,7 +482,7 @@ export default function DashboardPage() {
                 <p className="text-xs text-muted mt-1">{currentExit.job_level}</p>
               </>
             ) : (
-              <p className="text-sm text-muted mt-2">Not reached yet</p>
+              <p className="text-sm text-muted mt-2">No exit point reached yet</p>
             )}
             {nextExit && (
               <p className="text-xs text-accent mt-2">
