@@ -13,6 +13,7 @@ import { computeBacklinks } from "@/lib/note-links";
 import { NoteText } from "@/components/roadmap/note-text";
 import { createClient } from "@/lib/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumbs } from "@/components/roadmap/breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -23,7 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatHours } from "@/lib/utils";
 import { toast } from "sonner";
-import { ArrowLeft, Plus, Trash2, Loader2, Link2, BookOpen, ExternalLink, Lock, Pin, PinOff } from "lucide-react";
+import { Plus, Trash2, Loader2, Link2, BookOpen, ExternalLink, Lock, Pin, PinOff } from "lucide-react";
 import type { TopicNote, Difficulty, ResourceType, TopicWithProgress } from "@/types/database";
 
 export default function TopicDetailPage() {
@@ -148,6 +149,9 @@ export default function TopicDetailPage() {
   if (isLoading) return <Skeleton className="h-96 w-full" />;
   if (!topic) return <p className="text-sm text-muted">Topic not found.</p>;
 
+  const parentPhase = (roadmap?.phases ?? []).find((p) => p.id === topic.phase_id) ?? null;
+  const parentStage = (roadmap?.stages ?? []).find((s) => s.id === topic.stage_id) ?? null;
+
   async function handleToggleComplete(completed: boolean) {
     if (!user || !topic || isLocked) return;
     await updateTopicProgress(user.id, topic.id, {
@@ -265,13 +269,19 @@ export default function TopicDetailPage() {
 
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
-      <div className="flex items-center justify-between">
-        <Link
-          href={topic.stage_id ? `/roadmap/stage/${topic.stage_id}` : "/roadmap"}
-          className="text-xs text-muted hover:text-foreground flex items-center gap-1 w-fit"
-        >
-          <ArrowLeft className="h-3 w-3" /> Back
-        </Link>
+      <Breadcrumbs
+        items={[
+          ...(parentPhase
+            ? [{ label: `Phase ${parentPhase.phase_number} — ${parentPhase.title}`, href: `/roadmap/phase/${parentPhase.id}` }]
+            : []),
+          ...(parentStage
+            ? [{ label: `Stage ${parentStage.stage_number} — ${parentStage.title}`, href: `/roadmap/stage/${parentStage.id}` }]
+            : []),
+          { label: topic.title },
+        ]}
+      />
+
+      <div className="flex items-center justify-end">
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"

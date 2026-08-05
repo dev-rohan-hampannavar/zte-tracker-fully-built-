@@ -4,10 +4,11 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/lib/hooks/use-user";
 import { useDisplayName } from "@/lib/hooks/use-display-name";
-import { useStageDetail } from "@/lib/hooks/use-roadmap";
+import { useStageDetail, useRoadmap } from "@/lib/hooks/use-roadmap";
 import { useProgress, toggleTopicComplete } from "@/lib/hooks/use-roadmap";
 import { useExerciseProgress, toggleExerciseComplete } from "@/lib/hooks/use-exercises";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumbs } from "@/components/roadmap/breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,13 +16,14 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { downloadCertificate } from "@/lib/certificate";
 import { formatHours, pct, cn } from "@/lib/utils";
-import { ArrowLeft, Award, Dumbbell, FolderGit2, Clock } from "lucide-react";
+import { Award, Dumbbell, FolderGit2, Clock } from "lucide-react";
 import { toast } from "sonner";
 
 export default function StageDetailPage() {
   const params = useParams<{ id: string }>();
   const { user } = useUser();
   const { data, isLoading, mutate } = useStageDetail(params.id);
+  const { data: roadmap } = useRoadmap();
   const { data: displayName } = useDisplayName(user?.id);
   const { data: progress, mutate: mutateProgress } = useProgress(user?.id);
   const { data: exerciseProgress, mutate: mutateExerciseProgress } = useExerciseProgress(user?.id);
@@ -54,15 +56,18 @@ export default function StageDetailPage() {
 
   const { stage, topics, projects, exercises } = data;
   const completedCount = topics.filter((t) => progressMap.get(t.id)?.completed).length;
+  const parentPhase = (roadmap?.phases ?? []).find((p) => p.id === stage.phase_id) ?? null;
 
   return (
     <div className="flex flex-col gap-6">
-      <Link
-        href={`/roadmap#${stage.phase_id}`}
-        className="text-xs text-muted hover:text-foreground flex items-center gap-1 w-fit"
-      >
-        <ArrowLeft className="h-3 w-3" /> Back to roadmap
-      </Link>
+      <Breadcrumbs
+        items={[
+          ...(parentPhase
+            ? [{ label: `Phase ${parentPhase.phase_number} — ${parentPhase.title}`, href: `/roadmap/phase/${parentPhase.id}` }]
+            : []),
+          { label: `Stage ${stage.stage_number} — ${stage.title}` },
+        ]}
+      />
 
       <div>
         <div className="flex items-center gap-2">

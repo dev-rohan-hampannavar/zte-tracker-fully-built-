@@ -6,12 +6,13 @@ import { useUser } from "@/lib/hooks/use-user";
 import { usePhasesWithProgress, toggleTopicComplete, useExitLadder, useClientSyncMilestones, useMasterPhaseTable, useSkillTracks } from "@/lib/hooks/use-roadmap";
 import { useBuildInPublicStatus } from "@/lib/hooks/use-projects";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumbs } from "@/components/roadmap/breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatHours, pct, cn } from "@/lib/utils";
-import { ArrowLeft, Clock, Layers, Trophy, Megaphone, IndianRupee, GitCommitHorizontal } from "lucide-react";
+import { Clock, Layers, Trophy, Megaphone, IndianRupee, GitCommitHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import type { ClientSyncMilestone } from "@/types/database";
 
@@ -62,12 +63,7 @@ export default function PhaseDetailPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <Link
-        href={`/roadmap#${phase.id}`}
-        className="text-xs text-muted hover:text-foreground flex items-center gap-1 w-fit"
-      >
-        <ArrowLeft className="h-3 w-3" /> Back to roadmap
-      </Link>
+      <Breadcrumbs items={[{ label: `Phase ${phase.phase_number} — ${phase.title}` }]} />
 
       <div>
         <div className="flex items-center gap-2 flex-wrap">
