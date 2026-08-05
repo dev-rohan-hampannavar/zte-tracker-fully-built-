@@ -239,7 +239,7 @@ export default function DashboardPage() {
                 className="flex items-center gap-2 text-xs pt-3 hover:text-accent transition-colors"
               >
                 <AlertCircle className="h-3.5 w-3.5 text-muted shrink-0" />
-                <span className={overdueRevisions.length > 0 ? "text-warning" : "text-muted"}>
+                <span className={overdueRevisions.length > 0 ? "text-warning" : "text-info"}>
                   {overdueRevisions.length > 0
                     ? `${overdueRevisions.length} revision${overdueRevisions.length === 1 ? "" : "s"} overdue`
                     : "Revisions up to date"}
