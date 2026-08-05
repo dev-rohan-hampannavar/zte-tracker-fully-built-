@@ -577,6 +577,27 @@ export default function RoadmapPage() {
 
   const bipMap = useMemo(() => new Map((bipStatus ?? []).map((b) => [b.phase_id, b])), [bipStatus]);
 
+  // The phase containing the next incomplete topic, walked in the same
+  // phase -> stage -> topic order as Dashboard's nextTopic — this is
+  // "the phase you're currently on," used to visually distinguish its
+  // badge (accent) from every other listed phase's badge (outline),
+  // which otherwise all look identical regardless of relevance.
+  const currentPhaseId = useMemo(() => {
+    const candidates = phases.flatMap((phase, phaseIdx) =>
+      (phase.stages ?? []).flatMap((stage, stageIdx) =>
+        stage.topics.map((topic, topicIdx) => ({ topic, phase, phaseIdx, stageIdx, topicIdx }))
+      )
+    );
+    const next = candidates
+      .filter((c) => !c.topic.progress?.completed)
+      .sort((a, b) => {
+        if (a.phaseIdx !== b.phaseIdx) return a.phaseIdx - b.phaseIdx;
+        if (a.stageIdx !== b.stageIdx) return a.stageIdx - b.stageIdx;
+        return a.topicIdx - b.topicIdx;
+      })[0];
+    return next?.phase.id ?? null;
+  }, [phases]);
+
   async function handleToggle(topicId: string, completed: boolean) {
     if (!user) return;
     try {
@@ -773,7 +794,10 @@ export default function RoadmapPage() {
             <AccordionItem key={phase.id} value={isLocked ? `locked-${phase.id}` : phase.id} id={phase.id}>
               <AccordionTrigger disabled={isLocked} className={cn(isLocked && "opacity-60")}>
                 <div className="flex-1 flex items-center gap-3 min-w-0">
-                  <Badge variant="outline" className="shrink-0 font-mono-tabular">
+                  <Badge
+                    variant={phase.id === currentPhaseId ? "accent" : "outline"}
+                    className="shrink-0 font-mono-tabular"
+                  >
                     {phase.phase_number}
                   </Badge>
                   <div className="min-w-0 flex-1">

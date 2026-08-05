@@ -56,7 +56,7 @@ export default function WorkspacePage() {
           statusBadge: topic?.progress?.completed ? (
             <Badge variant="success">Complete</Badge>
           ) : (
-            <Badge variant="outline">In progress</Badge>
+            <Badge variant="accent">In progress</Badge>
           ),
         };
       }
@@ -68,7 +68,11 @@ export default function WorkspacePage() {
           href: "/projects",
           exists: !!phase,
           statusBadge: progress ? (
-            <Badge variant={progress.status === "completed" ? "success" : "outline"}>
+            <Badge
+              variant={
+                progress.status === "completed" ? "success" : progress.status === "in_progress" ? "accent" : "outline"
+              }
+            >
               {progress.status.replace("_", " ")}
             </Badge>
           ) : null,
