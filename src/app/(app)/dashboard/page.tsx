@@ -41,20 +41,29 @@ export default function DashboardPage() {
   const completedHours = completedTopics.reduce((s, t) => s + (t.estimated_hours ?? 0), 0);
 
   const nextTopic = useMemo(() => {
-    // Walk stage-by-stage (not the flat phase.topics list) so this matches
-    // the Roadmap page's order exactly. phase.topics is ordered by each
-    // topic's own order_index, which is NOT guaranteed to respect stage
-    // order — a later-stage topic can have a lower order_index than an
-    // earlier-stage one, which was causing Daily Mission to jump ahead of
-    // the actual next topic on the Roadmap.
-    for (const phase of phases) {
-      for (const stage of phase.stages ?? []) {
-        for (const topic of stage.topics) {
-          if (!topic.progress?.completed) return { topic, phase };
-        }
-      }
-    }
-    return null;
+    // Walk phase -> stage -> topic (not the flat phase.topics list). Topics
+    // within a phase are ordered by their own order_index, which is NOT
+    // guaranteed to respect stage order — a later-stage topic can have a
+    // lower order_index than an earlier-stage one, which was causing Daily
+    // Mission to jump ahead of the actual next topic on the Roadmap.
+    //
+    // Written as flatMap + sort + find rather than nested for-loops with an
+    // early return — the raw loop form causes the React Compiler to skip
+    // memoization for this whole component (same fix already applied to
+    // currentProject/nextExercise below).
+    const candidates = phases.flatMap((phase, phaseIdx) =>
+      (phase.stages ?? []).flatMap((stage, stageIdx) =>
+        stage.topics.map((topic, topicIdx) => ({ topic, phase, phaseIdx, stageIdx, topicIdx }))
+      )
+    );
+    const next = candidates
+      .filter((c) => !c.topic.progress?.completed)
+      .sort((a, b) => {
+        if (a.phaseIdx !== b.phaseIdx) return a.phaseIdx - b.phaseIdx;
+        if (a.stageIdx !== b.stageIdx) return a.stageIdx - b.stageIdx;
+        return a.topicIdx - b.topicIdx;
+      })[0];
+    return next ? { topic: next.topic, phase: next.phase } : null;
   }, [phases]);
 
   const streak = computeStreak(logs ?? []);

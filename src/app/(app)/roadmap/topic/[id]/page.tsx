@@ -48,6 +48,7 @@ export default function TopicDetailPage() {
   const [notes, setNotes] = useState<TopicNote[]>([]);
   const [newNote, setNewNote] = useState("");
   const [minutesInput, setMinutesInput] = useState("");
+  const [isMinutesDirty, setIsMinutesDirty] = useState(false);
   const [savingNote, setSavingNote] = useState(false);
   const [loadingNotes, setLoadingNotes] = useState(false);
 
@@ -55,7 +56,6 @@ export default function TopicDetailPage() {
 
   useEffect(() => {
     if (!params.id || !user) return;
-    setLoadingNotes(true);
     const supabase = createClient();
     supabase
       .from("topic_notes")
@@ -65,13 +65,19 @@ export default function TopicDetailPage() {
       .order("created_at", { ascending: false })
       .then(({ data }) => {
         setNotes((data ?? []) as TopicNote[]);
-        setLoadingNotes(false);
       });
   }, [params.id, user]);
 
   useEffect(() => {
-    setMinutesInput(String(myProgress?.actual_minutes_spent ?? ""));
-  }, [myProgress?.actual_minutes_spent]);
+    const next = String(myProgress?.actual_minutes_spent ?? "");
+    if (minutesInput !== next) {
+      // Avoid setting state synchronously in the effect body to prevent
+      // cascading renders; schedule update on next tick.
+      const t = setTimeout(() => setMinutesInput(next), 0);
+      return () => clearTimeout(t);
+    }
+    return undefined;
+  }, [myProgress?.actual_minutes_spent, minutesInput]);
 
   const allTopics = roadmap?.topics ?? [];
   const backlinks =
