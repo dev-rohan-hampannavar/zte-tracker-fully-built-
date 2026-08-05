@@ -164,4 +164,4 @@ export function Sidebar({ className }: { className?: string }) {
   );
 }
 
-export { NAV };
+export { NAV, PINNED_HREFS, SIDEBAR_SECTIONS };
