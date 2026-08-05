@@ -15,9 +15,9 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StudyHeatmap } from "@/components/dashboard/heatmap";
-import { formatHours, pct } from "@/lib/utils";
+import { formatHours, pct, cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { Flame, Target, CheckCircle2, Clock, TrendingUp, Loader2, Code2, Briefcase, FolderGit2, AlertCircle } from "lucide-react";
+import { Flame, Target, CheckCircle2, Clock, TrendingUp, Loader2, Code2, Briefcase, FolderGit2, AlertCircle, ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -33,6 +33,13 @@ export default function DashboardPage() {
   const [logNote, setLogNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [completing, setCompleting] = useState(false);
+  // Daily Mission's status row (revisions/project/DSA) starts collapsed —
+  // the next-topic block + one-line summary already answer "what do I do
+  // right now," so this secondary detail is opt-in rather than always
+  // taking up vertical space before the rest of the page. Auto-opens if
+  // something in it actually needs attention (overdue revisions) so it
+  // doesn't hide something urgent behind an extra click.
+  const [missionDetailsOpen, setMissionDetailsOpen] = useState(false);
 
   const allTopics = useMemo(() => phases.flatMap((p) => p.topics), [phases]);
   const completedTopics = allTopics.filter((t) => t.progress?.completed);
@@ -193,6 +200,11 @@ export default function DashboardPage() {
     );
   }
 
+  // Daily Mission's status row shows if the user opened it, OR if
+  // something in it is actually urgent (overdue revisions) — so an urgent
+  // item is never silently hidden behind a collapsed toggle.
+  const missionDetailsEffectivelyOpen = missionDetailsOpen || overdueRevisions.length > 0;
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -233,33 +245,41 @@ export default function DashboardPage() {
           )}
 
           {(overdueRevisions.length > 0 || currentProject || nextDsaProblem) && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 border-t border-border">
-              <Link
-                href="/revision"
-                className="flex items-center gap-2 text-xs pt-3 hover:text-accent transition-colors"
+            <div className="pt-1 border-t border-border">
+              <button
+                onClick={() => setMissionDetailsOpen((v) => !v)}
+                className="flex items-center gap-1.5 text-xs text-muted hover:text-foreground pt-3 transition-standard"
+                aria-expanded={missionDetailsEffectivelyOpen}
               >
-                <AlertCircle className="h-3.5 w-3.5 text-muted shrink-0" />
-                <span className={overdueRevisions.length > 0 ? "text-warning" : "text-info"}>
-                  {overdueRevisions.length > 0
-                    ? `${overdueRevisions.length} revision${overdueRevisions.length === 1 ? "" : "s"} overdue`
-                    : "Revisions up to date"}
-                </span>
-              </Link>
-              <Link
-                href="/projects"
-                className="flex items-center gap-2 text-xs pt-3 hover:text-accent transition-colors"
-              >
-                <FolderGit2 className="h-3.5 w-3.5 text-muted shrink-0" />
-                <span className="text-muted truncate">
-                  {currentProject ? currentProject.phase.title : "No project in progress"}
-                </span>
-              </Link>
-              <Link href="/dsa" className="flex items-center gap-2 text-xs pt-3 hover:text-accent transition-colors">
-                <Code2 className="h-3.5 w-3.5 text-muted shrink-0" />
-                <span className="text-muted truncate">
-                  {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems queued"}
-                </span>
-              </Link>
+                <ChevronDown
+                  className={cn("h-3 w-3 transition-transform", missionDetailsEffectivelyOpen && "rotate-180")}
+                />
+                {missionDetailsEffectivelyOpen ? "Hide details" : "Show revision, project & DSA status"}
+              </button>
+              {missionDetailsEffectivelyOpen && (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3">
+                  <Link href="/revision" className="flex items-center gap-2 text-xs hover:text-accent transition-colors">
+                    <AlertCircle className="h-3.5 w-3.5 text-muted shrink-0" />
+                    <span className={overdueRevisions.length > 0 ? "text-warning" : "text-info"}>
+                      {overdueRevisions.length > 0
+                        ? `${overdueRevisions.length} revision${overdueRevisions.length === 1 ? "" : "s"} overdue`
+                        : "Revisions up to date"}
+                    </span>
+                  </Link>
+                  <Link href="/projects" className="flex items-center gap-2 text-xs hover:text-accent transition-colors">
+                    <FolderGit2 className="h-3.5 w-3.5 text-muted shrink-0" />
+                    <span className="text-muted truncate">
+                      {currentProject ? currentProject.phase.title : "No project in progress"}
+                    </span>
+                  </Link>
+                  <Link href="/dsa" className="flex items-center gap-2 text-xs hover:text-accent transition-colors">
+                    <Code2 className="h-3.5 w-3.5 text-muted shrink-0" />
+                    <span className="text-muted truncate">
+                      {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems queued"}
+                    </span>
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 

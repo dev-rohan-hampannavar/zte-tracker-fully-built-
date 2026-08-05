@@ -64,7 +64,19 @@ const NAV = [
 // app-topbar.tsx — this set just needs to match so the sidebar excludes
 // the same items.
 const PINNED_HREFS = new Set(["/dashboard", "/roadmap", "/dsa", "/career", "/journal"]);
-const SIDEBAR_NAV = NAV.filter((item) => !PINNED_HREFS.has(item.href));
+
+// Sidebar sections — same NAV items, just visually grouped so scanning 17
+// items reads faster than one flat list. Grouping is purely presentational
+// (no route/behavior change); Workspace and Roadmap Diff don't fit any
+// category cleanly so they stay ungrouped at the top, close to their
+// pinned siblings (Dashboard/Roadmap).
+const SIDEBAR_SECTIONS: { label: string | null; hrefs: string[] }[] = [
+  { label: null, hrefs: ["/workspace", "/roadmap-diff"] },
+  { label: "Learning", hrefs: ["/dependency-graph", "/skills", "/exit-ladder", "/revision"] },
+  { label: "Build", hrefs: ["/projects", "/portfolio", "/clientsync", "/architecture"] },
+  { label: "Career", hrefs: ["/companies", "/technologies", "/interviews", "/resume", "/achievements"] },
+  { label: "Data", hrefs: ["/statistics", "/reference"] },
+];
 
 export function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
@@ -90,23 +102,39 @@ export function Sidebar({ className }: { className?: string }) {
         <span className="text-sm font-semibold tracking-tight">ZTE Tracker</span>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-2 py-3 flex flex-col gap-0.5">
-        {SIDEBAR_NAV.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(href + "/");
+      <nav className="flex-1 overflow-y-auto px-2 py-3 flex flex-col gap-3">
+        {SIDEBAR_SECTIONS.map((section, i) => {
+          const items = section.hrefs
+            .filter((href) => !PINNED_HREFS.has(href))
+            .map((href) => NAV.find((item) => item.href === href))
+            .filter((item): item is (typeof NAV)[number] => Boolean(item));
+          if (items.length === 0) return null;
           return (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                active
-                  ? "bg-accent/15 text-accent"
-                  : "text-muted hover:bg-surface-2 hover:text-foreground"
+            <div key={i} className="flex flex-col gap-0.5">
+              {section.label && (
+                <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted/70">
+                  {section.label}
+                </p>
               )}
-            >
-              <Icon className="h-4 w-4 shrink-0" />
-              {label}
-            </Link>
+              {items.map(({ href, label, icon: Icon }) => {
+                const active = pathname === href || pathname.startsWith(href + "/");
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={cn(
+                      "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                      active
+                        ? "bg-accent/15 text-accent"
+                        : "text-muted hover:bg-surface-2 hover:text-foreground"
+                    )}
+                  >
+                    <Icon className="h-4 w-4 shrink-0" />
+                    {label}
+                  </Link>
+                );
+              })}
+            </div>
           );
         })}
       </nav>
