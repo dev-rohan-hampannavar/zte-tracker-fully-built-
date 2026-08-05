@@ -152,8 +152,8 @@ export function LearningPathView({ phases }: { phases: PhaseWithTopics[] }) {
                   <div key={phase.id} className="flex flex-col items-start w-full">
                     <Link href={`/roadmap#${phase.id}`} className="w-full max-w-xl">
                       <Card
+                        interactive
                         className={cn(
-                          "transition-colors hover:border-accent/40",
                           complete && "border-success/40",
                           inProgress && "border-accent/40"
                         )}

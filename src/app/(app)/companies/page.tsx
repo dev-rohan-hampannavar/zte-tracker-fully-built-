@@ -69,7 +69,7 @@ export default function CompaniesPage() {
           const exit = linkedExit(c.name);
           return (
             <Link key={c.id} href={`/companies/${c.id}`}>
-              <Card className="h-full transition-colors hover:border-accent/40">
+              <Card className="h-full" interactive>
                 <CardContent className="pt-4 flex flex-col gap-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 min-w-0">

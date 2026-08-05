@@ -60,7 +60,7 @@ export default function TechnologiesPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {techs.map((t) => (
                 <Link key={t.id} href={`/technologies/${t.id}`}>
-                  <Card className="h-full transition-colors hover:border-accent/40">
+                  <Card className="h-full" interactive>
                     <CardContent className="pt-4 flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 min-w-0">
                         <Cpu className="h-4 w-4 text-muted shrink-0" />

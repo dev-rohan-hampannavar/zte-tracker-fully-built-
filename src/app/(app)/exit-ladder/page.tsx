@@ -199,8 +199,8 @@ export default function ExitLadderPage() {
 
               <Link href={`/roadmap#${rung.linkedPhase}`} className="flex-1">
                 <Card
+                  interactive
                   className={cn(
-                    "transition-colors hover:border-accent/40",
                     rung.status === "current" && "border-accent/50 bg-accent/5",
                     rung.status === "locked" && "opacity-70"
                   )}
