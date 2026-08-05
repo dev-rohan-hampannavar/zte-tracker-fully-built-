@@ -6,6 +6,7 @@
   --background: #f7f7f5;
   --surface: #ffffff;
   --surface-2: #f0efec;
+  --surface-hover: #e8e6e0;
   --border: #e2e0da;
   --foreground: #1c1b19;
   --muted: #6b6862;
@@ -14,6 +15,7 @@
   --success: #1a7f4e;
   --warning: #b8860b;
   --danger: #c0392b;
+  --info: #3b82c4;
   --ring: #ff5a1f;
   --radius: 0.5rem;
 }
@@ -23,6 +25,7 @@
   --background: #0e0e0d;
   --surface: #171715;
   --surface-2: #1f1f1c;
+  --surface-hover: #262622;
   --border: #2b2b27;
   --foreground: #f1f0ec;
   --muted: #8a8880;
@@ -31,6 +34,7 @@
   --success: #3ecf8e;
   --warning: #e0af4b;
   --danger: #ef5350;
+  --info: #5b9bd5;
   --ring: #ff6a2b;
 }
 
@@ -38,6 +42,7 @@
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
+  --color-surface-hover: var(--surface-hover);
   --color-border: var(--border);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
@@ -46,6 +51,7 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
+  --color-info: var(--info);
   --color-ring: var(--ring);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -74,6 +80,22 @@ body {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
+
+/* Standard motion tokens — use these instead of ad hoc transition-* utility
+   combinations so hover/press/appear motion feels consistent app-wide. */
+.transition-standard {
+  transition-property: color, background-color, border-color, opacity, transform, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Progress bar fill color escalation — low completion reads as warning
+   (still a lot of ground to cover), mid-range as accent (on track),
+   100% as success (done). Applied via a data attribute on the Indicator
+   rather than inline logic in every call site. */
+[data-progress-tier="low"] { background: var(--warning); }
+[data-progress-tier="mid"] { background: var(--accent); }
+[data-progress-tier="done"] { background: var(--success); }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
