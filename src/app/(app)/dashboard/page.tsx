@@ -81,12 +81,25 @@ export default function DashboardPage() {
   // and nextExercise below; the raw loop form silently disables the React
   // Compiler's optimization for this whole component, not just this value.
   const nextTopic = useMemo(() => {
+    // Walk phase -> stage -> topic (not the flat phase.topics list). Topics
+    // within a phase are ordered by their own order_index, which is NOT
+    // guaranteed to respect stage order — a later-stage topic (e.g. HTML5
+    // in Stage 2) can carry a lower order_index than an earlier-stage one
+    // (e.g. VS Code in Stage 1), which was causing Daily Mission to surface
+    // the wrong "next" topic — one the Roadmap page hadn't actually reached
+    // yet, since Roadmap correctly groups by stage first.
     const candidates = phases.flatMap((phase, phaseIdx) =>
-      phase.topics.map((topic, topicIdx) => ({ topic, phase, phaseIdx, topicIdx }))
+      (phase.stages ?? []).flatMap((stage, stageIdx) =>
+        stage.topics.map((topic, topicIdx) => ({ topic, phase, phaseIdx, stageIdx, topicIdx }))
+      )
     );
     const next = candidates
       .filter((c) => !c.topic.progress?.completed)
-      .sort((a, b) => (a.phaseIdx !== b.phaseIdx ? a.phaseIdx - b.phaseIdx : a.topicIdx - b.topicIdx))[0];
+      .sort((a, b) => {
+        if (a.phaseIdx !== b.phaseIdx) return a.phaseIdx - b.phaseIdx;
+        if (a.stageIdx !== b.stageIdx) return a.stageIdx - b.stageIdx;
+        return a.topicIdx - b.topicIdx;
+      })[0];
     return next ? { topic: next.topic, phase: next.phase } : null;
   }, [phases]);
 
