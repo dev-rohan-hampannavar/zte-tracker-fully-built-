@@ -58,6 +58,14 @@ const NAV = [
   { href: "/reference", label: "Reference", icon: BookOpen },
 ];
 
+// Items pinned to the top bar (see app-topbar.tsx) are hidden from the
+// sidebar here to actually reduce clutter, rather than just duplicating
+// them in both places. To change what's pinned, edit PINNED_HREFS in
+// app-topbar.tsx — this set just needs to match so the sidebar excludes
+// the same items.
+const PINNED_HREFS = new Set(["/dashboard", "/roadmap", "/dsa", "/career"]);
+const SIDEBAR_NAV = NAV.filter((item) => !PINNED_HREFS.has(item.href));
+
 export function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -83,7 +91,7 @@ export function Sidebar({ className }: { className?: string }) {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-2 py-3 flex flex-col gap-0.5">
-        {NAV.map(({ href, label, icon: Icon }) => {
+        {SIDEBAR_NAV.map(({ href, label, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
