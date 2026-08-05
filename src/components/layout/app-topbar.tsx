@@ -10,7 +10,7 @@ import { NotificationBell } from "./notification-bell";
 // Keep in sync with PINNED_HREFS in sidebar.tsx — that's what hides these
 // same items from the sidebar. Order here controls the left-to-right
 // order shown in the top bar.
-const PINNED_HREFS = ["/dashboard", "/roadmap", "/dsa", "/career"];
+const PINNED_HREFS = ["/dashboard", "/roadmap", "/dsa", "/career", "/journal"];
 const PINNED_NAV = PINNED_HREFS.map((href) => NAV.find((item) => item.href === href)).filter(
   (item): item is (typeof NAV)[number] => Boolean(item)
 );

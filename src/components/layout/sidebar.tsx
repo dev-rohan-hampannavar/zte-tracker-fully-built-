@@ -63,7 +63,7 @@ const NAV = [
 // them in both places. To change what's pinned, edit PINNED_HREFS in
 // app-topbar.tsx — this set just needs to match so the sidebar excludes
 // the same items.
-const PINNED_HREFS = new Set(["/dashboard", "/roadmap", "/dsa", "/career"]);
+const PINNED_HREFS = new Set(["/dashboard", "/roadmap", "/dsa", "/career", "/journal"]);
 const SIDEBAR_NAV = NAV.filter((item) => !PINNED_HREFS.has(item.href));
 
 export function Sidebar({ className }: { className?: string }) {
