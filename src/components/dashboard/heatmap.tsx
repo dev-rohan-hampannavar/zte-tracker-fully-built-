@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { DailyLog } from "@/types/database";
-import { cn } from "@/lib/utils";
+import { cn, localDateISO } from "@/lib/utils";
 
 function intensity(hours: number): number {
   if (hours <= 0) return 0;
@@ -33,7 +33,9 @@ export function StudyHeatmap({ logs }: { logs: DailyLog[] }) {
 
     const cursor = new Date(start);
     while (cursor <= today) {
-      const iso = cursor.toISOString().slice(0, 10);
+      // localDateISO, not toISOString() — the latter converts to UTC first,
+      // which misaligns the whole grid by a day for timezones behind UTC.
+      const iso = localDateISO(cursor);
       days.push({ date: iso, hours: map.get(iso) ?? 0 });
       cursor.setDate(cursor.getDate() + 1);
     }

@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Play, GitBranch, FolderGit2, Layers, Pin, PinOff } from "lucide-react";
 import { toast } from "sonner";
 import type { ProjectStatus } from "@/types/database";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const STATUS_LABEL: Record<ProjectStatus, string> = {
   not_started: "Not started",
@@ -136,7 +137,7 @@ export default function ProjectsPage() {
 
         <TabsContent value="stage" className="flex flex-col gap-6 mt-4">
           {stageProjectPhases.length === 0 && (
-            <p className="text-sm text-muted">No stage-level projects found in the roadmap data.</p>
+            <EmptyState message="No projects yet." />
           )}
           {stageProjectPhases.map((phase) => (
             <div key={phase.id} className="flex flex-col gap-3">

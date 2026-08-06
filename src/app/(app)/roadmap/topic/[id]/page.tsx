@@ -353,7 +353,7 @@ export default function TopicDetailPage() {
 
       {topic.intro && (
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-sm text-foreground/90">{topic.intro}</p>
           </CardContent>
         </Card>
@@ -561,7 +561,7 @@ export default function TopicDetailPage() {
               <Link
                 key={note.id}
                 href={`/roadmap/topic/${sourceTopic.id}`}
-                className="block rounded-md bg-surface-2 p-2 text-sm hover:bg-surface-2/70 transition-colors"
+                className="block rounded-md bg-surface-2 p-2 text-sm hover:bg-surface-2/70 transition-standard"
               >
                 <p className="text-xs text-accent font-medium mb-0.5">{sourceTopic.title}</p>
                 <p className="text-muted line-clamp-2">{note.note}</p>

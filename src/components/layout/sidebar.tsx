@@ -123,10 +123,13 @@ export function Sidebar({ className }: { className?: string }) {
                     key={href}
                     href={href}
                     className={cn(
-                      "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                      // border-l on a transparent border keeps layout width stable when
+                      // switching between active/inactive — only the color toggles, so
+                      // links don't shift horizontally as you navigate.
+                      "flex items-center gap-2.5 rounded-md border-l-2 px-2.5 py-2 text-sm font-medium transition-standard",
                       active
-                        ? "bg-accent/15 text-accent"
-                        : "text-muted hover:bg-surface-2 hover:text-foreground"
+                        ? "border-accent bg-accent/15 text-accent"
+                        : "border-transparent text-muted hover:bg-surface-2 hover:text-foreground"
                     )}
                   >
                     <Icon className="h-4 w-4 shrink-0" />
@@ -143,7 +146,7 @@ export function Sidebar({ className }: { className?: string }) {
         <Link
           href="/settings"
           className={cn(
-            "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+            "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-standard",
             pathname === "/settings"
               ? "bg-accent/15 text-accent"
               : "text-muted hover:bg-surface-2 hover:text-foreground"
@@ -154,7 +157,7 @@ export function Sidebar({ className }: { className?: string }) {
         </Link>
         <button
           onClick={signOut}
-          className="flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-surface-2 hover:text-danger"
+          className="flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-muted transition-standard hover:bg-surface-2 hover:text-danger"
         >
           <LogOut className="h-4 w-4" />
           Sign out

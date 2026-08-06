@@ -66,7 +66,7 @@ export function GlobalSearch() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-muted hover:text-foreground hover:bg-surface-2 transition-colors w-full max-w-xs"
+        className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-muted hover:text-foreground hover:bg-surface-2 transition-standard w-full max-w-xs"
       >
         <Search className="h-3.5 w-3.5" />
         <span className="flex-1 text-left">Search roadmap…</span>

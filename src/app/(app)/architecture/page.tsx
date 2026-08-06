@@ -123,7 +123,7 @@ export default function ArchitecturePage() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1 flex items-center gap-1">
               <Database className="h-3 w-3" /> Tables
             </p>
@@ -131,7 +131,7 @@ export default function ArchitecturePage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1 flex items-center gap-1">
               <RouteIcon className="h-3 w-3" /> Routes
             </p>
@@ -139,7 +139,7 @@ export default function ArchitecturePage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1 flex items-center gap-1">
               <FileCode2 className="h-3 w-3" /> Hook functions
             </p>
@@ -149,7 +149,7 @@ export default function ArchitecturePage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1 flex items-center gap-1">
               <GitBranch className="h-3 w-3" /> Migrations
             </p>
@@ -162,7 +162,7 @@ export default function ArchitecturePage() {
 
       {orphanTables.length > 0 && (
         <Card className="border-warning/30 bg-warning/5">
-          <CardContent className="pt-4 flex items-start gap-3">
+          <CardContent noHeader className="flex items-start gap-3">
             <AlertTriangle className="h-4 w-4 text-warning shrink-0 mt-0.5" />
             <div>
               <p className="text-sm font-medium">
@@ -211,7 +211,7 @@ export default function ArchitecturePage() {
                     key={t}
                     onClick={() => setSelectedTable(t)}
                     className={cn(
-                      "text-[11px] rounded-full border px-2 py-0.5 transition-colors",
+                      "text-[11px] rounded-full border px-2 py-0.5 transition-standard",
                       selectedTable === t
                         ? "border-accent bg-accent/15 text-accent"
                         : "border-border text-muted hover:border-accent/40 hover:text-foreground"
@@ -246,7 +246,7 @@ export default function ArchitecturePage() {
                 )}
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-mono-tabular truncate group-hover:text-accent transition-colors">
+                  <p className="text-sm font-mono-tabular truncate group-hover:text-accent transition-standard">
                     {t.name}
                   </p>
                   <p className="text-[11px] text-muted">
@@ -289,7 +289,7 @@ export default function ArchitecturePage() {
                         <button
                           key={ref}
                           onClick={() => setSelectedTable(ref)}
-                          className="flex items-center gap-1 text-[11px] rounded-full border border-border px-2 py-0.5 text-muted hover:border-accent/40 hover:text-foreground transition-colors"
+                          className="flex items-center gap-1 text-[11px] rounded-full border border-border px-2 py-0.5 text-muted hover:border-accent/40 hover:text-foreground transition-standard"
                         >
                           {ref} <ArrowRight className="h-2.5 w-2.5" />
                         </button>
@@ -305,7 +305,7 @@ export default function ArchitecturePage() {
                         <button
                           key={ref}
                           onClick={() => setSelectedTable(ref)}
-                          className="flex items-center gap-1 text-[11px] rounded-full border border-border px-2 py-0.5 text-muted hover:border-accent/40 hover:text-foreground transition-colors"
+                          className="flex items-center gap-1 text-[11px] rounded-full border border-border px-2 py-0.5 text-muted hover:border-accent/40 hover:text-foreground transition-standard"
                         >
                           <ArrowRight className="h-2.5 w-2.5 rotate-180" /> {ref}
                         </button>

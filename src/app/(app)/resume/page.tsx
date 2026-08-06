@@ -170,7 +170,7 @@ export default function ResumePage() {
             {items.map((b) => (
               <label
                 key={b.id}
-                className="flex items-start gap-3 rounded-md border border-border px-3 py-2.5 hover:bg-surface-2 transition-colors cursor-pointer"
+                className="flex items-start gap-3 rounded-md border border-border px-3 py-2.5 hover:bg-surface-2 transition-standard cursor-pointer"
               >
                 <Checkbox checked={selected.has(b.id)} onCheckedChange={() => toggle(b.id)} className="mt-0.5" />
                 <span className="text-sm">{b.text}</span>

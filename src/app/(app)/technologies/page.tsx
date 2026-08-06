@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Search, Cpu, ArrowRight } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function TechnologiesPage() {
   const { data: technologies, isLoading } = useTechnologies();
@@ -50,7 +51,7 @@ export default function TechnologiesPage() {
       </div>
 
       {grouped.length === 0 && (
-        <p className="text-sm text-muted text-center py-8">No matches.</p>
+        <EmptyState message="No matches." />
       )}
 
       <div className="flex flex-col gap-6">
@@ -61,7 +62,7 @@ export default function TechnologiesPage() {
               {techs.map((t) => (
                 <Link key={t.id} href={`/technologies/${t.id}`}>
                   <Card className="h-full" interactive>
-                    <CardContent className="pt-4 flex items-center justify-between gap-2">
+                    <CardContent noHeader className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 min-w-0">
                         <Cpu className="h-4 w-4 text-muted shrink-0" />
                         <p className="text-sm font-medium truncate">{t.name}</p>

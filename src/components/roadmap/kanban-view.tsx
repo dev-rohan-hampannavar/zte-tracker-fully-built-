@@ -89,7 +89,7 @@ export function KanbanView({
                 const lockInfo = lockMap.get(topic.id);
                 const isLocked = !!lockInfo?.locked;
                 return (
-                  <Card key={topic.id} className={cn("transition-colors", accent, isLocked && "opacity-60")}>
+                  <Card key={topic.id} className={cn("transition-standard", accent, isLocked && "opacity-60")}>
                     <CardContent className="pt-3 pb-3 flex flex-col gap-2">
                       <div className="flex items-start gap-2">
                         <Checkbox

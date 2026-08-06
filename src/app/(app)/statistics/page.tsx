@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatHours, pct } from "@/lib/utils";
 import { Map as MapIcon, Code2, RotateCcw, Layers, FolderGit2, TrendingUp, TrendingDown, Minus, Trophy, AlertTriangle, Dumbbell, Megaphone, Rocket } from "lucide-react";
 import type { ClientSyncMilestone } from "@/types/database";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function StatisticsPage() {
   const { user } = useUser();
@@ -287,7 +288,7 @@ export default function StatisticsPage() {
         <CardContent className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {axes.map((axis) => (
             <Link key={axis.key} href={axis.href} className="block">
-              <div className="rounded-lg border border-border p-3 h-full flex flex-col gap-2 transition-colors hover:border-accent/40">
+              <div className="rounded-lg border border-border p-3 h-full flex flex-col gap-2 transition-standard hover:border-accent/40">
                 <div className="flex items-center gap-1.5 text-xs text-muted">
                   <axis.icon className="h-3.5 w-3.5" />
                   {axis.label}
@@ -305,7 +306,7 @@ export default function StatisticsPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {stats.map((s) => (
           <Card key={s.label}>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1">{s.label}</p>
               <p className="text-2xl font-bold font-mono-tabular">{s.value}</p>
             </CardContent>
@@ -393,7 +394,7 @@ export default function StatisticsPage() {
                 </span>
               </div>
             ) : (
-              <p className="text-sm text-muted">Not enough logged weeks yet to compare.</p>
+              <EmptyState message="Not enough data yet." hint="Log a few more weeks to see this comparison." />
             )}
           </div>
           <div className="rounded-lg border border-border p-3">
@@ -412,7 +413,7 @@ export default function StatisticsPage() {
                 </span>
               </p>
             ) : (
-              <p className="text-sm text-muted">No logged weeks yet.</p>
+              <EmptyState message="No logged weeks yet." />
             )}
           </div>
         </CardContent>

@@ -340,10 +340,10 @@ function PhaseCardGrid({
               return (
                 <Card
                   key={stage.id}
-                  className="cursor-pointer transition-colors hover:border-accent/40"
+                  className="cursor-pointer transition-standard hover:border-accent/40"
                   onClick={() => setOpenStageId(stage.id)}
                 >
-                  <CardContent className="pt-4 flex flex-col gap-2">
+                  <CardContent noHeader className="flex flex-col gap-2">
                     <div className="flex items-center justify-between gap-2">
                       <p className="text-sm font-medium truncate flex-1">
                         Stage {stage.stage_number} — {stage.title}
@@ -427,12 +427,12 @@ function PhaseCardGrid({
           <Card
             key={phase.id}
             className={cn(
-              "transition-colors",
+              "transition-standard",
               isLocked ? "opacity-60" : "cursor-pointer hover:border-accent/40"
             )}
             onClick={() => !isLocked && setOpenPhaseId(phase.id)}
           >
-            <CardContent className="pt-4 flex flex-col gap-2">
+            <CardContent noHeader className="flex flex-col gap-2">
               <div className="flex items-center justify-between gap-2">
                 <Badge variant="outline" className="font-mono-tabular shrink-0">
                   {phase.phase_number}
@@ -704,7 +704,7 @@ export default function RoadmapPage() {
           <button
             onClick={() => setViewMode("list")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors",
+              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
               viewMode === "list" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
             )}
             title="List view"
@@ -714,7 +714,7 @@ export default function RoadmapPage() {
           <button
             onClick={() => setViewMode("cards")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors",
+              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
               viewMode === "cards" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
             )}
             title="Card view"
@@ -724,7 +724,7 @@ export default function RoadmapPage() {
           <button
             onClick={() => setViewMode("kanban")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors",
+              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
               viewMode === "kanban" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
             )}
             title="Kanban view"
@@ -734,7 +734,7 @@ export default function RoadmapPage() {
           <button
             onClick={() => setViewMode("calendar")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors",
+              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
               viewMode === "calendar" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
             )}
             title="Calendar view"
@@ -744,7 +744,7 @@ export default function RoadmapPage() {
           <button
             onClick={() => setViewMode("path")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors",
+              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
               viewMode === "path" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
             )}
             title="Learning Path view"

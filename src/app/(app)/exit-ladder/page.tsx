@@ -144,7 +144,7 @@ export default function ExitLadderPage() {
 
       {currentRung && (
         <Card className="border-accent/40 bg-accent/5">
-          <CardContent className="pt-4 flex items-center gap-4 flex-wrap">
+          <CardContent noHeader className="flex items-center gap-4 flex-wrap">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
               <Sparkles className="h-5 w-5" />
             </div>
@@ -205,7 +205,7 @@ export default function ExitLadderPage() {
                     rung.status === "locked" && "opacity-70"
                   )}
                 >
-                  <CardContent className="pt-4 flex flex-col gap-3">
+                  <CardContent noHeader className="flex flex-col gap-3">
                     <div className="flex items-center gap-2 flex-wrap">
                       <Badge
                         variant={

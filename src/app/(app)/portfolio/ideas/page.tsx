@@ -50,7 +50,7 @@ export default function PortfolioIdeasPage() {
           const status = progressMap.get(p.id)?.status ?? "not_started";
           return (
             <Link key={p.id} href={`/portfolio/ideas/${p.id}`}>
-              <Card className="h-full transition-colors hover:border-accent/40">
+              <Card className="h-full transition-standard hover:border-accent/40">
                 <CardHeader className="flex flex-row items-start justify-between gap-2">
                   <div className="min-w-0">
                     <CardTitle className="truncate">{p.name}</CardTitle>

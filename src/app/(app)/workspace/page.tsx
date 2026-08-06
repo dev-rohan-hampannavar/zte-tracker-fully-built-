@@ -136,7 +136,7 @@ export default function WorkspacePage() {
                   <Link href={href} className="flex items-center gap-3 min-w-0 flex-1 group">
                     <Icon className="h-4 w-4 text-muted shrink-0" />
                     <div className="min-w-0">
-                      <p className="text-sm font-medium truncate group-hover:text-accent transition-colors">
+                      <p className="text-sm font-medium truncate group-hover:text-accent transition-standard">
                         {pin.label}
                       </p>
                       <p className="text-xs text-muted">

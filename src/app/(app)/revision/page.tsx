@@ -20,6 +20,7 @@ import {
   MASTERY_REVIEW_COUNT,
 } from "@/lib/revision-schedule";
 import { CheckCircle2, AlertCircle, Clock } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 
 type FilterKey = "due" | "all" | "overdue" | "bookmarked" | "difficult" | "mastered";
 
@@ -181,7 +182,7 @@ export default function RevisionPage() {
           );
         })}
         {filtered.length === 0 && (
-          <p className="text-sm text-muted text-center py-8">Nothing here right now.</p>
+          <EmptyState message="Nothing due for revision." />
         )}
       </div>
     </div>

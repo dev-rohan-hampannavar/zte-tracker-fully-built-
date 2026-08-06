@@ -162,7 +162,7 @@ export default function CompanyDetailPage() {
 
       {existingApplication && (
         <Card className="border-accent/40 bg-accent/5">
-          <CardContent className="pt-4 flex items-center gap-3">
+          <CardContent noHeader className="flex items-center gap-3">
             <Briefcase className="h-4 w-4 text-accent shrink-0" />
             <div className="flex-1">
               <p className="text-sm font-medium">
@@ -195,7 +195,7 @@ export default function CompanyDetailPage() {
             <div className="flex flex-col gap-2">
               {linkedExits.map((exit) => (
                 <Link key={exit.exit_code} href={`/exit-ladder#${exit.exit_code}`}>
-                  <div className="flex items-center gap-3 rounded-md border border-border p-3 hover:border-accent/40 transition-colors">
+                  <div className="flex items-center gap-3 rounded-md border border-border p-3 hover:border-accent/40 transition-standard">
                     <Badge variant="outline" className="font-mono-tabular shrink-0">
                       Exit {exit.exit_code}
                     </Badge>

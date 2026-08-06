@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Minus, Pencil, Move, History } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function RoadmapDiffPage() {
   const { data: snapshots, isLoading } = useRoadmapSnapshots();
@@ -111,7 +112,7 @@ export default function RoadmapDiffPage() {
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <Card>
-                  <CardContent className="pt-4">
+                  <CardContent noHeader>
                     <p className="text-xs text-muted mb-1 flex items-center gap-1">
                       <Plus className="h-3 w-3 text-success" /> Added
                     </p>
@@ -119,7 +120,7 @@ export default function RoadmapDiffPage() {
                   </CardContent>
                 </Card>
                 <Card>
-                  <CardContent className="pt-4">
+                  <CardContent noHeader>
                     <p className="text-xs text-muted mb-1 flex items-center gap-1">
                       <Minus className="h-3 w-3 text-danger" /> Removed
                     </p>
@@ -127,7 +128,7 @@ export default function RoadmapDiffPage() {
                   </CardContent>
                 </Card>
                 <Card>
-                  <CardContent className="pt-4">
+                  <CardContent noHeader>
                     <p className="text-xs text-muted mb-1 flex items-center gap-1">
                       <Pencil className="h-3 w-3 text-warning" /> Changed
                     </p>
@@ -135,7 +136,7 @@ export default function RoadmapDiffPage() {
                   </CardContent>
                 </Card>
                 <Card>
-                  <CardContent className="pt-4">
+                  <CardContent noHeader>
                     <p className="text-xs text-muted mb-1 flex items-center gap-1">
                       <Move className="h-3 w-3 text-accent" /> Moved
                     </p>
@@ -219,7 +220,7 @@ export default function RoadmapDiffPage() {
                 diff.removed.length === 0 &&
                 diff.changed.length === 0 &&
                 diff.moved.length === 0 && (
-                  <p className="text-sm text-muted text-center py-8">No differences between these versions.</p>
+                  <EmptyState message="No differences between these versions." />
                 )}
             </>
           )}

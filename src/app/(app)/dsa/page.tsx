@@ -17,6 +17,7 @@ import { pct } from "@/lib/utils";
 import { toast } from "sonner";
 import { Plus, Trash2, ExternalLink, Loader2, LayoutList, Layers } from "lucide-react";
 import type { Difficulty, DsaProgressRow } from "@/types/database";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function DsaTrackerPage() {
   const { user } = useUser();
@@ -126,7 +127,7 @@ export default function DsaTrackerPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1">Easy</p>
             <p className="text-2xl font-bold font-mono-tabular">
               {easyDone}
@@ -136,7 +137,7 @@ export default function DsaTrackerPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1">Medium</p>
             <p className="text-2xl font-bold font-mono-tabular">
               {mediumDone}
@@ -146,7 +147,7 @@ export default function DsaTrackerPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1">Hard (untracked target)</p>
             <p className="text-2xl font-bold font-mono-tabular">{hardDone}</p>
             <p className="text-xs text-muted mt-2">Bonus — no fixed gate</p>
@@ -265,7 +266,7 @@ export default function DsaTrackerPage() {
               </div>
             ))}
             {filtered.length === 0 && (
-              <p className="text-sm text-muted text-center py-8">No problems match your filters.</p>
+              <EmptyState message="No matches." hint="Try adjusting your filters." />
             )}
           </div>
         </TabsContent>
@@ -279,7 +280,7 @@ export default function DsaTrackerPage() {
             const done = group.problems.filter((p) => p.completed).length;
             return (
               <Card key={group.label}>
-                <CardContent className="pt-4">
+                <CardContent noHeader>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-semibold">{group.label}</span>
@@ -314,7 +315,7 @@ export default function DsaTrackerPage() {
             );
           })}
           {patternGroups.length === 0 && (
-            <p className="text-sm text-muted text-center py-8">No problems added yet.</p>
+            <EmptyState message="No problems yet." />
           )}
         </TabsContent>
       </Tabs>

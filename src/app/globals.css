@@ -82,7 +82,15 @@ body {
 }
 
 /* Standard motion tokens — use these instead of ad hoc transition-* utility
-   combinations so hover/press/appear motion feels consistent app-wide. */
+   combinations so hover/press/appear motion feels consistent app-wide.
+   Applied across app pages, layout, and roadmap components (item #19).
+   Exception: base UI primitives (button, input, switch, tabs, etc. in
+   src/components/ui/) intentionally keep plain transition-colors — those
+   are single-property color transitions on form controls, and forcing the
+   6-property transition-standard set onto every checkbox/switch adds
+   nothing but overhead. Also exempt: transitions on non-color/transform
+   properties (e.g. width-based step indicators), which transition-standard
+   doesn't cover and shouldn't silently swallow. */
 .transition-standard {
   transition-property: color, background-color, border-color, opacity, transform, box-shadow;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -97,10 +105,27 @@ body {
 [data-progress-tier="mid"] { background: var(--accent); }
 [data-progress-tier="done"] { background: var(--success); }
 
-::-webkit-scrollbar { width: 10px; height: 10px; }
+/* Scrollbar (item #20). 10px felt cramped as a touch/trackpad target, so
+   this widens it slightly to 12px and adds a bit more thumb padding via a
+   transparent border-clip trick (keeps the visual thumb slim while the hit
+   area is bigger). `scrollbar-*` properties give Firefox the same
+   treatment — previously only WebKit browsers were styled at all, so
+   Firefox fell back to the OS default scrollbar with no thickness or
+   color control. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+::-webkit-scrollbar { width: 12px; height: 12px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--muted); background-clip: padding-box; }
 
 :focus-visible {
   outline: 2px solid var(--ring);

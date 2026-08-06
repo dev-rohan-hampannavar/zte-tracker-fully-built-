@@ -3,7 +3,7 @@
 import useSWR from "swr";
 import { createClient } from "@/lib/supabase/client";
 import type { DailyLog } from "@/types/database";
-import { todayISO } from "@/lib/utils";
+import { todayISO, localDateISO } from "@/lib/utils";
 
 const supabase = createClient();
 
@@ -87,15 +87,19 @@ export function computeStreak(logs: DailyLog[]): { current: number; best: number
     prev = cur;
   }
 
-  // Current streak: walk backward from today/yesterday
+  // Current streak: walk backward from today/yesterday. Uses localDateISO,
+  // not toISOString(), so the day boundary matches the user's own calendar
+  // day rather than UTC's — otherwise users west of UTC could show as
+  // "missed today" while it's still today for them (see todayISO comment
+  // in utils.ts for the same underlying bug).
   let current = 0;
   const cursor = new Date();
   cursor.setHours(0, 0, 0, 0);
   // allow "today not logged yet" to not break the streak
-  if (!dates.has(cursor.toISOString().slice(0, 10))) {
+  if (!dates.has(localDateISO(cursor))) {
     cursor.setDate(cursor.getDate() - 1);
   }
-  while (dates.has(cursor.toISOString().slice(0, 10))) {
+  while (dates.has(localDateISO(cursor))) {
     current++;
     cursor.setDate(cursor.getDate() - 1);
   }
@@ -107,7 +111,10 @@ export function weeklyHours(logs: DailyLog[]): number {
   const now = new Date();
   const weekAgo = new Date(now);
   weekAgo.setDate(now.getDate() - 6);
-  const weekAgoISO = weekAgo.toISOString().slice(0, 10);
+  // localDateISO, not toISOString() — UTC conversion could shift this
+  // boundary by a day for timezones behind UTC, silently over/under-
+  // counting a day's logged hours in the "this week" total on Dashboard.
+  const weekAgoISO = localDateISO(weekAgo);
   return logs
     .filter((l) => l.date >= weekAgoISO)
     .reduce((sum, l) => sum + Number(l.hours), 0);
@@ -129,7 +136,7 @@ export function weeklyBreakdown(logs: DailyLog[]): { weekStart: string; hours: n
     const diffToMonday = day === 0 ? 6 : day - 1;
     const monday = new Date(d);
     monday.setDate(d.getDate() - diffToMonday);
-    const key = monday.toISOString().slice(0, 10);
+    const key = localDateISO(monday);
     buckets.set(key, (buckets.get(key) ?? 0) + Number(l.hours));
   }
   return Array.from(buckets.entries())

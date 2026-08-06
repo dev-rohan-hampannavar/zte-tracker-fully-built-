@@ -218,11 +218,33 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
+        {/* Streak/log block — moved up to mirror the real page's new order
+            (item #16), so the skeleton shape matches what actually loads. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[0, 1].map((i) => (
+            <Card key={i}>
+              <CardContent noHeader className="flex flex-col gap-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-8 w-32 mt-1" />
+                <Skeleton className="h-3 w-40" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Heatmap */}
+        <Card>
+          <CardContent noHeader className="flex flex-col gap-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-20 w-full mt-1" />
+          </CardContent>
+        </Card>
+
         {/* Engineering OS 3-card stat grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[0, 1, 2].map((i) => (
             <Card key={i}>
-              <CardContent className="pt-4 flex flex-col gap-2">
+              <CardContent noHeader className="flex flex-col gap-2">
                 <Skeleton className="h-3 w-28" />
                 <Skeleton className="h-5 w-32 mt-1" />
                 <Skeleton className="h-3 w-20" />
@@ -230,14 +252,6 @@ export default function DashboardPage() {
             </Card>
           ))}
         </div>
-
-        {/* Streak/heatmap block */}
-        <Card>
-          <CardContent className="pt-4 flex flex-col gap-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-20 w-full mt-1" />
-          </CardContent>
-        </Card>
       </div>
     );
   }
@@ -300,7 +314,7 @@ export default function DashboardPage() {
               </button>
               {missionDetailsEffectivelyOpen && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3">
-                  <Link href="/revision" className="flex items-center gap-2 text-xs hover:text-accent transition-colors">
+                  <Link href="/revision" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
                     <AlertCircle className="h-3.5 w-3.5 text-muted shrink-0" />
                     <span className={overdueRevisions.length > 0 ? "text-warning" : "text-info"}>
                       {overdueRevisions.length > 0
@@ -308,13 +322,13 @@ export default function DashboardPage() {
                         : "Revisions up to date"}
                     </span>
                   </Link>
-                  <Link href="/projects" className="flex items-center gap-2 text-xs hover:text-accent transition-colors">
+                  <Link href="/projects" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
                     <FolderGit2 className="h-3.5 w-3.5 text-muted shrink-0" />
                     <span className="text-muted truncate">
                       {currentProject ? currentProject.phase.title : "No project in progress"}
                     </span>
                   </Link>
-                  <Link href="/dsa" className="flex items-center gap-2 text-xs hover:text-accent transition-colors">
+                  <Link href="/dsa" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
                     <Code2 className="h-3.5 w-3.5 text-muted shrink-0" />
                     <span className="text-muted truncate">
                       {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems yet"}
@@ -332,67 +346,34 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      {/* Engineering OS panel — the pieces the dashboard was missing:
-          what you're actively building, DSA standing, and applications out. */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="pt-4">
-            <p className="text-xs text-muted mb-1 flex items-center gap-1">
-              <FolderGit2 className="h-3 w-3" /> Current project
-            </p>
-            {currentProject ? (
-              <>
-                <p className="text-sm font-semibold mt-1">
-                  Phase {currentProject.phase.phase_number} — {currentProject.phase.title}
-                </p>
-                <Link href="/projects" className="text-xs text-accent hover:underline mt-1 inline-block">
-                  View in Projects →
-                </Link>
-              </>
-            ) : (
-              <>
-                <p className="text-sm text-muted mt-1">No project in progress yet</p>
-                <Link href="/projects" className="text-xs text-accent hover:underline mt-1 inline-block">
-                  Start one →
-                </Link>
-              </>
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4">
-            <p className="text-xs text-muted mb-1 flex items-center gap-1">
-              <Code2 className="h-3 w-3" /> DSA progress
-            </p>
-            <p className="text-sm font-semibold mt-1 font-mono-tabular">
-              {dsaEasyDone}/{metadata?.dsa_easy_target ?? "—"} easy · {dsaMediumDone}/
-              {metadata?.dsa_medium_target ?? "—"} medium
-              {dsaHardDone > 0 && ` · ${dsaHardDone} hard`}
-            </p>
-            <Link href="/dsa" className="text-xs text-accent hover:underline mt-1 inline-block">
-              Open DSA tracker →
-            </Link>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4">
-            <p className="text-xs text-muted mb-1 flex items-center gap-1">
-              <Briefcase className="h-3 w-3" /> Applications
-            </p>
-            <p className="text-sm font-semibold mt-1 font-mono-tabular">
-              {activeApplications.length} active
-              {offersCount > 0 && (
-                <span className="text-success"> · {offersCount} offer{offersCount === 1 ? "" : "s"}</span>
-              )}
-            </p>
-            <Link href="/career" className="text-xs text-accent hover:underline mt-1 inline-block">
-              Open career tracker →
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-
+      {/* Streak + heatmap moved up here, directly under Daily Mission — these
+          are the habit-driving pieces of the page (item #16), so they sit
+          above the fold instead of after two other grids where they used
+          to get buried. */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Streak */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Flame className="h-4 w-4 text-accent" />
+              <CardTitle>Streak</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-8">
+              <div>
+                <p className="text-3xl font-bold font-mono-tabular">{streak.current}</p>
+                <p className="text-xs text-muted">current streak</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold font-mono-tabular text-muted">{streak.best}</p>
+                <p className="text-xs text-muted">best streak</p>
+              </div>
+            </div>
+            <p className="text-xs text-muted mt-3">{weekHours.toFixed(1)}h logged this week</p>
+          </CardContent>
+        </Card>
+
         {/* Today's log */}
         <Card>
           <CardHeader>
@@ -425,34 +406,82 @@ export default function DashboardPage() {
             </form>
           </CardContent>
         </Card>
+      </div>
 
-        {/* Streak */}
+      {/* Heatmap */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Study heatmap</CardTitle>
+          <CardDescription>Last 12 months of logged sessions.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <StudyHeatmap logs={logs ?? []} />
+        </CardContent>
+      </Card>
+
+      {/* Engineering OS panel — the pieces the dashboard was missing:
+          what you're actively building, DSA standing, and applications out. */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Flame className="h-4 w-4 text-accent" />
-              <CardTitle>Streak</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex gap-8">
-              <div>
-                <p className="text-3xl font-bold font-mono-tabular">{streak.current}</p>
-                <p className="text-xs text-muted">current streak</p>
-              </div>
-              <div>
-                <p className="text-3xl font-bold font-mono-tabular text-muted">{streak.best}</p>
-                <p className="text-xs text-muted">best streak</p>
-              </div>
-            </div>
-            <p className="text-xs text-muted mt-3">{weekHours.toFixed(1)}h logged this week</p>
+          <CardContent noHeader>
+            <p className="text-xs text-muted mb-1 flex items-center gap-1">
+              <FolderGit2 className="h-3 w-3" /> Current project
+            </p>
+            {currentProject ? (
+              <>
+                <p className="text-sm font-semibold mt-1">
+                  Phase {currentProject.phase.phase_number} — {currentProject.phase.title}
+                </p>
+                <Link href="/projects" className="text-xs text-accent hover:underline mt-1 inline-block">
+                  View in Projects →
+                </Link>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-muted mt-1">No project in progress yet</p>
+                <Link href="/projects" className="text-xs text-accent hover:underline mt-1 inline-block">
+                  Start one →
+                </Link>
+              </>
+            )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent noHeader>
+            <p className="text-xs text-muted mb-1 flex items-center gap-1">
+              <Code2 className="h-3 w-3" /> DSA progress
+            </p>
+            <p className="text-sm font-semibold mt-1 font-mono-tabular">
+              {dsaEasyDone}/{metadata?.dsa_easy_target ?? "—"} easy · {dsaMediumDone}/
+              {metadata?.dsa_medium_target ?? "—"} medium
+              {dsaHardDone > 0 && ` · ${dsaHardDone} hard`}
+            </p>
+            <Link href="/dsa" className="text-xs text-accent hover:underline mt-1 inline-block">
+              Open DSA tracker →
+            </Link>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent noHeader>
+            <p className="text-xs text-muted mb-1 flex items-center gap-1">
+              <Briefcase className="h-3 w-3" /> Applications
+            </p>
+            <p className="text-sm font-semibold mt-1 font-mono-tabular">
+              {activeApplications.length} active
+              {offersCount > 0 && (
+                <span className="text-success"> · {offersCount} offer{offersCount === 1 ? "" : "s"}</span>
+              )}
+            </p>
+            <Link href="/career" className="text-xs text-accent hover:underline mt-1 inline-block">
+              Open career tracker →
+            </Link>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1">Topics completed</p>
             <p className="text-2xl font-bold font-mono-tabular">
               {completedTopics.length}
@@ -462,7 +491,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1">Hours logged</p>
             <p className="text-2xl font-bold font-mono-tabular">
               {formatHours(completedHours)}
@@ -472,7 +501,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-4">
+          <CardContent noHeader>
             <p className="text-xs text-muted mb-1 flex items-center gap-1">
               <TrendingUp className="h-3 w-3" /> Current exit point
             </p>
@@ -492,17 +521,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Heatmap */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Study heatmap</CardTitle>
-          <CardDescription>Last 12 months of logged sessions.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <StudyHeatmap logs={logs ?? []} />
-        </CardContent>
-      </Card>
 
       {/* Recent activity */}
       <Card>

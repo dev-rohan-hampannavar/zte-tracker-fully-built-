@@ -28,7 +28,7 @@ export function AppTopbar() {
               key={href}
               href={href}
               className={cn(
-                "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+                "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-standard",
                 active
                   ? "bg-accent/15 text-accent"
                   : "text-muted hover:bg-surface-2 hover:text-foreground"

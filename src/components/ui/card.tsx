@@ -57,16 +57,18 @@ const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttribu
 );
 CardDescription.displayName = "CardDescription";
 
-// Default padding stays p-4 pt-2 (assumes a CardHeader sits above). This
-// is a known inconsistency (see UI list item #5/#9) — a real fix needs a
-// pass through every CardContent call site to either confirm a header
-// precedes it or add pt-4 explicitly, which is a larger, separate change
-// from the rest of this batch to avoid breaking existing spacing app-wide.
-const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-4 pt-2", className)} {...props} />
-  )
-);
+// Default padding is p-4 pt-2, which assumes a CardHeader sits above it
+// (pt-2 relies on the header's own pb-2 to make up the visual gap). Cards
+// with no header need noHeader to get pt-4 instead — this used to be done
+// ad hoc via className="pt-4" at ~40 call sites; noHeader replaces all of
+// those with a single prop so the rule lives in the component, not copied
+// at every usage.
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { noHeader?: boolean }
+>(({ className, noHeader, ...props }, ref) => (
+  <div ref={ref} className={cn(noHeader ? "p-4" : "p-4 pt-2", className)} {...props} />
+));
 CardContent.displayName = "CardContent";
 
 const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(

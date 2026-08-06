@@ -29,7 +29,7 @@ export function NotificationBell() {
     <div className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="relative flex h-9 w-9 items-center justify-center rounded-md text-muted hover:text-foreground hover:bg-surface-2 transition-colors"
+        className="relative flex h-9 w-9 items-center justify-center rounded-md text-muted hover:text-foreground hover:bg-surface-2 transition-standard"
         aria-label="Notifications"
       >
         <Bell className="h-4 w-4" />
@@ -58,7 +58,7 @@ export function NotificationBell() {
                     key={n.id}
                     href={n.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-start gap-2.5 px-3 py-2.5 hover:bg-surface-2 transition-colors border-b border-border last:border-0"
+                    className="flex items-start gap-2.5 px-3 py-2.5 hover:bg-surface-2 transition-standard border-b border-border last:border-0"
                   >
                     <Icon className={`h-4 w-4 shrink-0 mt-0.5 ${KIND_COLOR[n.kind]}`} />
                     <div className="min-w-0">

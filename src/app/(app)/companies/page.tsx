@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Search, Building2, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Company } from "@/types/database";
+import { EmptyState } from "@/components/ui/empty-state";
 
 // Item 3 follow-up: the schema/seed data for category, hiring_stage,
 // typical_tech_stack, hiring_difficulty, and notes has existed since Stage 0,
@@ -70,7 +71,7 @@ export default function CompaniesPage() {
           return (
             <Link key={c.id} href={`/companies/${c.id}`}>
               <Card className="h-full" interactive>
-                <CardContent className="pt-4 flex flex-col gap-2">
+                <CardContent noHeader className="flex flex-col gap-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 min-w-0">
                       <Building2 className="h-4 w-4 text-muted shrink-0" />
@@ -106,7 +107,7 @@ export default function CompaniesPage() {
           );
         })}
         {filtered.length === 0 && (
-          <p className="text-sm text-muted col-span-full text-center py-8">No matches.</p>
+          <EmptyState message="No matches." />
         )}
       </div>
     </div>

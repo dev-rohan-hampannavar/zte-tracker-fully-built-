@@ -40,6 +40,7 @@ import {
   PinOff,
 } from "lucide-react";
 import type { ClientSyncMilestone, ProjectStatus } from "@/types/database";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const STATUS_LABEL: Record<ProjectStatus, string> = {
   not_started: "Not started",
@@ -183,10 +184,10 @@ export default function ClientSyncPage() {
                 {complete ? <CheckCircle2 className="h-5 w-5" /> : <Circle className="h-4 w-4" />}
               </div>
               <Card
-                className="flex-1 cursor-pointer transition-colors hover:border-accent/40"
+                className="flex-1 cursor-pointer transition-standard hover:border-accent/40"
                 onClick={() => setActiveMilestone(milestone)}
               >
-                <CardContent className="pt-4">
+                <CardContent noHeader>
                   <div className="flex items-center gap-2 flex-wrap">
                     {phase && (
                       <Badge variant="outline" className="font-mono-tabular">
@@ -261,7 +262,7 @@ export default function ClientSyncPage() {
           );
         })}
         {typedMilestones.length === 0 && (
-          <p className="text-sm text-muted">No ClientSync milestones found in roadmap data.</p>
+          <EmptyState message="No milestones yet." />
         )}
       </div>
 
@@ -436,7 +437,7 @@ export default function ClientSyncPage() {
                       />
                       <button
                         onClick={() => addScreenshot(activeMilestone.linked_phase!, activeScreenshots)}
-                        className="shrink-0 flex h-9 w-9 items-center justify-center rounded-md border border-border hover:bg-surface-2 transition-colors"
+                        className="shrink-0 flex h-9 w-9 items-center justify-center rounded-md border border-border hover:bg-surface-2 transition-standard"
                         aria-label="Add screenshot"
                       >
                         <Plus className="h-4 w-4" />

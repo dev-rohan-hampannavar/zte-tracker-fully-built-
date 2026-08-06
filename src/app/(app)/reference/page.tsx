@@ -27,6 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
+import { EmptyState } from "@/components/ui/empty-state";
   Search,
   Building2,
   Layers,
@@ -139,74 +140,74 @@ export default function ReferencePage() {
       {metadata && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1">Total phases</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.total_phases}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1 flex items-center gap-1"><Layers className="h-3 w-3" /> Total stages</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.total_stages ?? "—"}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1">Total topics</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.total_topics}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1">Total hours</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.total_realistic_hours}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1 flex items-center gap-1"><FolderGit2 className="h-3 w-3" /> Stage projects</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.total_stage_projects ?? "—"}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1 flex items-center gap-1"><Dumbbell className="h-3 w-3" /> Stage exercises</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.total_stage_exercises ?? "—"}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1 flex items-center gap-1"><Trophy className="h-3 w-3" /> Capstones</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.total_capstones ?? "—"}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1 flex items-center gap-1"><Building2 className="h-3 w-3" /> Companies referenced</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.total_companies ?? companies?.length ?? "—"}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1">~Months @ 40h/wk</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.months_at_40hrs_week}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1 flex items-center gap-1"><ListChecks className="h-3 w-3" /> DSA Easy target</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.dsa_easy_target}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-4">
+            <CardContent noHeader>
               <p className="text-xs text-muted mb-1 flex items-center gap-1"><ListChecks className="h-3 w-3" /> DSA Medium target</p>
               <p className="text-2xl font-bold font-mono-tabular">{metadata.dsa_medium_target}</p>
             </CardContent>
           </Card>
           {metadata.source_stated_hours && (
             <Card>
-              <CardContent className="pt-4">
+              <CardContent noHeader>
                 <p className="text-xs text-muted mb-1">Source-stated hours</p>
                 <p className="text-2xl font-bold font-mono-tabular">{metadata.source_stated_hours}</p>
               </CardContent>
@@ -669,7 +670,7 @@ export default function ReferencePage() {
               </CardContent>
             </Card>
           ) : (
-            <p className="text-sm text-muted">No career guidance section found in the source document.</p>
+            <EmptyState message="No career guidance found." />
           )}
         </TabsContent>
 
@@ -694,7 +695,7 @@ export default function ReferencePage() {
               </CardContent>
             </Card>
           ) : (
-            <p className="text-sm text-muted">No degree filter guidance found in the source document.</p>
+            <EmptyState message="No degree filter guidance found." />
           )}
         </TabsContent>
 
@@ -740,7 +741,7 @@ export default function ReferencePage() {
                   </tbody>
                 </table>
                 {filtered.length === 0 && (
-                  <p className="text-sm text-muted text-center py-8">No matches.</p>
+                  <EmptyState message="No matches." />
                 )}
               </div>
             </CardContent>
@@ -783,7 +784,7 @@ export default function ReferencePage() {
                   </tbody>
                 </table>
                 {(!exitLadder || exitLadder.length === 0) && (
-                  <p className="text-sm text-muted text-center py-8">No exit ladder data.</p>
+                  <EmptyState message="No exit ladder data." />
                 )}
               </div>
             </CardContent>
@@ -814,7 +815,7 @@ export default function ReferencePage() {
               {!companies ? (
                 <Skeleton className="h-24 w-full" />
               ) : companiesByCategory.length === 0 ? (
-                <p className="text-sm text-muted">No matches.</p>
+                <EmptyState message="No matches." />
               ) : (
                 <div className="flex flex-col gap-4">
                   {companiesByCategory.map(([category, group]) => (

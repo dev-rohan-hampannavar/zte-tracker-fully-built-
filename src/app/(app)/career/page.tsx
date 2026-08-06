@@ -15,6 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { Plus, Trash2, Loader2 } from "lucide-react";
 import type { ApplicationStatus, CareerTrackerRow } from "@/types/database";
+import { EmptyState } from "@/components/ui/empty-state";
 
 const STATUS_VARIANT: Record<ApplicationStatus, "default" | "warning" | "success" | "danger" | "accent" | "outline"> = {
   wishlist: "outline",
@@ -106,7 +107,7 @@ export default function CareerTrackerPage() {
           <button
             key={entry.id}
             onClick={() => openEdit(entry)}
-            className="flex items-center gap-3 rounded-md border border-border px-3 py-2.5 text-left hover:bg-surface-2 transition-colors"
+            className="flex items-center gap-3 rounded-md border border-border px-3 py-2.5 text-left hover:bg-surface-2 transition-standard"
           >
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{entry.company}</p>
@@ -122,7 +123,7 @@ export default function CareerTrackerPage() {
           </button>
         ))}
         {(entries ?? []).length === 0 && (
-          <p className="text-sm text-muted text-center py-8">No applications tracked yet. Add your first one.</p>
+          <EmptyState message="No applications yet." hint="Add your first one." />
         )}
       </div>
 

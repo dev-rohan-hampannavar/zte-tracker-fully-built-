@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Trophy, Code2, FolderGit2, Flame } from "lucide-react";
 import type { Phase, Topic, TopicProgress, DsaProgressRow, ProjectProgress, Capstone } from "@/types/database";
 import { computeAchievements } from "@/lib/achievements";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export const revalidate = 300; // 5 min cache — public pages don't need to be live-live
 
@@ -178,7 +179,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
                 </div>
               ))}
             {phaseCompletion.every((p) => p.done === 0) && (
-              <p className="text-sm text-muted text-center py-6">No progress logged yet.</p>
+              <EmptyState message="No progress logged yet." />
             )}
           </CardContent>
         </Card>

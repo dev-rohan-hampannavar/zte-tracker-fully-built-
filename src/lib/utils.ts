@@ -15,8 +15,21 @@ export function pct(done: number, total: number): number {
   return Math.round((done / total) * 1000) / 10;
 }
 
+// Local-calendar-day ISO string ("YYYY-MM-DD"), NOT UTC. toISOString()
+// converts to UTC first, so for any timezone behind UTC (all of the
+// Americas, for example), logging late at night got stamped with
+// tomorrow's date — silently breaking "today" comparisons in the journal
+// and corrupting streak continuity in computeStreak. Building the string
+// from local getFullYear/getMonth/getDate avoids the UTC conversion.
 export function todayISO(): string {
-  return new Date().toISOString().slice(0, 10);
+  return localDateISO(new Date());
+}
+
+export function localDateISO(d: Date): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 export function formatDate(iso: string): string {

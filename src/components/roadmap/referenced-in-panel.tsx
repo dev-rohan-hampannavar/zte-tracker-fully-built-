@@ -22,7 +22,7 @@ export function ReferencedInPanel({ backlinks }: { backlinks: Backlink[] }) {
           <Link
             key={note.id}
             href={`/roadmap/topic/${sourceTopic.id}`}
-            className="block rounded-md bg-surface-2 px-2 py-1 text-[11px] hover:bg-surface-2/70 transition-colors"
+            className="block rounded-md bg-surface-2 px-2 py-1 text-[11px] hover:bg-surface-2/70 transition-standard"
           >
             <span className="text-accent font-medium">{sourceTopic.title}</span>
             <span className="text-muted"> — {note.note.length > 80 ? `${note.note.slice(0, 80)}…` : note.note}</span>

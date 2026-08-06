@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarClock, Info } from "lucide-react";
 import type { PhaseWithTopics, TopicWithProgress, UserSettings } from "@/types/database";
+import { localDateISO } from "@/lib/utils";
 
 const DEFAULT_HOURS_PER_WEEK = 10;
 const DEFAULT_HOURS_PER_TOPIC = 3; // used only when a topic has no estimated_hours
@@ -52,7 +53,9 @@ export function CalendarView({
         const weekOffset = Math.floor(i / topicsPerWeek);
         const weekStart = new Date(today);
         weekStart.setDate(weekStart.getDate() + weekOffset * 7);
-        const key = weekStart.toISOString().slice(0, 10);
+        // localDateISO, not toISOString() — keeps projected week labels
+        // stable at local midnight instead of drifting a day on UTC conversion.
+        const key = localDateISO(weekStart);
         weeks.set(key, [...(weeks.get(key) ?? []), topic]);
       });
     } else {
@@ -68,7 +71,9 @@ export function CalendarView({
         }
         const weekStart = new Date(today);
         weekStart.setDate(weekStart.getDate() + weekOffset * 7);
-        const key = weekStart.toISOString().slice(0, 10);
+        // localDateISO, not toISOString() — keeps projected week labels
+        // stable at local midnight instead of drifting a day on UTC conversion.
+        const key = localDateISO(weekStart);
         weeks.set(key, [...(weeks.get(key) ?? []), topic]);
         hoursIntoWeek += topicHours;
       }
@@ -108,7 +113,7 @@ export function CalendarView({
 
           return (
             <Card key={weekKey}>
-              <CardContent className="pt-4 flex flex-col gap-2">
+              <CardContent noHeader className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <CalendarClock className="h-3.5 w-3.5 text-muted shrink-0" />
                   <p className="text-xs font-medium">{label}</p>
