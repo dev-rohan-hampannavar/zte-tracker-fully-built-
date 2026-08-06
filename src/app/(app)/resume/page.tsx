@@ -28,10 +28,7 @@ export default function ResumePage() {
     [phases]
   );
 
-  const projectMap = useMemo(
-    () => new Map((projectProgress ?? []).map((p) => [p.phase_id, p])),
-    [projectProgress]
-  );
+  const projectMap = new Map((projectProgress ?? []).map((p) => [p.phase_id, p]));
 
   const dsaStats = useMemo(() => {
     const done = (dsa ?? []).filter((d) => d.completed);
@@ -139,7 +136,7 @@ export default function ResumePage() {
           <h1 className="text-page-title font-semibold tracking-tight">Resume Generator</h1>
           <p className="text-sm text-muted mt-1">
             Auto-drafted bullets from completed phases, capstones, deployed projects, and DSA progress.
-            Select what&apos;s relevant, copy or export.
+            Select what's relevant, copy or export.
           </p>
         </div>
         <div className="flex gap-2">

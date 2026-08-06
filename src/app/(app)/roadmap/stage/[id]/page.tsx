@@ -22,7 +22,7 @@ import { toast } from "sonner";
 export default function StageDetailPage() {
   const params = useParams<{ id: string }>();
   const { user } = useUser();
-  const { data, isLoading } = useStageDetail(params.id);
+  const { data, isLoading, mutate } = useStageDetail(params.id);
   const { data: roadmap } = useRoadmap();
   const { data: displayName } = useDisplayName(user?.id);
   const { data: progress, mutate: mutateProgress } = useProgress(user?.id);

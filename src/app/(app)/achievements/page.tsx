@@ -8,8 +8,10 @@ import { useProjectProgress } from "@/lib/hooks/use-projects";
 import { useDailyLogs, computeStreak } from "@/lib/hooks/use-daily-logs";
 import { computeAllAchievements } from "@/lib/achievements";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Trophy, Lock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function AchievementsPage() {
   const { user } = useUser();

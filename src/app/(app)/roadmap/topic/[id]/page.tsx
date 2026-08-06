@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/lib/hooks/use-user";
@@ -48,14 +48,8 @@ export default function TopicDetailPage() {
   const [notes, setNotes] = useState<TopicNote[]>([]);
   const [newNote, setNewNote] = useState("");
   const [minutesInput, setMinutesInput] = useState("");
+  const [isMinutesDirty, setIsMinutesDirty] = useState(false);
   const [savingNote, setSavingNote] = useState(false);
-  // loadingNotes is read in the notes list below but its setter is never
-  // called elsewhere in this component — notes currently load via the
-  // useEffect below without toggling this flag. Left as dead state rather
-  // than wired up, since flipping it on/off around the fetch is a real
-  // behavior change (a loading indicator that doesn't exist today), not a
-  // lint fix.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loadingNotes, setLoadingNotes] = useState(false);
 
   const myProgress = (progress ?? []).find((p) => p.topic_id === params.id);
@@ -85,11 +79,7 @@ export default function TopicDetailPage() {
     return undefined;
   }, [myProgress?.actual_minutes_spent, minutesInput]);
 
-  // Wrapped in useMemo (rather than a plain `?? []` at module scope) so the
-  // array reference is stable across renders — orderedTopics below depends
-  // on it, and an unstable reference here would recompute that memo (and
-  // its own downstream consumers) on every render for no reason.
-  const allTopics = useMemo(() => roadmap?.topics ?? [], [roadmap]);
+  const allTopics = roadmap?.topics ?? [];
   const backlinks =
     topic && allNotes
       ? computeBacklinks({ type: "topic", id: topic.id, label: topic.title }, allNotes, allTopics, linkRegistry)
@@ -138,26 +128,6 @@ export default function TopicDetailPage() {
   // <letter>" chords live in ShortcutsHelp; these are page-local actions
   // that component has no way to reach (it doesn't know about this
   // topic's id or completion state).
-  //
-  // handleToggleComplete is declared here (via useCallback, before the
-  // early returns below) rather than as a plain function declaration
-  // after them — it's referenced in this effect's dependency array, and a
-  // plain function recreated every render would make the effect (and its
-  // add/removeEventListener churn) re-run every render too. useCallback
-  // keeps the reference stable across renders where its own dependencies
-  // haven't changed.
-  const handleToggleComplete = useCallback(
-    async (completed: boolean) => {
-      if (!user || !topic || isLocked) return;
-      await updateTopicProgress(user.id, topic.id, {
-        completed,
-        completed_at: completed ? new Date().toISOString() : null,
-      });
-      mutateProgress();
-    },
-    [user, topic, isLocked, mutateProgress]
-  );
-
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       const target = e.target as HTMLElement;
@@ -180,13 +150,22 @@ export default function TopicDetailPage() {
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [nextTopicId, prevTopicId, isLocked, topic, myProgress?.completed, handleToggleComplete, router]);
+  }, [nextTopicId, prevTopicId, isLocked, topic, myProgress?.completed]);
 
   if (isLoading) return <Skeleton className="h-96 w-full" />;
   if (!topic) return <p className="text-sm text-muted">Topic not found.</p>;
 
   const parentPhase = (roadmap?.phases ?? []).find((p) => p.id === topic.phase_id) ?? null;
   const parentStage = (roadmap?.stages ?? []).find((s) => s.id === topic.stage_id) ?? null;
+
+  async function handleToggleComplete(completed: boolean) {
+    if (!user || !topic || isLocked) return;
+    await updateTopicProgress(user.id, topic.id, {
+      completed,
+      completed_at: completed ? new Date().toISOString() : null,
+    });
+    mutateProgress();
+  }
 
   async function handleDifficultyChange(value: string) {
     if (!user || !topic) return;

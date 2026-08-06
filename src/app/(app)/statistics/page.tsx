@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { useUser } from "@/lib/hooks/use-user";
 import { usePhasesWithProgress, useClientSyncMilestones, useRoadmapMetadata } from "@/lib/hooks/use-roadmap";
-import { useDailyLogs, computeStreak, weeklyBreakdown } from "@/lib/hooks/use-daily-logs";
+import { useDailyLogs, computeStreak, weeklyHours, weeklyBreakdown } from "@/lib/hooks/use-daily-logs";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
 import { useProjectProgress, useBuildInPublicStatus } from "@/lib/hooks/use-projects";
 import { useExerciseProgress } from "@/lib/hooks/use-exercises";
@@ -93,6 +93,7 @@ export default function StatisticsPage() {
   const completedPhases = phases.filter((p) => p.topics.length > 0 && p.topics.every((t) => t.progress?.completed));
 
   const streak = computeStreak(logs ?? []);
+  const week = weeklyHours(logs ?? []);
 
   const totalLoggedHours = (logs ?? []).reduce((s, l) => s + Number(l.hours), 0);
   const daysLogged = (logs ?? []).filter((l) => l.hours > 0).length;
@@ -101,16 +102,8 @@ export default function StatisticsPage() {
   const firstLogDate = (logs ?? []).length
     ? [...(logs ?? [])].sort((a, b) => (a.date < b.date ? -1 : 1))[0].date
     : null;
-  // Date.now() is captured once via a useState lazy initializer, not
-  // called inline during render — inline Date.now() (even inside useMemo)
-  // is flagged as an impure render call by React's purity lint rule, since
-  // it can return a different value on every render for the same
-  // props/state. A lazy initializer runs exactly once per mount, which is
-  // the correct way to snapshot a non-deterministic value like the current
-  // time for a session-stable calculation like weeksSinceStart below.
-  const [now] = useState(() => Date.now());
   const weeksSinceStart = firstLogDate
-    ? Math.max(1, Math.ceil((now - new Date(firstLogDate).getTime()) / (7 * 86400000)))
+    ? Math.max(1, Math.ceil((Date.now() - new Date(firstLogDate).getTime()) / (7 * 86400000)))
     : 1;
   const avgWeekly = totalLoggedHours / weeksSinceStart;
 

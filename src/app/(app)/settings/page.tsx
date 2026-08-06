@@ -69,11 +69,6 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (settings) {
-      // Intentional: initializing local editable form state (goal type,
-      // goal value, display name) from the fetched settings row once it
-      // arrives — the standard "populate a form from async data" pattern,
-      // not a derived-from-render-output setState.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setGoalType(settings.weekly_goal_type);
       setGoalValue(String(settings.weekly_goal_value));
       setDisplayName(settings.display_name ?? "");
