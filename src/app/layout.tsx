@@ -1,7 +1,14 @@
 import type { Metadata, Viewport } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import { Toaster } from "sonner";
 import { OfflineIndicator } from "@/components/layout/offline-indicator";
 import "./globals.css";
+
+// `geist` ships the font files locally and applies them at build time —
+// unlike next/font/google, it needs no runtime fetch to fonts.googleapis.com,
+// so builds succeed in network-restricted environments (CI runners, sandboxes,
+// offline dev) too.
 
 export const metadata: Metadata = {
   title: "ZTE Tracker — Zero to Elite Roadmap Companion",
@@ -16,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0e0e0d",
+  themeColor: "#09090b",
   width: "device-width",
   initialScale: 1,
 };
@@ -27,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="h-full antialiased"
+      className={`h-full antialiased ${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -37,7 +44,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         {children}
         <OfflineIndicator />
         <Toaster

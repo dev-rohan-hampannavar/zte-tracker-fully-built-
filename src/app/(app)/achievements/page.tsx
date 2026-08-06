@@ -48,25 +48,23 @@ export default function AchievementsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Achievements</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Achievements</h1>
+        <p className="text-sm text-muted mt-1">
           {earned.length}/{achievements.length} unlocked — computed live from your progress, nothing to configure.
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: "Unlocked", value: earned.length },
           { label: "Locked", value: locked.length },
           { label: "Total", value: achievements.length },
           { label: "Completion", value: `${achievements.length ? Math.round((earned.length / achievements.length) * 100) : 0}%` },
         ].map((s) => (
-          <Card key={s.label}>
-            <CardContent className="pt-3 pb-3 text-center">
-              <p className="text-lg font-bold font-mono-tabular">{s.value}</p>
-              <p className="text-[11px] text-muted">{s.label}</p>
-            </CardContent>
-          </Card>
+          <div key={s.label} className="rounded-card border border-border bg-surface p-3 text-center">
+            <p className="text-lg font-bold font-mono-tabular text-accent">{s.value}</p>
+            <p className="text-[11px] text-muted mt-0.5">{s.label}</p>
+          </div>
         ))}
       </div>
 
@@ -74,13 +72,16 @@ export default function AchievementsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-1.5">
-              <Trophy className="h-4 w-4 text-warning" /> Unlocked
+              <Trophy className="h-4 w-4 text-reward" /> Unlocked
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {earned.map((a) => (
-              <div key={a.id} className="flex items-start gap-3 rounded-md border border-success/30 bg-success/5 px-3 py-2.5">
-                <Trophy className="h-4 w-4 text-warning mt-0.5 shrink-0" />
+              <div
+                key={a.id}
+                className="flex items-start gap-3 rounded-card border border-success/30 bg-success/5 px-3.5 py-3 transition-standard hover:border-success/50"
+              >
+                <Trophy className="h-4 w-4 text-reward mt-0.5 shrink-0" />
                 <div className="min-w-0">
                   <p className="text-sm font-medium">{a.label}</p>
                   <p className="text-xs text-muted">{a.description}</p>
@@ -99,7 +100,7 @@ export default function AchievementsPage() {
         </CardHeader>
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {locked.map((a) => (
-            <div key={a.id} className="flex items-start gap-3 rounded-md border border-border px-3 py-2.5 opacity-60">
+            <div key={a.id} className="flex items-start gap-3 rounded-card border border-border px-3.5 py-3 opacity-60">
               <Lock className="h-4 w-4 text-muted mt-0.5 shrink-0" />
               <div className="min-w-0">
                 <p className="text-sm font-medium">{a.label}</p>

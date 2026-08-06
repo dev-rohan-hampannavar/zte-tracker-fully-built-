@@ -130,8 +130,8 @@ export default function ReferencePage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Reference</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Reference</h1>
+        <p className="text-sm text-muted mt-1">
           The roadmap&apos;s full Part I — orientation, dashboards, navigation layers, and
           pacing views — not just a stats summary.
         </p>

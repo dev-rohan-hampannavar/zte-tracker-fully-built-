@@ -119,18 +119,24 @@ export default function ProjectsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Projects</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Projects</h1>
+        <p className="text-sm text-muted mt-1">
           Stage-level build exercises, plus phase capstones like ClientSync and Trackify.
         </p>
       </div>
 
       <Tabs defaultValue="stage">
-        <TabsList>
-          <TabsTrigger value="stage">
+        <TabsList className="rounded-full bg-surface-2 p-1">
+          <TabsTrigger
+            value="stage"
+            className="rounded-full px-3.5 py-1.5 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
+          >
             <Layers className="h-3.5 w-3.5 mr-1.5" /> Stage projects ({totalStageProjects})
           </TabsTrigger>
-          <TabsTrigger value="portfolio">
+          <TabsTrigger
+            value="portfolio"
+            className="rounded-full px-3.5 py-1.5 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
+          >
             <FolderGit2 className="h-3.5 w-3.5 mr-1.5" /> Portfolio projects ({phases.length})
           </TabsTrigger>
         </TabsList>

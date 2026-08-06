@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -28,6 +29,7 @@ import {
   History,
   Cpu,
   Pin,
+  PanelLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -78,9 +80,42 @@ const SIDEBAR_SECTIONS: { label: string | null; hrefs: string[] }[] = [
   { label: "Data", hrefs: ["/statistics", "/reference"] },
 ];
 
+// Collapsible nav per the redesign spec: icons-only by default, expands to
+// icons+labels on hover (or when pinned open via the toggle). All 20+
+// existing routes/sections are preserved as-is — only the presentation
+// (width, label visibility, active-state treatment) changes. Persists the
+// pinned/expanded preference across sessions like the theme toggle does.
 export function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
   const router = useRouter();
+  // Lazy initializer reads localStorage synchronously on first render instead
+  // of via a post-mount effect — avoids both an extra render pass and the
+  // set-state-in-effect lint rule. Safe under SSR since this component is
+  // "use client" and the initializer only runs client-side after hydration
+  // triggers the first render.
+  const [pinned, setPinned] = React.useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return localStorage.getItem("zte-sidebar-pinned") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [hovering, setHovering] = React.useState(false);
+
+  function togglePinned() {
+    setPinned((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("zte-sidebar-pinned", String(next));
+      } catch {
+        // ignore persistence failures
+      }
+      return next;
+    });
+  }
+
+  const expanded = pinned || hovering;
 
   async function signOut() {
     const supabase = createClient();
@@ -90,19 +125,29 @@ export function Sidebar({ className }: { className?: string }) {
 
   return (
     <aside
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
       className={cn(
-        "flex h-full w-60 shrink-0 flex-col border-r border-border bg-surface",
+        "group/sidebar relative flex h-full shrink-0 flex-col border-r border-border bg-surface transition-[width] duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]",
+        expanded ? "w-60" : "w-[68px]",
         className
       )}
     >
-      <div className="flex items-center gap-2 px-4 h-14 border-b border-border">
-        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-accent-foreground">
+      <div className="flex items-center gap-2 px-4 h-14 border-b border-border overflow-hidden">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground shadow-sm shadow-accent/30">
           <Terminal className="h-4 w-4" />
         </div>
-        <span className="text-sm font-semibold tracking-tight">ZTE Tracker</span>
+        <span
+          className={cn(
+            "text-sm font-semibold tracking-tight whitespace-nowrap transition-standard",
+            expanded ? "opacity-100" : "opacity-0"
+          )}
+        >
+          ZTE Tracker
+        </span>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-2 py-3 flex flex-col gap-3">
+      <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-3 flex flex-col gap-3">
         {SIDEBAR_SECTIONS.map((section, i) => {
           const items = section.hrefs
             .filter((href) => !PINNED_HREFS.has(href))
@@ -112,7 +157,12 @@ export function Sidebar({ className }: { className?: string }) {
           return (
             <div key={i} className="flex flex-col gap-0.5">
               {section.label && (
-                <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted/70">
+                <p
+                  className={cn(
+                    "px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-2 whitespace-nowrap transition-standard",
+                    expanded ? "opacity-100" : "opacity-0"
+                  )}
+                >
                   {section.label}
                 </p>
               )}
@@ -122,18 +172,27 @@ export function Sidebar({ className }: { className?: string }) {
                   <Link
                     key={href}
                     href={href}
+                    title={expanded ? undefined : label}
                     className={cn(
                       // border-l on a transparent border keeps layout width stable when
                       // switching between active/inactive — only the color toggles, so
-                      // links don't shift horizontally as you navigate.
-                      "flex items-center gap-2.5 rounded-md border-l-2 px-2.5 py-2 text-sm font-medium transition-standard",
+                      // links don't shift horizontally as you navigate. Active state adds
+                      // a soft accent glow behind the icon per the design spec.
+                      "relative flex items-center gap-2.5 rounded-lg border-l-2 px-2.5 py-2 text-sm font-medium transition-standard",
                       active
-                        ? "border-accent bg-accent/15 text-accent"
+                        ? "border-accent bg-accent/15 text-accent shadow-[inset_0_0_0_1px_rgba(99,102,241,0.15)]"
                         : "border-transparent text-muted hover:bg-surface-2 hover:text-foreground"
                     )}
                   >
                     <Icon className="h-4 w-4 shrink-0" />
-                    {label}
+                    <span
+                      className={cn(
+                        "whitespace-nowrap transition-standard",
+                        expanded ? "opacity-100" : "opacity-0"
+                      )}
+                    >
+                      {label}
+                    </span>
                   </Link>
                 );
               })}
@@ -143,24 +202,40 @@ export function Sidebar({ className }: { className?: string }) {
       </nav>
 
       <div className="border-t border-border p-2 flex flex-col gap-0.5">
+        <button
+          onClick={togglePinned}
+          title={expanded ? "Collapse sidebar" : "Expand sidebar"}
+          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted transition-standard hover:bg-surface-2 hover:text-foreground"
+        >
+          <PanelLeft className="h-4 w-4 shrink-0" />
+          <span className={cn("whitespace-nowrap transition-standard", expanded ? "opacity-100" : "opacity-0")}>
+            {pinned ? "Collapse" : "Keep open"}
+          </span>
+        </button>
         <Link
           href="/settings"
+          title={expanded ? undefined : "Settings"}
           className={cn(
-            "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-standard",
+            "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-standard",
             pathname === "/settings"
               ? "bg-accent/15 text-accent"
               : "text-muted hover:bg-surface-2 hover:text-foreground"
           )}
         >
-          <Settings className="h-4 w-4" />
-          Settings
+          <Settings className="h-4 w-4 shrink-0" />
+          <span className={cn("whitespace-nowrap transition-standard", expanded ? "opacity-100" : "opacity-0")}>
+            Settings
+          </span>
         </Link>
         <button
           onClick={signOut}
-          className="flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium text-muted transition-standard hover:bg-surface-2 hover:text-danger"
+          title={expanded ? undefined : "Sign out"}
+          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted transition-standard hover:bg-surface-2 hover:text-danger"
         >
-          <LogOut className="h-4 w-4" />
-          Sign out
+          <LogOut className="h-4 w-4 shrink-0" />
+          <span className={cn("whitespace-nowrap transition-standard", expanded ? "opacity-100" : "opacity-0")}>
+            Sign out
+          </span>
         </button>
       </div>
     </aside>

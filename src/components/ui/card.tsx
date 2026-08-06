@@ -4,7 +4,9 @@ import { cn } from "@/lib/utils";
 // interactive=true adds hover elevation + pointer affordance for cards that
 // are fully clickable (e.g. wrapped in a <Link>) — previously the only
 // hover signal on those cards was the internal link text changing color,
-// so the clickable area itself gave no feedback.
+// so the clickable area itself gave no feedback. Elevation comes from a
+// soft shadow + 1px lift rather than a heavy box-shadow, per the "subtle
+// shadows, spacing does the work" rule in the design spec.
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean }
@@ -12,8 +14,9 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-lg border border-border bg-surface",
-      interactive && "transition-standard hover:bg-surface-hover hover:border-muted/40 cursor-pointer",
+      "rounded-card border border-border bg-surface shadow-sm shadow-black/20",
+      interactive &&
+        "transition-standard hover:bg-surface-hover hover:border-muted-2/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/30 cursor-pointer",
       className
     )}
     {...props}
@@ -23,15 +26,14 @@ Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col gap-1 p-4 pb-2", className)} {...props} />
+    <div ref={ref} className={cn("flex flex-col gap-1.5 p-5 pb-2", className)} {...props} />
   )
 );
 CardHeader.displayName = "CardHeader";
 
-// size defaults to "md" (text-base) — previously fixed at text-sm, which
-// left a gap in the scale between body copy and the text-2xl/3xl stat
-// numbers used elsewhere on Dashboard. Pass size="sm" to opt back into
-// the old compact size for dense contexts.
+// size defaults to "md" (text-card-title, 20px per the design spec) —
+// previously fixed at text-base. Pass size="sm" to opt back into the old
+// compact size for dense contexts, or "lg" for hero/feature cards.
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement> & { size?: "sm" | "md" | "lg" }
@@ -41,8 +43,8 @@ const CardTitle = React.forwardRef<
     className={cn(
       "font-semibold tracking-tight text-foreground",
       size === "sm" && "text-sm",
-      size === "md" && "text-base",
-      size === "lg" && "text-xl",
+      size === "md" && "text-card-title",
+      size === "lg" && "text-section-title",
       className
     )}
     {...props}
@@ -52,28 +54,29 @@ CardTitle.displayName = "CardTitle";
 
 const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
   ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn("text-xs text-muted", className)} {...props} />
+    <p ref={ref} className={cn("text-sm text-muted", className)} {...props} />
   )
 );
 CardDescription.displayName = "CardDescription";
 
-// Default padding is p-4 pt-2, which assumes a CardHeader sits above it
+// Default padding is p-5 pt-2, which assumes a CardHeader sits above it
 // (pt-2 relies on the header's own pb-2 to make up the visual gap). Cards
-// with no header need noHeader to get pt-4 instead — this used to be done
+// with no header need noHeader to get pt-5 instead — this used to be done
 // ad hoc via className="pt-4" at ~40 call sites; noHeader replaces all of
 // those with a single prop so the rule lives in the component, not copied
-// at every usage.
+// at every usage. Padding bumped from p-4 to p-5 (16px -> 20px) to match
+// the "generous spacing, avoid dense layouts" rule in the design spec.
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { noHeader?: boolean }
 >(({ className, noHeader, ...props }, ref) => (
-  <div ref={ref} className={cn(noHeader ? "p-4" : "p-4 pt-2", className)} {...props} />
+  <div ref={ref} className={cn(noHeader ? "p-5" : "p-5 pt-2", className)} {...props} />
 ));
 CardContent.displayName = "CardContent";
 
 const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex items-center p-4 pt-2", className)} {...props} />
+    <div ref={ref} className={cn("flex items-center p-5 pt-2", className)} {...props} />
   )
 );
 CardFooter.displayName = "CardFooter";

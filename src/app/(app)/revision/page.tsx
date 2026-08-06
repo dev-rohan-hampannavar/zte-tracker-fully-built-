@@ -47,6 +47,10 @@ export default function RevisionPage() {
       }).length,
     [completedTopics]
   );
+  const masteredCount = useMemo(
+    () => completedTopics.filter((t) => (t.progress?.review_count ?? 0) >= MASTERY_REVIEW_COUNT).length,
+    [completedTopics]
+  );
 
   const filtered = useMemo(() => {
     switch (filter) {
@@ -103,8 +107,8 @@ export default function RevisionPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Revision</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Revision</h1>
+        <p className="text-sm text-muted mt-1">
           Spaced repetition: 3 reviews at 1 / 3 / 7-day intervals, then mastered.
           {overdueCount > 0 && (
             <span className="text-danger"> {overdueCount} topic{overdueCount === 1 ? "" : "s"} overdue.</span>
@@ -115,10 +119,52 @@ export default function RevisionPage() {
         </p>
       </div>
 
+      {/* Summary strip — same colored-icon-chip pattern as Career's summary
+          strip, derived entirely from data already computed above
+          (overdueCount, dueSoonCount, mastered count) — no new fetches. */}
+      <div className="grid grid-cols-3 gap-3">
+        <div
+          className={cn(
+            "rounded-card border p-4 flex items-center gap-3",
+            overdueCount > 0 ? "border-danger/30 bg-danger/5" : "border-border bg-surface"
+          )}
+        >
+          <div className="h-9 w-9 rounded-full bg-danger/15 flex items-center justify-center shrink-0">
+            <AlertCircle className="h-4 w-4 text-danger" />
+          </div>
+          <div>
+            <p className="text-lg font-bold font-mono-tabular leading-none">{overdueCount}</p>
+            <p className="text-[11px] text-muted mt-1">Overdue</p>
+          </div>
+        </div>
+        <div className="rounded-card border border-border bg-surface p-4 flex items-center gap-3">
+          <div className="h-9 w-9 rounded-full bg-accent/15 flex items-center justify-center shrink-0">
+            <Clock className="h-4 w-4 text-accent" />
+          </div>
+          <div>
+            <p className="text-lg font-bold font-mono-tabular leading-none">{dueSoonCount}</p>
+            <p className="text-[11px] text-muted mt-1">Due in 3 days</p>
+          </div>
+        </div>
+        <div className="rounded-card border border-border bg-surface p-4 flex items-center gap-3">
+          <div className="h-9 w-9 rounded-full bg-success/15 flex items-center justify-center shrink-0">
+            <CheckCircle2 className="h-4 w-4 text-success" />
+          </div>
+          <div>
+            <p className="text-lg font-bold font-mono-tabular leading-none">{masteredCount}</p>
+            <p className="text-[11px] text-muted mt-1">Mastered</p>
+          </div>
+        </div>
+      </div>
+
       <Tabs value={filter} onValueChange={(v) => setFilter(v as FilterKey)}>
-        <TabsList className="flex-wrap h-auto">
+        <TabsList className="flex-wrap h-auto bg-surface-2 rounded-full p-1">
           {FILTERS.map((f) => (
-            <TabsTrigger key={f.key} value={f.key}>
+            <TabsTrigger
+              key={f.key}
+              value={f.key}
+              className="rounded-full px-3.5 py-1.5 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
+            >
               {f.label}
             </TabsTrigger>
           ))}
@@ -134,8 +180,14 @@ export default function RevisionPage() {
           const daysLeft = daysUntil(due);
 
           return (
-            <Card key={t.id} className={cn(overdue && "border-danger/40 bg-danger/5")}>
-              <CardContent className="pt-3 pb-3 flex items-center gap-3 flex-wrap">
+            <Card
+              key={t.id}
+              className={cn(
+                "transition-standard hover:border-muted-2/40",
+                overdue && "border-danger/40 bg-danger/5"
+              )}
+            >
+              <CardContent noHeader className="py-3.5 flex items-center gap-3 flex-wrap">
                 <div className="flex-1 min-w-[200px]">
                   <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                     <Badge variant="outline" className="font-mono-tabular">

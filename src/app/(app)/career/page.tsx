@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useUser } from "@/lib/hooks/use-user";
 import { useCareerTracker, upsertCareerEntry, deleteCareerEntry, APPLICATION_STATUSES } from "@/lib/hooks/use-career";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { Plus, Trash2, Loader2 } from "lucide-react";
+import { Plus, Trash2, Loader2, Briefcase, TrendingUp, CircleCheckBig } from "lucide-react";
 import type { ApplicationStatus, CareerTrackerRow } from "@/types/database";
 import { EmptyState } from "@/components/ui/empty-state";
 
@@ -77,18 +77,67 @@ export default function CareerTrackerPage() {
     count: (entries ?? []).filter((e) => e.application_status === s.value).length,
   }));
 
+  // Derived from the same entries list already fetched — no new data
+  // source, no fabricated "readiness score." Just the two numbers a
+  // returning user actually wants at a glance: how much is in flight, and
+  // how many offers are on the table.
+  const activeCount = (entries ?? []).filter((e) =>
+    ["applied", "screening", "interviewing"].includes(e.application_status)
+  ).length;
+  const offerCount = (entries ?? []).filter((e) => e.offer).length;
+  const totalCount = (entries ?? []).length;
+
   if (isLoading) return <Skeleton className="h-64 w-full" />;
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">Career Tracker</h1>
-          <p className="text-sm text-muted">Applications, interviews, offers — one source of truth.</p>
+          <h1 className="text-page-title font-semibold tracking-tight">Career Tracker</h1>
+          <p className="text-sm text-muted mt-1">Applications, interviews, offers — one source of truth.</p>
         </div>
-        <Button onClick={openNew}>
+        <Button onClick={openNew} size="lg">
           <Plus className="h-4 w-4" /> Add application
         </Button>
+      </div>
+
+      {/* Summary strip — real counts from the same data as the status
+          breakdown below, just surfaced at a glance before the per-status
+          detail. */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <Card>
+          <CardContent noHeader>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/15 text-accent">
+                <Briefcase className="h-3.5 w-3.5" />
+              </span>
+              <p className="text-xs text-muted">Total applications</p>
+            </div>
+            <p className="text-3xl font-bold font-mono-tabular leading-none">{totalCount}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent noHeader>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-highlight/15 text-highlight">
+                <TrendingUp className="h-3.5 w-3.5" />
+              </span>
+              <p className="text-xs text-muted">Active pipeline</p>
+            </div>
+            <p className="text-3xl font-bold font-mono-tabular leading-none">{activeCount}</p>
+          </CardContent>
+        </Card>
+        <Card className={offerCount > 0 ? "border-success/30" : undefined}>
+          <CardContent noHeader>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success">
+                <CircleCheckBig className="h-3.5 w-3.5" />
+              </span>
+              <p className="text-xs text-muted">Offers</p>
+            </div>
+            <p className="text-3xl font-bold font-mono-tabular leading-none">{offerCount}</p>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
@@ -102,16 +151,16 @@ export default function CareerTrackerPage() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         {(entries ?? []).map((entry) => (
           <button
             key={entry.id}
             onClick={() => openEdit(entry)}
-            className="flex items-center gap-3 rounded-md border border-border px-3 py-2.5 text-left hover:bg-surface-2 transition-standard"
+            className="flex items-center gap-3 rounded-card border border-border bg-surface px-4 py-3 text-left transition-standard hover:bg-surface-hover hover:border-muted-2/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/20"
           >
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{entry.company}</p>
-              {entry.role && <p className="text-xs text-muted truncate">{entry.role}</p>}
+              {entry.role && <p className="text-xs text-muted truncate mt-0.5">{entry.role}</p>}
             </div>
             <Badge variant={STATUS_VARIANT[entry.application_status]}>{entry.application_status}</Badge>
             {entry.offer && <Badge variant="success">Offer</Badge>}

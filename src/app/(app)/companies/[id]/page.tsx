@@ -93,7 +93,7 @@ export default function CompanyDetailPage() {
           <Building2 className="h-6 w-6" />
         </div>
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">{company.name}</h1>
+          <h1 className="text-page-title font-semibold tracking-tight">{company.name}</h1>
           <p className="text-sm text-muted">Referenced in roadmap.md</p>
         </div>
       </div>
@@ -195,7 +195,7 @@ export default function CompanyDetailPage() {
             <div className="flex flex-col gap-2">
               {linkedExits.map((exit) => (
                 <Link key={exit.exit_code} href={`/exit-ladder#${exit.exit_code}`}>
-                  <div className="flex items-center gap-3 rounded-md border border-border p-3 hover:border-accent/40 transition-standard">
+                  <div className="flex items-center gap-3 rounded-card border border-border p-3.5 hover:border-accent/40 transition-standard">
                     <Badge variant="outline" className="font-mono-tabular shrink-0">
                       Exit {exit.exit_code}
                     </Badge>

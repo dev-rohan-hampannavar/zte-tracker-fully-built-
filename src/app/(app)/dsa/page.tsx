@@ -121,8 +121,8 @@ export default function DsaTrackerPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">DSA Tracker</h1>
-        <p className="text-sm text-muted">Phase 08 spine — independent of the main roadmap checklist.</p>
+        <h1 className="text-page-title font-semibold tracking-tight">DSA Tracker</h1>
+        <p className="text-sm text-muted mt-1">Phase 08 spine — independent of the main roadmap checklist.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

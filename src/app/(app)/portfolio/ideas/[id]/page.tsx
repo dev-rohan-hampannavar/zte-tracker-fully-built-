@@ -59,8 +59,8 @@ export default function PortfolioIdeaDetailPage() {
       </Link>
 
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">{project.name}</h1>
-        <p className="text-sm text-muted">{project.tagline}</p>
+        <h1 className="text-page-title font-semibold tracking-tight">{project.name}</h1>
+        <p className="text-sm text-muted mt-1">{project.tagline}</p>
       </div>
 
       <Card>

@@ -36,8 +36,8 @@ export default function RoadmapDiffPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Roadmap Diff</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Roadmap Diff</h1>
+        <p className="text-sm text-muted mt-1">
           Compare two snapshots of the roadmap&apos;s structure — what was added, removed, changed, or
           reordered between them.
         </p>

@@ -83,7 +83,7 @@ export default function PhaseDetailPage() {
             </Badge>
           )}
         </div>
-        <h1 className="text-xl font-semibold tracking-tight mt-1">{phase.title}</h1>
+        <h1 className="text-page-title font-semibold tracking-tight mt-1">{phase.title}</h1>
         {phase.description && <p className="text-sm text-muted mt-1">{phase.description}</p>}
         <div className="flex items-center gap-2 mt-3 max-w-xs">
           <Progress value={pct(completedCount, phase.topics.length)} className="h-1.5 flex-1" />

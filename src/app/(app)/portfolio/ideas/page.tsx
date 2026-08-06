@@ -37,10 +37,10 @@ export default function PortfolioIdeasPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight flex items-center gap-2">
-          <Lightbulb className="h-5 w-5" /> Portfolio Projects
+        <h1 className="text-page-title font-semibold tracking-tight flex items-center gap-2">
+          <Lightbulb className="h-6 w-6" /> Portfolio Projects
         </h1>
-        <p className="text-sm text-muted">
+        <p className="text-sm text-muted mt-1">
           The 10 advanced SaaS project ideas from Part VII — pick one to build after ClientSync.
         </p>
       </div>

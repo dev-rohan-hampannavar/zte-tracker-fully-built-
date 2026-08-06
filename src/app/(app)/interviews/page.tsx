@@ -74,8 +74,8 @@ export default function InterviewsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Interview Tracker</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Interview Tracker</h1>
+        <p className="text-sm text-muted mt-1">
           Scheduled interviews from your Career Tracker, sorted by date. Prep notes live here.
         </p>
       </div>
@@ -144,7 +144,7 @@ export default function InterviewsPage() {
             {past.map((entry) => (
               <div
                 key={entry.id}
-                className="flex items-center gap-3 rounded-md border border-border px-3 py-2.5"
+                className="flex items-center gap-3 rounded-card border border-border px-3.5 py-3 transition-standard hover:border-muted-2/40"
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{entry.company}</p>

@@ -75,8 +75,8 @@ export default function SkillsPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Skills</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Skills</h1>
+        <p className="text-sm text-muted mt-1">
           Skill matrix by roadmap band, DSA coverage by tag, and phase readiness scores.
         </p>
       </div>

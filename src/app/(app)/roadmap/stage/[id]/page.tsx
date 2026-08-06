@@ -80,7 +80,7 @@ export default function StageDetailPage() {
             </span>
           )}
         </div>
-        <h1 className="text-xl font-semibold tracking-tight mt-1">{stage.title}</h1>
+        <h1 className="text-page-title font-semibold tracking-tight mt-1">{stage.title}</h1>
         {stage.description && <p className="text-sm text-muted mt-1">{stage.description}</p>}
         <div className="flex items-center gap-3 mt-3">
           <div className="flex items-center gap-2 max-w-xs flex-1">

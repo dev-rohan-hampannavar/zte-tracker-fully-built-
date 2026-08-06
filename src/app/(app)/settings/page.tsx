@@ -370,8 +370,8 @@ export default function SettingsPage() {
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Settings</h1>
-        <p className="text-sm text-muted">Goals, export, and preferences.</p>
+        <h1 className="text-page-title font-semibold tracking-tight">Settings</h1>
+        <p className="text-sm text-muted mt-1">Goals, export, and preferences.</p>
       </div>
 
       <Card>

@@ -334,7 +334,7 @@ export default function TopicDetailPage() {
           className="mt-1.5"
         />
         <div className="flex-1">
-          <h1 className="text-xl font-semibold tracking-tight">{topic.title}</h1>
+          <h1 className="text-page-title font-semibold tracking-tight">{topic.title}</h1>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
             {topic.estimated_hours && (
               <span className="text-xs text-muted font-mono-tabular">

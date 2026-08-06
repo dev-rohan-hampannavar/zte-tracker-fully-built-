@@ -136,8 +136,8 @@ export default function ExitLadderPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Exit Ladder</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Exit Ladder</h1>
+        <p className="text-sm text-muted mt-1">
           Real job-readiness milestones. Apply at Exit A, B, or ★1 — don&apos;t wait for the end.
         </p>
       </div>

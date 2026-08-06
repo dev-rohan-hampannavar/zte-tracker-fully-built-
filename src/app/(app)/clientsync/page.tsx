@@ -155,8 +155,8 @@ export default function ClientSyncPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">ClientSync</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">ClientSync</h1>
+        <p className="text-sm text-muted mt-1">
           {completedMilestones}/{typedMilestones.length} milestones complete — the B2B onboarding SaaS
           anchor project, tracked independently of the phase roadmap.
         </p>

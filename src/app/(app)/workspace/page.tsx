@@ -104,10 +104,10 @@ export default function WorkspacePage() {
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight flex items-center gap-2">
-          <Pin className="h-5 w-5 text-accent" /> Workspace
+        <h1 className="text-page-title font-semibold tracking-tight flex items-center gap-2">
+          <Pin className="h-6 w-6 text-accent" /> Workspace
         </h1>
-        <p className="text-sm text-muted">
+        <p className="text-sm text-muted mt-1">
           Pin the topic, project, or ClientSync milestone you&apos;re actively working on for quick access.
           {pinned.length > 0 && ` ${pinned.length}/${MAX_PINNED_ITEMS} pinned.`}
         </p>

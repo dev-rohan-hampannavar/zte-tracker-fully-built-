@@ -110,7 +110,7 @@ export default function TechnologyDetailPage() {
           <Cpu className="h-6 w-6" />
         </div>
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">{technology.name}</h1>
+          <h1 className="text-page-title font-semibold tracking-tight">{technology.name}</h1>
           {technology.category && (
             <Badge variant="outline" className="mt-1">
               {technology.category}
@@ -134,7 +134,7 @@ export default function TechnologyDetailPage() {
             <div className="flex flex-col gap-2">
               {topics.map((t) => (
                 <Link key={t.id} href={`/roadmap/topic/${t.id}`}>
-                  <div className="flex items-center gap-3 rounded-md border border-border p-3 hover:border-accent/40 transition-standard">
+                  <div className="flex items-center gap-3 rounded-card border border-border p-3.5 hover:border-accent/40 transition-standard">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{t.title}</p>
                       {phaseTitles?.get(t.phase_id) && (
@@ -162,7 +162,7 @@ export default function TechnologyDetailPage() {
           <CardContent className="flex flex-col gap-2">
             {linkedProjects.map((p) => (
               <Link key={p.id} href="/projects">
-                <div className="flex items-center gap-3 rounded-md border border-border p-3 hover:border-accent/40 transition-standard">
+                <div className="flex items-center gap-3 rounded-card border border-border p-3.5 hover:border-accent/40 transition-standard">
                   <p className="text-sm flex-1 min-w-0 truncate">{p.name}</p>
                   <ArrowRight className="h-3.5 w-3.5 text-muted shrink-0" />
                 </div>

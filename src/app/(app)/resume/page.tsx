@@ -133,8 +133,8 @@ export default function ResumePage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">Resume Generator</h1>
-          <p className="text-sm text-muted">
+          <h1 className="text-page-title font-semibold tracking-tight">Resume Generator</h1>
+          <p className="text-sm text-muted mt-1">
             Auto-drafted bullets from completed phases, capstones, deployed projects, and DSA progress.
             Select what's relevant, copy or export.
           </p>
@@ -170,7 +170,7 @@ export default function ResumePage() {
             {items.map((b) => (
               <label
                 key={b.id}
-                className="flex items-start gap-3 rounded-md border border-border px-3 py-2.5 hover:bg-surface-2 transition-standard cursor-pointer"
+                className="flex items-start gap-3 rounded-card border border-border px-3.5 py-3 hover:bg-surface-hover hover:border-muted-2/40 transition-standard cursor-pointer"
               >
                 <Checkbox checked={selected.has(b.id)} onCheckedChange={() => toggle(b.id)} className="mt-0.5" />
                 <span className="text-sm">{b.text}</span>

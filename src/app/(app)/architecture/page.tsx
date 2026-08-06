@@ -91,8 +91,8 @@ export default function ArchitecturePage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Architecture Explorer</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Architecture Explorer</h1>
+        <p className="text-sm text-muted mt-1">
           Two views: the app&apos;s own codebase (auto-generated from migrations and hooks), and
           ClientSync&apos;s own architecture (the anchor portfolio project, hand-drawn).
         </p>

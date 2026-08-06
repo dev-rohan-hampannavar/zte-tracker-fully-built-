@@ -13,10 +13,64 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatHours, pct } from "@/lib/utils";
+import { StudyHeatmap } from "@/components/dashboard/heatmap";
+import { formatHours, pct, cn } from "@/lib/utils";
 import { Map as MapIcon, Code2, RotateCcw, Layers, FolderGit2, TrendingUp, TrendingDown, Minus, Trophy, AlertTriangle, Dumbbell, Megaphone, Rocket } from "lucide-react";
 import type { ClientSyncMilestone } from "@/types/database";
 import { EmptyState } from "@/components/ui/empty-state";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+
+// Radial progress ring — same construction as the Dashboard's mini-ring,
+// scaled up and reused here as the page's primary "overall completion"
+// visual per the Statistics spec (radial progress). Pure SVG, no new deps.
+function RadialProgress({
+  value,
+  size = 120,
+  stroke = 10,
+  label,
+  sublabel,
+  color = "var(--accent)",
+}: {
+  value: number;
+  size?: number;
+  stroke?: number;
+  label?: string;
+  sublabel?: string;
+  color?: string;
+}) {
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const clamped = Math.min(100, Math.max(0, value));
+  const offset = circumference - (clamped / 100) * circumference;
+  return (
+    <div className="relative shrink-0" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="-rotate-90">
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--surface-2)" strokeWidth={stroke} />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke={color}
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          className="transition-[stroke-dashoffset] duration-700 ease-out"
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-xl font-bold font-mono-tabular leading-none">{Math.round(value)}%</span>
+        {label && <span className="text-[10px] text-muted mt-1 text-center leading-tight px-1">{label}</span>}
+      </div>
+      {sublabel && (
+        <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[11px] text-muted whitespace-nowrap">
+          {sublabel}
+        </span>
+      )}
+    </div>
+  );
+}
 
 export default function StatisticsPage() {
   const { user } = useUser();
@@ -253,11 +307,16 @@ export default function StatisticsPage() {
 
   if (isLoading) return <Skeleton className="h-64 w-full" />;
 
+  const chartData = weeks.map((w) => ({
+    week: new Date(w.weekStart + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short" }),
+    hours: Math.round(w.hours * 10) / 10,
+  }));
+
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Statistics</h1>
-        <p className="text-sm text-muted">The full picture, at a glance.</p>
+        <h1 className="text-page-title font-semibold tracking-tight">Statistics</h1>
+        <p className="text-sm text-muted mt-1">The full picture, at a glance.</p>
       </div>
 
       {/* Item 26 — headline raw counts, straight from roadmap_metadata / static
@@ -271,12 +330,44 @@ export default function StatisticsPage() {
           { label: "Exercises", value: metadata?.total_stage_exercises ?? totalExercises },
           { label: "Hours", value: metadata?.total_realistic_hours ?? Math.round(totalHours) },
         ].map((s) => (
-          <div key={s.label} className="rounded-lg border border-border p-3 text-center">
+          <div
+            key={s.label}
+            className="rounded-card border border-border bg-surface p-3 text-center transition-standard hover:border-accent/30"
+          >
             <p className="text-lg font-bold font-mono-tabular text-accent">{s.value}</p>
             <p className="text-[11px] text-muted mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
+
+      {/* Overall completion — three radial rings replace the old flat
+          progress-bar stack. Same three metrics (topics/hours/phases), same
+          pct() computation — presentation only. */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Overall completion</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-wrap items-center justify-around gap-8 py-6">
+          <RadialProgress
+            value={pct(completedTopics.length, allTopics.length)}
+            label="Topics"
+            sublabel={`${completedTopics.length}/${allTopics.length}`}
+            color="var(--accent)"
+          />
+          <RadialProgress
+            value={pct(completedHours, totalHours)}
+            label="Hours"
+            sublabel={formatHours(completedHours)}
+            color="var(--secondary-accent)"
+          />
+          <RadialProgress
+            value={pct(completedPhases.length, phases.length)}
+            label="Phases"
+            sublabel={`${completedPhases.length}/${phases.length}`}
+            color="var(--highlight)"
+          />
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
@@ -287,8 +378,8 @@ export default function StatisticsPage() {
         </CardHeader>
         <CardContent className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {axes.map((axis) => (
-            <Link key={axis.key} href={axis.href} className="block">
-              <div className="rounded-lg border border-border p-3 h-full flex flex-col gap-2 transition-standard hover:border-accent/40">
+            <Link key={axis.key} href={axis.href} className="block h-full">
+              <div className="rounded-card border border-border bg-surface p-4 h-full flex flex-col gap-2 transition-standard hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/30">
                 <div className="flex items-center gap-1.5 text-xs text-muted">
                   <axis.icon className="h-3.5 w-3.5" />
                   {axis.label}
@@ -316,30 +407,11 @@ export default function StatisticsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Overall completion</CardTitle>
+          <CardTitle>Study activity</CardTitle>
+          <p className="text-xs text-muted mt-1">Daily logged hours over the last year.</p>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div>
-            <div className="flex justify-between text-xs text-muted mb-1">
-              <span>Topics</span>
-              <span>{pct(completedTopics.length, allTopics.length)}%</span>
-            </div>
-            <Progress value={pct(completedTopics.length, allTopics.length)} />
-          </div>
-          <div>
-            <div className="flex justify-between text-xs text-muted mb-1">
-              <span>Hours</span>
-              <span>{pct(completedHours, totalHours)}%</span>
-            </div>
-            <Progress value={pct(completedHours, totalHours)} />
-          </div>
-          <div>
-            <div className="flex justify-between text-xs text-muted mb-1">
-              <span>Phases</span>
-              <span>{pct(completedPhases.length, phases.length)}%</span>
-            </div>
-            <Progress value={pct(completedPhases.length, phases.length)} />
-          </div>
+        <CardContent noHeader className="pt-0 overflow-x-auto">
+          <StudyHeatmap logs={logs ?? []} />
         </CardContent>
       </Card>
 
@@ -369,53 +441,104 @@ export default function StatisticsPage() {
           <CardTitle>Velocity & best week</CardTitle>
           <p className="text-xs text-muted mt-1">Derived from your logged study sessions, week over week.</p>
         </CardHeader>
-        <CardContent className="grid sm:grid-cols-2 gap-4">
-          <div className="rounded-lg border border-border p-3">
-            <p className="text-xs text-muted mb-1">This week vs. last week</p>
-            {velocityTrend ? (
-              <div className="flex items-center gap-2">
-                {velocityTrend.change > 5 ? (
-                  <TrendingUp className="h-4 w-4 text-success" />
-                ) : velocityTrend.change < -5 ? (
-                  <TrendingDown className="h-4 w-4 text-danger" />
-                ) : (
-                  <Minus className="h-4 w-4 text-muted" />
-                )}
-                <span
-                  className={`text-lg font-bold font-mono-tabular ${
-                    velocityTrend.change > 5 ? "text-success" : velocityTrend.change < -5 ? "text-danger" : ""
-                  }`}
-                >
-                  {velocityTrend.change > 0 ? "+" : ""}
-                  {velocityTrend.change.toFixed(0)}%
-                </span>
-                <span className="text-xs text-muted">
-                  ({velocityTrend.lastWeekHours.toFixed(1)}h vs {velocityTrend.prevWeekHours.toFixed(1)}h)
-                </span>
-              </div>
-            ) : (
-              <EmptyState message="Not enough data yet." hint="Log a few more weeks to see this comparison." />
-            )}
-          </div>
-          <div className="rounded-lg border border-border p-3">
-            <p className="text-xs text-muted mb-1 flex items-center gap-1">
-              <Trophy className="h-3 w-3" /> Best week
-            </p>
-            {bestWeek ? (
-              <p className="text-lg font-bold font-mono-tabular text-accent">
-                {bestWeek.hours.toFixed(1)}h
-                <span className="text-xs text-muted font-normal ml-2">
-                  week of{" "}
-                  {new Date(bestWeek.weekStart + "T00:00:00").toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short",
-                  })}
-                </span>
+        <CardContent className="flex flex-col gap-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="rounded-card border border-border bg-surface-2 p-3">
+              <p className="text-xs text-muted mb-1">This week vs. last week</p>
+              {velocityTrend ? (
+                <div className="flex items-center gap-2">
+                  {velocityTrend.change > 5 ? (
+                    <TrendingUp className="h-4 w-4 text-success" />
+                  ) : velocityTrend.change < -5 ? (
+                    <TrendingDown className="h-4 w-4 text-danger" />
+                  ) : (
+                    <Minus className="h-4 w-4 text-muted" />
+                  )}
+                  <span
+                    className={cn(
+                      "text-lg font-bold font-mono-tabular",
+                      velocityTrend.change > 5 ? "text-success" : velocityTrend.change < -5 ? "text-danger" : ""
+                    )}
+                  >
+                    {velocityTrend.change > 0 ? "+" : ""}
+                    {velocityTrend.change.toFixed(0)}%
+                  </span>
+                  <span className="text-xs text-muted">
+                    ({velocityTrend.lastWeekHours.toFixed(1)}h vs {velocityTrend.prevWeekHours.toFixed(1)}h)
+                  </span>
+                </div>
+              ) : (
+                <EmptyState message="Not enough data yet." hint="Log a few more weeks to see this comparison." />
+              )}
+            </div>
+            <div className="rounded-card border border-border bg-surface-2 p-3">
+              <p className="text-xs text-muted mb-1 flex items-center gap-1">
+                <Trophy className="h-3 w-3 text-reward" /> Best week
               </p>
-            ) : (
-              <EmptyState message="No logged weeks yet." />
-            )}
+              {bestWeek ? (
+                <p className="text-lg font-bold font-mono-tabular text-accent">
+                  {bestWeek.hours.toFixed(1)}h
+                  <span className="text-xs text-muted font-normal ml-2">
+                    week of{" "}
+                    {new Date(bestWeek.weekStart + "T00:00:00").toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                    })}
+                  </span>
+                </p>
+              ) : (
+                <EmptyState message="No logged weeks yet." />
+              )}
+            </div>
           </div>
+
+          {/* Real chart replacing the previous single-number-only view — same
+              weeklyBreakdown() data (weeks/bestWeek/velocityTrend above all
+              derive from it too), just visualized across the whole history
+              instead of only the last two weeks. */}
+          {chartData.length > 1 ? (
+            <div className="h-56 -ml-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="velocityFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.35} />
+                      <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
+                  <XAxis
+                    dataKey="week"
+                    stroke="var(--muted-2)"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={{ stroke: "var(--border)" }}
+                  />
+                  <YAxis
+                    stroke="var(--muted-2)"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                    width={32}
+                    tickFormatter={(v) => `${v}h`}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: "var(--surface)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius-md)",
+                      fontSize: 12,
+                    }}
+                    labelStyle={{ color: "var(--muted)" }}
+                    formatter={(value) => [`${value}h`, "Logged"]}
+                  />
+                  <Area type="monotone" dataKey="hours" stroke="var(--accent)" strokeWidth={2} fill="url(#velocityFill)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <EmptyState message="Not enough weeks logged yet to chart velocity." hint="Keep logging — this fills in after a couple of weeks." />
+          )}
         </CardContent>
       </Card>
 
@@ -458,12 +581,15 @@ export default function StatisticsPage() {
           <div className="grid grid-cols-3 gap-3">
             {[20, 40, 60].map((hrsPerWeek) => {
               const remaining = totalHours - completedHours;
-              const weeks = remaining > 0 ? Math.ceil(remaining / hrsPerWeek) : 0;
-              const months = (weeks / 4.345).toFixed(1);
+              const weeksCalc = remaining > 0 ? Math.ceil(remaining / hrsPerWeek) : 0;
+              const months = (weeksCalc / 4.345).toFixed(1);
               return (
-                <div key={hrsPerWeek} className="rounded-md border border-border p-3 text-center">
+                <div
+                  key={hrsPerWeek}
+                  className="rounded-card border border-border bg-surface-2 p-3 text-center transition-standard hover:border-accent/30"
+                >
                   <p className="text-xs text-muted mb-1">{hrsPerWeek}h/week</p>
-                  <p className="text-xl font-bold font-mono-tabular text-accent">{weeks}</p>
+                  <p className="text-xl font-bold font-mono-tabular text-accent">{weeksCalc}</p>
                   <p className="text-[11px] text-muted">weeks (~{months} mo)</p>
                 </div>
               );

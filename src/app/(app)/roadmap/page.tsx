@@ -72,15 +72,17 @@ function TopicRow({
   lockInfo?: TopicLockInfo;
 }) {
   const isLocked = !!lockInfo?.locked;
+  const isCompleted = !!topic.progress?.completed;
   return (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-md px-2 py-2 hover:bg-surface-2 group",
-        isLocked && "opacity-60"
+        "flex items-center gap-3 rounded-lg px-2.5 py-2 transition-standard hover:bg-surface-2 group",
+        isLocked && "opacity-60",
+        isCompleted && "bg-success/[0.03]"
       )}
     >
       <Checkbox
-        checked={!!topic.progress?.completed}
+        checked={isCompleted}
         onCheckedChange={(v) => onToggle(topic.id, v === true)}
         disabled={isLocked}
       />
@@ -88,8 +90,8 @@ function TopicRow({
         onClick={() => !isLocked && onOpen(topic)}
         disabled={isLocked}
         className={cn(
-          "flex-1 text-left text-sm",
-          topic.progress?.completed && "text-muted line-through",
+          "flex-1 text-left text-sm transition-standard",
+          isCompleted && "text-muted line-through",
           isLocked && "cursor-not-allowed"
         )}
       >
@@ -642,8 +644,8 @@ export default function RoadmapPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Roadmap</h1>
-        <p className="text-sm text-muted">21 phases · stages · topics · exercises · projects · capstones</p>
+        <h1 className="text-page-title font-semibold tracking-tight">Roadmap</h1>
+        <p className="text-sm text-muted mt-1">21 phases · stages · topics · exercises · projects · capstones</p>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-2">
@@ -700,12 +702,12 @@ export default function RoadmapPage() {
             <X className="h-3.5 w-3.5 mr-1" /> Clear
           </Button>
         )}
-        <div className="flex items-center gap-0.5 rounded-md border border-border p-0.5 shrink-0 flex-wrap">
+        <div className="flex items-center gap-0.5 rounded-full border border-border bg-surface-2 p-1 shrink-0 flex-wrap">
           <button
             onClick={() => setViewMode("list")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
-              viewMode === "list" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
+              "flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-standard",
+              viewMode === "list" ? "bg-accent text-accent-foreground shadow-sm" : "text-muted hover:text-foreground"
             )}
             title="List view"
           >
@@ -714,8 +716,8 @@ export default function RoadmapPage() {
           <button
             onClick={() => setViewMode("cards")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
-              viewMode === "cards" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
+              "flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-standard",
+              viewMode === "cards" ? "bg-accent text-accent-foreground shadow-sm" : "text-muted hover:text-foreground"
             )}
             title="Card view"
           >
@@ -724,8 +726,8 @@ export default function RoadmapPage() {
           <button
             onClick={() => setViewMode("kanban")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
-              viewMode === "kanban" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
+              "flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-standard",
+              viewMode === "kanban" ? "bg-accent text-accent-foreground shadow-sm" : "text-muted hover:text-foreground"
             )}
             title="Kanban view"
           >
@@ -734,8 +736,8 @@ export default function RoadmapPage() {
           <button
             onClick={() => setViewMode("calendar")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
-              viewMode === "calendar" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
+              "flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-standard",
+              viewMode === "calendar" ? "bg-accent text-accent-foreground shadow-sm" : "text-muted hover:text-foreground"
             )}
             title="Calendar view"
           >
@@ -744,8 +746,8 @@ export default function RoadmapPage() {
           <button
             onClick={() => setViewMode("path")}
             className={cn(
-              "flex items-center gap-1 rounded px-2 py-1 text-xs transition-standard",
-              viewMode === "path" ? "bg-surface-2 text-foreground" : "text-muted hover:text-foreground"
+              "flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-standard",
+              viewMode === "path" ? "bg-accent text-accent-foreground shadow-sm" : "text-muted hover:text-foreground"
             )}
             title="Learning Path view"
           >
@@ -796,7 +798,10 @@ export default function RoadmapPage() {
                 <div className="flex-1 flex items-center gap-3 min-w-0">
                   <Badge
                     variant={phase.id === currentPhaseId ? "accent" : "outline"}
-                    className="shrink-0 font-mono-tabular"
+                    className={cn(
+                      "shrink-0 font-mono-tabular",
+                      phase.id === currentPhaseId && "shadow-sm shadow-accent/30"
+                    )}
                   >
                     {phase.phase_number}
                   </Badge>

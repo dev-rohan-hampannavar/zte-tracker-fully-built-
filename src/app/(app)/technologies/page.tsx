@@ -34,8 +34,8 @@ export default function TechnologiesPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Technologies</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Technologies</h1>
+        <p className="text-sm text-muted mt-1">
           {technologies?.length ?? 0} technologies referenced across the roadmap — grouped by category.
         </p>
       </div>

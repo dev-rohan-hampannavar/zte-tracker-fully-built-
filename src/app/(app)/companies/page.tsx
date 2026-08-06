@@ -48,8 +48,8 @@ export default function CompaniesPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Companies</h1>
-        <p className="text-sm text-muted">
+        <h1 className="text-page-title font-semibold tracking-tight">Companies</h1>
+        <p className="text-sm text-muted mt-1">
           {companies?.length ?? 0} companies referenced across the roadmap, with category, hiring stage, and
           typical tech stack where known.
         </p>
