@@ -29,7 +29,7 @@ export function GlobalSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const router = useRouter();
-  const { user } = useUser();
+  useUser();
   const { data: roadmap } = useRoadmap();
   const { data: exitLadder } = useExitLadder();
   const { data: companies } = useCompanies();

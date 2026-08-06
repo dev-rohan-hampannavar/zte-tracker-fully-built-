@@ -1,6 +1,22 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Montserrat, self-hosted via @fontsource/montserrat rather than
+   next/font/google — this app's build environment doesn't always have
+   access to fonts.googleapis.com (sandboxed CI, offline dev), and
+   next/font/google requires a live fetch to that domain at build time,
+   which fails hard there. @fontsource ships the .woff2 files as regular
+   npm package assets, so this import resolves from node_modules with no
+   network request at all, matching the reliability property Geist (the
+   previous default) was originally chosen for. Weights 400/500/600/700
+   cover body text through headings; the full family has 100–900 plus
+   italics if a heavier or lighter weight is needed later. */
+@import "@fontsource/montserrat/400.css";
+@import "@fontsource/montserrat/500.css";
+@import "@fontsource/montserrat/600.css";
+@import "@fontsource/montserrat/700.css";
+
+
 :root {
   /* ---- Light theme ----
      Kept for completeness / prefers-color-scheme fallback, but the product
@@ -83,7 +99,15 @@
   --radius-dialog: 1.5rem;   /* 24px */
   --radius-image: 1.5rem;    /* 24px */
 
-  --font-sans: var(--font-geist-sans), "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* --font-sans points directly at "Montserrat" (loaded above via
+     @fontsource) rather than through a --font-geist-sans indirection —
+     that indirection existed because next/font/google injects its font
+     family through a hashed CSS variable on <html>, but @fontsource just
+     registers the family name via @font-face, so there's no variable to
+     point through anymore. --font-mono is untouched: Geist Mono still
+     loads via next/font (geist package, no network fetch needed) and
+     still injects --font-geist-mono the same way it always did. */
+  --font-sans: "Montserrat", "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Type scale from the design spec, exposed as text-* utilities

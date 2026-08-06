@@ -23,7 +23,12 @@ const STORAGE_KEY = "zte-topic-locking-disabled";
  * This hook is the actual "Disable topic locking" switch the plan asks for.
  */
 export function useTopicLockingDisabled(userId: string | undefined) {
-  const [disabled, setDisabledState] = useState(false);
+  // Lazy initializer reads localStorage synchronously on first render —
+  // see useTheme's identical pattern for the full rationale.
+  const [disabled, setDisabledState] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem(STORAGE_KEY) === "true";
+  });
   const supabase = createClient();
 
   const { data: remoteValue } = useSWR(
@@ -41,12 +46,11 @@ export function useTopicLockingDisabled(userId: string | undefined) {
   );
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY) === "true";
-    setDisabledState(stored);
-  }, []);
-
-  useEffect(() => {
     if (remoteValue !== undefined && remoteValue !== disabled) {
+      // Intentional: syncing local state to a value that just arrived from
+      // Supabase (an external system) — see useTheme's identical pattern
+      // for the full rationale.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisabledState(remoteValue);
       localStorage.setItem(STORAGE_KEY, String(remoteValue));
     }

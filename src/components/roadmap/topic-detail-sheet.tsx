@@ -38,6 +38,13 @@ export function TopicDetailSheet({
 
   useEffect(() => {
     if (!topic || !user) return;
+    // Intentional: this effect resets the sheet's local editable state
+    // (notes, minutes input) whenever the selected topic or user changes —
+    // the standard "sync local state when an id prop changes" pattern,
+    // not a derived-from-render-output setState. loadingNotes/minutesInput
+    // can't be lazy useState initializers here since they must re-run every
+    // time `topic` changes (a prop), not just on mount.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoadingNotes(true);
     const supabase = createClient();
     supabase

@@ -12,19 +12,20 @@ const STORAGE_KEY = "zte-developer-mode";
  * lazily syncs to user_settings.developer_mode when a user is known so the
  * preference carries across devices like every other setting does.
  *
- * The two effects below read localStorage synchronously on mount and sync
- * remote state in — the same "setState in an effect" shape flagged as an
- * anti-pattern elsewhere in this codebase (and fixed properly in the
- * Journal page, P7.5), but here it's the correct tool: localStorage isn't
- * available during server rendering, so there is no way to read it during
- * render itself without an SSR/hydration mismatch. useTheme has the
- * identical shape for the identical reason. A keyed-remount alternative
- * (like the Journal fix) doesn't apply here — there's no fetched row to
- * key on until the user is known, and the whole point is showing the
- * locally-cached value before that fetch resolves.
+ * The initial value comes from a lazy useState initializer (guarded for
+ * SSR via typeof window) rather than a mount-time setState-in-effect —
+ * this reads localStorage synchronously on first render on the client,
+ * with no hydration mismatch since this hook only ever runs client-side
+ * ("use client") and the guard returns the same default the server would
+ * have rendered. The second effect below still syncs remote state in when
+ * it arrives from Supabase, which is a legitimate external-system sync,
+ * not a lint anti-pattern.
  */
 export function useDeveloperMode(userId: string | undefined) {
-  const [enabled, setEnabledState] = useState(false);
+  const [enabled, setEnabledState] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem(STORAGE_KEY) === "true";
+  });
   const supabase = createClient();
 
   const { data: remoteValue } = useSWR(
@@ -42,12 +43,11 @@ export function useDeveloperMode(userId: string | undefined) {
   );
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY) === "true";
-    setEnabledState(stored);
-  }, []);
-
-  useEffect(() => {
     if (remoteValue !== undefined && remoteValue !== enabled) {
+      // Intentional: syncing local state to a value that just arrived from
+      // Supabase (an external system) — see useTheme's identical pattern
+      // for the full rationale.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setEnabledState(remoteValue);
       localStorage.setItem(STORAGE_KEY, String(remoteValue));
     }

@@ -1,17 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat } from "next/font/google";
+import { GeistMono } from "geist/font/mono";
 import { Toaster } from "sonner";
 import { OfflineIndicator } from "@/components/layout/offline-indicator";
 import "./globals.css";
 
-// Montserrat is loaded via next/font/google, which self-hosts the font
-// files at build time (no runtime request to fonts.googleapis.com from
-// the browser). This requires network access during the build itself.
-
-const montserrat = Montserrat({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// Montserrat is self-hosted via @fontsource/montserrat, imported in
+// globals.css — not through next/font/google here. next/font/google
+// requires a live fetch to fonts.googleapis.com at build time, which
+// fails in network-restricted environments (this project's own build
+// sandbox included). @fontsource ships the font files as regular
+// node_modules assets instead, so no font-related network request happens
+// at all. GeistMono still loads via next/font (the `geist` package, which
+// is pre-bundled and needs no fetch) for tabular/monospace numbers.
 
 export const metadata: Metadata = {
   title: "ZTE Tracker — Zero to Elite Roadmap Companion",
@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${montserrat.variable}`}
+      className={`h-full antialiased ${GeistMono.variable}`}
       suppressHydrationWarning
     >
       <head>

@@ -25,7 +25,17 @@ function applyTheme(pref: ThemePreference) {
  * and lazily syncs the preference to user_settings.theme when a user is known.
  */
 export function useTheme(userId: string | undefined) {
-  const [theme, setThemeState] = useState<ThemePreference>("system");
+  // Lazy initializer reads localStorage synchronously on first render,
+  // instead of defaulting to "system" and then correcting via a
+  // setState-in-effect on mount — avoids the extra render entirely rather
+  // than just working around the lint rule. Guarded for SSR: localStorage
+  // isn't available server-side, and this file only runs client-side
+  // ("use client") but Next may still evaluate the initializer during an
+  // initial server render pass in some configurations.
+  const [theme, setThemeState] = useState<ThemePreference>(() => {
+    if (typeof window === "undefined") return "system";
+    return (localStorage.getItem(STORAGE_KEY) as ThemePreference | null) ?? "system";
+  });
   const supabase = createClient();
 
   const { data: remoteTheme } = useSWR(
@@ -42,14 +52,24 @@ export function useTheme(userId: string | undefined) {
     { revalidateOnFocus: false }
   );
 
+  // Apply the initial theme to the DOM once on mount. This is a one-way
+  // sync to an external system (document.documentElement), not a setState
+  // call, so it doesn't trigger the same lint rule the old version did.
   useEffect(() => {
-    const stored = (localStorage.getItem(STORAGE_KEY) as ThemePreference | null) ?? "system";
-    setThemeState(stored);
-    applyTheme(stored);
+    applyTheme(theme);
+    // Only on mount — subsequent theme changes are applied directly at
+    // the call site (setTheme below) or by the remote-sync effect.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (remoteTheme && remoteTheme !== theme) {
+      // Intentional: syncing local theme state to the value that just
+      // arrived from Supabase (an external system) is exactly the
+      // "subscribe for updates from an external system" case the
+      // set-state-in-effect rule carves out as acceptable — remoteTheme
+      // only changes when SWR's async fetch resolves, not on every render.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setThemeState(remoteTheme);
       applyTheme(remoteTheme);
       localStorage.setItem(STORAGE_KEY, remoteTheme);

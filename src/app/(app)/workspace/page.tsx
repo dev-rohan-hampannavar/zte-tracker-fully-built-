@@ -43,7 +43,7 @@ export default function WorkspacePage() {
   const { data: milestones } = useClientSyncMilestones();
 
   const allTopics = useMemo(() => phases.flatMap((p) => p.topics), [phases]);
-  const pinned = settings?.pinned_items ?? [];
+  const pinned = useMemo(() => settings?.pinned_items ?? [], [settings]);
 
   const resolved = useMemo(() => {
     return pinned.map((p) => {
