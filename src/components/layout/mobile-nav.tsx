@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X, Terminal } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, Terminal, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 import { NAV, SIDEBAR_SECTIONS } from "./sidebar";
 
 // Mobile has no top bar, so unlike the desktop sidebar it shows every item
@@ -22,6 +23,16 @@ const MOBILE_SECTIONS: { label: string | null; hrefs: string[] }[] = [
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Settings and Sign out live in a footer block on the desktop sidebar,
+  // outside NAV entirely — so they were unreachable on mobile since this
+  // drawer only ever rendered items from NAV. Mirrored here directly.
+  async function signOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
 
   return (
     <>
@@ -78,6 +89,30 @@ export function MobileNav() {
                 );
               })}
             </nav>
+
+            <div className="mt-auto border-t border-border pt-2 flex flex-col gap-0.5">
+              <Link
+                href="/settings"
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "flex items-center gap-2.5 rounded-md px-3 py-2.5 text-sm font-medium",
+                  pathname === "/settings" ? "bg-accent/15 text-accent" : "text-muted"
+                )}
+              >
+                <Settings className="h-4 w-4" />
+                Settings
+              </Link>
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  signOut();
+                }}
+                className="flex items-center gap-2.5 rounded-md px-3 py-2.5 text-sm font-medium text-muted hover:text-danger"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign out
+              </button>
+            </div>
           </div>
         </div>
       )}

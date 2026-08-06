@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/hooks/use-user";
 import { usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
 import { useAllTopicNotes, updateTopicProgress } from "@/lib/hooks/use-roadmap";
@@ -17,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { Download, Loader2, Sun, Moon, Monitor, Share2, Copy, Check, Upload, AlertTriangle } from "lucide-react";
+import { Download, Loader2, Sun, Moon, Monitor, Share2, Copy, Check, Upload, AlertTriangle, Trash2, RotateCcw } from "lucide-react";
 import { useTheme } from "@/lib/hooks/use-theme";
 import { useDeveloperMode } from "@/lib/hooks/use-developer-mode";
 import { useTopicLockingDisabled } from "@/lib/hooks/use-topic-locking";
@@ -41,6 +42,7 @@ import type {
 
 export default function SettingsPage() {
   const { user } = useUser();
+  const router = useRouter();
   const { data: settings, mutate, isLoading } = useUserSettings(user?.id);
   const { phases, mutateProgress } = usePhasesWithProgress(user?.id);
   const { data: logs, mutate: mutateLogs } = useDailyLogs(user?.id);
@@ -58,6 +60,12 @@ export default function SettingsPage() {
   const [publicToggling, setPublicToggling] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   const [displayName, setDisplayName] = useState("");
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetConfirmText, setResetConfirmText] = useState("");
+  const [resetting, setResetting] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (settings) {
@@ -323,6 +331,41 @@ export default function SettingsPage() {
 
   if (isLoading) return <Skeleton className="h-64 w-full" />;
 
+  // --- Reset progress / Delete account ----------------------------------
+  // Both call security-definer RPCs scoped to auth.uid() on the backend
+  // (see migration 0017) rather than deleting rows from the client, since
+  // delete_own_account needs to touch auth.users, which the client's
+  // anon/authenticated role can't do directly.
+  async function handleResetProgress() {
+    if (!user) return;
+    setResetting(true);
+    const supabase = createClient();
+    const { error } = await supabase.rpc("reset_user_progress" as never);
+    setResetting(false);
+    if (error) {
+      toast.error("Couldn't reset progress. Try again.");
+      return;
+    }
+    await Promise.all([mutateProgress(), mutateLogs(), mutateNotes(), mutateProjects(), mutateDsa(), mutateCareer()]);
+    setResetOpen(false);
+    setResetConfirmText("");
+    toast.success("Progress reset");
+  }
+
+  async function handleDeleteAccount() {
+    if (!user) return;
+    setDeleting(true);
+    const supabase = createClient();
+    const { error } = await supabase.rpc("delete_own_account" as never);
+    if (error) {
+      setDeleting(false);
+      toast.error("Couldn't delete account. Try again.");
+      return;
+    }
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
+
 
   return (
     <div className="flex flex-col gap-6 max-w-2xl">
@@ -578,6 +621,136 @@ export default function SettingsPage() {
           <p className="text-sm text-muted">Signed in as {user?.email}</p>
         </CardContent>
       </Card>
+
+      <Card className="border-danger/40">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-1.5 text-danger">
+            <AlertTriangle className="h-4 w-4" /> Danger zone
+          </CardTitle>
+          <CardDescription>These actions can&apos;t be undone.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium">Reset your progress</p>
+              <p className="text-xs text-muted mt-0.5">
+                Clears topic progress, daily logs, notes, project links, DSA problems, and career
+                tracker entries. Your account, theme, and other preferences stay as they are.
+              </p>
+            </div>
+            <Button variant="outline" onClick={() => setResetOpen(true)} className="shrink-0">
+              <RotateCcw className="h-4 w-4" /> Reset
+            </Button>
+          </div>
+          <div className="flex items-center justify-between gap-4 pt-3 border-t border-border">
+            <div>
+              <p className="text-sm font-medium">Delete your account</p>
+              <p className="text-xs text-muted mt-0.5">
+                Permanently deletes your account and everything tied to it. There&apos;s no way to
+                recover this afterward.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteOpen(true)}
+              className="shrink-0 border-danger/40 text-danger hover:bg-danger/10 hover:text-danger"
+            >
+              <Trash2 className="h-4 w-4" /> Delete
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Dialog
+        open={resetOpen}
+        onOpenChange={(open) => {
+          setResetOpen(open);
+          if (!open) setResetConfirmText("");
+        }}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-danger">
+              <RotateCcw className="h-4 w-4" /> Reset your progress?
+            </DialogTitle>
+            <DialogDescription>
+              This clears topic progress, daily logs, notes, project links, DSA problems, and
+              career tracker entries. This can&apos;t be undone — consider exporting a backup
+              first from the Export &amp; backup section above.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="reset-confirm" className="text-xs">
+              Type <span className="font-mono font-semibold">reset</span> to confirm
+            </Label>
+            <Input
+              id="reset-confirm"
+              value={resetConfirmText}
+              onChange={(e) => setResetConfirmText(e.target.value)}
+              placeholder="reset"
+              autoComplete="off"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setResetOpen(false)} disabled={resetting}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleResetProgress}
+              disabled={resetConfirmText.trim().toLowerCase() !== "reset" || resetting}
+            >
+              {resetting && <Loader2 className="h-4 w-4 animate-spin" />}
+              Reset progress
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={deleteOpen}
+        onOpenChange={(open) => {
+          setDeleteOpen(open);
+          if (!open) setDeleteConfirmText("");
+        }}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-danger">
+              <Trash2 className="h-4 w-4" /> Delete your account?
+            </DialogTitle>
+            <DialogDescription>
+              This permanently deletes your account, sign-in, and everything tied to it — progress,
+              logs, notes, and settings. There&apos;s no way to recover this afterward.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="delete-confirm" className="text-xs">
+              Type <span className="font-mono font-semibold">delete</span> to confirm
+            </Label>
+            <Input
+              id="delete-confirm"
+              value={deleteConfirmText}
+              onChange={(e) => setDeleteConfirmText(e.target.value)}
+              placeholder="delete"
+              autoComplete="off"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setDeleteOpen(false)} disabled={deleting}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteAccount}
+              disabled={deleteConfirmText.trim().toLowerCase() !== "delete" || deleting}
+            >
+              {deleting && <Loader2 className="h-4 w-4 animate-spin" />}
+              Delete account
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
