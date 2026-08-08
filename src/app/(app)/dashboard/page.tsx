@@ -15,6 +15,8 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StudyHeatmap } from "@/components/dashboard/heatmap";
+import { TodaysLesson } from "@/components/dashboard/todays-lesson";
+import { useTopicDayMap, getManualDayForTopic } from "@/lib/hooks/use-manual-day";
 import { formatHours, pct, cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Flame, Target, CheckCircle2, Clock, TrendingUp, Loader2, Code2, Briefcase, FolderGit2, AlertCircle, ChevronDown } from "lucide-react";
@@ -82,6 +84,12 @@ export default function DashboardPage() {
   // something in it actually needs attention (overdue revisions) so it
   // doesn't hide something urgent behind an extra click.
   const [missionDetailsOpen, setMissionDetailsOpen] = useState(false);
+  // Today's Lesson — the manual's full "Day N" write-up for whatever topic
+  // Daily Mission is pointing at, shown collapsed by default for the same
+  // reason as the revision/project/DSA status row above: don't push the
+  // rest of the dashboard down before the user asks for it.
+  const [lessonOpen, setLessonOpen] = useState(false);
+  const { data: topicDayMap } = useTopicDayMap();
 
   const allTopics = useMemo(() => phases.flatMap((p) => p.topics), [phases]);
   const completedTopics = allTopics.filter((t) => t.progress?.completed);
@@ -114,6 +122,11 @@ export default function DashboardPage() {
       })[0];
     return next ? { topic: next.topic, phase: next.phase } : null;
   }, [phases]);
+
+  const todaysLesson = useMemo(
+    () => getManualDayForTopic(nextTopic?.topic.id, topicDayMap),
+    [nextTopic, topicDayMap]
+  );
 
   // Time-aware greeting for the dashboard hero — "Good Morning / Afternoon /
   // Evening" per the redesign spec. Computed once per render, not stored in
@@ -404,6 +417,24 @@ export default function DashboardPage() {
                       {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems yet"}
                     </span>
                   </Link>
+                </div>
+              )}
+            </div>
+          )}
+
+          {todaysLesson && (
+            <div className="pt-1 border-t border-border">
+              <button
+                onClick={() => setLessonOpen((v) => !v)}
+                className="flex items-center gap-1.5 text-xs text-muted hover:text-foreground pt-3 transition-standard"
+                aria-expanded={lessonOpen}
+              >
+                <ChevronDown className={cn("h-3 w-3 transition-transform", lessonOpen && "rotate-180")} />
+                {lessonOpen ? "Hide today's lesson" : "Show today's lesson"}
+              </button>
+              {lessonOpen && (
+                <div className="pt-3">
+                  <TodaysLesson day={todaysLesson} />
                 </div>
               )}
             </div>

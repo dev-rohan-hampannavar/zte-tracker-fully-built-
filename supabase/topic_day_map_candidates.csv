@@ -1,0 +1,270 @@
+topic_id,topic_title,suggested_day_number,day_title,confidence
+topic-01-001,VS Code,299,Terraform Cloud & tfsec,low - verify manually
+topic-01-002,Bash,75,Radix UI & shadcn/ui,low - verify manually
+topic-01-003,nvm + npm,4,nvm + npm Fundamentals,medium
+topic-01-004,SSH Keys,294,tsup & Bundle Analysis,low - verify manually
+topic-01-006,HTML5,299,Terraform Cloud & tfsec,low - verify manually
+topic-01-007,CSS3,317,RFCs & DORA Metrics,low - verify manually
+topic-01-067,SQL Fundamentals,4,nvm + npm Fundamentals,medium
+topic-01-069,Conventional Commits,45,"Conventional Commits, ESLint & Prettier",medium
+topic-01-070,ESLint,45,"Conventional Commits, ESLint & Prettier",low - verify manually
+topic-01-071,Prettier,45,"Conventional Commits, ESLint & Prettier",low - verify manually
+topic-01b-tbl01,generics,317,RFCs & DORA Metrics,low - verify manually
+topic-01b-tbl02,discriminated unions,36,"tsconfig Deep Dive, Type Narrowing & Discriminated Unions",medium
+topic-01b-tbl03,conditional types,38,"Built-in Utility Types, Mapped Types & Conditional Types",medium
+topic-01b-tbl04,mapped types,192,React Email: Component-Based Email Templates,low - verify manually
+topic-01b-tbl05,utility types,312,Multi-Tenancy,low - verify manually
+topic-01b-tbl06,template literal types,39,"Template Literal Types, .d.ts Files & Runtime Validation with Zod",medium
+topic-01b-tbl07,satisfies operator,317,RFCs & DORA Metrics,medium
+topic-01b-tbl08,as const,86,React Context Revisited & Zustand,low - verify manually
+topic-01b-tbl09,type narrowing,36,"tsconfig Deep Dive, Type Narrowing & Discriminated Unions",low - verify manually
+topic-01b-tbl10,tsconfig.json,106,"PostgreSQL: Transactions, Advanced Querying & JSONB",low - verify manually
+topic-01b-tbl11,declaration files (.d.ts),292,"Phase Exit Capstone ""Bastion"": Full Security & Load-Testing Audit",low - verify manually
+topic-01b-tbl12,zod,299,Terraform Cloud & tfsec,low - verify manually
+topic-02-017,Route Groups,86,React Context Revisited & Zustand,low - verify manually
+topic-02-018,notFound(),4,nvm + npm Fundamentals,low - verify manually
+topic-02-019,Parallel Routes,69,CivicBoard: Department Dashboard with Parallel Routes,medium
+topic-02-020,Intercepting Routes,186,PgBouncer: Connection Pooling for PostgreSQL,medium
+topic-02-021,revalidatePath(),61,"revalidatePath(), revalidateTag() & Stage 3 Project Sprint",medium
+topic-02-022,revalidateTag(),61,"revalidatePath(), revalidateTag() & Stage 3 Project Sprint",medium
+topic-02-026,HydrationBoundary and dehydrate(),63,Client-Side Data Fetching Libraries & Hydration Boundary,low - verify manually
+topic-02-027,Vercel,299,Terraform Cloud & tfsec,low - verify manually
+topic-02-028,Vercel Edge Functions,64,"Vercel Deployment, Edge Functions/Runtime, plaiceholder & GitHub Pages",medium
+topic-02-029,Vercel Edge Runtime,64,"Vercel Deployment, Edge Functions/Runtime, plaiceholder & GitHub Pages",medium
+topic-03-001,CSS Custom Properties,72,"CSS Foundations: Custom Properties, @layer, CSS Modules & BEM",medium
+topic-03-003,CSS Modules,21,Meta-programming Synthesis & ES Modules,medium
+topic-03-004,BEM (Block Element Modifier),24,DOM Manipulation & Event Handling,low - verify manually
+topic-03-005,Tailwind CSS,73,"Tailwind CSS: Utility Model, Layout, Theming & Build",low - verify manually
+topic-03-006,clsx,299,Terraform Cloud & tfsec,low - verify manually
+topic-03-007,tailwind-merge,74,"Class Composition: clsx, tailwind-merge & CVA",medium
+topic-03-008,CVA (Class Variance Authority),155,Binary Search: Classic Search & Rotated Arrays,medium
+topic-03-009,Radix UI,75,Radix UI & shadcn/ui,medium
+topic-03-010,shadcn/ui,75,Radix UI & shadcn/ui,medium
+topic-03-011,next-themes,76,next-themes & Stage 4 Project Sprint,medium
+topic-03-012,react-hook-form,53,"Effects, the Full Hook Set & Forms",medium
+topic-03-014,date-fns,8,"Links, Media, Tables & Forms",low - verify manually
+topic-03-015,lodash-es,299,Terraform Cloud & tfsec,low - verify manually
+topic-03-016,nanoid,312,Multi-Tenancy,low - verify manually
+topic-03-017,Style Dictionary,312,Multi-Tenancy,medium
+topic-03-018,vanilla-extract,81,Design Tokens & Alternative Styling: Style Dictionary & vanilla-extract,low - verify manually
+topic-04-002,Zustand,312,Multi-Tenancy,medium
+topic-04-003,TanStack Query v5,87,TanStack Query v5: Core Concepts & Mutations,medium
+topic-04-004,tRPC v11,89,tRPC v11: Core Concepts & Client Integration,low - verify manually
+topic-04-005,XState v5,62,Browser Storage & React Router v6,low - verify manually
+topic-04-006,Stately Studio,190,@upstash/ratelimit: Distributed Rate Limiting,medium
+topic-04-009,react-error-boundary,299,Terraform Cloud & tfsec,medium
+topic-04-011,Intersection Observer,93,Browser Observation APIs: Intersection Observer & ResizeObserver,medium
+topic-04-012,ResizeObserver,93,Browser Observation APIs: Intersection Observer & ResizeObserver,low - verify manually
+topic-04-013,TanStack Virtual,95,TanStack Virtual & React DevTools Profiler,medium
+topic-04-014,React DevTools Profiler,95,TanStack Virtual & React DevTools Profiler,high
+topic-05-001,Node.js,42,"Joins, Aggregation & Indexes",low - verify manually
+topic-05-002,Express.js,185,ioredis: Connecting Node/Express to Redis,low - verify manually
+topic-05-003,REST APIs,191,Resend: Transactional Email Fundamentals,low - verify manually
+topic-05-004,express-async-errors,102,"REST API Design Principles, express-async-errors & CORS",medium
+topic-05-005,CORS,317,RFCs & DORA Metrics,low - verify manually
+topic-05-006,Helmet.js,76,next-themes & Stage 4 Project Sprint,low - verify manually
+topic-05-007,express-rate-limit,190,@upstash/ratelimit: Distributed Rate Limiting,low - verify manually
+topic-05-009,compression,12,CSS Grid & Responsive Design,low - verify manually
+topic-05-010,Supertest,306,Optimistic Updates & Idempotency,low - verify manually
+topic-05-011,PostgreSQL,186,PgBouncer: Connection Pooling for PostgreSQL,low - verify manually
+topic-05-012,Prisma,75,Radix UI & shadcn/ui,low - verify manually
+topic-05-013,Supabase,294,tsup & Bundle Analysis,medium
+topic-05-014,Neon,42,"Joins, Aggregation & Indexes",low - verify manually
+topic-05-015,EXPLAIN ANALYZE,146,OpenAPI 3.0: Writing a Real Spec,low - verify manually
+topic-05-016,bcrypt,111,bcrypt: Password Hashing & Salting,low - verify manually
+topic-05-017,HMAC-SHA256,112,HMAC-SHA256: The Cryptographic Primitive Behind JWT Signing,low - verify manually
+topic-05-018,JWT (JSON Web Tokens),28,"WebSockets, Binary Data & Web Workers",medium
+topic-05-019,jose,42,"Joins, Aggregation & Indexes",low - verify manually
+topic-05-020,httpOnly Cookies,115,jose: Edge-Compatible JWT Signing & httpOnly Cookies,medium
+topic-05-021,SameSite=Lax,312,Multi-Tenancy,medium
+topic-06-001,Vitest,127,Vitest: Test Runner Fundamentals,low - verify manually
+topic-06-002,React Testing Library,128,React Testing Library: Component Testing Philosophy & Queries,medium
+topic-06-003,@testing-library/user-event,128,React Testing Library: Component Testing Philosophy & Queries,low - verify manually
+topic-06-004,MSW (Mock Service Worker),28,"WebSockets, Binary Data & Web Workers",medium
+topic-06-005,v8 Coverage,302,"Helm: Charts, Values, Releases",low - verify manually
+topic-06-006,Codecov,299,Terraform Cloud & tfsec,low - verify manually
+topic-06-007,Playwright,132,Playwright: Browser Automation Fundamentals,low - verify manually
+topic-06-008,GitHub Actions,6,Git + GitHub Foundations (local + remote basics),medium
+topic-06-009,Docker,310,Dead Letter Queue & Circuit Breaker,low - verify manually
+topic-06-010,Docker Compose,139,Docker Compose: Orchestrating the Full Local Stack,medium
+topic-06-011,GitHub Container Registry (GHCR),86,React Context Revisited & Zustand,medium
+topic-06-012,docker/build-push-action,140,GHCR & docker/build-push-action: Automated Image Publishing,medium
+topic-06-013,Render,12,CSS Grid & Responsive Design,low - verify manually
+topic-06-014,HTTP/2,312,Multi-Tenancy,low - verify manually
+topic-06-015,shields.io,153,Sliding Window: Fixed-Size Windows,low - verify manually
+topic-07-001,curl,302,"Helm: Charts, Values, Releases",low - verify manually
+topic-07-002,Postman,172,Interval DP & Space Optimization,low - verify manually
+topic-07-003,Insomnia,8,"Links, Media, Tables & Forms",low - verify manually
+topic-07-004,OpenAPI 3.0,146,OpenAPI 3.0: Writing a Real Spec,medium
+topic-07-005,Swagger UI,42,"Joins, Aggregation & Indexes",low - verify manually
+topic-07-006,Mermaid,317,RFCs & DORA Metrics,low - verify manually
+topic-07-007,GraphQL,148,"GraphQL: Core Concepts, Schema & Resolvers",low - verify manually
+topic-08-001,Two Pointers,151,Two Pointers: Convergent & Same-Direction Techniques,low - verify manually
+topic-08-002,Sliding Window,153,Sliding Window: Fixed-Size Windows,medium
+topic-08-003,Binary Search,156,Binary Search on the Answer Space,medium
+topic-08-005,HashMap / Frequency Count Patterns,159,HashMap & Frequency Count Patterns,high
+topic-08-006,Stack Patterns,161,Monotonic Stack & Queue/Deque Patterns,medium
+topic-08-007,Monotonic Stack,161,Monotonic Stack & Queue/Deque Patterns,medium
+topic-08-008,Queue / Deque Patterns,161,Monotonic Stack & Queue/Deque Patterns,medium
+topic-08-009,BFS / DFS,317,RFCs & DORA Metrics,medium
+topic-08-012,Heap / Priority Queue,167,Heap / Priority Queue: Min/Max Heaps & Top-K Streaming,medium
+topic-08-013,Dynamic Programming (Memoization + Tabulation),168,"DP Foundations: Overlapping Subproblems, Memoization & Tabulation",medium
+topic-08-014,"Interview Frameworks (STAR, REACTO)",174,Interview Frameworks: STAR & REACTO,high
+topic-08-015,System Design Interview Basics,176,Framing a System Design Answer,medium
+topic-09-001,Redis,317,RFCs & DORA Metrics,low - verify manually
+topic-09-002,ioredis,317,RFCs & DORA Metrics,low - verify manually
+topic-09-003,PgBouncer,186,PgBouncer: Connection Pooling for PostgreSQL,low - verify manually
+topic-09-004,Upstash,312,Multi-Tenancy,low - verify manually
+topic-09-005,@upstash/ratelimit,190,@upstash/ratelimit: Distributed Rate Limiting,medium
+topic-09-006,Resend,86,React Context Revisited & Zustand,low - verify manually
+topic-09-007,React Email,191,Resend: Transactional Email Fundamentals,medium
+topic-09-008,Razorpay,156,Binary Search on the Answer Space,low - verify manually
+topic-10-001,AsyncLocalStorage,200,AsyncLocalStorage: Request-Scoped Context Without Parameter Drilling,medium
+topic-10-002,pino,312,Multi-Tenancy,low - verify manually
+topic-10-003,winston,42,"Joins, Aggregation & Indexes",low - verify manually
+topic-10-004,Sentry,317,RFCs & DORA Metrics,low - verify manually
+topic-10-005,UptimeRobot,299,Terraform Cloud & tfsec,low - verify manually
+topic-10-006,Better Stack (formerly Logtail),299,Terraform Cloud & tfsec,medium
+topic-10-007,Axiom,75,Radix UI & shadcn/ui,low - verify manually
+topic-10-008,Grafana Cloud,299,Terraform Cloud & tfsec,medium
+topic-10-009,Loki,312,Multi-Tenancy,low - verify manually
+topic-10-010,Datadog,24,DOM Manipulation & Event Handling,low - verify manually
+topic-10-011,CloudWatch,299,Terraform Cloud & tfsec,medium
+topic-10-012,PostHog,201,"pino: Fast, Structured JSON Logging",low - verify manually
+topic-10-013,posthog-js,21,Meta-programming Synthesis & ES Modules,low - verify manually
+topic-10-014,posthog-node,42,"Joins, Aggregation & Indexes",low - verify manually
+topic-10-015,Feature Flags,201,"pino: Fast, Structured JSON Logging",low - verify manually
+topic-10-016,A/B Testing,305,Cache-Aside & Write-Through Caching,low - verify manually
+topic-10-017,Funnel Analysis,294,tsup & Bundle Analysis,medium
+topic-10-018,Session Recording,316,ADRs (Architectural Decision Records),medium
+topic-10-019,GDPR Consent Mode,12,CSS Grid & Responsive Design,medium
+topic-11-001,SSE (EventSource),217,"SSE (EventSource): One-Directional Real-Time, the Baseline",medium
+topic-11-002,WebSockets,28,"WebSockets, Binary Data & Web Workers",medium
+topic-11-003,WebRTC,299,Terraform Cloud & tfsec,low - verify manually
+topic-11-004,B-Tree Indexes,42,"Joins, Aggregation & Indexes",medium
+topic-11-005,Composite Indexes,74,"Class Composition: clsx, tailwind-merge & CVA",medium
+topic-11-006,Partial Indexes,42,"Joins, Aggregation & Indexes",medium
+topic-11-007,Materialized Views,154,Sliding Window: Variable-Size Windows,medium
+topic-11-008,MVCC (Multi-Version Concurrency Control),226,MVCC: How PostgreSQL Handles Concurrent Reads and Writes,medium
+topic-11-009,VACUUM,75,Radix UI & shadcn/ui,low - verify manually
+topic-11-010,WAL (Write-Ahead Log),305,Cache-Aside & Write-Through Caching,low - verify manually
+topic-11-011,Read Replicas,12,CSS Grid & Responsive Design,low - verify manually
+topic-11-012,pg_stat_activity,229,pg_stat_activity & Stage 3 Capstone: Diagnosing Live Concurrent Activity,low - verify manually
+topic-11-013,PostgreSQL Full Text Search,231,"PostgreSQL Full Text Search: tsvector, tsquery & Ranked Results",medium
+topic-11-014,Meilisearch,232,Meilisearch & Typesense: Typo-Tolerant Instant Search,low - verify manually
+topic-11-015,Typesense,176,Framing a System Design Answer,low - verify manually
+topic-11-016,Elasticsearch,233,"Elasticsearch Part 1: Inverted Index, Data Model & Query DSL",low - verify manually
+topic-12-001,OpenAI API,146,OpenAPI 3.0: Writing a Real Spec,medium
+topic-12-002,GPT-4o,312,Multi-Tenancy,low - verify manually
+topic-12-003,Anthropic API,172,Interval DP & Space Optimization,low - verify manually
+topic-12-004,text-embedding-3-small,240,"text-embedding-3-small: Embeddings, Cosine Similarity & Batching",medium
+topic-12-005,pgvector,186,PgBouncer: Connection Pooling for PostgreSQL,low - verify manually
+topic-12-006,IVFFlat Index,42,"Joins, Aggregation & Indexes",medium
+topic-12-007,HNSW Index,42,"Joins, Aggregation & Indexes",medium
+topic-12-008,RAG Pattern,62,Browser Storage & React Router v6,medium
+topic-12-009,Vercel AI SDK,75,Radix UI & shadcn/ui,low - verify manually
+topic-12-010,BullMQ,294,tsup & Bundle Analysis,low - verify manually
+topic-12-011,Bull Board,317,RFCs & DORA Metrics,low - verify manually
+topic-12-012,Claude Model Tier Strategy,250,"BullMQ: Queue/Worker Model, Retries, Rate Limiting & Idempotency",medium
+topic-12-013,Extended Thinking,313,Blue-Green Deployments & Chaos Engineering,medium
+topic-12-014,Prompt Caching,305,Cache-Aside & Write-Through Caching,medium
+topic-12-015,Tool Calling for Structured Extraction,255,"Tool Calling for Structured Extraction: Schemas, Validation & Multi-Turn Use",medium
+topic-12-016,Multi-Model Routing,312,Multi-Tenancy,medium
+topic-12-017,AI Cost Tracking,205,"Sentry Part 2: Context, Breadcrumbs & Release Tracking",medium
+topic-12-018,Token Budget Enforcement,257,"AI Cost Tracking & Token Budget Enforcement: Per-Request Cost, Dashboards & Hard Caps",medium
+topic-12-019,System Prompt Engineering,324,"Phase Exit Capstone ""Launch"": Complete Public Engineering Presence",medium
+topic-12-020,Eval-Driven AI Development,311,Event-Driven Architecture & CQRS,medium
+topic-13-001,IndexedDB,264,"IndexedDB: Indexes, Cursors, Versioning & idb",low - verify manually
+topic-13-002,idb,8,"Links, Media, Tables & Forms",low - verify manually
+topic-13-003,Web Workers,28,"WebSockets, Binary Data & Web Workers",medium
+topic-13-004,comlink,317,RFCs & DORA Metrics,low - verify manually
+topic-13-005,Broadcast Channel API,268,Broadcast Channel API & Stage 3 Capstone: Cross-Tab Session Sync,medium
+topic-13-006,requestAnimationFrame,269,requestAnimationFrame & requestIdleCallback: Timing Primitives,medium
+topic-13-007,requestIdleCallback,269,requestAnimationFrame & requestIdleCallback: Timing Primitives,medium
+topic-13-008,View Transitions API,13,"Transforms, Transitions, Animations & Print Styles",medium
+topic-13-009,CSS Houdini,12,CSS Grid & Responsive Design,medium
+topic-13-010,Yjs,294,tsup & Bundle Analysis,low - verify manually
+topic-13-011,y-websocket,274,Yjs Part 2: Awareness & y-websocket,medium
+topic-13-012,y-webrtc,274,Yjs Part 2: Awareness & y-websocket,low - verify manually
+topic-13-013,y-indexeddb,264,"IndexedDB: Indexes, Cursors, Versioning & idb",low - verify manually
+topic-13-014,Hocuspocus,306,Optimistic Updates & Idempotency,low - verify manually
+topic-13-015,ProseMirror,62,Browser Storage & React Router v6,low - verify manually
+topic-13-016,Tiptap,312,Multi-Tenancy,medium
+topic-14-001,k6,284,"k6: Virtual Users, Scripting & Load Test Types",low - verify manually
+topic-14-002,k6 Cloud,299,Terraform Cloud & tfsec,low - verify manually
+topic-14-003,Artillery,312,Multi-Tenancy,low - verify manually
+topic-14-004,OWASP Top 10,287,OWASP Top 10: Understanding the Threat Model,medium
+topic-14-005,OWASP ZAP,172,Interval DP & Space Optimization,low - verify manually
+topic-14-006,Nonce-Based CSP,289,Nonce-Based CSP & JWT Algorithm Pinning,medium
+topic-14-007,JWT Algorithm Pinning,289,Nonce-Based CSP & JWT Algorithm Pinning,high
+topic-14-008,trufflehog,290,Secret Management: trufflehog & git-secrets,low - verify manually
+topic-14-009,git-secrets,290,Secret Management: trufflehog & git-secrets,medium
+topic-14-010,securityheaders.com,156,Binary Search on the Answer Space,medium
+topic-14-011,CSP Evaluator,302,"Helm: Charts, Values, Releases",low - verify manually
+topic-14-012,Dependabot,69,CivicBoard: Department Dashboard with Parallel Routes,low - verify manually
+topic-14-013,npm audit,4,nvm + npm Fundamentals,low - verify manually
+topic-14-014,SOC 2 Basics,294,tsup & Bundle Analysis,medium
+topic-14-015,GDPR,12,CSS Grid & Responsive Design,low - verify manually
+topic-15-001,Vite,312,Multi-Tenancy,low - verify manually
+topic-15-002,tsup,294,tsup & Bundle Analysis,low - verify manually
+topic-15-003,@next/bundle-analyzer,294,tsup & Bundle Analysis,medium
+topic-15-004,vite-bundle-visualizer,294,tsup & Bundle Analysis,medium
+topic-15-005,rollup-plugin-visualizer,21,Meta-programming Synthesis & ES Modules,low - verify manually
+topic-15-006,lighthouse-ci,295,"lighthouse-ci & CSS-in-JS: styled-components, Emotion",low - verify manually
+topic-15-007,styled-components,295,"lighthouse-ci & CSS-in-JS: styled-components, Emotion",medium
+topic-15-008,Emotion,312,Multi-Tenancy,medium
+topic-15-009,Linaria,312,Multi-Tenancy,medium
+topic-16-001,AWS S3,297,"AWS S3: Buckets, Objects, Pre‑signed URLs",low - verify manually
+topic-16-002,Terraform,299,Terraform Cloud & tfsec,medium
+topic-16-003,Terraform Cloud,299,Terraform Cloud & tfsec,high
+topic-16-004,tfsec,299,Terraform Cloud & tfsec,low - verify manually
+topic-16-005,Kubernetes,4,nvm + npm Fundamentals,low - verify manually
+topic-16-006,kind (Kubernetes in Docker),8,"Links, Media, Tables & Forms",medium
+topic-16-007,kubectl,312,Multi-Tenancy,low - verify manually
+topic-16-008,Helm,302,"Helm: Charts, Values, Releases",low - verify manually
+topic-16-009,HPA (Horizontal Pod Autoscaler),303,HPA (Horizontal Pod Autoscaler) & external-secrets,high
+topic-16-010,external-secrets,303,HPA (Horizontal Pod Autoscaler) & external-secrets,medium
+topic-17-001,Cache-Aside Caching,305,Cache-Aside & Write-Through Caching,high
+topic-17-002,Write-Through Caching,305,Cache-Aside & Write-Through Caching,high
+topic-17-003,Optimistic Updates,306,Optimistic Updates & Idempotency,high
+topic-17-004,Optimistic Locking,306,Optimistic Updates & Idempotency,medium
+topic-17-005,Pessimistic Locking,307,Optimistic & Pessimistic Locking (Database Concurrency),medium
+topic-17-006,Idempotency,306,Optimistic Updates & Idempotency,medium
+topic-17-007,Saga Pattern,308,Saga Pattern: Choreography vs Orchestration,medium
+topic-17-008,Outbox Pattern,159,HashMap & Frequency Count Patterns,medium
+topic-17-009,Dead Letter Queue,310,Dead Letter Queue & Circuit Breaker,medium
+topic-17-010,Circuit Breaker,310,Dead Letter Queue & Circuit Breaker,medium
+topic-17-011,Event-Driven Architecture,311,Event-Driven Architecture & CQRS,high
+topic-17-013,Multi-Tenancy,312,Multi-Tenancy,high
+topic-17-014,Blue-Green Deployments,313,Blue-Green Deployments & Chaos Engineering,medium
+topic-17-015,Chaos Engineering,313,Blue-Green Deployments & Chaos Engineering,medium
+topic-18-001,Changesets,302,"Helm: Charts, Values, Releases",low - verify manually
+topic-18-002,ADRs (Architectural Decision Records),316,ADRs (Architectural Decision Records),high
+topic-18-003,RFCs (Request for Comments),317,RFCs & DORA Metrics,medium
+topic-18-004,DORA Metrics,317,RFCs & DORA Metrics,high
+topic-18-005,Blameless Post-Mortems,318,"Blameless Post-Mortems, Technical Debt, Estimation, Code Review, Ramp-Up",medium
+topic-18-006,Technical Debt Tracking,172,Interval DP & Space Optimization,medium
+topic-18-007,Estimation Tracking,24,DOM Manipulation & Event Handling,medium
+topic-18-008,Code Review Conventions,87,TanStack Query v5: Core Concepts & Mutations,medium
+topic-18-009,Ramp-Up Strategy,245,"RAG Part 1: Chunking Strategy, Embedding & Retrieval",low - verify manually
+topic-18-010,docs/adr/,317,RFCs & DORA Metrics,low - verify manually
+topic-18-011,ARCHITECTURE.md,311,Event-Driven Architecture & CQRS,medium
+topic-18-012,DECISIONS.md,316,ADRs (Architectural Decision Records),low - verify manually
+topic-18-013,PERFORMANCE.md,299,Terraform Cloud & tfsec,medium
+topic-18-014,SECURITY.md,291,Automated Security Monitoring & Compliance Intro,low - verify manually
+topic-18-015,MONITORING.md,291,Automated Security Monitoring & Compliance Intro,low - verify manually
+topic-18-016,OPERATIONS.md,42,"Joins, Aggregation & Indexes",low - verify manually
+topic-18-017,incidents/,4,nvm + npm Fundamentals,low - verify manually
+topic-18-018,TECH_DEBT.md,10,"CSS Syntax, Selectors, Cascade & Box Model",low - verify manually
+topic-18-019,PRODUCT_DECISIONS.md,316,ADRs (Architectural Decision Records),medium
+topic-18-020,READING_NOTES.md,21,Meta-programming Synthesis & ES Modules,medium
+topic-19-001,JSONPlaceholder API,74,"Class Composition: clsx, tailwind-merge & CVA",low - verify manually
+topic-19-002,GitHub API,294,tsup & Bundle Analysis,low - verify manually
+topic-19-003,Wellfound (formerly AngelList),6,Git + GitHub Foundations (local + remote basics),medium
+topic-19-004,Instahyre,312,Multi-Tenancy,low - verify manually
+topic-19-005,LinkedIn,8,"Links, Media, Tables & Forms",low - verify manually
+topic-19-006,Product Hunt,293,"Vite: Dev Server, HMR, Production Builds",low - verify manually
+topic-19-007,Indie Hackers,8,"Links, Media, Tables & Forms",low - verify manually
+topic-19-008,SaaS India Slack,75,Radix UI & shadcn/ui,low - verify manually
+topic-19-009,dev.to,317,RFCs & DORA Metrics,low - verify manually
+topic-19-010,Hashnode,159,HashMap & Frequency Count Patterns,low - verify manually
