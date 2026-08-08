@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useUser } from "@/lib/hooks/use-user";
-import { usePhasesWithProgress, useExitLadder, useRoadmapMetadata, toggleTopicComplete } from "@/lib/hooks/use-roadmap";
+import { usePhasesWithProgress, useExitLadder, useRoadmapMetadata, toggleTopicComplete, applyHoursToNextTopic } from "@/lib/hooks/use-roadmap";
 import { useDailyLogs, computeStreak, weeklyHours, logStudySession } from "@/lib/hooks/use-daily-logs";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
 import { isOverdue } from "@/lib/revision-schedule";
@@ -96,6 +96,26 @@ export default function DashboardPage() {
   const totalTopics = allTopics.length;
   const totalHours = allTopics.reduce((s, t) => s + (t.estimated_hours ?? 0), 0);
   const completedHours = completedTopics.reduce((s, t) => s + (t.estimated_hours ?? 0), 0);
+
+  const orderedIncompleteTopics = useMemo(() => {
+    // Same phase -> stage -> topic walk as nextTopic above, but returns the
+    // full ordered chain rather than just the first — applyHoursToNextTopic
+    // needs to know what comes after the current topic to roll overflow
+    // hours forward when a log fills it.
+    const candidates = phases.flatMap((phase, phaseIdx) =>
+      (phase.stages ?? []).flatMap((stage, stageIdx) =>
+        stage.topics.map((topic, topicIdx) => ({ topic, phaseIdx, stageIdx, topicIdx }))
+      )
+    );
+    return candidates
+      .filter((c) => !c.topic.progress?.completed)
+      .sort((a, b) => {
+        if (a.phaseIdx !== b.phaseIdx) return a.phaseIdx - b.phaseIdx;
+        if (a.stageIdx !== b.stageIdx) return a.stageIdx - b.stageIdx;
+        return a.topicIdx - b.topicIdx;
+      })
+      .map((c) => c.topic);
+  }, [phases]);
 
   const nextTopic = useMemo(() => {
     // Walk phase -> stage -> topic (not the flat phase.topics list). Topics
@@ -248,9 +268,29 @@ export default function DashboardPage() {
     try {
       await logStudySession(user.id, hours, logNote || undefined);
       await mutateLogs();
+
+      // Apply the logged hours toward whatever topic Daily Mission is
+      // currently pointing at (orderedIncompleteTopics[0]), rolling any
+      // overflow into subsequent topics if this session fills one.
+      if (orderedIncompleteTopics.length > 0) {
+        const result = await applyHoursToNextTopic(user.id, orderedIncompleteTopics, hours);
+        await mutateProgress();
+        if (result.completedTopics.length > 0) {
+          const names = result.completedTopics.map((t) => t.title).join(", ");
+          toast.success(
+            result.completedTopics.length === 1
+              ? `Logged ${hours}h — completed "${names}"!`
+              : `Logged ${hours}h — completed ${result.completedTopics.length} topics: ${names}!`
+          );
+        } else {
+          toast.success(`Logged ${hours}h for today.`);
+        }
+      } else {
+        toast.success(`Logged ${hours}h for today.`);
+      }
+
       setLogHours("");
       setLogNote("");
-      toast.success(`Logged ${hours}h for today.`);
     } catch {
       toast.error("Couldn't save log. Try again.");
     } finally {
@@ -368,9 +408,26 @@ export default function DashboardPage() {
                   </div>
                   <p className="text-card-title font-semibold">{nextTopic.topic.title}</p>
                   {nextTopic.topic.estimated_hours && (
-                    <p className="text-xs text-muted mt-1 flex items-center gap-1">
-                      <Clock className="h-3 w-3" /> ~{formatHours(nextTopic.topic.estimated_hours)} estimated
-                    </p>
+                    <>
+                      <p className="text-xs text-muted mt-1 flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {formatHours((nextTopic.topic.progress?.actual_minutes_spent ?? 0) / 60)} /{" "}
+                        {formatHours(nextTopic.topic.estimated_hours)} logged
+                      </p>
+                      <div className="h-1.5 w-40 rounded-full bg-border overflow-hidden mt-1.5">
+                        <div
+                          className="h-full bg-accent rounded-full transition-standard"
+                          style={{
+                            width: `${Math.min(
+                              100,
+                              ((nextTopic.topic.progress?.actual_minutes_spent ?? 0) /
+                                (nextTopic.topic.estimated_hours * 60)) *
+                                100
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    </>
                   )}
                 </div>
               </div>

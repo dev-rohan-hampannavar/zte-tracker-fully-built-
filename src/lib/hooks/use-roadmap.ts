@@ -482,3 +482,92 @@ export async function updateTopicProgress(
     .upsert({ user_id: userId, topic_id: topicId, ...patch } as never, { onConflict: "user_id,topic_id" });
   if (error) throw error;
 }
+
+export interface HoursApplyResult {
+  // Topics that crossed their estimated_hours threshold and were
+  // auto-completed by this application of hours, in the order they were
+  // completed. Empty if the logged hours didn't fill up the current topic.
+  completedTopics: { id: string; title: string }[];
+  // The topic still in progress after applying all the hours (partially
+  // filled, or untouched if there was nothing to apply to). Null only if
+  // every topic in the chain got completed (no more topics left to spill
+  // into) — the roadmap is finished.
+  remainingTopic: { id: string; title: string; minutesSpent: number; estimatedMinutes: number } | null;
+}
+
+/**
+ * Applies logged study hours to the topic Daily Mission is currently
+ * pointing at. If the hours fill (or overflow) that topic's
+ * estimated_hours, the topic is auto-completed and any leftover minutes
+ * roll forward into the next incomplete topic in the same phase -> stage ->
+ * topic walk order Daily Mission itself uses (see nextTopic in
+ * dashboard/page.tsx) — repeating until the minutes run out or there are no
+ * more topics left.
+ *
+ * `orderedTopics` must be the full walk-ordered list of incomplete topics
+ * (phase -> stage -> topic order, same as nextTopic's candidates), starting
+ * from the current one — the caller already has this from usePhasesWithProgress,
+ * so it's passed in rather than re-fetched here.
+ */
+export async function applyHoursToNextTopic(
+  userId: string,
+  orderedTopics: { id: string; title: string; estimated_hours: number | null; progress: { actual_minutes_spent: number } | null }[],
+  hoursLogged: number
+): Promise<HoursApplyResult> {
+  let remainingMinutes = Math.round(hoursLogged * 60);
+  const completedTopics: HoursApplyResult["completedTopics"] = [];
+
+  for (const topic of orderedTopics) {
+    if (remainingMinutes <= 0) break;
+
+    const currentSpent = topic.progress?.actual_minutes_spent ?? 0;
+    // No estimate to compare against — can't auto-complete or overflow,
+    // just bank the time spent and stop; nothing to roll forward since we
+    // don't know when this topic is "full".
+    const estimatedMinutes = topic.estimated_hours ? Math.round(topic.estimated_hours * 60) : null;
+    const newSpent = currentSpent + remainingMinutes;
+
+    if (estimatedMinutes == null) {
+      await updateTopicProgress(userId, topic.id, { actual_minutes_spent: newSpent });
+      return {
+        completedTopics,
+        remainingTopic: { id: topic.id, title: topic.title, minutesSpent: newSpent, estimatedMinutes: 0 },
+      };
+    }
+
+    if (newSpent >= estimatedMinutes) {
+      // Fills (or overflows) this topic — complete it and carry the
+      // overflow into the next topic in the loop.
+      const overflow = newSpent - estimatedMinutes;
+      const dueDate = new Date(Date.now() + 86400000).toISOString();
+      const { error } = await supabase.from("topic_progress").upsert(
+        {
+          user_id: userId,
+          topic_id: topic.id,
+          completed: true,
+          completed_at: new Date().toISOString(),
+          actual_minutes_spent: estimatedMinutes,
+          next_review_due: dueDate,
+          revision_status: "needs_revision",
+        } as never,
+        { onConflict: "user_id,topic_id" }
+      );
+      if (error) throw error;
+      completedTopics.push({ id: topic.id, title: topic.title });
+      remainingMinutes = overflow;
+      continue;
+    }
+
+    // Doesn't fill the topic — just bank the minutes and stop here.
+    await updateTopicProgress(userId, topic.id, { actual_minutes_spent: newSpent });
+    return {
+      completedTopics,
+      remainingTopic: { id: topic.id, title: topic.title, minutesSpent: newSpent, estimatedMinutes },
+    };
+  }
+
+  // Every topic in the chain got completed exactly (remainingMinutes hit 0
+  // right on a boundary), or the chain ran out — either way there's no
+  // partially-filled topic left to report.
+  return { completedTopics, remainingTopic: null };
+}
