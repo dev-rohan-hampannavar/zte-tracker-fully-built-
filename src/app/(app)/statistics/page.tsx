@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StudyHeatmap } from "@/components/dashboard/heatmap";
 import { formatHours, pct, cn } from "@/lib/utils";
+import { computeCompletionProjection, recentWeeklyAverage } from "@/lib/pace";
 import { Map as MapIcon, Code2, RotateCcw, Layers, FolderGit2, TrendingUp, TrendingDown, Minus, Trophy, AlertTriangle, Dumbbell, Megaphone, Rocket } from "lucide-react";
 import type { ClientSyncMilestone } from "@/types/database";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -181,6 +182,29 @@ export default function StatisticsPage() {
     const change = ((last.hours - prev.hours) / prev.hours) * 100;
     return { change, lastWeekHours: last.hours, prevWeekHours: prev.hours };
   }, [weeks]);
+
+  // Completion projection: remaining estimated hours across the whole
+  // roadmap, divided by the trailing-4-week average pace, gives a rough
+  // "finish by" date. Recomputed from weeks/allTopics rather than a stored
+  // target, since there's no fixed start/deadline anywhere in this schema —
+  // this is a live estimate that moves as actual pace changes, not a fixed
+  // plan being tracked against.
+  const overallProjection = useMemo(
+    () => computeCompletionProjection(allTopics, recentWeeklyAverage(weeks)),
+    [allTopics, weeks]
+  );
+
+  // Same projection, scoped to just the current in-progress phase — answers
+  // "when do I finish THIS phase" separately from the whole roadmap, since
+  // the whole-roadmap number can be too far out to be motivating day to day.
+  const currentPhaseProjection = useMemo(() => {
+    const currentPhase = phases.find((p) => p.topics.length > 0 && p.topics.some((t) => !t.progress?.completed));
+    if (!currentPhase) return null;
+    return {
+      phase: currentPhase,
+      projection: computeCompletionProjection(currentPhase.topics, recentWeeklyAverage(weeks)),
+    };
+  }, [phases, weeks]);
 
   const isMilestoneComplete = (phaseId: string | null) => {
     const phase = phases.find((p) => p.id === phaseId);
@@ -432,6 +456,51 @@ export default function StatisticsPage() {
             </p>
           ) : (
             <p className="text-sm text-muted">Log a few study sessions to see a projected completion date.</p>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Estimated finish date</CardTitle>
+          <p className="text-xs text-muted mt-1">
+            Based on your trailing 4-week average pace ({recentWeeklyAverage(weeks).toFixed(1)}h/week) — moves as your
+            actual pace changes, not a fixed deadline.
+          </p>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          {overallProjection.projectedDate ? (
+            <div className="flex items-center gap-4">
+              <div className="rounded-card border border-border bg-surface-2 px-4 py-3">
+                <p className="text-xs text-muted mb-1">Whole roadmap</p>
+                <p className="text-lg font-bold font-mono-tabular text-accent">
+                  {new Date(overallProjection.projectedDate + "T00:00:00").toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
+                <p className="text-xs text-muted mt-0.5">
+                  {formatHours(overallProjection.remainingHours)} remaining
+                </p>
+              </div>
+              {currentPhaseProjection?.projection.projectedDate && (
+                <div className="rounded-card border border-border bg-surface-2 px-4 py-3">
+                  <p className="text-xs text-muted mb-1">{currentPhaseProjection.phase.title} (current phase)</p>
+                  <p className="text-lg font-bold font-mono-tabular text-accent">
+                    {new Date(currentPhaseProjection.projection.projectedDate + "T00:00:00").toLocaleDateString(
+                      "en-IN",
+                      { day: "numeric", month: "short", year: "numeric" }
+                    )}
+                  </p>
+                  <p className="text-xs text-muted mt-0.5">
+                    {formatHours(currentPhaseProjection.projection.remainingHours)} remaining
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-sm text-muted">Log a few weeks of sessions to get a stable date estimate.</p>
           )}
         </CardContent>
       </Card>

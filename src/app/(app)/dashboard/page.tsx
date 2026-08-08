@@ -17,7 +17,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { StudyHeatmap } from "@/components/dashboard/heatmap";
 import { TodaysLesson } from "@/components/dashboard/todays-lesson";
 import { useTopicDayMap, getManualDayForTopic } from "@/lib/hooks/use-manual-day";
-import { formatHours, pct, cn } from "@/lib/utils";
+import { formatHours, pct, cn, localDateISO } from "@/lib/utils";
+import { computePaceStatus } from "@/lib/pace";
 import { toast } from "sonner";
 import { Flame, Target, CheckCircle2, Clock, TrendingUp, Loader2, Code2, Briefcase, FolderGit2, AlertCircle, ChevronDown } from "lucide-react";
 import Link from "next/link";
@@ -147,6 +148,19 @@ export default function DashboardPage() {
     () => getManualDayForTopic(nextTopic?.topic.id, topicDayMap),
     [nextTopic, topicDayMap]
   );
+
+  const paceStatus = useMemo(
+    () => computePaceStatus(phases, logs ?? [], nextTopic?.topic.id),
+    [phases, logs, nextTopic]
+  );
+
+  const yesterdaysLog = useMemo(() => {
+    if (!logs) return null;
+    const y = new Date();
+    y.setDate(y.getDate() - 1);
+    const yISO = localDateISO(y);
+    return logs.find((l) => l.date === yISO) ?? null;
+  }, [logs]);
 
   // Time-aware greeting for the dashboard hero — "Good Morning / Afternoon /
   // Evening" per the redesign spec. Computed once per render, not stored in
@@ -405,6 +419,25 @@ export default function DashboardPage() {
                   <div className="flex items-center gap-2 mb-1">
                     <Badge variant="accent">{nextTopic.phase.phase_number}</Badge>
                     <span className="text-xs text-muted">{nextTopic.phase.title}</span>
+                    {paceStatus && (
+                      <Badge
+                        variant="outline"
+                        className={cn(
+                          "text-[10px] font-normal",
+                          paceStatus.status === "ahead" && "text-success border-success/40",
+                          paceStatus.status === "behind" && "text-warning border-warning/40"
+                        )}
+                        title={`${formatHours(Math.abs(paceStatus.deltaHours))} ${
+                          paceStatus.status === "behind" ? "behind" : "ahead of"
+                        } where the roadmap's estimated hours put you`}
+                      >
+                        {paceStatus.status === "on-pace"
+                          ? "On pace"
+                          : paceStatus.status === "ahead"
+                            ? `${formatHours(paceStatus.deltaHours)} ahead`
+                            : `${formatHours(Math.abs(paceStatus.deltaHours))} behind`}
+                      </Badge>
+                    )}
                   </div>
                   <p className="text-card-title font-semibold">{nextTopic.topic.title}</p>
                   {nextTopic.topic.estimated_hours && (
@@ -491,7 +524,7 @@ export default function DashboardPage() {
               </button>
               {lessonOpen && (
                 <div className="pt-3">
-                  <TodaysLesson day={todaysLesson} />
+                  <TodaysLesson day={todaysLesson} userId={user?.id} yesterdaysLog={yesterdaysLog} />
                 </div>
               )}
             </div>

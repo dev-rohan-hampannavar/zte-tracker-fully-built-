@@ -3,15 +3,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@/lib/hooks/use-user";
 import { useDailyLogs, saveJournalEntry } from "@/lib/hooks/use-daily-logs";
+import { usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
 import { useDebouncedCallback } from "@/lib/hooks/use-debounced-callback";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { todayISO } from "@/lib/utils";
+import { todayISO, formatHours, localDateISO } from "@/lib/utils";
 import { toast } from "sonner";
-import { BookMarked, Lightbulb, AlertTriangle, Sparkles, Target, Loader2, ChevronDown } from "lucide-react";
+import { BookMarked, Lightbulb, AlertTriangle, Sparkles, Target, Loader2, ChevronDown, CalendarRange } from "lucide-react";
 import type { DailyLog } from "@/types/database";
 
 /**
@@ -184,10 +185,48 @@ function TodayForm({ userId, todayLog, onSaved }: { userId: string; todayLog: Da
 export default function JournalPage() {
   const { user } = useUser();
   const { data: logs, isLoading, mutate } = useDailyLogs(user?.id);
+  const { phases } = usePhasesWithProgress(user?.id);
   const [expandedDate, setExpandedDate] = useState<string | null>(null);
 
   const today = todayISO();
   const todayLog = useMemo(() => (logs ?? []).find((l) => l.date === today), [logs, today]);
+
+  // This week's window: Monday of the current week through today, matching
+  // weeklyBreakdown's Monday-anchored bucketing elsewhere in the app (see
+  // use-daily-logs.ts) so "this week" means the same thing everywhere.
+  const weekStartISO = useMemo(() => {
+    const now = new Date();
+    const day = now.getDay();
+    const diffToMonday = day === 0 ? 6 : day - 1;
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - diffToMonday);
+    return localDateISO(monday);
+  }, []);
+
+  const weeklyDigest = useMemo(() => {
+    const weekLogs = (logs ?? []).filter((l) => l.date >= weekStartISO);
+    const hoursThisWeek = weekLogs.reduce((sum, l) => sum + Number(l.hours), 0);
+    const daysLoggedThisWeek = weekLogs.filter((l) => l.hours > 0).length;
+
+    const allTopics = phases.flatMap((p) => p.topics);
+    const completedThisWeek = allTopics.filter(
+      (t) => t.progress?.completed && t.progress.completed_at && t.progress.completed_at.slice(0, 10) >= weekStartISO
+    );
+
+    // "Next up" — same phase -> stage -> topic walk order Daily Mission
+    // uses, just the title of whatever's first incomplete, so the digest
+    // can end on "here's what's next" without duplicating that whole
+    // candidates/sort logic (a short flatMap+find here is fine since the
+    // digest only needs the first one, unlike Daily Mission's memo).
+    const nextTopic = phases
+      .flatMap((p) => (p.stages ?? []).flatMap((s) => s.topics))
+      .find((t) => !t.progress?.completed);
+
+    return { hoursThisWeek, daysLoggedThisWeek, completedThisWeek, nextTopic };
+  }, [logs, phases, weekStartISO]);
+
+  const hasAnyDataThisWeek = weeklyDigest.hoursThisWeek > 0 || weeklyDigest.completedThisWeek.length > 0;
+
 
   const pastEntries = useMemo(
     () =>
@@ -210,6 +249,58 @@ export default function JournalPage() {
 
       {user && (
         <TodayForm userId={user.id} todayLog={todayLog} onSaved={mutate} key={todayLog?.updated_at ?? "new"} />
+      )}
+
+      {hasAnyDataThisWeek && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <CalendarRange className="h-4 w-4 text-accent" />
+              <CardTitle>This week</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="rounded-card border border-border bg-surface-2 p-3">
+                <p className="text-xs text-muted mb-1">Hours logged</p>
+                <p className="text-lg font-bold font-mono-tabular text-accent">
+                  {formatHours(weeklyDigest.hoursThisWeek)}
+                </p>
+              </div>
+              <div className="rounded-card border border-border bg-surface-2 p-3">
+                <p className="text-xs text-muted mb-1">Days studied</p>
+                <p className="text-lg font-bold font-mono-tabular text-accent">
+                  {weeklyDigest.daysLoggedThisWeek} / 7
+                </p>
+              </div>
+              <div className="rounded-card border border-border bg-surface-2 p-3">
+                <p className="text-xs text-muted mb-1">Topics completed</p>
+                <p className="text-lg font-bold font-mono-tabular text-accent">
+                  {weeklyDigest.completedThisWeek.length}
+                </p>
+              </div>
+            </div>
+
+            {weeklyDigest.completedThisWeek.length > 0 && (
+              <div>
+                <p className="text-xs text-muted mb-1.5">Finished this week</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {weeklyDigest.completedThisWeek.map((t) => (
+                    <span key={t.id} className="text-xs rounded-full bg-accent/10 text-accent px-2.5 py-1">
+                      {t.title}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {weeklyDigest.nextTopic && (
+              <p className="text-sm text-muted">
+                Next up: <span className="text-foreground font-medium">{weeklyDigest.nextTopic.title}</span>
+              </p>
+            )}
+          </CardContent>
+        </Card>
       )}
 
       {pastEntries.length > 0 && (

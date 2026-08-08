@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useUser } from "@/lib/hooks/use-user";
 import { updateTopicProgress, useLinkRegistry } from "@/lib/hooks/use-roadmap";
+import { useTopicDayMap, getManualDayForTopic } from "@/lib/hooks/use-manual-day";
+import { TodaysLesson } from "@/components/dashboard/todays-lesson";
 import { computeNextReviewDue, MASTERY_REVIEW_COUNT } from "@/lib/revision-schedule";
 import { NoteText } from "@/components/roadmap/note-text";
 import { createClient } from "@/lib/supabase/client";
@@ -30,6 +32,7 @@ export function TopicDetailSheet({
 }) {
   const { user } = useUser();
   const linkRegistry = useLinkRegistry();
+  const { data: topicDayMap } = useTopicDayMap();
   const [notes, setNotes] = useState<TopicNote[]>([]);
   const [newNote, setNewNote] = useState("");
   const [minutesInput, setMinutesInput] = useState("");
@@ -54,6 +57,8 @@ export function TopicDetailSheet({
   }, [topic, user]);
 
   if (!topic) return null;
+
+  const lessonDay = getManualDayForTopic(topic.id, topicDayMap);
 
   async function handleDifficultyChange(value: string) {
     if (!user || !topic) return;
@@ -121,7 +126,7 @@ export function TopicDetailSheet({
 
   return (
     <Dialog open={!!topic} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{topic.title}</DialogTitle>
           <DialogDescription>
@@ -162,6 +167,24 @@ export function TopicDetailSheet({
             </Select>
           </div>
         </div>
+
+        {lessonDay && (
+          <>
+            <Separator />
+            {/* Same manual-lesson content Daily Mission shows for the
+                current topic, but here it's browsable for ANY topic —
+                including ones far ahead of where the user actually is —
+                since this dialog opens from clicking any topic on
+                /roadmap, not just today's. Reuses TodaysLesson as-is: the
+                checkable items it renders are keyed by day number, so
+                checking one here and seeing it again later on Daily
+                Mission (once that topic becomes "today's") is the same
+                state, not a separate copy. */}
+            <TodaysLesson day={lessonDay} userId={user?.id} />
+          </>
+        )}
+
+        <Separator />
 
         <div>
           <Label>Actual minutes spent</Label>
