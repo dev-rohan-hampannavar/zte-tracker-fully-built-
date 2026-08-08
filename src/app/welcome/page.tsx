@@ -51,7 +51,7 @@ export default function WelcomePage() {
       icon: Compass,
       title: "What this is",
       render: () => (
-        <p className="text-sm text-muted leading-relaxed whitespace-pre-line">
+        <p className="text-base text-muted leading-relaxed whitespace-pre-line">
           {orientation?.overview ??
             "A structured, phase-based path from beginner to job-ready full-stack engineer."}
         </p>
@@ -67,8 +67,8 @@ export default function WelcomePage() {
           <dl className="w-full flex flex-col gap-3 text-left">
             {orientation.who_is_this_for.map((row) => (
               <div key={row.category}>
-                <dt className="text-xs text-muted mb-0.5">{row.category}</dt>
-                <dd className="text-sm">{row.details}</dd>
+                <dt className="text-sm text-muted mb-0.5">{row.category}</dt>
+                <dd className="text-base">{row.details}</dd>
               </div>
             ))}
           </dl>
@@ -82,7 +82,7 @@ export default function WelcomePage() {
         icon: Briefcase,
         title: "Yes, you can still get hired",
         render: () => (
-          <p className="text-sm text-muted leading-relaxed whitespace-pre-line text-left max-h-64 overflow-y-auto">
+          <p className="text-base text-muted leading-relaxed whitespace-pre-line text-left max-h-64 overflow-y-auto">
             {orientation.job_market_case}
           </p>
         ),
@@ -97,7 +97,7 @@ export default function WelcomePage() {
         render: () => (
           <div className="w-full flex flex-col gap-2 text-left max-h-64 overflow-y-auto">
             {whyThisWorks.map((row) => (
-              <div key={row.id} className="text-sm">
+              <div key={row.id} className="text-base">
                 <span className="font-medium">{row.failure_mode}</span>
                 <span className="text-muted"> — {row.mechanism}</span>
               </div>
@@ -113,7 +113,7 @@ export default function WelcomePage() {
         icon: Megaphone,
         title: "Build in public",
         render: () => (
-          <p className="text-sm text-muted leading-relaxed whitespace-pre-line text-left max-h-64 overflow-y-auto">
+          <p className="text-base text-muted leading-relaxed whitespace-pre-line text-left max-h-64 overflow-y-auto">
             {orientation.build_in_public_guide}
           </p>
         ),
@@ -128,7 +128,7 @@ export default function WelcomePage() {
         render: () => (
           <div className="w-full flex flex-col gap-1.5 text-left max-h-64 overflow-y-auto">
             {masterPhaseTable.map((row) => (
-              <div key={row.phase} className="flex items-center gap-2 text-sm">
+              <div key={row.phase} className="flex items-center gap-2 text-base">
                 <Badge variant="outline" className="font-mono-tabular text-xs font-normal shrink-0">
                   {row.phase}
                 </Badge>
@@ -149,7 +149,7 @@ export default function WelcomePage() {
         render: () => (
           <div className="w-full flex flex-col gap-2 text-left">
             {orientation.weekly_pace_options.map((row) => (
-              <div key={row.weekly_hours} className="flex items-baseline justify-between text-sm border-b border-border pb-2 last:border-0">
+              <div key={row.weekly_hours} className="flex items-baseline justify-between text-base border-b border-border pb-2 last:border-0">
                 <span className="font-mono-tabular">{row.weekly_hours} hrs/wk</span>
                 <span className="text-accent font-mono-tabular">{row.timeline}</span>
               </div>
@@ -167,7 +167,7 @@ export default function WelcomePage() {
         render: () => (
           <div className="w-full flex flex-col gap-3 text-left">
             {navigationNotes.mvp_fast_path.map((line, i) => (
-              <p key={i} className="text-sm text-muted leading-relaxed">{line}</p>
+              <p key={i} className="text-base text-muted leading-relaxed">{line}</p>
             ))}
           </div>
         ),
@@ -182,7 +182,7 @@ export default function WelcomePage() {
         render: () => (
           <ol className="w-full flex flex-col gap-2 text-left max-h-64 overflow-y-auto">
             {orientation.quick_start_checklist.map((item) => (
-              <li key={item.step} className="flex items-start gap-3 text-sm">
+              <li key={item.step} className="flex items-start gap-3 text-base">
                 <span className="shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-accent/10 text-accent text-[10px] font-mono-tabular font-semibold mt-0.5">
                   {item.step}
                 </span>
@@ -199,7 +199,7 @@ export default function WelcomePage() {
       icon: Rocket,
       title: "Ready to start",
       render: () => (
-        <p className="text-sm text-muted leading-relaxed">
+        <p className="text-base text-muted leading-relaxed">
           {orientation?.decision_rule ??
             "Sign in to get your dashboard, your first phase, and your streak tracking started."}
         </p>
@@ -215,12 +215,12 @@ export default function WelcomePage() {
 
   return (
     <div className="min-h-full flex flex-col items-center justify-center px-6 py-12 bg-background">
-      <div className="w-full max-w-md flex flex-col gap-8">
+      <div className="w-full max-w-lg flex flex-col gap-8">
         <div className="flex items-center gap-2 justify-center">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-accent-foreground">
             <Terminal className="h-4 w-4" />
           </div>
-          <span className="text-sm font-semibold tracking-tight">ZTE Tracker</span>
+          <span className="text-base font-semibold tracking-tight">ZTE Tracker</span>
         </div>
 
         {isLoading ? (
@@ -231,7 +231,7 @@ export default function WelcomePage() {
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent/10 text-accent shrink-0">
                 <Current className="h-7 w-7" />
               </div>
-              <h1 className="text-lg font-semibold tracking-tight">{steps[step]?.title}</h1>
+              <h1 className="text-2xl font-semibold tracking-tight">{steps[step]?.title}</h1>
               <div className="w-full flex justify-center">{steps[step]?.render()}</div>
             </CardContent>
           </Card>
@@ -267,7 +267,7 @@ export default function WelcomePage() {
           )}
         </div>
 
-        <Link href="/login" className="text-xs text-muted hover:text-foreground text-center">
+        <Link href="/login" className="text-sm text-muted hover:text-foreground text-center">
           Skip — I already have an account
         </Link>
       </div>
