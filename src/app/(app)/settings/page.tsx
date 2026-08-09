@@ -19,7 +19,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { Download, Loader2, Sun, Moon, Monitor, Share2, Copy, Check, Upload, AlertTriangle, Trash2, RotateCcw } from "lucide-react";
+import { Download, Loader2, Sun, Moon, Monitor, Share2, Copy, Check, Upload, AlertTriangle, Trash2, RotateCcw, Mail } from "lucide-react";
 import { useTheme } from "@/lib/hooks/use-theme";
 import { useDeveloperMode } from "@/lib/hooks/use-developer-mode";
 import { useTopicLockingDisabled } from "@/lib/hooks/use-topic-locking";
@@ -63,6 +63,9 @@ export default function SettingsPage() {
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [githubUsername, setGithubUsername] = useState("");
+  const [weeklySummaryRecipientEmail, setWeeklySummaryRecipientEmail] = useState("");
+  const [weeklySummaryRecipientName, setWeeklySummaryRecipientName] = useState("");
+  const [weeklySummaryToggling, setWeeklySummaryToggling] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
   const [resetConfirmText, setResetConfirmText] = useState("");
   const [resetting, setResetting] = useState(false);
@@ -77,6 +80,8 @@ export default function SettingsPage() {
       setDisplayName(settings.display_name ?? "");
       setBio(settings.public_profile_bio ?? "");
       setGithubUsername(settings.github_username ?? "");
+      setWeeklySummaryRecipientEmail(settings.weekly_summary_recipient_email ?? "");
+      setWeeklySummaryRecipientName(settings.weekly_summary_recipient_name ?? "");
     }
   }, [settings]);
 
@@ -155,6 +160,49 @@ export default function SettingsPage() {
     }
     await mutate();
     toast.success("GitHub username saved");
+  }
+
+  async function saveWeeklySummaryRecipient() {
+    if (!user) return;
+    if (weeklySummaryRecipientEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(weeklySummaryRecipientEmail)) {
+      toast.error("That doesn't look like a valid email address.");
+      return;
+    }
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("user_settings")
+      .update({
+        weekly_summary_recipient_email: weeklySummaryRecipientEmail || null,
+        weekly_summary_recipient_name: weeklySummaryRecipientName || null,
+      } as never)
+      .eq("user_id", user.id);
+    if (error) {
+      toast.error("Couldn't save recipient.");
+      return;
+    }
+    await mutate();
+    toast.success("Recipient saved");
+  }
+
+  async function toggleWeeklySummary(enabled: boolean) {
+    if (!user) return;
+    if (enabled && !settings?.weekly_summary_recipient_email && !weeklySummaryRecipientEmail) {
+      toast.error("Add a recipient email before turning this on.");
+      return;
+    }
+    setWeeklySummaryToggling(true);
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("user_settings")
+      .update({ weekly_summary_enabled: enabled } as never)
+      .eq("user_id", user.id);
+    setWeeklySummaryToggling(false);
+    if (error) {
+      toast.error("Couldn't update weekly summary setting.");
+      return;
+    }
+    await mutate();
+    toast.success(enabled ? "Weekly summary enabled" : "Weekly summary disabled");
   }
 
   async function copyProfileLink() {
@@ -666,14 +714,79 @@ export default function SettingsPage() {
             </div>
           </div>
           {settings?.public_profile_enabled && settings?.public_profile_slug && (
-            <div className="flex items-center gap-2 rounded-md border border-border bg-surface-2 px-3 py-2">
-              <code className="text-xs flex-1 truncate text-muted">
-                /u/{settings.public_profile_slug}
-              </code>
-              <Button variant="ghost" size="sm" onClick={copyProfileLink}>
-                {linkCopied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 rounded-md border border-border bg-surface-2 px-3 py-2">
+                <code className="text-xs flex-1 truncate text-muted">
+                  /u/{settings.public_profile_slug}
+                </code>
+                <Button variant="ghost" size="sm" onClick={copyProfileLink}>
+                  {linkCopied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                </Button>
+              </div>
+              <p className="text-xs text-muted">
+                JSON API for embedding these stats elsewhere:{" "}
+                <code className="text-[11px]">/api/public/{settings.public_profile_slug}</code>
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Mail className="h-4 w-4" /> Weekly summary email
+          </CardTitle>
+          <CardDescription>
+            Every Sunday, send a recap of the week — hours logged, topics finished, and your
+            streak — to someone who&rsquo;d want to see it. Journal entries and application data are
+            never included.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="weekly-summary-toggle" className="text-sm font-normal">
+              Send weekly summary
+            </Label>
+            <Switch
+              id="weekly-summary-toggle"
+              checked={settings?.weekly_summary_enabled ?? false}
+              disabled={weeklySummaryToggling}
+              onCheckedChange={toggleWeeklySummary}
+            />
+          </div>
+          <div>
+            <Label>Recipient name (optional, used as &ldquo;Hi ___,&rdquo;)</Label>
+            <Input
+              value={weeklySummaryRecipientName}
+              onChange={(e) => setWeeklySummaryRecipientName(e.target.value)}
+              placeholder="e.g. Dad"
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label>Recipient email</Label>
+            <div className="flex gap-2 mt-1">
+              <Input
+                type="email"
+                value={weeklySummaryRecipientEmail}
+                onChange={(e) => setWeeklySummaryRecipientEmail(e.target.value)}
+                placeholder="e.g. dad@example.com"
+              />
+              <Button variant="secondary" size="sm" onClick={saveWeeklySummaryRecipient}>
+                Save
               </Button>
             </div>
+          </div>
+          {settings?.weekly_summary_last_sent_at && (
+            <p className="text-xs text-muted">
+              Last sent{" "}
+              {new Date(settings.weekly_summary_last_sent_at).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+            </p>
           )}
         </CardContent>
       </Card>

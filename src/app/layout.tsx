@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import { Toaster } from "sonner";
 import { OfflineIndicator } from "@/components/layout/offline-indicator";
+import { InstallPrompt } from "@/components/layout/install-prompt";
 import "./globals.css";
 
 // Montserrat is loaded via next/font/google, which self-hosts the font
@@ -50,6 +51,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         {children}
         <OfflineIndicator />
+        <InstallPrompt />
         <Toaster
           theme="dark"
           position="bottom-right"

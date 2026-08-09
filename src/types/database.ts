@@ -473,6 +473,10 @@ export interface UserSettings {
   display_name: string | null;
   public_profile_bio: string | null;
   github_username: string | null;
+  weekly_summary_enabled: boolean;
+  weekly_summary_recipient_email: string | null;
+  weekly_summary_recipient_name: string | null;
+  weekly_summary_last_sent_at: string | null;
   developer_mode: boolean;
   topic_locking_disabled: boolean;
   pinned_items: PinnedItem[];

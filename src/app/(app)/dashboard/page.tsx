@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { StudyHeatmap } from "@/components/dashboard/heatmap";
 import { TodaysLesson } from "@/components/dashboard/todays-lesson";
 import { DashboardTour } from "@/components/dashboard/dashboard-tour";
+import { RevisionDueWidget } from "@/components/dashboard/revision-due-widget";
 import { useTopicDayMap, getManualDayForTopic } from "@/lib/hooks/use-manual-day";
 import { useUserSettings } from "@/lib/hooks/use-user-settings";
 import { formatHours, pct, cn, localDateISO } from "@/lib/utils";
@@ -510,27 +511,34 @@ export default function DashboardPage() {
                 {missionDetailsEffectivelyOpen ? "Hide details" : "Show revision, project & DSA status"}
               </button>
               {missionDetailsEffectivelyOpen && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3">
-                  <Link href="/revision" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
-                    <AlertCircle className="h-3.5 w-3.5 text-muted shrink-0" />
-                    <span className={overdueRevisions.length > 0 ? "text-warning" : "text-info"}>
-                      {overdueRevisions.length > 0
-                        ? `${overdueRevisions.length} revision${overdueRevisions.length === 1 ? "" : "s"} overdue`
-                        : "Revisions up to date"}
-                    </span>
-                  </Link>
-                  <Link href="/projects" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
-                    <FolderGit2 className="h-3.5 w-3.5 text-muted shrink-0" />
-                    <span className="text-muted truncate">
-                      {currentProject ? currentProject.phase.title : "No project in progress"}
-                    </span>
-                  </Link>
-                  <Link href="/dsa" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
-                    <Code2 className="h-3.5 w-3.5 text-muted shrink-0" />
-                    <span className="text-muted truncate">
-                      {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems yet"}
-                    </span>
-                  </Link>
+                <div className="flex flex-col gap-3 pt-3">
+                  {overdueRevisions.length > 0 && (
+                    <RevisionDueWidget
+                      userId={user?.id ?? ""}
+                      overdueTopics={overdueRevisions}
+                      onReviewed={mutateProgress}
+                    />
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {overdueRevisions.length === 0 && (
+                      <Link href="/revision" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
+                        <AlertCircle className="h-3.5 w-3.5 text-muted shrink-0" />
+                        <span className="text-info">Revisions up to date</span>
+                      </Link>
+                    )}
+                    <Link href="/projects" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
+                      <FolderGit2 className="h-3.5 w-3.5 text-muted shrink-0" />
+                      <span className="text-muted truncate">
+                        {currentProject ? currentProject.phase.title : "No project in progress"}
+                      </span>
+                    </Link>
+                    <Link href="/dsa" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
+                      <Code2 className="h-3.5 w-3.5 text-muted shrink-0" />
+                      <span className="text-muted truncate">
+                        {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems yet"}
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>

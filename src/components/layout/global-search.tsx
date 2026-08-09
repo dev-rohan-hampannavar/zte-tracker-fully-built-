@@ -12,7 +12,8 @@ import {
   useClientSyncMilestones,
   useSkillTracks,
 } from "@/lib/hooks/use-roadmap";
-import type { ClientSyncMilestone } from "@/types/database";
+import { useDailyLogs } from "@/lib/hooks/use-daily-logs";
+import type { ClientSyncMilestone, DailyLog } from "@/types/database";
 
 // Groups whose full lists render unconditionally are fine at their real
 // sizes (phases: 21, exit points: 9, companies: 14, ClientSync: 7, projects:
@@ -36,6 +37,7 @@ export function GlobalSearch() {
   const { data: milestonesRaw } = useClientSyncMilestones();
   const milestones = (milestonesRaw ?? []) as ClientSyncMilestone[];
   const { data: skillTracks } = useSkillTracks();
+  const { data: dailyLogs } = useDailyLogs(user?.id);
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -61,6 +63,27 @@ export function GlobalSearch() {
   const visibleTopics = hasQuery ? topics : topics.slice(0, EMPTY_QUERY_PREVIEW_LIMIT);
   const visibleExercises = hasQuery ? exercises : exercises.slice(0, EMPTY_QUERY_PREVIEW_LIMIT);
   const visibleProjects = hasQuery ? stageProjects : stageProjects.slice(0, EMPTY_QUERY_PREVIEW_LIMIT);
+
+  // Journal entries only ever show once there's an actual query — unlike
+  // the other groups (which preview a capped slice with nothing typed),
+  // listing personal journal content by default would put private
+  // learned/mistakes/wins text on screen just from opening ⌘K. cmdk's
+  // built-in filtering can't search across a log's four separate text
+  // fields as one signal, so each field is folded into a single `value`
+  // string per entry and matched against the query manually here instead.
+  const matchingLogs = useMemo(() => {
+    if (!hasQuery || !dailyLogs) return [];
+    const q = query.trim().toLowerCase();
+    return dailyLogs
+      .filter((l: DailyLog) => {
+        const haystack = [l.learned, l.mistakes, l.wins, l.tomorrow_goal, l.note]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return haystack.includes(q);
+      })
+      .slice(0, 8);
+  }, [hasQuery, dailyLogs, query]);
 
   return (
     <>
@@ -255,6 +278,39 @@ export function GlobalSearch() {
                     </Command.Item>
                   ))}
                 </Command.Group>
+
+                {matchingLogs.length > 0 && (
+                  <Command.Group heading="Journal" className="text-[11px] uppercase tracking-wide text-muted px-2 py-1 mt-2">
+                    {matchingLogs.map((l) => {
+                      // Matching already happened in matchingLogs above
+                      // (manual substring check, not cmdk's filter) — the
+                      // Command.Item `value` is set to the current query
+                      // itself so cmdk's own filtering never re-excludes an
+                      // item this component already decided belongs here.
+                      const snippet = [l.wins, l.learned, l.mistakes].find(Boolean) ?? l.note ?? "";
+                      return (
+                        <Command.Item
+                          key={l.date}
+                          value={query}
+                          onSelect={() => {
+                            router.push(`/journal`);
+                            setOpen(false);
+                          }}
+                          className="flex flex-col items-start gap-0.5 rounded-md px-2 py-2 text-sm cursor-pointer aria-selected:bg-surface-2"
+                        >
+                          <span className="line-clamp-1">{snippet}</span>
+                          <span className="text-[11px] text-muted">
+                            {new Date(l.date + "T00:00:00").toLocaleDateString("en-IN", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </span>
+                        </Command.Item>
+                      );
+                    })}
+                  </Command.Group>
+                )}
               </Command.List>
             </Command>
           </div>

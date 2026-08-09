@@ -4,7 +4,9 @@ import { useMemo } from "react";
 import { useUser } from "@/lib/hooks/use-user";
 import { usePhasesWithProgress, useClientSyncMilestones, useExitLadder } from "@/lib/hooks/use-roadmap";
 import { useProjectProgress } from "@/lib/hooks/use-projects";
+import { useDailyLogs, computeStreak } from "@/lib/hooks/use-daily-logs";
 import { isOverdue } from "@/lib/revision-schedule";
+import { todayISO } from "@/lib/utils";
 import type { ClientSyncMilestone } from "@/types/database";
 
 export type NotificationKind =
@@ -12,7 +14,8 @@ export type NotificationKind =
   | "milestone_pending"
   | "ready_to_apply"
   | "project_inactive"
-  | "exit_almost_ready";
+  | "exit_almost_ready"
+  | "daily_log_missing";
 
 // Item 52 — the two thresholds the plan names but doesn't pin a number to.
 // 14 days matches this app's other "inactive" framing (streak breaks after
@@ -55,6 +58,7 @@ export function useNotifications() {
   const { data: milestonesRaw, isLoading: milestonesLoading } = useClientSyncMilestones();
   const { data: projectProgress } = useProjectProgress(user?.id);
   const { data: exitLadder, isLoading: exitLoading } = useExitLadder();
+  const { data: logs, isLoading: logsLoading } = useDailyLogs(user?.id);
 
   const milestones = useMemo(() => (milestonesRaw ?? []) as ClientSyncMilestone[], [milestonesRaw]);
 
@@ -150,11 +154,32 @@ export function useNotifications() {
       });
     }
 
+    // ---- Daily log missing (no session logged yet today) ----
+    // Only fires once there's an established pattern worth protecting — a
+    // brand-new account with zero logs ever isn't "missing" a streak, it
+    // just hasn't started, so this stays quiet until computeStreak reports
+    // at least one day logged historically (current streak > 0 means
+    // yesterday or earlier was logged, which is the case this notification
+    // actually addresses: don't let a real streak lapse).
+    if (logs) {
+      const hasLoggedToday = logs.some((l) => l.date === todayISO() && l.hours > 0);
+      const { current: currentStreak } = computeStreak(logs);
+      if (!hasLoggedToday && currentStreak > 0) {
+        result.push({
+          id: "daily-log-missing",
+          kind: "daily_log_missing",
+          title: `Log today's session to keep your ${currentStreak}-day streak`,
+          detail: "No hours logged yet today — a quick entry on the dashboard keeps it going.",
+          href: "/dashboard",
+        });
+      }
+    }
+
     return result;
-  }, [phases, milestones, projectProgress, exitLadder]);
+  }, [phases, milestones, projectProgress, exitLadder, logs]);
 
   return {
     notifications,
-    isLoading: phasesLoading || milestonesLoading || exitLoading,
+    isLoading: phasesLoading || milestonesLoading || exitLoading || logsLoading,
   };
 }

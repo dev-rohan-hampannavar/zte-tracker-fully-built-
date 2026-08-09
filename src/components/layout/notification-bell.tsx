@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Bell, AlertCircle, ListChecks, Sparkles, FolderGit2, TrendingUp } from "lucide-react";
+import { Bell, AlertCircle, ListChecks, Sparkles, FolderGit2, TrendingUp, Flame } from "lucide-react";
 import { useNotifications, type AppNotification, type NotificationKind } from "@/lib/hooks/use-notifications";
 
 const KIND_ICON: Record<NotificationKind, typeof AlertCircle> = {
@@ -11,6 +11,7 @@ const KIND_ICON: Record<NotificationKind, typeof AlertCircle> = {
   ready_to_apply: Sparkles,
   project_inactive: FolderGit2,
   exit_almost_ready: TrendingUp,
+  daily_log_missing: Flame,
 };
 
 const KIND_COLOR: Record<NotificationKind, string> = {
@@ -19,6 +20,7 @@ const KIND_COLOR: Record<NotificationKind, string> = {
   ready_to_apply: "text-success",
   project_inactive: "text-warning",
   exit_almost_ready: "text-accent",
+  daily_log_missing: "text-accent",
 };
 
 export function NotificationBell() {

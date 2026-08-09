@@ -30,5 +30,19 @@ $$;
 
 -- Re-affirm grants in case 0017 partially failed before reaching this line
 -- (e.g. if a table referenced there didn't exist yet in some environments).
+-- delete_own_account itself is also re-created here (not just granted) —
+-- confirmed missing entirely in at least one deployed environment, so
+-- 0017 must have failed partway through in that case, before ever
+-- reaching this function's own create statement.
+create or replace function public.delete_own_account()
+returns void
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  delete from auth.users where id = auth.uid();
+end;
+$$;
+
 grant execute on function public.reset_user_progress() to authenticated;
 grant execute on function public.delete_own_account() to authenticated;
