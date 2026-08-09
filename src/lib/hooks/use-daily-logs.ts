@@ -107,6 +107,32 @@ export function computeStreak(logs: DailyLog[]): { current: number; best: number
   return { current, best };
 }
 
+/**
+ * Upserts the public-safe streak summary (current/best streak, total days
+ * logged — no journal content) so the public profile page can show a
+ * consistency signal without needing any public access to daily_logs
+ * itself. Called from Dashboard whenever logs change; cheap enough to run
+ * on every load since it's a single-row upsert, not worth debouncing.
+ */
+export async function syncPublicStreakSummary(userId: string, logs: DailyLog[]) {
+  const { current, best } = computeStreak(logs);
+  const totalDaysLogged = logs.filter((l) => l.hours > 0).length;
+  const { error } = await supabase.from("public_streak_summary").upsert(
+    {
+      user_id: userId,
+      current_streak: current,
+      best_streak: best,
+      total_days_logged: totalDaysLogged,
+      updated_at: new Date().toISOString(),
+    } as never,
+    { onConflict: "user_id" }
+  );
+  // Non-critical — the public profile just shows a stale/absent streak
+  // until the next successful sync, nothing in the main app depends on
+  // this succeeding, so a failure here shouldn't surface as an error toast.
+  if (error) console.error("Failed to sync public streak summary:", error);
+}
+
 export function weeklyHours(logs: DailyLog[]): number {
   const now = new Date();
   const weekAgo = new Date(now);

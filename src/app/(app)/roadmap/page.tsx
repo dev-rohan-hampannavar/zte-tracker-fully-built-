@@ -8,6 +8,7 @@ import { useBuildInPublicStatus, upsertBuildInPublic } from "@/lib/hooks/use-pro
 import { useDeveloperMode } from "@/lib/hooks/use-developer-mode";
 import { useDisplayName } from "@/lib/hooks/use-display-name";
 import { downloadCertificate } from "@/lib/certificate";
+import { generateBuildInPublicDraft } from "@/lib/build-in-public-draft";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -937,13 +938,24 @@ export default function RoadmapPage() {
                       <div className="flex-1">
                         <p className="text-xs font-medium text-accent mb-1">Ship it — Build in Public</p>
                         <p className="text-sm text-foreground/90">{phase.build_in_public_prompt}</p>
-                        <div className="flex items-center gap-2 mt-2">
+                        <div className="flex items-center gap-2 mt-2 flex-wrap">
                           <Button
                             size="sm"
                             variant={bip?.posted ? "secondary" : "outline"}
                             onClick={() => handleBipToggle(phase.id, !bip?.posted)}
                           >
                             {bip?.posted ? "✓ Posted" : "Mark as posted"}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => {
+                              const draft = generateBuildInPublicDraft(phase, phase.capstone ?? null);
+                              navigator.clipboard.writeText(draft);
+                              toast.success("Draft post copied — paste it wherever you post.");
+                            }}
+                          >
+                            Copy draft post
                           </Button>
                           <Input
                             placeholder="Proof URL (tweet, post, etc.)"

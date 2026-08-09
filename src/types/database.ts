@@ -471,9 +471,12 @@ export interface UserSettings {
   public_profile_enabled: boolean;
   public_profile_slug: string | null;
   display_name: string | null;
+  public_profile_bio: string | null;
+  github_username: string | null;
   developer_mode: boolean;
   topic_locking_disabled: boolean;
   pinned_items: PinnedItem[];
+  dashboard_tour_seen: boolean;
   updated_at: string;
 }
 

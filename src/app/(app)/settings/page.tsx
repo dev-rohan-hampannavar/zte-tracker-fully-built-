@@ -14,6 +14,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -60,6 +61,8 @@ export default function SettingsPage() {
   const [publicToggling, setPublicToggling] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   const [displayName, setDisplayName] = useState("");
+  const [bio, setBio] = useState("");
+  const [githubUsername, setGithubUsername] = useState("");
   const [resetOpen, setResetOpen] = useState(false);
   const [resetConfirmText, setResetConfirmText] = useState("");
   const [resetting, setResetting] = useState(false);
@@ -72,6 +75,8 @@ export default function SettingsPage() {
       setGoalType(settings.weekly_goal_type);
       setGoalValue(String(settings.weekly_goal_value));
       setDisplayName(settings.display_name ?? "");
+      setBio(settings.public_profile_bio ?? "");
+      setGithubUsername(settings.github_username ?? "");
     }
   }, [settings]);
 
@@ -120,6 +125,36 @@ export default function SettingsPage() {
     }
     await mutate();
     toast.success("Display name saved");
+  }
+
+  async function saveBio() {
+    if (!user) return;
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("user_settings")
+      .update({ public_profile_bio: bio || null } as never)
+      .eq("user_id", user.id);
+    if (error) {
+      toast.error("Couldn't save bio.");
+      return;
+    }
+    await mutate();
+    toast.success("Bio saved");
+  }
+
+  async function saveGithubUsername() {
+    if (!user) return;
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("user_settings")
+      .update({ github_username: githubUsername || null } as never)
+      .eq("user_id", user.id);
+    if (error) {
+      toast.error("Couldn't save GitHub username.");
+      return;
+    }
+    await mutate();
+    toast.success("GitHub username saved");
   }
 
   async function copyProfileLink() {
@@ -571,8 +606,9 @@ export default function SettingsPage() {
             <Share2 className="h-4 w-4" /> Public profile
           </CardTitle>
           <CardDescription>
-            Share a read-only page showing completed phases, DSA stats, and shipped projects —
-            application data stays private.
+            Share a read-only page showing completed phases, DSA stats, shipped projects, your
+            build-in-public post history, and study streak — application data and journal
+            entries stay private.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
@@ -596,6 +632,35 @@ export default function SettingsPage() {
                 placeholder="e.g. Rohan K."
               />
               <Button variant="secondary" size="sm" onClick={saveDisplayName}>
+                Save
+              </Button>
+            </div>
+          </div>
+          <div>
+            <Label>Bio (shown at the top of your public profile)</Label>
+            <Textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder='e.g. "BCA grad building in public toward a full-stack role. Self-taught, shipping projects weekly."'
+              className="mt-1 min-h-20"
+              maxLength={280}
+            />
+            <div className="flex items-center justify-between mt-1">
+              <span className="text-xs text-muted">{bio.length}/280</span>
+              <Button variant="secondary" size="sm" onClick={saveBio}>
+                Save
+              </Button>
+            </div>
+          </div>
+          <div>
+            <Label>GitHub username (shows recent public activity on your profile)</Label>
+            <div className="flex gap-2 mt-1">
+              <Input
+                value={githubUsername}
+                onChange={(e) => setGithubUsername(e.target.value)}
+                placeholder="e.g. rohan-dev"
+              />
+              <Button variant="secondary" size="sm" onClick={saveGithubUsername}>
                 Save
               </Button>
             </div>
