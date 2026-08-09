@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useUser } from "@/lib/hooks/use-user";
 import { usePhasesWithProgress, useExitLadder, useRoadmapMetadata, toggleTopicComplete, applyHoursToNextTopic } from "@/lib/hooks/use-roadmap";
-import { useDailyLogs, computeStreak, weeklyHours, logStudySession } from "@/lib/hooks/use-daily-logs";
+import { useDailyLogs, computeStreak, weeklyHours, logStudySession, syncPublicStreakSummary } from "@/lib/hooks/use-daily-logs";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
 import { isOverdue } from "@/lib/revision-schedule";
 import { useCareerTracker } from "@/lib/hooks/use-career";
@@ -16,7 +16,9 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StudyHeatmap } from "@/components/dashboard/heatmap";
 import { TodaysLesson } from "@/components/dashboard/todays-lesson";
+import { DashboardTour } from "@/components/dashboard/dashboard-tour";
 import { useTopicDayMap, getManualDayForTopic } from "@/lib/hooks/use-manual-day";
+import { useUserSettings } from "@/lib/hooks/use-user-settings";
 import { formatHours, pct, cn, localDateISO } from "@/lib/utils";
 import { computePaceStatus } from "@/lib/pace";
 import { toast } from "sonner";
@@ -67,6 +69,7 @@ function RadialMiniProgress({ value }: { value: number }) {
 
 export default function DashboardPage() {
   const { user } = useUser();
+  const { data: userSettings } = useUserSettings(user?.id);
   const { phases, isLoading, mutateProgress } = usePhasesWithProgress(user?.id);
   const { data: exitLadder } = useExitLadder();
   const { data: logs, mutate: mutateLogs } = useDailyLogs(user?.id);
@@ -171,15 +174,32 @@ export default function DashboardPage() {
     if (hour < 18) return "Good afternoon";
     return "Good evening";
   }, []);
-  const firstName = useMemo(() => {
+  const firstName = (() => {
+    // Prefer the display name set in Settings (e.g. "Rohan") over deriving
+    // one from the email local-part — the latter was the only behavior
+    // before, which silently ignored whatever the user typed into
+    // Settings' display name field, making it look like saving did nothing.
+    if (userSettings?.display_name) {
+      return userSettings.display_name.split(" ")[0];
+    }
     const email = user?.email;
     if (!email) return null;
     const local = email.split("@")[0];
     return local.charAt(0).toUpperCase() + local.slice(1);
-  }, [user?.email]);
+  })();
 
   const streak = computeStreak(logs ?? []);
   const weekHours = weeklyHours(logs ?? []);
+
+  // Keeps public_streak_summary (the public-profile-safe streak signal)
+  // in sync whenever logs change — see syncPublicStreakSummary for why
+  // this is a separate table rather than exposing daily_logs publicly.
+  // Fire-and-forget: failures are logged, not surfaced, since this is a
+  // background sync unrelated to anything the user is actively doing here.
+  useEffect(() => {
+    if (!user || !logs) return;
+    syncPublicStreakSummary(user.id, logs);
+  }, [user, logs]);
 
   // "Engineering OS" panel (P7.5 item 21): the dashboard already covers
   // "continue X" (Daily Mission below, pre-existing) — these three add the
@@ -388,6 +408,10 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {user && userSettings && userSettings.dashboard_tour_seen === false && (
+        <DashboardTour userId={user.id} />
+      )}
+
       <div>
         <h1 className="text-page-title font-semibold tracking-tight">
           {greeting}{firstName ? `, ${firstName}` : ""}
