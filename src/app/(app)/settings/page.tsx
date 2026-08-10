@@ -518,6 +518,37 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader>
+          <CardTitle>Welcome tour</CardTitle>
+          <CardDescription>
+            The full-screen walkthrough of the dashboard shown the first time you signed in.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={async () => {
+              if (!user) return;
+              const supabase = createClient();
+              const { error } = await supabase
+                .from("user_settings")
+                .update({ dashboard_tour_seen: false } as never)
+                .eq("user_id", user.id);
+              if (error) {
+                toast.error("Couldn't restart the tour. Try again.");
+                return;
+              }
+              await mutate();
+              router.push("/dashboard");
+            }}
+          >
+            Replay welcome tour
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Developer mode</CardTitle>
           <CardDescription>
             Show raw internal IDs (phase, topic, stage) throughout the app, for debugging or curiosity.
