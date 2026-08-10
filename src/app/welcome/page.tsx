@@ -48,7 +48,7 @@ const features = [
   {
     icon: Flame,
     title: "Streaks and daily missions",
-    body: "Every study session gets logged. Your streak, your weekly hours, and today's next topic are always the first thing you see — no digging required.",
+    body: "Every study session gets logged. Your streak, your weekly hours, and today&apos;s next topic are always the first thing you see — no digging required.",
   },
   {
     icon: GitBranch,
@@ -192,7 +192,7 @@ export default function WelcomePage() {
             </h2>
             <p className="text-xl text-muted leading-relaxed max-w-2xl text-balance">
               Less time deciding what to do next, less time re-learning what
-              you forgot, more visible proof of how far you've actually come.
+              you forgot, more visible proof of how far you&apos;ve actually come.
             </p>
           </div>
 
@@ -230,7 +230,7 @@ export default function WelcomePage() {
                 </h3>
                 <p className="text-xl text-muted leading-relaxed">
                   No more re-deciding your plan every morning, no more losing
-                  track of what's due for revision, no more separate resume
+                  track of what&apos;s due for revision, no more separate resume
                   and interview docs that drift out of sync with reality.
                   Every hour you log, every topic you finish, and every
                   project you ship rolls straight into one number: how close
@@ -265,7 +265,7 @@ export default function WelcomePage() {
       <section className="px-6 py-20 border-t border-border">
         <div className="mx-auto max-w-2xl flex flex-col items-center text-center gap-6">
           <h2 className="text-page-title font-semibold tracking-tight text-balance">
-            Zero to Elite starts with today's next topic
+            Zero to Elite starts with today&apos;s next topic
           </h2>
           <p className="text-xl text-muted leading-relaxed">
             Sign in and your dashboard, your streak, and your next step are

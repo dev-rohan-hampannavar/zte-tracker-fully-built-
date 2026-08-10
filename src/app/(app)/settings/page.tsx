@@ -73,17 +73,25 @@ export default function SettingsPage() {
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
-    if (settings) {
-      setGoalType(settings.weekly_goal_type);
-      setGoalValue(String(settings.weekly_goal_value));
-      setDisplayName(settings.display_name ?? "");
-      setBio(settings.public_profile_bio ?? "");
-      setGithubUsername(settings.github_username ?? "");
-      setWeeklySummaryRecipientEmail(settings.weekly_summary_recipient_email ?? "");
-      setWeeklySummaryRecipientName(settings.weekly_summary_recipient_name ?? "");
-    }
-  }, [settings]);
+// Settings are loaded asynchronously and copied into local editable form state.
+// This effect intentionally initializes the form after the server data arrives.
+/* eslint-disable react-hooks/set-state-in-effect */
+useEffect(() => {
+  if (!settings) return;
+
+  setGoalType(settings.weekly_goal_type);
+  setGoalValue(String(settings.weekly_goal_value));
+  setDisplayName(settings.display_name ?? "");
+  setBio(settings.public_profile_bio ?? "");
+  setGithubUsername(settings.github_username ?? "");
+  setWeeklySummaryRecipientEmail(
+    settings.weekly_summary_recipient_email ?? ""
+  );
+  setWeeklySummaryRecipientName(
+    settings.weekly_summary_recipient_name ?? ""
+  );
+}, [settings]);
+/* eslint-enable react-hooks/set-state-in-effect */
 
   async function togglePublicProfile(enabled: boolean) {
     if (!user) return;
