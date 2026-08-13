@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Terminal, Settings, LogOut } from "lucide-react";
+import { Menu, X, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { NAV, SIDEBAR_SECTIONS } from "./sidebar";
@@ -38,8 +39,14 @@ export function MobileNav() {
     <>
       <div className="flex md:hidden items-center justify-between h-14 px-4 border-b border-border bg-surface">
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-accent-foreground">
-            <Terminal className="h-4 w-4" />
+          <div className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-md">
+            <Image
+              src="/icons/logo-mark.png"
+              alt="ZTE Tracker"
+              width={28}
+              height={28}
+              className="h-full w-full object-cover"
+            />
           </div>
           <span className="text-sm font-semibold">ZTE Tracker</span>
         </div>

@@ -122,43 +122,6 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Full-screen welcome tour (dashboard-tour.tsx) — per-step icon pop and
-   text fade/rise, replayed on every step change via a `key`-forced
-   remount so the animation isn't just a one-time mount effect. */
-@keyframes tour-icon-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(1.08);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes tour-text-in {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-tour-icon-in {
-  animation: tour-icon-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.animate-tour-text-in {
-  animation: tour-text-in 0.4s ease-out 0.08s both;
-}
-
 /* Standard motion tokens — use these instead of ad hoc transition-* utility
    combinations so hover/press/appear motion feels consistent app-wide.
    Applied across app pages, layout, and roadmap components (item #19).

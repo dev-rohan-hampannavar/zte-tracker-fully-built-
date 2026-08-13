@@ -73,25 +73,17 @@ export default function SettingsPage() {
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deleting, setDeleting] = useState(false);
 
-// Settings are loaded asynchronously and copied into local editable form state.
-// This effect intentionally initializes the form after the server data arrives.
-/* eslint-disable react-hooks/set-state-in-effect */
-useEffect(() => {
-  if (!settings) return;
-
-  setGoalType(settings.weekly_goal_type);
-  setGoalValue(String(settings.weekly_goal_value));
-  setDisplayName(settings.display_name ?? "");
-  setBio(settings.public_profile_bio ?? "");
-  setGithubUsername(settings.github_username ?? "");
-  setWeeklySummaryRecipientEmail(
-    settings.weekly_summary_recipient_email ?? ""
-  );
-  setWeeklySummaryRecipientName(
-    settings.weekly_summary_recipient_name ?? ""
-  );
-}, [settings]);
-/* eslint-enable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    if (settings) {
+      setGoalType(settings.weekly_goal_type);
+      setGoalValue(String(settings.weekly_goal_value));
+      setDisplayName(settings.display_name ?? "");
+      setBio(settings.public_profile_bio ?? "");
+      setGithubUsername(settings.github_username ?? "");
+      setWeeklySummaryRecipientEmail(settings.weekly_summary_recipient_email ?? "");
+      setWeeklySummaryRecipientName(settings.weekly_summary_recipient_name ?? "");
+    }
+  }, [settings]);
 
   async function togglePublicProfile(enabled: boolean) {
     if (!user) return;
@@ -521,37 +513,6 @@ useEffect(() => {
               <opt.icon className="h-4 w-4" /> {opt.label}
             </Button>
           ))}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Welcome tour</CardTitle>
-          <CardDescription>
-            The full-screen walkthrough of the dashboard shown the first time you signed in.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={async () => {
-              if (!user) return;
-              const supabase = createClient();
-              const { error } = await supabase
-                .from("user_settings")
-                .update({ dashboard_tour_seen: false } as never)
-                .eq("user_id", user.id);
-              if (error) {
-                toast.error("Couldn't restart the tour. Try again.");
-                return;
-              }
-              await mutate();
-              router.push("/dashboard");
-            }}
-          >
-            Replay welcome tour
-          </Button>
         </CardContent>
       </Card>
 
