@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import {
-  Terminal,
   ArrowRight,
   Map,
   Code2,
@@ -86,8 +86,14 @@ export function LandingPage() {
       <header className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-accent-foreground shadow-sm shadow-accent/30">
-              <Terminal className="h-4 w-4" />
+            <div className="flex h-7 w-7 items-center justify-center">
+              <Image
+                src="/icons/logo-mark.png"
+                alt="ZTE Tracker"
+                width={28}
+                height={28}
+                className="h-7 w-7 rounded-lg object-contain"
+              />
             </div>
             <span className="text-sm font-semibold tracking-tight">ZTE Tracker</span>
           </div>

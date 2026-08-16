@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -14,7 +15,6 @@ import {
   RotateCcw,
   BookOpen,
   Settings,
-  Terminal,
   LogOut,
   Building2,
   Layers,
@@ -134,8 +134,14 @@ export function Sidebar({ className }: { className?: string }) {
       )}
     >
       <div className="flex items-center gap-2 px-4 h-14 border-b border-border overflow-hidden">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground shadow-sm shadow-accent/30">
-          <Terminal className="h-4 w-4" />
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center">
+          <Image
+            src="/icons/logo-mark.png"
+            alt="ZTE Tracker"
+            width={28}
+            height={28}
+            className="h-7 w-7 rounded-lg object-contain"
+          />
         </div>
         <span
           className={cn(

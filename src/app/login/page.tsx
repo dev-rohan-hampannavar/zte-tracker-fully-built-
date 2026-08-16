@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, Suspense } from "react";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Terminal, Loader2, GitBranch, Radar, Repeat, Layers } from "lucide-react";
+import { Loader2, GitBranch, Radar, Repeat, Layers } from "lucide-react";
 
 // Sign-in pitch — my own framing of what this tool is and why it's
 // different, deliberately NOT lifted from Orientation/WhyThisWorks/
@@ -120,8 +121,14 @@ function LoginForm() {
         <div className="flex flex-col gap-6 order-2 lg:order-1">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-accent text-accent-foreground">
-                <Terminal className="h-5 w-5" />
+              <div className="flex h-9 w-9 items-center justify-center">
+                <Image
+                  src="/icons/logo-mark.png"
+                  alt="ZTE Tracker"
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 rounded-md object-contain"
+                />
               </div>
               <span className="text-lg font-semibold tracking-tight">ZTE Tracker</span>
             </div>

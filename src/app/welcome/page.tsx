@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,7 +14,6 @@ import {
   useNavigationNotes,
 } from "@/lib/hooks/use-roadmap";
 import {
-  Terminal,
   ArrowRight,
   ArrowLeft,
   Compass,
@@ -217,8 +217,14 @@ export default function WelcomePage() {
     <div className="min-h-full flex flex-col items-center justify-center px-6 py-12 bg-background">
       <div className="w-full max-w-lg flex flex-col gap-8">
         <div className="flex items-center gap-2 justify-center">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-accent-foreground">
-            <Terminal className="h-4 w-4" />
+          <div className="flex h-8 w-8 items-center justify-center">
+            <Image
+              src="/icons/logo-mark.png"
+              alt="ZTE Tracker"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-md object-contain"
+            />
           </div>
           <span className="text-base font-semibold tracking-tight">ZTE Tracker</span>
         </div>

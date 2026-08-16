@@ -1,0 +1,17 @@
+ public/android-chrome-192x192.png       | Bin [31m29710[m -> [32m14232[m bytes
+ public/android-chrome-512x512.png       | Bin [31m107225[m -> [32m46306[m bytes
+ public/apple-touch-icon.png             | Bin [31m26838[m -> [32m13573[m bytes
+ public/favicon-16x16.png                | Bin [31m692[m -> [32m651[m bytes
+ public/favicon-32x32.png                | Bin [31m1803[m -> [32m1499[m bytes
+ public/favicon.ico                      | Bin [31m15406[m -> [32m673[m bytes
+ public/icons/icon-192.png               | Bin [31m450[m -> [32m14232[m bytes
+ public/icons/icon-512.png               | Bin [31m1819[m -> [32m46306[m bytes
+ public/icons/logo-mark.png              | Bin [31m3308[m -> [32m151815[m bytes
+ public/site.webmanifest                 |   2 [32m+[m[31m-[m
+ src/app/layout.tsx                      |  10 [32m++++++++++[m
+ src/app/login/page.tsx                  |  13 [32m++++++++++[m[31m---[m
+ src/app/welcome/page.tsx                |  12 [32m+++++++++[m[31m---[m
+ src/components/landing/landing-page.tsx |  12 [32m+++++++++[m[31m---[m
+ src/components/layout/mobile-nav.tsx    |  13 [32m++++++++++[m[31m---[m
+ src/components/layout/sidebar.tsx       |  12 [32m+++++++++[m[31m---[m
+ 16 files changed, 58 insertions(+), 16 deletions(-)
