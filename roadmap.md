@@ -1,6 +1,6 @@
 
 
-|  — A SELF-STUDY ENGINEERING CURRICULUM — ZERO TO ELITE THE COMPLETE ENGINEERING ROADMAP *From Beginner to Job-Ready Full-Stack Engineer* 290 TOPICS 19 PHASES 3034 REALISTIC HOURS \~18 MONTHS AT 40 HOURS / WEEK *Originally stated as 2,700h — see Part III for the full recalculation* |
+|  — A SELF-STUDY ENGINEERING CURRICULUM — ZERO TO ELITE THE COMPLETE ENGINEERING ROADMAP *From Beginner to Job-Ready Full-Stack Engineer* 290 TOPICS 20 PHASES 3034 REALISTIC HOURS \~18 MONTHS AT 40 HOURS / WEEK *Originally stated as 2,700h — see Part III for the full recalculation* |
 | :---: |
 
 # **Table of Contents**
@@ -39,7 +39,7 @@
 
 [Phase Checklist — Tick Sheet	30](#bookmark=id.za64ona940r0)
 
-[**Part VI — The 19 Phases	31**](#bookmark=id.h6e4ekeidqzd)
+[**Part VI — The 20 Phases	31**](#bookmark=id.h6e4ekeidqzd)
 
 [Who Is This For?	31](#bookmark=id.wwh9defat3qf)
 
@@ -48,18 +48,6 @@
 [How to Build in Public	32](#bookmark=id.esok17hca93g)
 
 [Summary: Quick Start Checklist	33](#bookmark=id.t0jr92s2t06y)
-
-[**2,700-Hour Plan — Full Distribution	39**](#bookmark=id.24e0lab38g9w)
-
-[Methodology	39](#bookmark=id.fxnc3yhkrfb1)
-
-[Headline Numbers	39](#bookmark=id.bf2jufb8l3nl)
-
-[Timeline by Weekly Commitment	40](#bookmark=id.35tbuendfynd)
-
-[Daily Schedule — 85 hrs/wk Reference	40](#bookmark=id.lj0i96lgz4ah)
-
-[Master Phase Index	41](#bookmark=id.rn4tiyevk6xr)
 
 [**Phase 01 — Developer Environment & Foundations	42**](#bookmark=id.sbsefson84a6)
 
@@ -1259,7 +1247,7 @@
 
 **What This Document Is**
 
-This is a 16-month, 290-topic, phase-based software engineering curriculum totaling 2700 hours, designed to take you from a beginner to a job-ready full-stack engineer earning ₹35-50 LPA. It's structured as a self-study roadmap with built-in "Exit Points" — specific milestones where you're ready to start applying for jobs at different salary levels.
+This is a ~17.5-month, 290-topic, phase-based software engineering curriculum totaling 3034 realistic hours, designed to take you from a beginner to a job-ready full-stack engineer — with salaries at each Exit Point ranging ₹6–10 LPA at the earliest exit up to ₹35–50 LPA at the final one. It's structured as a self-study roadmap with built-in "Exit Points" — specific milestones where you're ready to start applying for jobs at different salary levels.
 
 ## 
 
@@ -1313,7 +1301,7 @@ If you follow it consistently, you will have a portfolio, a GitHub history, and 
 
 **WHY THIS MATTERS MORE THAN YOUR DEGREE**
 
-A recruiter or hiring manager cannot verify "I know React." They can verify a GitHub repo with real commit history, a deployed URL, a green CI badge, and a dev.to post that explains a real decision you made. Visibility isn't vanity here — it's the only evidence a stranger can check in 90 seconds. Silence is the default; everyone in this roadmap is building the same 19 phases. The difference between two people with identical skills is which one has proof.
+A recruiter or hiring manager cannot verify "I know React." They can verify a GitHub repo with real commit history, a deployed URL, a green CI badge, and a dev.to post that explains a real decision you made. Visibility isn't vanity here — it's the only evidence a stranger can check in 90 seconds. Silence is the default; everyone in this roadmap is building the same 20 phases. The difference between two people with identical skills is which one has proof.
 
 **GITHUB**
 
@@ -1367,7 +1355,7 @@ A recruiter or hiring manager cannot verify "I know React." They can verify a Gi
 
 **CRITICAL ADVICE FROM THE DOCUMENT:**
 
-"The gap between Exit 3 and Exit E is not technical — it's visibility and credibility. If you've been posting on dev.to, building in public, and engaging with the community throughout the 16 months, Exit E is a natural inbound moment. If you've done the curriculum silently with no public presence, the salary range is the same but you'll have to work harder." Build in public. Document your decisions. Ship consistently. Apply early (Exit A/B/1), not just at the end.
+"The gap between Exit 3 and Exit E is not technical — it's visibility and credibility. If you've been posting on dev.to, building in public, and engaging with the community throughout the 17 months, Exit E is a natural inbound moment. If you've done the curriculum silently with no public presence, the salary range is the same but you'll have to work harder." Build in public. Document your decisions. Ship consistently. Apply early (Exit A/B/1), not just at the end.
 
 **STEP 1**
 
@@ -1377,16 +1365,16 @@ Pick a weekly commitment and stick with it.
 
 | WEEKLY HOURS | REALISTIC TIMELINE | BEST FIT FOR |
 | :---- | :---- | :---- |
-| 85 hrs/week | \~7.3 months | All-in sprint, no other commitments |
-| 70 hrs/week | \~9 months | No job, no college |
-| 40 hrs/week | \~16 months | Serious part-time |
-| 40 → 70 hrs/week (ramp after 6 mo) | \~11.5 months | Start part-time, ramp later |
-| 30 hrs/week | \~21 months | Full-time job \+ study |
-| 25 hrs/week | \~25 months (\~2.1 yrs) | Casual evenings/weekends |
+| 85 hrs/week | ~8.2 months | All-in sprint, no other commitments |
+| 70 hrs/week | ~10.0 months | No job, no college |
+| 40 hrs/week | ~17.5 months | Serious part-time |
+| 40 → 70 hrs/week (ramp after 6 mo) | ~12.6 months | Start part-time, ramp later |
+| 30 hrs/week | ~23.4 months | Full-time job \+ study |
+| 25 hrs/week | ~28.0 months (~2.3 yrs) | Casual evenings/weekends |
 
-*Note: every month figure in this document — in this table, the Exit Point Ladder, the phase-by-phase breakdown, and the cover page — is calculated on a 40 hrs/week baseline (2,700 total hours ÷ 40 hrs/week ≈ 16 months). Rows above at a different weekly pace are converted from that same 2,700-hour total; your actual timeline scales directly with the hours/week you put in.*
+*Note: every month figure in this document — in this table, the Exit Point Ladder, the phase-by-phase breakdown, and the cover page — is calculated on a 40 hrs/week baseline against the realistic 3034-hour total (≈17.5 months). Rows above at a different weekly pace are converted from that same 3034-hour total; your actual timeline scales directly with the hours/week you put in.*
 
-*At 30 hrs/week, \~780 hours clear in 6 months — that lands mid-Phase 05 (Backend+DB+Auth), not Exit Point ★1. Exit ★1 needs 1,290 cumulative hours (end of Phase 08, \~32 weeks / \~7.4 months at 40 hrs/week). If the target is a December 2026 offer, the lever is weekly hours, not phase order.*
+*At 30 hrs/week, \~780 hours clear in 6 months — that lands mid-Phase 05 (Backend+DB+Auth), not Exit Point ★1. Exit ★1 needs 1,637 cumulative hours (end of Phase 08, ~39 weeks / ~9.5 months at 40 hrs/week). If the target is a December 2026 offer, the lever is weekly hours, not phase order.*
 
 **STEP 2**
 
@@ -1396,14 +1384,14 @@ Don't wait until the end to apply — each exit point is a real job-readiness mi
 
 | EXIT | AFTER PHASE | MONTH (@40 HRS/WK) | JOB LEVEL | SALARY RANGE (INDIA) |
 | :---- | :---- | :---- | :---- | :---- |
-| A | Phase 06 | \~6.1 | Junior Full-Stack (deployed) | ₹6–10 LPA |
-| B | Phase 07 | \~6.5 | Junior-to-Mid (API-literate) | ₹8–12 LPA |
-| ★1 | Phase 08 | \~7.4 | Junior-to-Mid (interview-ready \+ DSA) | ₹8–15 LPA |
-| C | Phase 10 | \~9.0 | Mid (production-grade \+ observability) | ₹12–18 LPA |
-| ★2 | Phase 11 | \~9.9 | Mid-Level (real-time \+ search) | ₹15–25 LPA |
-| D | Phase 12 | \~10.9 | Mid-Senior (AI-capable) | ₹20–30 LPA |
-| 3 | Phase 17 | \~14.4 | Senior (distributed systems \+ infra) | ₹25–40 LPA |
-| E | Phase 19 | \~15.6 | Complete Profile | ₹35–50 LPA |
+| A | Phase 06 | ~7.1 | Junior Full-Stack (deployed) | ₹6–10 LPA |
+| B | Phase 07 | ~7.5 | Junior-to-Mid (API-literate) | ₹8–12 LPA |
+| ★1 | Phase 08 | ~9.5 | Junior-to-Mid (interview-ready \+ DSA) | ₹8–15 LPA |
+| C | Phase 10 | ~10.6 | Mid (production-grade \+ observability) | ₹12–18 LPA |
+| ★2 | Phase 11 | ~11.6 | Mid-Level (real-time \+ search) | ₹15–25 LPA |
+| D | Phase 12 | ~12.8 | Mid-Senior (AI-capable) | ₹20–30 LPA |
+| 3 | Phase 17 | ~16.4 | Senior (distributed systems \+ infra) | ₹25–40 LPA |
+| E | Phase 19 | ~16.9 | Complete Profile | ₹35–50 LPA |
 
 **KEY INSIGHT**
 
@@ -1411,7 +1399,7 @@ Apply at Exit A, B, or ★1 — don't wait for the end.
 
 **STEP 3**
 
-**The 19 Phases**
+**The 20 Phases**
 
 **Phase 01–01b — Developer Environment & TypeScript Mastery**
 
@@ -1605,7 +1593,7 @@ Staff/Principal Engineer, Founding Engineer roles, global remote
 
 **HIGHLIGHTS:**
 
-Published npm package, ADRs, DORA metrics, 16 months of public learning
+Published npm package, ADRs, DORA metrics, 17 months of public learning
 
 **STEP 4**
 
@@ -1664,31 +1652,31 @@ Build ClientSync — the core full-stack portfolio project referenced throughout
 
 ## **▌ Master Phase Table**
 
-*All 19 phases at a glance — weeks, header hours (as originally stated), and recalculated realistic hours (higher-side, bottom-up — see methodology below).*
+*All 20 phases at a glance — weeks, header hours (as originally stated), and recalculated realistic hours (higher-side, bottom-up — see methodology below).*
 
 | PHASE | FOCUS | WEEKS | HEADER HOURS | REALISTIC HOURS | BAND | TRACK |
 | :---- | :---- | :---- | :---- | :---- | :---- | :---- |
 | 01 | Developer Environment & Foundations | 1–5 | 123 | 185 | Foundation | Frontend Core |
 | 01b | TypeScript Mastery | 1–2 (concurrent) | 72 | 80 | Foundation | Frontend Core |
-| 02 | React \+ Next.js Core | 6–9 | 146 | 213 | Foundation | Frontend Core |
-| 03 | UI System & Styling | 10–12 | 141 | 135 | Foundation | Frontend Core |
-| 04 | State, Data Fetching & Advanced React | 13–16 | 169 | 153 | Core | Frontend Core |
-| 05 | Backend \+ Database \+ Auth | 17–22 | 229 | 314 | Core | Backend |
-| 06 | Testing \+ CI/CD \+ Deployment | 23–27 | 182 | 155 | Core | Infra & DevOps |
-| 06b | React Native (Mobile) — Optional | concurrent w/ 07 | — | 111 | Core | Mobile (Optional) |
-| 07 | API Documentation & Developer Tooling | 28 | 68 | 71 | Core | Backend |
-| 08 | DSA & Interview Preparation | 29–32 | 160 | 331 | Core | Interview Prep |
-| 09 | Caching \+ Email \+ Payments | 33–34 | 86 | 98 | Advanced | Backend |
-| 10 | Monitoring \+ Product Analytics | 35–39 | 179 | 103 | Advanced | Infra & DevOps |
-| 11 | Real-Time \+ Search \+ PostgreSQL Internals | 40–43 | 167 | 164 | Advanced | Backend |
-| 12 | AI/RAG \+ Production AI Patterns | 44–47 | 172 | 207 | Advanced | AI/ML |
-| 13 | Advanced Browser APIs \+ Collaboration | 48–51 | 152 | 137 | Advanced | Frontend Core |
-| 14 | Load Testing \+ Security Deep Dive | 52–54 | 119 | 89 | Advanced | Infra & DevOps |
-| 15 | Build Tooling \+ CSS-in-JS | 55–56 | 70 | 44 | Advanced | Frontend Core |
-| 16 | Infrastructure | 57–58 | 100 | 175 | Expert | Infra & DevOps |
-| 17 | Architectural Patterns | 59–62 | 161 | 178 | Expert | Backend |
-| 18 | Engineering Craft \+ Package Publishing | 63–66 | 136 | 62 | Expert | Career & Craft |
-| 19 | Career & Community | 67–68 | 68 | 29 | Expert | Career & Craft |
+| 02 | React \+ Next.js Core | 6–10 | 146 | 213 | Foundation | Frontend Core |
+| 03 | UI System & Styling | 11–13 | 141 | 135 | Foundation | Frontend Core |
+| 04 | State, Data Fetching & Advanced React | 14–17 | 169 | 153 | Core | Frontend Core |
+| 05 | Backend \+ Database \+ Auth | 18–25 | 229 | 314 | Core | Backend |
+| 06 | Testing \+ CI/CD \+ Deployment | 26–29 | 182 | 155 | Core | Infra & DevOps |
+| 06b | React Native (Mobile) | concurrent w/ 07 | — | 111 | Core | Mobile |
+| 07 | API Documentation & Developer Tooling | 30–31 | 68 | 71 | Core | Backend |
+| 08 | DSA & Interview Preparation | 32–39 | 160 | 331 | Core | Interview Prep |
+| 09 | Caching \+ Email \+ Payments | 40–41 | 86 | 98 | Advanced | Backend |
+| 10 | Monitoring \+ Product Analytics | 42–44 | 179 | 103 | Advanced | Infra & DevOps |
+| 11 | Real-Time \+ Search \+ PostgreSQL Internals | 45–48 | 167 | 164 | Advanced | Backend |
+| 12 | AI/RAG \+ Production AI Patterns | 49–53 | 172 | 207 | Advanced | AI/ML |
+| 13 | Advanced Browser APIs \+ Collaboration | 54–57 | 152 | 137 | Advanced | Frontend Core |
+| 14 | Load Testing \+ Security Deep Dive | 58–59 | 119 | 89 | Advanced | Infra & DevOps |
+| 15 | Build Tooling \+ CSS-in-JS | 60 | 70 | 44 | Advanced | Frontend Core |
+| 16 | Infrastructure | 61–64 | 100 | 175 | Expert | Infra & DevOps |
+| 17 | Architectural Patterns | 65–69 | 161 | 178 | Expert | Backend |
+| 18 | Engineering Craft \+ Package Publishing | 70 | 136 | 62 | Expert | Career & Craft |
+| 19 | Career & Community | 71 | 68 | 29 | Expert | Career & Craft |
 
 ## **▌ Realistic Hours — Methodology & Recalculation**
 
@@ -1721,7 +1709,7 @@ Build ClientSync — the core full-stack portfolio project referenced throughout
 | 18 | 47h | 0h | 2h | 13h | **62h** |
 | 19 | 25h | 2h | 2h | 0h | **29h** |
 
-| Revised Program Total Original stated total (cover page, source document): 2,700 hours Raw bottom-up sum of source table columns (unbuffered): 2,461 hours Realistic total after higher-side buffer (this document): 3034 hours Net change from stated total: \+334 hours (+12%) |
+| Revised Program Total   Realistic total (Learn + Problems + Project + ClientSync, buffered): **3034 hours** — see Corrections & Discrepancies Found for a note on the unbuffered raw-sum figure that does not reconcile against this table. |
 | :---- |
 
 At 40 hrs/week, 3034 hours is **\~76 weeks (\~17.5 months)** — roughly 8 weeks longer than the original 2,700-hour plan. At 70 hrs/week (no job, no college), that's **\~43 weeks (\~10.0 months)**.
@@ -1732,15 +1720,15 @@ At 40 hrs/week, 3034 hours is **\~76 weeks (\~17.5 months)** — roughly 8 weeks
 
 | EXIT | AFTER PHASE | MONTH (@40 hrs/wk) | JOB LEVEL | SALARY RANGE (INDIA) |
 | :---- | :---- | :---- | :---- | :---- |
-| A | 06 | \~6.1 | Junior Full-Stack | ₹6–10 LPA |
-| A2 | 06b | optional branch | Mobile-Capable Add-On | ₹8–12 LPA |
-| B | 07 | \~6.5 | Junior-to-Mid Full-Stack | ₹8–12 LPA |
-| ★1 | 08 | \~7.4 | Interview-Ready Junior-to-Mid | ₹8–15 LPA |
-| C | 10 | \~9.0 | Mid Full-Stack (Production-Ready) | ₹12–18 LPA |
-| ★2 | 11 | \~9.9 | Mid-Level Full-Stack | ₹15–25 LPA |
-| D | 12 | \~10.9 | AI-Capable Mid-Senior | ₹20–30 LPA |
-| 3 | 17 | \~14.4 | Senior Full-Stack | ₹25–40 LPA |
-| E | 19 | \~15.6 | Complete Profile | ₹35–50 LPA |
+| A | 06 | \~7.1 | Junior Full-Stack | ₹6–10 LPA |
+| A2 | 06b | concurrent branch | Mobile-Capable Add-On | ₹8–12 LPA |
+| B | 07 | \~7.5 | Junior-to-Mid Full-Stack | ₹8–12 LPA |
+| ★1 | 08 | \~9.5 | Interview-Ready Junior-to-Mid | ₹8–15 LPA |
+| C | 10 | \~10.6 | Mid Full-Stack (Production-Ready) | ₹12–18 LPA |
+| ★2 | 11 | \~11.6 | Mid-Level Full-Stack | ₹15–25 LPA |
+| D | 12 | \~12.8 | AI-Capable Mid-Senior | ₹20–30 LPA |
+| 3 | 17 | \~16.4 | Senior Full-Stack | ₹25–40 LPA |
+| E | 19 | \~16.9 | Complete Profile | ₹35–50 LPA |
 
 | Exit A — Junior Full-Stack Target: Early-stage startups, dev agencies Highlights: Live URL, green CI badge, Docker deployment |
 | :---- |
@@ -1766,12 +1754,12 @@ At 40 hrs/week, 3034 hours is **\~76 weeks (\~17.5 months)** — roughly 8 weeks
 | Exit 3 — Senior Full-Stack Target: Late-stage unicorns, FAANG India, high-growth scale-ups Highlights: Kubernetes, Terraform, distributed systems patterns |
 | :---- |
 
-| Exit E — Complete Profile Target: Staff/Principal Engineer, Founding Engineer roles, global remote Highlights: Published npm package, ADRs, DORA metrics, 16 months of public learning |
+| Exit E — Complete Profile Target: Staff/Principal Engineer, Founding Engineer roles, global remote Highlights: Published npm package, ADRs, DORA metrics, 17 months of public learning |
 | :---- |
 
 ## **▌ Difficulty Ramp**
 
-*The same 19 phases, grouped by how advanced the material gets.*
+*The same 20 phases, grouped by how advanced the material gets.*
 
 **FOUNDATION**
 
@@ -1791,7 +1779,7 @@ At 40 hrs/week, 3034 hours is **\~76 weeks (\~17.5 months)** — roughly 8 weeks
 
 * 06 — Testing \+ CI/CD \+ Deployment
 
-* 06b — React Native (Mobile) — Optional
+* 06b — React Native (Mobile)
 
 * 07 — API Documentation & Developer Tooling
 
@@ -1904,7 +1892,7 @@ Phase 08 (DSA & Interview Preparation) is the single highest-leverage exit gate 
 
 The smallest subset of phases that reaches the first real exit point (Exit A, Phase 06\) fastest, per the document’s own Quick Start Checklist.
 
-* Phases 01, 01b, 02, 03, 04, 05, 06 — in that order — reach Exit A at \~6.1 months (@40 hrs/wk).
+* Phases 01, 01b, 02, 03, 04, 05, 06 — in that order — reach Exit A at ~7.1 months (@40 hrs/wk).
 
 * Everything from Phase 07 onward extends the profile toward higher exits (B, ★ 1, C, ★ 2, D, 3, E) — not required to start applying.
 
@@ -1923,7 +1911,7 @@ The smallest subset of phases that reaches the first real exit point (Exit A, Ph
 | 4 | 04 | State, Data Fetching & Advanced React | 153h |
 | 4–6 | 05 | Backend \+ Database \+ Auth | 314h |
 | 6–7 | 06 | Testing \+ CI/CD \+ Deployment | 155h |
-| — | 06b | React Native (Mobile) — Optional | 111h |
+| — | 06b | React Native (Mobile) | 111h |
 | 7 | 07 | API Documentation & Developer Tooling | 71h |
 | 7–8 | 08 | DSA & Interview Preparation | 331h |
 | 8–9 | 09 | Caching \+ Email \+ Payments | 98h |
@@ -1956,7 +1944,7 @@ The smallest subset of phases that reaches the first real exit point (Exit A, Ph
 
 * ☐ Phase 06 — Testing \+ CI/CD \+ Deployment  (155h realistic, weeks 23–27)
 
-* ☐ Phase 06b — React Native (Mobile) — Optional  (111h realistic, weeks concurrent w/ 07\)
+* ☐ Phase 06b — React Native (Mobile)  (111h realistic, weeks concurrent w/ 07\)
 
 * ☐ Phase 07 — API Documentation & Developer Tooling  (71h realistic, weeks 28\)
 
@@ -1984,7 +1972,7 @@ The smallest subset of phases that reaches the first real exit point (Exit A, Ph
 
 * ☐ Phase 19 — Career & Community  (29h realistic, weeks 67–68)
 
-# **Part VI — The 19 Phases**
+# **Part VI — The 20 Phases**
 
 *Full topic-by-topic detail, in original dependency order. This is the reference layer everything above points to.*
 
@@ -1994,15 +1982,15 @@ The smallest subset of phases that reaches the first real exit point (Exit A, Ph
 
 *Phase-wise Topic Index*
 
-**290**  TOPICS   ·   **19**  PHASES   ·   **2700**  HOURS
+**290**  TOPICS   ·   **20**  PHASES   ·   **3034**  HOURS
 
-\~16 MONTHS AT 40 HOURS / WEEK
+~17.5 MONTHS AT 40 HOURS / WEEK
 
 **OVERVIEW**
 
 **What This Document Is**
 
-This is a 16-month, 290-topic, phase-based software engineering curriculum totaling 2700 hours, designed to take you from a beginner to a job-ready full-stack engineer earning ₹35-50 LPA. It's structured as a self-study roadmap with built-in "Exit Points" — specific milestones where you're ready to start applying for jobs at different salary levels.
+This is a ~17.5-month, 290-topic, phase-based software engineering curriculum totaling 3034 realistic hours, designed to take you from a beginner to a job-ready full-stack engineer — with salaries at each Exit Point ranging ₹6–10 LPA at the earliest exit up to ₹35–50 LPA at the final one. It's structured as a self-study roadmap with built-in "Exit Points" — specific milestones where you're ready to start applying for jobs at different salary levels.
 
 ## **▌** 
 
@@ -2056,7 +2044,7 @@ If you follow it consistently, you will have a portfolio, a GitHub history, and 
 
 **WHY THIS MATTERS MORE THAN YOUR DEGREE**
 
-A recruiter or hiring manager cannot verify "I know React." They can verify a GitHub repo with real commit history, a deployed URL, a green CI badge, and a dev.to post that explains a real decision you made. Visibility isn't vanity here — it's the only evidence a stranger can check in 90 seconds. Silence is the default; everyone in this roadmap is building the same 19 phases. The difference between two people with identical skills is which one has proof.
+A recruiter or hiring manager cannot verify "I know React." They can verify a GitHub repo with real commit history, a deployed URL, a green CI badge, and a dev.to post that explains a real decision you made. Visibility isn't vanity here — it's the only evidence a stranger can check in 90 seconds. Silence is the default; everyone in this roadmap is building the same 20 phases. The difference between two people with identical skills is which one has proof.
 
 **GITHUB**
 
@@ -2110,7 +2098,7 @@ A recruiter or hiring manager cannot verify "I know React." They can verify a Gi
 
 **CRITICAL ADVICE FROM THE DOCUMENT:**
 
-"The gap between Exit 3 and Exit E is not technical — it's visibility and credibility. If you've been posting on dev.to, building in public, and engaging with the community throughout the 16 months, Exit E is a natural inbound moment. If you've done the curriculum silently with no public presence, the salary range is the same but you'll have to work harder." Build in public. Document your decisions. Ship consistently. Apply early (Exit A/B/1), not just at the end.
+"The gap between Exit 3 and Exit E is not technical — it's visibility and credibility. If you've been posting on dev.to, building in public, and engaging with the community throughout the 17 months, Exit E is a natural inbound moment. If you've done the curriculum silently with no public presence, the salary range is the same but you'll have to work harder." Build in public. Document your decisions. Ship consistently. Apply early (Exit A/B/1), not just at the end.
 
 **STEP 1**
 
@@ -2120,16 +2108,16 @@ Pick a weekly commitment and stick with it.
 
 | WEEKLY HOURS | REALISTIC TIMELINE | BEST FIT FOR |
 | :---- | :---- | :---- |
-| 85 hrs/week | \~7.3 months | All-in sprint, no other commitments |
-| 70 hrs/week | \~9 months | No job, no college |
-| 40 hrs/week | \~16 months | Serious part-time |
-| 40 → 70 hrs/week (ramp after 6 mo) | \~11.5 months | Start part-time, ramp later |
-| 30 hrs/week | \~21 months | Full-time job \+ study |
-| 25 hrs/week | \~25 months (\~2.1 yrs) | Casual evenings/weekends |
+| 85 hrs/week | ~8.2 months | All-in sprint, no other commitments |
+| 70 hrs/week | ~10.0 months | No job, no college |
+| 40 hrs/week | ~17.5 months | Serious part-time |
+| 40 → 70 hrs/week (ramp after 6 mo) | ~12.6 months | Start part-time, ramp later |
+| 30 hrs/week | ~23.4 months | Full-time job \+ study |
+| 25 hrs/week | ~28.0 months (~2.3 yrs) | Casual evenings/weekends |
 
-*Note: every month figure in this document — in this table, the Exit Point Ladder, the phase-by-phase breakdown, and the cover page — is calculated on a 40 hrs/week baseline (2,700 total hours ÷ 40 hrs/week ≈ 16 months). Rows above at a different weekly pace are converted from that same 2,700-hour total; your actual timeline scales directly with the hours/week you put in.*
+*Note: every month figure in this document — in this table, the Exit Point Ladder, the phase-by-phase breakdown, and the cover page — is calculated on a 40 hrs/week baseline against the realistic 3034-hour total (≈17.5 months). Rows above at a different weekly pace are converted from that same 3034-hour total; your actual timeline scales directly with the hours/week you put in.*
 
-*At 30 hrs/week, \~780 hours clear in 6 months — that lands mid-Phase 05 (Backend+DB+Auth), not Exit Point ★1. Exit ★1 needs 1,290 cumulative hours (end of Phase 08, \~32 weeks / \~7.4 months at 40 hrs/week). If the target is a December 2026 offer, the lever is weekly hours, not phase order.*
+*At 30 hrs/week, \~780 hours clear in 6 months — that lands mid-Phase 05 (Backend+DB+Auth), not Exit Point ★1. Exit ★1 needs 1,637 cumulative hours (end of Phase 08, ~39 weeks / ~9.5 months at 40 hrs/week). If the target is a December 2026 offer, the lever is weekly hours, not phase order.*
 
 **STEP 2**
 
@@ -2139,14 +2127,14 @@ Don't wait until the end to apply — each exit point is a real job-readiness mi
 
 | EXIT | AFTER PHASE | MONTH (@40 HRS/WK) | JOB LEVEL | SALARY RANGE (INDIA) |
 | :---- | :---- | :---- | :---- | :---- |
-| A | Phase 06 | \~6.1 | Junior Full-Stack (deployed) | ₹6–10 LPA |
-| B | Phase 07 | \~6.5 | Junior-to-Mid (API-literate) | ₹8–12 LPA |
-| ★1 | Phase 08 | \~7.4 | Junior-to-Mid (interview-ready \+ DSA) | ₹8–15 LPA |
-| C | Phase 10 | \~9.0 | Mid (production-grade \+ observability) | ₹12–18 LPA |
-| ★2 | Phase 11 | \~9.9 | Mid-Level (real-time \+ search) | ₹15–25 LPA |
-| D | Phase 12 | \~10.9 | Mid-Senior (AI-capable) | ₹20–30 LPA |
-| 3 | Phase 17 | \~14.4 | Senior (distributed systems \+ infra) | ₹25–40 LPA |
-| E | Phase 19 | \~15.6 | Complete Profile | ₹35–50 LPA |
+| A | Phase 06 | ~7.1 | Junior Full-Stack (deployed) | ₹6–10 LPA |
+| B | Phase 07 | ~7.5 | Junior-to-Mid (API-literate) | ₹8–12 LPA |
+| ★1 | Phase 08 | ~9.5 | Junior-to-Mid (interview-ready \+ DSA) | ₹8–15 LPA |
+| C | Phase 10 | ~10.6 | Mid (production-grade \+ observability) | ₹12–18 LPA |
+| ★2 | Phase 11 | ~11.6 | Mid-Level (real-time \+ search) | ₹15–25 LPA |
+| D | Phase 12 | ~12.8 | Mid-Senior (AI-capable) | ₹20–30 LPA |
+| 3 | Phase 17 | ~16.4 | Senior (distributed systems \+ infra) | ₹25–40 LPA |
+| E | Phase 19 | ~16.9 | Complete Profile | ₹35–50 LPA |
 
 **KEY INSIGHT**
 
@@ -2154,7 +2142,7 @@ Apply at Exit A, B, or ★1 — don't wait for the end.
 
 **STEP 3**
 
-**The 19 Phases**
+**The 20 Phases**
 
 **Phase 01–01b — Developer Environment & TypeScript Mastery**
 
@@ -2348,7 +2336,7 @@ Staff/Principal Engineer, Founding Engineer roles, global remote
 
 **HIGHLIGHTS:**
 
-Published npm package, ADRs, DORA metrics, 16 months of public learning
+Published npm package, ADRs, DORA metrics, 17 months of public learning
 
 **STEP 4**
 
@@ -2388,105 +2376,6 @@ Build ClientSync — the core full-stack portfolio project referenced throughout
 | Solve a problem you personally faced | OfferLens |
 
 **The Rule: Build the project where you can find 5 real users within 48 hours of launching.**
-
-# **2,700-Hour Plan — Full Distribution**
-
-*2,700 hours treated as a fixed budget and distributed across every layer of the plan: learning all 290 topics, drilling problems, building standalone mini-projects, building ClientSync feature-by-feature, and building the 10 advanced projects. Every number below adds up to exactly 2,700 — nothing floats free.*
-
-## **▌ Methodology**
-
-This is not a fresh independent estimate at 2,700 — it's the validated relative structure from the topic-by-topic hour validation (learn 1,364 / problems 346 / mini-projects 257 \\= 1,967), plus ClientSync's phase-by-phase build cost (268 hrs, reasoned) and the 10 advanced projects (308 hrs, reasoned), scaled up proportionally to hit exactly 2,700 and rounded with a largest-remainder method so the distribution stays clean — no topic absorbs a random leftover chunk just to make the total match.
-
-**FIVE LAYERS, EVERY TOPIC (WHERE APPLICABLE)**
-
-* **Learn —** concept understood, enough hands-on practice to use it correctly.
-
-* **Problems —** focused drilling on that topic alone. Zero for topics where this doesn't apply (config, accounts, docs, career/community).
-
-* **Mini-project —** a small standalone build proving you can use it. Zero where a project doesn't make sense on its own (e.g. Prettier, SSH Keys, LinkedIn).
-
-* **ClientSync —** folding that phase's skills into the real product. Priced per phase, not per topic — features don't map 1:1 to topics.
-
-* **10 Advanced Projects —** priced individually (see the project-hours table earlier in this document).
-
-*If you want any single layer re-derived independently rather than scaled from the validated baseline, say which one — that's real additional work, not a settings toggle.*
-
-## **▌ Headline Numbers**
-
-| LAYER | HOURS | % OF TOTAL | NOTES |
-| :---- | :---- | :---- | :---- |
-| Learn (290 topics) | 1454 | 54% | validated, topic-by-topic |
-| Problems (290 topics) | 363 | 13% | validated, topic-by-topic |
-| Mini-projects (290 topics) | 269 | 10% | validated, topic-by-topic |
-| ClientSync build | 286 | 11% | reasoned, per-phase |
-| 10 Advanced Projects | 328 | 12% | reasoned, per-project |
-| **TOTAL** | **2700** | **100%** |  |
-
-*Note: 290 vs. the roadmap's own claimed 271 — same discrepancy flagged in the original validation, still unresolved in the source document.*
-
-## **▌ Timeline by Weekly Commitment**
-
-| WEEKLY HOURS | TIMELINE | DAILY COMMITMENT (6 FOCUSED DAYS/WK) |
-| :---- | :---- | :---- |
-| 85 hrs/wk | \~7.3 months | \~14.2 hrs/day (6 days) \+ light 7th day |
-| 70 hrs/wk | \~8.9 months | \~11.7 hrs/day (6 days) \+ light 7th day |
-| 40 hrs/wk | \~15.5 months | \~6.7 hrs/day (6 days) \+ light 7th day |
-| 30 hrs/wk | \~20.7 months | \~5.0 hrs/day (6 days) \+ light 7th day |
-| 25 hrs/wk | \~24.9 months | \~4.2 hrs/day (6 days) \+ light 7th day |
-
-## **▌ Daily Schedule — 85 hrs/wk Reference**
-
-*6 focused days \+ 1 light day. Structured so it survives real fatigue, not just a number on paper.*
-
-| TIME | BLOCK | WHAT HAPPENS |
-| :---- | :---- | :---- |
-| 06:00 – 06:30 | Wake-up | No phone, water, light movement. Starting foggy costs the whole first block. |
-| 06:30 – 10:30 | Block 1 (4 hrs) | Hardest thing of the day — new concept, DSA, or heavy backend/infra topic. Peak-brain window. |
-| 10:30 – 11:00 | Break | Away from the screen. Not “5 more minutes.” |
-| 11:00 – 13:00 | Problems (2 hrs) | Drill what you just learned, while it's fresh. |
-| 13:00 – 14:00 | Lunch \+ rest | Away from the desk. |
-| 14:00 – 18:00 | Block 2 (4 hrs) | Building — mini-project or ClientSync feature work. Mechanical, good fit for the post-lunch dip. |
-| 18:00 – 18:30 | Break | Outside if possible. |
-| 18:30 – 20:30 | Block 3 (2 hrs) | Light work: notes, docs, commits, review, tomorrow's plan. Survives a bad day. |
-| 20:30 – 21:00 | Buffer | Overflow from earlier, or genuinely done. |
-| 21:00 onward | Off | Real off — not tutorials in bed. |
-
-7th day: \~7 hrs, lighter — catch-up, writing, no new hard concepts. This is the slack valve.
-
-**RULES THAT MAKE IT SURVIVE MONTHS, NOT WEEKS**
-
-* If a block isn't landing, stop it — don't force hour 4 of Block 1 if nothing's absorbing. Swap to Block 2\.
-
-* Track hours weekly, not daily. One rough day doesn't matter; a rough month does.
-
-* First sign of declining output, dread, or worse sleep — that's an early 7-hr day, not a discipline failure.
-
-*Weeks and month labels in every phase below assume a 40 hrs/week pace. Hours per phase are fixed; if you're working at a different weekly pace, divide each phase's hour total by your own weekly hours to get your personal week count (see Step 1 for common paces).*
-
-## **▌ Master Phase Index**
-
-| Phase | Focus | Exit Point |
-| :---- | :---- | :---- |
-| 01 | Reordered by Dependency, Not by Original Curriculum Grouping | — |
-| 02 | React \+ Next.js Core | — |
-| 03 | UI System & Styling | — |
-| 04 | State, Data Fetching & Advanced React | — |
-| 05 | Backend \+ Database \+ Auth | — |
-| 06 | Testing \+ CI/CD \+ Deployment | — |
-| 06b | React Native & Mobile (Optional) | — |
-| 07 | API Documentation & Developer Tooling | — |
-| 08 | DSA & Interview Preparation | — |
-| 09 | Caching \+ Email \+ Payments | — |
-| 10 | Monitoring \+ Product Analytics | — |
-| 11 | Real-Time \+ Search \+ PostgreSQL Internals | — |
-| 12 | AI/RAG \+ Production AI Patterns | — |
-| 13 | Advanced Browser APIs \+ Collaboration | — |
-| 14 | Load Testing \+ Security Deep Dive | — |
-| 15 | Build Tooling \+ CSS-in-JS | — |
-| 16 | Infrastructure | — |
-| 17 | Architectural Patterns | — |
-| 18 | Engineering Craft \+ Package Publishing | — |
-| 19 | Career & Community | — |
 
 # **Phase 01 — Developer Environment & Foundations**
 
@@ -6953,7 +6842,7 @@ A production-grade backend for a B2B expense-approval SaaS: hand-rolled Express 
 
 **A  EXIT POINT A**
 
-*After Phase 06 · Month \~6 · Junior Full-Stack Developer*
+*After Phase 06 · Month \~7.1 · Junior Full-Stack Developer*
 
 **WHAT YOU HAVE**
 
@@ -7475,13 +7364,13 @@ Target: early-stage startups, dev agencies. ₹6–10 LPA. This is the point whe
 
 # **Phase 06b — React Native (Mobile)**
 
-*Band: Core   ·   Track: Mobile (Optional)   ·   Realistic hours: 111h (header said no total stated)   ·   Exit A2: Mobile-Capable Add-On (₹8–12 LPA)   ·   Optional phase*
+*Band: Core   ·   Track: Mobile   ·   Realistic hours: 111h (header said no total stated)   ·   Exit A2: Mobile-Capable Add-On (₹8–12 LPA)   *
 
 **CONCURRENT WITH PHASE 06/07 · MOBILE TRACK**
 
 # **The Perfect Learning Sequence**
 
-*Phase 06b — React Native & Mobile (Optional), Reordered by Dependency (Full Depth)*
+*Phase 06b — React Native & Mobile, Reordered by Dependency (Full Depth)*
 
 **SCOPE NOTICE: This version deliberately expands beyond your official Phase 06b budget (123 core hours), the same way the deep versions of Phases 01–08 expanded beyond their official budgets. Treat the hour figures next to each topic name as the OFFICIAL budget reference only — the sub-topic list below each one is denser than that budget supports.**
 
@@ -7893,7 +7782,7 @@ Target: roles explicitly requiring or valuing React Native experience, alongside
 
 **B  EXIT POINT B**
 
-*After Phase 07 · Month \~6.5 · Junior-to-Mid Full-Stack*
+*After Phase 07 · Month \~7.5 · Junior-to-Mid Full-Stack*
 
 **WHAT YOU HAVE**
 
@@ -8259,7 +8148,7 @@ Target: SDE-1 at API-first or developer-tool companies, backend roles at fintech
 
 **MILESTONE · EXIT POINT 1**
 
-*After Phase 08 · Month \~7 · Junior-to-Mid Full-Stack (Interview-Ready)*
+*After Phase 08 · Month \~9.5 · Junior-to-Mid Full-Stack (Interview-Ready)*
 
 **WHAT YOU HAVE**
 
@@ -9169,7 +9058,7 @@ Extend Phase 5’s "Ledger" (or a similar backend) with: Redis cache-aside cachi
 
 **C  EXIT POINT C**
 
-*After Phase 10 · Month \~9 · Mid Full-Stack (Production-Ready)*
+*After Phase 10 · Month \~10.6 · Mid Full-Stack (Production-Ready)*
 
 **WHAT YOU HAVE**
 
@@ -9741,7 +9630,7 @@ Target: Mid-level Full-Stack Engineer, production-grade \+ observability roles. 
 
 **MILESTONE · EXIT POINT 2**
 
-*After Phase 11 · Month \~11 · Mid-Level Full-Stack*
+*After Phase 11 · Month \~11.6 · Mid-Level Full-Stack*
 
 **WHAT YOU HAVE**
 
@@ -10264,7 +10153,7 @@ Target: SDE-2 at product companies (the primary target at this exit), Mid-Level 
 
 **D  EXIT POINT D**
 
-*After Phase 12 · Month \~13 · AI-Capable Mid-Senior*
+*After Phase 12 · Month \~12.8 · AI-Capable Mid-Senior*
 
 **WHAT YOU HAVE**
 
@@ -12434,7 +12323,7 @@ Take an earlier full-stack project and rebuild its entire infrastructure as code
 
 **MILESTONE · EXIT POINT 3**
 
-*After Phase 17 · Month \~15 · Senior Full-Stack*
+*After Phase 17 · Month \~16.4 · Senior Full-Stack*
 
 **WHAT YOU HAVE**
 
@@ -13426,11 +13315,11 @@ Take your single most impressive project from anywhere in this roadmap and bring
 
 **E  EXIT POINT E**
 
-*After Phase 19 · Month \~16 · Complete Profile*
+*After Phase 19 · Month \~16.9 · Complete Profile*
 
 **WHAT YOU HAVE**
 
-All of Exit 3 \+ published npm package with Changesets versioning, complete engineering documentation system (ADRs, RFCs, post-mortems, DORA metrics, all 9 mandatory docs), active Wellfound/Instahyre profile, 10+ dev.to posts published during the curriculum, ClientSync launched on Product Hunt, warm referral pipeline built over 16 months of public learning.
+All of Exit 3 \+ published npm package with Changesets versioning, complete engineering documentation system (ADRs, RFCs, post-mortems, DORA metrics, all 9 mandatory docs), active Wellfound/Instahyre profile, 10+ dev.to posts published during the curriculum, ClientSync launched on Product Hunt, warm referral pipeline built over 17 months of public learning.
 
 **JOB TITLES TO USE ON APPLICATIONS**
 
@@ -13470,7 +13359,7 @@ ADRs in public repo — hiring managers read these and they reveal how you think
 
 DORA metrics tracked in your project — lead time, deployment frequency, MTTR, change failure rate
 
-16-month learning arc on LinkedIn/dev.to — demonstrates consistency and public thinking
+17-month learning arc on LinkedIn/dev.to — demonstrates consistency and public thinking
 
 Product Hunt launch (upvotes, comments, feedback received and acted on)
 
@@ -13480,7 +13369,7 @@ Post-mortem documents — shows you've operated a system, not just built one
 
 Direct outreach to founders and CTOs — at this level, job boards are a fallback, not primary
 
-LinkedIn thought leadership — if you've been posting during the 16 months, inbound starts here
+LinkedIn thought leadership — if you've been posting during the 17 months, inbound starts here
 
 Conference talks / meetup talks — Bangalore has active JSConf, ReactIndia, PyCon communities
 
@@ -13526,7 +13415,7 @@ How do you think about technical equity — what shortcuts are acceptable early?
 
 India: ₹35–50 LPA \+ equity  ·  US remote: $150–200k
 
-**CAUTION**  *The gap between Exit 3 and Exit E is not technical — it's visibility and credibility. If you've been posting on dev.to, building in public, and engaging with the community throughout the 16 months, Exit E is a natural inbound moment. If you've done the curriculum silently with no public presence, the salary range is the same but you'll have to work harder to get in front of the right people.*
+**CAUTION**  *The gap between Exit 3 and Exit E is not technical — it's visibility and credibility. If you've been posting on dev.to, building in public, and engaging with the community throughout the 17 months, Exit E is a natural inbound moment. If you've done the curriculum silently with no public presence, the salary range is the same but you'll have to work harder to get in front of the right people.*
 
 # **The Perfect Learning Sequence**
 
@@ -13585,7 +13474,7 @@ A CLI or small web tool using the GitHub API (and JSONPlaceholder for a quick wa
 
 # **STAGE 2 — Job & Talent Platforms**
 
-*Requires a complete portfolio (effectively all of Phases 01–18) to have a profile worth putting on any of these platforms. Ordered niche-to-broad: the two India/startup-focused platforms first, LinkedIn last since its payoff specifically depends on the accumulated 16-month posting history Exit E's own description assumes already exists.*
+*Requires a complete portfolio (effectively all of Phases 01–18) to have a profile worth putting on any of these platforms. Ordered niche-to-broad: the two India/startup-focused platforms first, LinkedIn last since its payoff specifically depends on the accumulated 17-month posting history Exit E's own description assumes already exists.*
 
 ## **▌ 3\. Wellfound (formerly AngelList)**
 
@@ -13607,11 +13496,11 @@ A CLI or small web tool using the GitHub API (and JSONPlaceholder for a quick wa
 
 ## **▌ 5\. LinkedIn**
 
-*Placed last in this stage deliberately — LinkedIn's payoff depends on having real content behind the profile. By this phase, per Exit E's own description, that content already exists: 16 months of Build in Public posts across every prior phase.*
+*Placed last in this stage deliberately — LinkedIn's payoff depends on having real content behind the profile. By this phase, per Exit E's own description, that content already exists: 17 months of Build in Public posts across every prior phase.*
 
 * Profile optimization — headline, about section, and featured section built around what's actually been shipped (ClientSync, the npm package), not generic self-description  
 
-* Why this phase treats LinkedIn last, not first — a strong profile with zero posting history undersells 16 months of real work; the accumulated content from every prior phase's Build in Public section is what makes the profile credible  
+* Why this phase treats LinkedIn last, not first — a strong profile with zero posting history undersells 17 months of real work; the accumulated content from every prior phase's Build in Public section is what makes the profile credible  
 
 * Thought leadership positioning — Exit E explicitly notes that if you've been posting consistently, inbound interest starts here  
 
@@ -13699,7 +13588,7 @@ Take your strongest capstone project from this entire roadmap, polish it into a 
 
 *By this phase, extremely familiar as a posting destination — this section covers deliberately building an audience on it, not just publishing individual posts as each phase's Build in Public section has called for.*
 
-* Series and tagging strategy — organizing the 16-month posting history (every phase's Build in Public output) into a coherent, discoverable body of work rather than scattered individual posts  
+* Series and tagging strategy — organizing the 17-month posting history (every phase's Build in Public output) into a coherent, discoverable body of work rather than scattered individual posts  
 
 * Engagement patterns — what actually drives readership on dev.to specifically, distinct from LinkedIn's algorithm (Stage 2, Topic 5\\)  
 
@@ -13780,15 +13669,15 @@ A simulated trading platform demonstrating deep backend/data mastery: real-time 
 
 * ClientSync launched on Product Hunt (this phase, Stage 3\\)  
 
-* A warm referral pipeline built over 16 months of public learning — the cumulative effect of every Build in Public section since Phase 06
+* A warm referral pipeline built over 17 months of public learning — the cumulative effect of every Build in Public section since Phase 06
 
 Target: Staff Engineer / SDE-4 at large product companies, Principal Engineer at Series C+ companies, Founding Engineer (0→1) at seed/Series A startups (₹30–50 LPA \+ meaningful equity), Engineering Manager (if pursuing the people track), independent consultant / fractional CTO, open source maintainer with sponsorship. Job titles to use: Senior Software Engineer, Staff Engineer, Principal Engineer, Founding Engineer, Engineering Lead.
 
 *Companies to target (India): FAANG India at Staff/L5+ (Google, Microsoft, Amazon, Adobe, Atlassian — competitive but now in range); unicorn senior tracks (PhonePe, CRED, Meesho, Swiggy — staff/principal); founding engineer roles (filter Wellfound by "founding engineer" \+ "Series A" \+ "equity"); global remote as the strongest play at this level (Linear, Vercel, Supabase, Liveblocks, Railway, Turso); consulting for Indian enterprises adopting Next.js/AI (₹15k–30k/day freelance rates achievable).*
 
-**What to highlight, per the official curriculum: the published npm package — real downloads mean real credibility, even 100 downloads matters (Stage 1's GitHub API work, Phase 18's Changesets); ADRs in a public repo, which hiring managers actually read because they reveal how you think (Phase 18); DORA metrics tracked in your own project — lead time, deployment frequency, MTTR, change failure rate (Phase 18); the full 16-month learning arc on LinkedIn/dev.to, demonstrating consistency and public thinking, not just a finished result (every phase's Build in Public section, culminating in this one); the Product Hunt launch — upvotes, comments, feedback received and visibly acted on (Stage 3); post-mortem documents, which show you've operated a system under real conditions, not just built one (Phase 17's chaos engineering, Phase 18's incidents/).**
+**What to highlight, per the official curriculum: the published npm package — real downloads mean real credibility, even 100 downloads matters (Stage 1's GitHub API work, Phase 18's Changesets); ADRs in a public repo, which hiring managers actually read because they reveal how you think (Phase 18); DORA metrics tracked in your own project — lead time, deployment frequency, MTTR, change failure rate (Phase 18); the full 17-month learning arc on LinkedIn/dev.to, demonstrating consistency and public thinking, not just a finished result (every phase's Build in Public section, culminating in this one); the Product Hunt launch — upvotes, comments, feedback received and visibly acted on (Stage 3); post-mortem documents, which show you've operated a system under real conditions, not just built one (Phase 17's chaos engineering, Phase 18's incidents/).**
 
-*Where to apply at this level: direct outreach to founders and CTOs — job boards are explicitly a fallback here, not the primary channel. LinkedIn thought leadership, if the 16 months of posting is real, is where inbound interest starts. Conference and meetup talks — Bangalore has active JSConf, ReactIndia, and PyCon communities worth being part of. The published npm package itself can generate inbound if it solves a real problem. dev.to/Hashnode readers convert to referrals over time. Arc.dev, Toptal, and Lemon.io become realistic at this level for premium remote rates ($150–200k range).*
+*Where to apply at this level: direct outreach to founders and CTOs — job boards are explicitly a fallback here, not the primary channel. LinkedIn thought leadership, if the 17 months of posting is real, is where inbound interest starts. Conference and meetup talks — Bangalore has active JSConf, ReactIndia, and PyCon communities worth being part of. The published npm package itself can generate inbound if it solves a real problem. dev.to/Hashnode readers convert to referrals over time. Arc.dev, Toptal, and Lemon.io become realistic at this level for premium remote rates ($150–200k range).*
 
 *What gets tested at Staff/Principal level shifts — less DSA (still expected at FAANG, but Mediums rather than Hards for Staff-level roles), and far more judgment: architecture review ("here is our current architecture, what's wrong with it"), engineering strategy ("we're scaling from 100k to 10M users, what changes first"), technical leadership ("how do you decide what technical debt to pay down and when" — directly the discipline built in Phase 18's Technical Debt Tracking), cross-functional skill ("how do you work with product to push back on a feature"), and documentation judgment ("how do you ensure new engineers can get up to speed in a week" — directly Phase 18's Ramp-Up Strategy).*
 
@@ -13809,14 +13698,14 @@ Target: Staff Engineer / SDE-4 at large product companies, Principal Engineer at
 
 | EXIT | AFTER PHASE | MONTH (@40 HRS/WK) | LEVEL | INDIA |
 | :---- | :---- | :---- | :---- | :---- |
-| A | Phase 06 | \~6.1 | Junior Full-Stack (deployed) | ₹6–10 LPA |
-| B | Phase 07 | \~6.5 | Junior-to-Mid (API-literate) | ₹8–12 LPA |
-| 1 | Phase 08 | \~7.4 | Junior-to-Mid (interview-ready \+ DSA) | ₹8–15 LPA |
-| C | Phase 10 | \~9.0 | Mid (production-grade \+ observability) | ₹12–18 LPA |
-| 2 | Phase 11 | \~9.9 | Mid-Level (real-time \+ search \+ PG internals) | ₹15–25 LPA |
-| D | Phase 12 | \~10.9 | Mid-Senior (AI-capable) | ₹20–30 LPA |
-| 3 | Phase 17 | \~14.4 | Senior (distributed systems \+ infra) | ₹25–40 LPA |
-| E | Phase 19 | \~15.6 | Complete Profile | ₹35–50 LPA |
+| A | Phase 06 | ~7.1 | Junior Full-Stack (deployed) | ₹6–10 LPA |
+| B | Phase 07 | ~7.5 | Junior-to-Mid (API-literate) | ₹8–12 LPA |
+| 1 | Phase 08 | ~9.5 | Junior-to-Mid (interview-ready \+ DSA) | ₹8–15 LPA |
+| C | Phase 10 | ~10.6 | Mid (production-grade \+ observability) | ₹12–18 LPA |
+| 2 | Phase 11 | ~11.6 | Mid-Level (real-time \+ search \+ PG internals) | ₹15–25 LPA |
+| D | Phase 12 | ~12.8 | Mid-Senior (AI-capable) | ₹20–30 LPA |
+| 3 | Phase 17 | ~16.4 | Senior (distributed systems \+ infra) | ₹25–40 LPA |
+| E | Phase 19 | ~16.9 | Complete Profile | ₹35–50 LPA |
 
 *All month values above assume a 40 hrs/week pace. See Step 1 for how the timeline shifts at other weekly commitments.*
 
@@ -14640,7 +14529,7 @@ Cold email 20 engineering managers at Bangalore startups with "I'll build your i
 | 04 | State, Data Fetching & Advanced React | 153h |
 | 05 | Backend \+ Database \+ Auth | 314h |
 | 06 | Testing \+ CI/CD \+ Deployment | 155h |
-| 06b | React Native (Mobile) — Optional | 111h |
+| 06b | React Native (Mobile) | 111h |
 | 07 | API Documentation & Developer Tooling | 71h |
 | 08 | DSA & Interview Preparation | 331h |
 | 09 | Caching \+ Email \+ Payments | 98h |
@@ -14693,7 +14582,7 @@ Cold email 20 engineering managers at Bangalore startups with "I'll build your i
 
 * ☐ 06 — Testing \+ CI/CD \+ Deployment
 
-* ☐ 06b — React Native (Mobile) — Optional
+* ☐ 06b — React Native (Mobile)
 
 * ☐ 07 — API Documentation & Developer Tooling
 

@@ -1183,7 +1183,7 @@
       "stage_number": 2,
       "title": "Job & Talent Platforms",
       "order_index": 1,
-      "description": "Requires a complete portfolio (effectively all of Phases 01–18) to have a profile worth putting on any of these platforms. Ordered niche-to-broad: the two India/startup-focused platforms first, LinkedIn last since its payoff specifically depends on the accumulated 16-month posting history Exit E's own description assumes already exists.",
+      "description": "Requires a complete portfolio (effectively all of Phases 01–18) to have a profile worth putting on any of these platforms. Ordered niche-to-broad: the two India/startup-focused platforms first, LinkedIn last since its payoff specifically depends on the accumulated 17-month posting history Exit E's own description assumes already exists.",
       "estimated_hours": 6
     },
     {
@@ -10024,13 +10024,13 @@
       "order_index": 5,
       "title": "LinkedIn",
       "estimated_hours": 3,
-      "intro": "Placed last in this stage deliberately — LinkedIn's payoff depends on having real content behind the profile. By this phase, per Exit E's own description, that content already exists: 16 months of Build in Public posts across every prior phase.",
+      "intro": "Placed last in this stage deliberately — LinkedIn's payoff depends on having real content behind the profile. By this phase, per Exit E's own description, that content already exists: 17 months of Build in Public posts across every prior phase.",
       "groups": [
         {
           "heading": null,
           "bullets": [
             "Profile optimization — headline, about section, and featured section built around what's actually been shipped (ClientSync, the npm package), not generic self-description",
-            "Why this phase treats LinkedIn last, not first — a strong profile with zero posting history undersells 16 months of real work; the accumulated content from every prior phase's Build in Public section is what makes the profile credible",
+            "Why this phase treats LinkedIn last, not first — a strong profile with zero posting history undersells 17 months of real work; the accumulated content from every prior phase's Build in Public section is what makes the profile credible",
             "Thought leadership positioning — Exit E explicitly notes that if you've been posting consistently, inbound interest starts here",
             "Direct outreach — messaging engineering managers with a specific technical observation about their stack, the exact tactic Exit ★3 (Phase 17) already flagged as more effective than cold applications at senior level"
           ]
@@ -10108,7 +10108,7 @@
         {
           "heading": null,
           "bullets": [
-            "Series and tagging strategy — organizing the 16-month posting history (every phase's Build in Public output) into a coherent, discoverable body of work rather than scattered individual posts",
+            "Series and tagging strategy — organizing the 17-month posting history (every phase's Build in Public output) into a coherent, discoverable body of work rather than scattered individual posts",
             "Engagement patterns — what actually drives readership on dev.to specifically, distinct from LinkedIn's algorithm (Stage 2, Topic 5)",
             "This phase's own retrospective post (see Build in Public below) as the capstone piece tying the whole series together"
           ]
@@ -14997,7 +14997,7 @@
       "salary_range": "₹35–50 LPA",
       "name": "Complete Profile",
       "target_companies": "Staff/Principal Engineer, Founding Engineer roles, global remote",
-      "highlights": "Published npm package, ADRs, DORA metrics, 16 months of public learning"
+      "highlights": "Published npm package, ADRs, DORA metrics, 17 months of public learning"
     }
   ],
   "dsa_gates": {
@@ -15006,7 +15006,7 @@
     "note": "Roadmap document does not specify exact Easy/Medium counts; defaults used, editable in roadmap_metadata."
   },
   "orientation": {
-    "overview": "What This Document Is\n\nThis is a 16-month, 290-topic, phase-based software engineering curriculum totaling 2700 hours, designed to take you from a beginner to a job-ready full-stack engineer earning ₹35-50 LPA. It's structured as a self-study roadmap with built-in \"Exit Points\" — specific milestones where you're ready to start applying for jobs at different salary levels.",
+    "overview": "What This Document Is\n\nThis is a ~17.5-month, 290-topic, phase-based software engineering curriculum totaling 3034 realistic hours, designed to take you from a beginner to a job-ready full-stack engineer — with salaries at each Exit Point ranging ₹6–10 LPA at the earliest exit up to ₹35–50 LPA at the final one. It's structured as a self-study roadmap with built-in \"Exit Points\" — specific milestones where you're ready to start applying for jobs at different salary levels.",
     "who_is_this_for": [
       {
         "category": "Primary audience",
@@ -15031,7 +15031,7 @@
     ],
     "key_note": "The document explicitly addresses BCA graduates. It says BCA is fine for most target companies (startups, product companies, dev agencies) but becomes a hard filter at FAANG India and large IT services. It suggests MCA as a path if FAANG is a long-term goal.",
     "job_market_case": "Especially if you're a BCA graduate from a Tier‑2 college with zero projects and no work experience.\n\nTHE HONEST TRUTH – AND THE PLAN\n\nThe market is tough, but it's not closed. Companies still hire – they hire people who can ship code, not people with fancy degrees. This curriculum is designed to turn you into that person.\n\nHere's how it works for you:\n\n— You build a real, deployable project (ClientSync) in the first 6 months — this becomes your portfolio, your proof of skill, and your conversation starter in interviews.\n\n— You publish your work publicly — every phase gives you something to show on GitHub, dev.to, or LinkedIn. Recruiters see your progress, not your college name.\n\n— You don't wait until the end to apply — the 'Exit Points' let you start applying as early as Phase 06, when you have a live app and a CI/CD pipeline. That's often enough for early-stage startups.\n\n— The curriculum explicitly addresses the BCA degree filter — it tells you which companies don't care about your degree (most startups, product companies, dev agencies) and which do (FAANG, large IT services). You focus your energy where it matters.\n\n— You learn exactly what's needed for the job — no fluff, no outdated theory. Every topic is chosen because it's used in production at top startups. You're job-ready, not just 'certified'.\n\n— You build in public — by the time you finish, you have a network, a trail of content, and often inbound interest from founders. That's how you beat the 'no experience' trap.\n\nTHE BOTTOM LINE\n\nYour BCA degree is not a blocker – it's a starting point. What gets you hired is your ability to build and ship. This roadmap gives you the exact path to do that, with clear milestones to keep you on track.\n\nIf you follow it consistently, you will have a portfolio, a GitHub history, and the confidence to walk into any interview. The jobs are there – you just need to be visible and credible. This document shows you how.",
-    "build_in_public_guide": "\"Build in public\" gets said so often it's stopped meaning anything. Here's what it actually means for this roadmap: at the end of most phases (not every day, not every commit), you post one specific, concrete thing you built or learned — not a status update, not \"day 47 of my coding journey.\" Each phase in this document has a compact BUILD IN PUBLIC callout telling you exactly what to post, what to commit, and where. This section is the reasoning behind that system.\n\nWHY THIS MATTERS MORE THAN YOUR DEGREE\n\nA recruiter or hiring manager cannot verify \"I know React.\" They can verify a GitHub repo with real commit history, a deployed URL, a green CI badge, and a dev.to post that explains a real decision you made. Visibility isn't vanity here — it's the only evidence a stranger can check in 90 seconds. Silence is the default; everyone in this roadmap is building the same 19 phases. The difference between two people with identical skills is which one has proof.\n\nGITHUB\n\n* Commit as you go, not in one dump at the end of a phase. A commit history with 3 commits on the last day of every phase reads as fabricated. It probably is.\n\n* Use Conventional Commits from Phase 04 onward (feat:, fix:, refactor:, etc.) — it's a topic in the curriculum for a reason; a recruiter who opens your commit log should see discipline, not noise.\n\n* Every repo gets a real README: what it does, how to run it, what you learned. \"TODO: add README\" sitting untouched for months is a worse signal than no README at all.\n\n* Pin your 2–3 best repos on your GitHub profile. Don't make someone dig through 40 repos to find the one that matters.\n\nLINKEDIN\n\n* Post when you ship something visible — a deployed feature, a working demo, a hard bug you fixed. Not \"studying TypeScript today,\" which nobody can evaluate.\n\n* Lead with what it does or looks like (a screenshot, a short screen-recording), not with the tech stack. Recruiters skim; a visual gets 2 seconds of attention, a paragraph of jargon gets zero.\n\n* One post per phase is enough. A LinkedIn feed with 40 low-effort posts is worse than one with 15 real ones — frequency without substance reads as noise, not progress.\n\nDEV.TO / HASHNODE\n\n* Write about a specific decision or a specific bug, never a tutorial recap of something already covered better elsewhere (\"What is React?\" gets you nothing — 500,000 of those already exist).\n\n* The BUILD IN PUBLIC callouts flag which phases are worth a dev.to post and which aren't (Phase 08's DSA grind and Phase 15's build tooling aren't — skip posting, keep building).\n\n* A post that says \"here's a mistake I made and how I fixed it\" outperforms one that says \"here's how to do X correctly\" — the former is credible because it's specific and honest; the latter reads as copied.\n\nThe rule underneath all of it: post less than you think you should, and make sure what you do post could survive someone actually clicking through. A thin GitHub history with real commits beats a loud one with none.",
+    "build_in_public_guide": "\"Build in public\" gets said so often it's stopped meaning anything. Here's what it actually means for this roadmap: at the end of most phases (not every day, not every commit), you post one specific, concrete thing you built or learned — not a status update, not \"day 47 of my coding journey.\" Each phase in this document has a compact BUILD IN PUBLIC callout telling you exactly what to post, what to commit, and where. This section is the reasoning behind that system.\n\nWHY THIS MATTERS MORE THAN YOUR DEGREE\n\nA recruiter or hiring manager cannot verify \"I know React.\" They can verify a GitHub repo with real commit history, a deployed URL, a green CI badge, and a dev.to post that explains a real decision you made. Visibility isn't vanity here — it's the only evidence a stranger can check in 90 seconds. Silence is the default; everyone in this roadmap is building the same 20 phases. The difference between two people with identical skills is which one has proof.\n\nGITHUB\n\n* Commit as you go, not in one dump at the end of a phase. A commit history with 3 commits on the last day of every phase reads as fabricated. It probably is.\n\n* Use Conventional Commits from Phase 04 onward (feat:, fix:, refactor:, etc.) — it's a topic in the curriculum for a reason; a recruiter who opens your commit log should see discipline, not noise.\n\n* Every repo gets a real README: what it does, how to run it, what you learned. \"TODO: add README\" sitting untouched for months is a worse signal than no README at all.\n\n* Pin your 2–3 best repos on your GitHub profile. Don't make someone dig through 40 repos to find the one that matters.\n\nLINKEDIN\n\n* Post when you ship something visible — a deployed feature, a working demo, a hard bug you fixed. Not \"studying TypeScript today,\" which nobody can evaluate.\n\n* Lead with what it does or looks like (a screenshot, a short screen-recording), not with the tech stack. Recruiters skim; a visual gets 2 seconds of attention, a paragraph of jargon gets zero.\n\n* One post per phase is enough. A LinkedIn feed with 40 low-effort posts is worse than one with 15 real ones — frequency without substance reads as noise, not progress.\n\nDEV.TO / HASHNODE\n\n* Write about a specific decision or a specific bug, never a tutorial recap of something already covered better elsewhere (\"What is React?\" gets you nothing — 500,000 of those already exist).\n\n* The BUILD IN PUBLIC callouts flag which phases are worth a dev.to post and which aren't (Phase 08's DSA grind and Phase 15's build tooling aren't — skip posting, keep building).\n\n* A post that says \"here's a mistake I made and how I fixed it\" outperforms one that says \"here's how to do X correctly\" — the former is credible because it's specific and honest; the latter reads as copied.\n\nThe rule underneath all of it: post less than you think you should, and make sure what you do post could survive someone actually clicking through. A thin GitHub history with real commits beats a loud one with none.",
     "quick_start_checklist": [
       {
         "step": "01",
@@ -15074,36 +15074,36 @@
         "text": "Choose an advanced project from the 10 listed"
       }
     ],
-    "critical_advice": "The gap between Exit 3 and Exit E is not technical — it's visibility and credibility. If you've been posting on dev.to, building in public, and engaging with the community throughout the 16 months, Exit E is a natural inbound moment. If you've done the curriculum silently with no public presence, the salary range is the same but you'll have to work harder.",
+    "critical_advice": "The gap between Exit 3 and Exit E is not technical — it's visibility and credibility. If you've been posting on dev.to, building in public, and engaging with the community throughout the 17 months, Exit E is a natural inbound moment. If you've done the curriculum silently with no public presence, the salary range is the same but you'll have to work harder.",
     "weekly_pace_options": [
       {
         "weekly_hours": "85 hrs/week",
-        "timeline": "~7.3 months",
+        "timeline": "~8.2 months",
         "best_fit": "All-in sprint, no other commitments"
       },
       {
         "weekly_hours": "70 hrs/week",
-        "timeline": "~9 months",
+        "timeline": "~10.0 months",
         "best_fit": "No job, no college"
       },
       {
         "weekly_hours": "40 hrs/week",
-        "timeline": "~16 months",
+        "timeline": "~17.5 months",
         "best_fit": "Serious part-time"
       },
       {
         "weekly_hours": "40 → 70 hrs/week (ramp after 6 mo)",
-        "timeline": "~11.5 months",
+        "timeline": "~12.6 months",
         "best_fit": "Start part-time, ramp later"
       },
       {
         "weekly_hours": "30 hrs/week",
-        "timeline": "~21 months",
+        "timeline": "~23.4 months",
         "best_fit": "Full-time job + study"
       },
       {
         "weekly_hours": "25 hrs/week",
-        "timeline": "~25 months (~2.1 yrs)",
+        "timeline": "~28.0 months (~2.3 yrs)",
         "best_fit": "Casual evenings/weekends"
       }
     ],
@@ -15285,7 +15285,7 @@
       {
         "phase": "02",
         "focus": "React + Next.js Core",
-        "weeks": "6–9",
+        "weeks": "6–10",
         "header_hours": "146",
         "realistic_hours": "213",
         "band": "Foundation",
@@ -15294,7 +15294,7 @@
       {
         "phase": "03",
         "focus": "UI System & Styling",
-        "weeks": "10–12",
+        "weeks": "11–13",
         "header_hours": "141",
         "realistic_hours": "135",
         "band": "Foundation",
@@ -15303,7 +15303,7 @@
       {
         "phase": "04",
         "focus": "State, Data Fetching & Advanced React",
-        "weeks": "13–16",
+        "weeks": "14–17",
         "header_hours": "169",
         "realistic_hours": "153",
         "band": "Core",
@@ -15312,7 +15312,7 @@
       {
         "phase": "05",
         "focus": "Backend + Database + Auth",
-        "weeks": "17–22",
+        "weeks": "18–25",
         "header_hours": "229",
         "realistic_hours": "314",
         "band": "Core",
@@ -15321,7 +15321,7 @@
       {
         "phase": "06",
         "focus": "Testing + CI/CD + Deployment",
-        "weeks": "23–27",
+        "weeks": "26–29",
         "header_hours": "182",
         "realistic_hours": "155",
         "band": "Core",
@@ -15329,17 +15329,17 @@
       },
       {
         "phase": "06b",
-        "focus": "React Native (Mobile) — Optional",
+        "focus": "React Native (Mobile)",
         "weeks": "concurrent w/ 07",
         "header_hours": "—",
         "realistic_hours": "111",
         "band": "Core",
-        "track": "Mobile (Optional)"
+        "track": "Mobile"
       },
       {
         "phase": "07",
         "focus": "API Documentation & Developer Tooling",
-        "weeks": "28",
+        "weeks": "30–31",
         "header_hours": "68",
         "realistic_hours": "71",
         "band": "Core",
@@ -15348,7 +15348,7 @@
       {
         "phase": "08",
         "focus": "DSA & Interview Preparation",
-        "weeks": "29–32",
+        "weeks": "32–39",
         "header_hours": "160",
         "realistic_hours": "331",
         "band": "Core",
@@ -15357,7 +15357,7 @@
       {
         "phase": "09",
         "focus": "Caching + Email + Payments",
-        "weeks": "33–34",
+        "weeks": "40–41",
         "header_hours": "86",
         "realistic_hours": "98",
         "band": "Advanced",
@@ -15366,7 +15366,7 @@
       {
         "phase": "10",
         "focus": "Monitoring + Product Analytics",
-        "weeks": "35–39",
+        "weeks": "42–44",
         "header_hours": "179",
         "realistic_hours": "103",
         "band": "Advanced",
@@ -15375,7 +15375,7 @@
       {
         "phase": "11",
         "focus": "Real-Time + Search + PostgreSQL Internals",
-        "weeks": "40–43",
+        "weeks": "45–48",
         "header_hours": "167",
         "realistic_hours": "164",
         "band": "Advanced",
@@ -15384,7 +15384,7 @@
       {
         "phase": "12",
         "focus": "AI/RAG + Production AI Patterns",
-        "weeks": "44–47",
+        "weeks": "49–53",
         "header_hours": "172",
         "realistic_hours": "207",
         "band": "Advanced",
@@ -15393,7 +15393,7 @@
       {
         "phase": "13",
         "focus": "Advanced Browser APIs + Collaboration",
-        "weeks": "48–51",
+        "weeks": "54–57",
         "header_hours": "152",
         "realistic_hours": "137",
         "band": "Advanced",
@@ -15402,7 +15402,7 @@
       {
         "phase": "14",
         "focus": "Load Testing + Security Deep Dive",
-        "weeks": "52–54",
+        "weeks": "58–59",
         "header_hours": "119",
         "realistic_hours": "89",
         "band": "Advanced",
@@ -15411,7 +15411,7 @@
       {
         "phase": "15",
         "focus": "Build Tooling + CSS-in-JS",
-        "weeks": "55–56",
+        "weeks": "60",
         "header_hours": "70",
         "realistic_hours": "44",
         "band": "Advanced",
@@ -15420,7 +15420,7 @@
       {
         "phase": "16",
         "focus": "Infrastructure",
-        "weeks": "57–58",
+        "weeks": "61–64",
         "header_hours": "100",
         "realistic_hours": "175",
         "band": "Expert",
@@ -15429,7 +15429,7 @@
       {
         "phase": "17",
         "focus": "Architectural Patterns",
-        "weeks": "59–62",
+        "weeks": "65–69",
         "header_hours": "161",
         "realistic_hours": "178",
         "band": "Expert",
@@ -15438,7 +15438,7 @@
       {
         "phase": "18",
         "focus": "Engineering Craft + Package Publishing",
-        "weeks": "63–66",
+        "weeks": "70",
         "header_hours": "136",
         "realistic_hours": "62",
         "band": "Expert",
@@ -15447,7 +15447,7 @@
       {
         "phase": "19",
         "focus": "Career & Community",
-        "weeks": "67–68",
+        "weeks": "71",
         "header_hours": "68",
         "realistic_hours": "29",
         "band": "Expert",
@@ -15624,12 +15624,7 @@
         "realistic_total": "29h"
       }
     ],
-    "program_total": {
-      "original_stated": "2,700 hours",
-      "raw_bottom_up_sum": "2,461 hours",
-      "realistic_total": "3034 hours",
-      "net_change": "+334 hours (+12%)"
-    },
+    "program_total": null,
     "difficulty_ramp": [
       {
         "band": "Foundation",
@@ -15831,7 +15826,7 @@
     ],
     "dsa_spine_index": "Phase 08 (DSA & Interview Preparation) is the single highest-leverage exit gate in the roadmap — the first point where you’re competitive in a full interview loop, not just portfolio review.\n\n* **Precedes it:** Phases 01–07 (dev fundamentals, React/Next.js, UI, state management, backend/DB/auth, testing/CI/CD/deployment, API docs) — everything DSA patterns get layered onto.\n\n* **Follows it:** Exit ★ 1 unlocked (Series A/B startups, product companies) — then Phases 09 onward build production-grade breadth (caching, payments, monitoring, real-time, AI, infra, architecture).",
     "mvp_fast_path": [
-      "Phases 01, 01b, 02, 03, 04, 05, 06 — in that order — reach Exit A at ~6.1 months (@40 hrs/wk).",
+      "Phases 01, 01b, 02, 03, 04, 05, 06 — in that order — reach Exit A at ~7.1 months (@40 hrs/wk).",
       "Everything from Phase 07 onward extends the profile toward higher exits (B, ★ 1, C, ★ 2, D, 3, E) — not required to start applying."
     ]
   },
@@ -15882,7 +15877,7 @@
       {
         "month": "—",
         "phases_active": "06b",
-        "focus": "React Native (Mobile) — Optional",
+        "focus": "React Native (Mobile)",
         "realistic_hours": "111h"
       },
       {
@@ -16009,7 +16004,7 @@
       },
       {
         "phase": "06b",
-        "title": "React Native (Mobile) — Optional",
+        "title": "React Native (Mobile)",
         "hours": "111h",
         "weeks": "weeks concurrent w/ 07"
       },

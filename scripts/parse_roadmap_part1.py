@@ -61,7 +61,7 @@ part2_start = find_section_header("Part II — Why This Works", part1_start)
 part3_start = find_section_header("Part III — Roadmap Dashboards", part2_start)
 part4_start = find_section_header("Part IV — Navigation Layers", part3_start)
 part5_start = find_section_header("Part V — Timeline & Pacing Views", part4_start)
-part6_start = find_section_header("Part VI — The 19 Phases", part5_start)
+part6_start = find_section_header("Part VI — The 20 Phases", part5_start)
 
 assert part1_start and part2_start and part3_start and part4_start and part5_start and part6_start, \
     "Could not locate all Part I-VI section boundaries — roadmap.md structure changed."
