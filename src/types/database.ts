@@ -395,6 +395,20 @@ export interface DailyLog {
   updated_at: string;
 }
 
+export type StudySessionActivity = "learn" | "practice" | "project" | "revision" | "dsa" | "other";
+
+export interface StudySession {
+  id: string;
+  user_id: string;
+  date: string; // YYYY-MM-DD
+  hours: number;
+  activity: StudySessionActivity;
+  topic_id: string | null;
+  stage_project_id: string | null;
+  notes: string | null;
+  logged_at: string;
+}
+
 export type ProjectStatus = "not_started" | "in_progress" | "completed";
 
 export interface ProjectProgress {

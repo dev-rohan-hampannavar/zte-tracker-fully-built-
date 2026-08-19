@@ -2,71 +2,25 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useUser } from "@/lib/hooks/use-user";
-import { usePhasesWithProgress, useExitLadder, useRoadmapMetadata, toggleTopicComplete, applyHoursToNextTopic } from "@/lib/hooks/use-roadmap";
-import { useDailyLogs, computeStreak, weeklyHours, logStudySession, syncPublicStreakSummary } from "@/lib/hooks/use-daily-logs";
+import { usePhasesWithProgress, useExitLadder, useRoadmapMetadata } from "@/lib/hooks/use-roadmap";
+import { useDailyLogs, computeStreak, weeklyHours, syncPublicStreakSummary } from "@/lib/hooks/use-daily-logs";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
 import { isOverdue } from "@/lib/revision-schedule";
 import { useCareerTracker } from "@/lib/hooks/use-career";
 import { useProjectProgress } from "@/lib/hooks/use-projects";
+import { useExerciseProgress } from "@/lib/hooks/use-exercises";
+import { DailyMission } from "@/components/dashboard/daily-mission";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StudyHeatmap } from "@/components/dashboard/heatmap";
-import { TodaysLesson } from "@/components/dashboard/todays-lesson";
 import { DashboardTour } from "@/components/dashboard/dashboard-tour";
 import { RevisionDueWidget } from "@/components/dashboard/revision-due-widget";
 import { useTopicDayMap, getManualDayForTopic } from "@/lib/hooks/use-manual-day";
 import { useUserSettings } from "@/lib/hooks/use-user-settings";
 import { formatHours, pct, cn, localDateISO } from "@/lib/utils";
-import { computePaceStatus } from "@/lib/pace";
-import { toast } from "sonner";
-import { Flame, Target, CheckCircle2, Clock, TrendingUp, Loader2, Code2, Briefcase, FolderGit2, AlertCircle, ChevronDown } from "lucide-react";
+import { Flame, TrendingUp, Code2, Briefcase, FolderGit2, AlertCircle, ChevronDown, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-
-// Small SVG radial ring showing overall topic-completion percentage — sits
-// beside the next-topic text in Daily Mission so today's action is framed
-// against overall progress, not shown in isolation. Pure presentation, no
-// new data dependency (reuses the same completedTopics/totalTopics values
-// already computed for the stat cards further down the page).
-function RadialMiniProgress({ value }: { value: number }) {
-  const size = 56;
-  const stroke = 5;
-  const radius = (size - stroke) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (Math.min(100, Math.max(0, value)) / 100) * circumference;
-  return (
-    <div className="relative shrink-0" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke="var(--surface-2)"
-          strokeWidth={stroke}
-        />
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke="var(--accent)"
-          strokeWidth={stroke}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          className="transition-[stroke-dashoffset] duration-700 ease-out"
-        />
-      </svg>
-      <span className="absolute inset-0 flex items-center justify-center text-[11px] font-semibold font-mono-tabular">
-        {Math.round(value)}%
-      </span>
-    </div>
-  );
-}
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -78,10 +32,7 @@ export default function DashboardPage() {
   const { data: dsaProblems } = useDsaProgress(user?.id);
   const { data: applications } = useCareerTracker(user?.id);
   const { data: projectProgress } = useProjectProgress(user?.id);
-  const [logHours, setLogHours] = useState("");
-  const [logNote, setLogNote] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [completing, setCompleting] = useState(false);
+  const { data: exerciseProgress } = useExerciseProgress(user?.id);
   // Daily Mission's status row (revisions/project/DSA) starts collapsed —
   // the next-topic block + one-line summary already answer "what do I do
   // right now," so this secondary detail is opt-in rather than always
@@ -89,11 +40,6 @@ export default function DashboardPage() {
   // something in it actually needs attention (overdue revisions) so it
   // doesn't hide something urgent behind an extra click.
   const [missionDetailsOpen, setMissionDetailsOpen] = useState(false);
-  // Today's Lesson — the manual's full "Day N" write-up for whatever topic
-  // Daily Mission is pointing at, shown collapsed by default for the same
-  // reason as the revision/project/DSA status row above: don't push the
-  // rest of the dashboard down before the user asks for it.
-  const [lessonOpen, setLessonOpen] = useState(false);
   const { data: topicDayMap } = useTopicDayMap();
 
   const allTopics = useMemo(() => phases.flatMap((p) => p.topics), [phases]);
@@ -148,14 +94,22 @@ export default function DashboardPage() {
     return next ? { topic: next.topic, phase: next.phase } : null;
   }, [phases]);
 
+  // The stage containing nextTopic — Daily Mission scopes its exercise/
+  // project checklist and curriculum-allocation-vs-logged display to this
+  // stage (the spec's "16h stage" example), not to the single topic.
+  const currentStage = useMemo(() => {
+    if (!nextTopic) return null;
+    for (const phase of phases) {
+      for (const stage of phase.stages ?? []) {
+        if (stage.topics.some((t) => t.id === nextTopic.topic.id)) return stage;
+      }
+    }
+    return null;
+  }, [phases, nextTopic]);
+
   const todaysLesson = useMemo(
     () => getManualDayForTopic(nextTopic?.topic.id, topicDayMap),
     [nextTopic, topicDayMap]
-  );
-
-  const paceStatus = useMemo(
-    () => computePaceStatus(phases, logs ?? [], nextTopic?.topic.id),
-    [phases, logs, nextTopic]
   );
 
   const yesterdaysLog = useMemo(() => {
@@ -246,18 +200,6 @@ export default function DashboardPage() {
     [dsaProblems]
   );
 
-  const missionOutcome = useMemo(() => {
-    const parts: string[] = [];
-    if (nextTopic) parts.push(`finish "${nextTopic.topic.title}"`);
-    if (overdueRevisions.length > 0) {
-      parts.push(`review ${overdueRevisions.length} overdue item${overdueRevisions.length === 1 ? "" : "s"}`);
-    }
-    if (nextDsaProblem) parts.push(`log 1 DSA problem (${nextDsaProblem.problem_name})`);
-    if (currentProject) parts.push(`push ${currentProject.phase.title} forward`);
-    if (parts.length === 0) return "Nothing due yet — you're caught up.";
-    return parts.join(", ").replace(/^./, (c) => c.toUpperCase()) + ".";
-  }, [nextTopic, overdueRevisions, nextDsaProblem, currentProject]);
-
   const currentExit = useMemo(() => {
     if (!exitLadder) return null;
     // Current = highest exit whose linked phase is fully completed
@@ -276,62 +218,6 @@ export default function DashboardPage() {
     const idx = exitLadder.findIndex((e) => e.exit_code === currentExit.exit_code);
     return exitLadder[idx + 1] ?? null;
   }, [exitLadder, currentExit]);
-
-  async function handleCompleteNext() {
-    if (!user || !nextTopic) return;
-    setCompleting(true);
-    try {
-      await toggleTopicComplete(user.id, nextTopic.topic.id, true);
-      await mutateProgress();
-      toast.success(`Marked "${nextTopic.topic.title}" complete`);
-    } catch {
-      toast.error("Couldn't update. Try again.");
-    } finally {
-      setCompleting(false);
-    }
-  }
-
-  async function handleLogSession(e: React.FormEvent) {
-    e.preventDefault();
-    if (!user) return;
-    const hours = parseFloat(logHours);
-    if (!hours || hours <= 0) {
-      toast.error("Enter a valid number of hours.");
-      return;
-    }
-    setSubmitting(true);
-    try {
-      await logStudySession(user.id, hours, logNote || undefined);
-      await mutateLogs();
-
-      // Apply the logged hours toward whatever topic Daily Mission is
-      // currently pointing at (orderedIncompleteTopics[0]), rolling any
-      // overflow into subsequent topics if this session fills one.
-      if (orderedIncompleteTopics.length > 0) {
-        const result = await applyHoursToNextTopic(user.id, orderedIncompleteTopics, hours);
-        await mutateProgress();
-        if (result.completedTopics.length > 0) {
-          const names = result.completedTopics.map((t) => t.title).join(", ");
-          toast.success(
-            result.completedTopics.length === 1
-              ? `Logged ${hours}h — completed "${names}"!`
-              : `Logged ${hours}h — completed ${result.completedTopics.length} topics: ${names}!`
-          );
-        } else {
-          toast.success(`Logged ${hours}h for today.`);
-        }
-      } else {
-        toast.success(`Logged ${hours}h for today.`);
-      }
-
-      setLogHours("");
-      setLogNote("");
-    } catch {
-      toast.error("Couldn't save log. Try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  }
 
   if (isLoading) {
     return (
@@ -420,216 +306,105 @@ export default function DashboardPage() {
         <p className="text-sm text-muted mt-1">Ship the roadmap. One topic at a time.</p>
       </div>
 
-      {/* Daily Mission — the dashboard's visual anchor per the redesign spec.
-          Bigger surface, warm accent glow, and a radial progress ring in
-          place of the plain phase badge so today's overall standing is
-          visible at a glance, not just the single next topic. */}
-      <Card className="relative overflow-hidden border-accent/30 shadow-lg shadow-accent/5">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-accent/10 blur-3xl"
-        />
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <Target className="h-4 w-4 text-accent" />
-            <CardTitle size="lg">Daily Mission</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="relative flex flex-col gap-4">
-          {nextTopic ? (
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
-              <div className="flex items-center gap-4">
-                <RadialMiniProgress value={pct(completedTopics.length, totalTopics)} />
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <Badge variant="accent">{nextTopic.phase.phase_number}</Badge>
-                    <span className="text-xs text-muted">{nextTopic.phase.title}</span>
-                    {paceStatus && (
-                      <Badge
-                        variant="outline"
-                        className={cn(
-                          "text-[10px] font-normal",
-                          paceStatus.status === "ahead" && "text-success border-success/40",
-                          paceStatus.status === "behind" && "text-warning border-warning/40"
-                        )}
-                        title={`${formatHours(Math.abs(paceStatus.deltaHours))} ${
-                          paceStatus.status === "behind" ? "behind" : "ahead of"
-                        } where the roadmap's estimated hours put you`}
-                      >
-                        {paceStatus.status === "on-pace"
-                          ? "On pace"
-                          : paceStatus.status === "ahead"
-                            ? `${formatHours(paceStatus.deltaHours)} ahead`
-                            : `${formatHours(Math.abs(paceStatus.deltaHours))} behind`}
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-card-title font-semibold">{nextTopic.topic.title}</p>
-                  {nextTopic.topic.estimated_hours && (
-                    <>
-                      <p className="text-xs text-muted mt-1 flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {formatHours((nextTopic.topic.progress?.actual_minutes_spent ?? 0) / 60)} /{" "}
-                        {formatHours(nextTopic.topic.estimated_hours)} logged
-                      </p>
-                      <div className="h-1.5 w-40 rounded-full bg-border overflow-hidden mt-1.5">
-                        <div
-                          className="h-full bg-accent rounded-full transition-standard"
-                          style={{
-                            width: `${Math.min(
-                              100,
-                              ((nextTopic.topic.progress?.actual_minutes_spent ?? 0) /
-                                (nextTopic.topic.estimated_hours * 60)) *
-                                100
-                            )}%`,
-                          }}
-                        />
-                      </div>
-                    </>
+      {/* Daily Mission — the dashboard's visual anchor. Stage-scoped execution
+          checkpoint: current position, exercises/project checklist, curriculum
+          allocation vs actual logged time, and the log-time entry point, all
+          in one place so "what do I do right now" never requires navigating
+          elsewhere. */}
+      <DailyMission
+        userId={user?.id}
+        nextTopic={nextTopic}
+        currentStage={currentStage}
+        exerciseProgress={exerciseProgress ?? []}
+        projectProgress={projectProgress}
+        orderedIncompleteTopics={orderedIncompleteTopics}
+        todaysLesson={todaysLesson}
+        yesterdaysLog={yesterdaysLog}
+        onMutateProgress={mutateProgress}
+        onMutateLogs={mutateLogs}
+      />
+
+      {/* Secondary status — revision/project/DSA nudges, collapsed by default
+          per the "Daily Mission dominates" hierarchy. Not part of the mission
+          itself since these are separate systems the spec says to keep but
+          de-emphasize. */}
+      {(overdueRevisions.length > 0 || currentProject || nextDsaProblem) && (
+        <Card>
+          <CardContent className="py-3">
+            <button
+              onClick={() => setMissionDetailsOpen((v) => !v)}
+              className="flex items-center gap-1.5 text-xs text-muted hover:text-foreground transition-standard"
+              aria-expanded={missionDetailsEffectivelyOpen}
+            >
+              <ChevronDown
+                className={cn("h-3 w-3 transition-transform", missionDetailsEffectivelyOpen && "rotate-180")}
+              />
+              {missionDetailsEffectivelyOpen ? "Hide details" : "Show revision, project & DSA status"}
+            </button>
+            {missionDetailsEffectivelyOpen && (
+              <div className="flex flex-col gap-3 pt-3">
+                {overdueRevisions.length > 0 && (
+                  <RevisionDueWidget
+                    userId={user?.id ?? ""}
+                    overdueTopics={overdueRevisions}
+                    onReviewed={mutateProgress}
+                  />
+                )}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {overdueRevisions.length === 0 && (
+                    <Link href="/revision" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
+                      <AlertCircle className="h-3.5 w-3.5 text-muted shrink-0" />
+                      <span className="text-info">Revisions up to date</span>
+                    </Link>
                   )}
+                  <Link href="/projects" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
+                    <FolderGit2 className="h-3.5 w-3.5 text-muted shrink-0" />
+                    <span className="text-muted truncate">
+                      {currentProject ? currentProject.phase.title : "No project in progress"}
+                    </span>
+                  </Link>
+                  <Link href="/dsa" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
+                    <Code2 className="h-3.5 w-3.5 text-muted shrink-0" />
+                    <span className="text-muted truncate">
+                      {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems yet"}
+                    </span>
+                  </Link>
                 </div>
               </div>
-              <Button onClick={handleCompleteNext} disabled={completing} size="lg" className="shrink-0">
-                {completing ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
-                Mark complete
-              </Button>
-            </div>
-          ) : (
-            <p className="text-sm text-muted">All topics complete. You&apos;ve finished the roadmap. 🎉</p>
-          )}
-
-          {(overdueRevisions.length > 0 || currentProject || nextDsaProblem) && (
-            <div className="pt-1 border-t border-border">
-              <button
-                onClick={() => setMissionDetailsOpen((v) => !v)}
-                className="flex items-center gap-1.5 text-xs text-muted hover:text-foreground pt-3 transition-standard"
-                aria-expanded={missionDetailsEffectivelyOpen}
-              >
-                <ChevronDown
-                  className={cn("h-3 w-3 transition-transform", missionDetailsEffectivelyOpen && "rotate-180")}
-                />
-                {missionDetailsEffectivelyOpen ? "Hide details" : "Show revision, project & DSA status"}
-              </button>
-              {missionDetailsEffectivelyOpen && (
-                <div className="flex flex-col gap-3 pt-3">
-                  {overdueRevisions.length > 0 && (
-                    <RevisionDueWidget
-                      userId={user?.id ?? ""}
-                      overdueTopics={overdueRevisions}
-                      onReviewed={mutateProgress}
-                    />
-                  )}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {overdueRevisions.length === 0 && (
-                      <Link href="/revision" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
-                        <AlertCircle className="h-3.5 w-3.5 text-muted shrink-0" />
-                        <span className="text-info">Revisions up to date</span>
-                      </Link>
-                    )}
-                    <Link href="/projects" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
-                      <FolderGit2 className="h-3.5 w-3.5 text-muted shrink-0" />
-                      <span className="text-muted truncate">
-                        {currentProject ? currentProject.phase.title : "No project in progress"}
-                      </span>
-                    </Link>
-                    <Link href="/dsa" className="flex items-center gap-2 text-xs hover:text-accent transition-standard">
-                      <Code2 className="h-3.5 w-3.5 text-muted shrink-0" />
-                      <span className="text-muted truncate">
-                        {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems yet"}
-                      </span>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {todaysLesson && (
-            <div className="pt-1 border-t border-border">
-              <button
-                onClick={() => setLessonOpen((v) => !v)}
-                className="flex items-center gap-1.5 text-xs text-muted hover:text-foreground pt-3 transition-standard"
-                aria-expanded={lessonOpen}
-              >
-                <ChevronDown className={cn("h-3 w-3 transition-transform", lessonOpen && "rotate-180")} />
-                {lessonOpen ? "Hide today's lesson" : "Show today's lesson"}
-              </button>
-              {lessonOpen && (
-                <div className="pt-3">
-                  <TodaysLesson day={todaysLesson} userId={user?.id} yesterdaysLog={yesterdaysLog} />
-                </div>
-              )}
-            </div>
-          )}
-
-          <p className="text-xs text-muted italic pt-1 border-t border-border">
-            <span className="font-medium not-italic text-foreground">Today: </span>
-            {missionOutcome}
-          </p>
-        </CardContent>
-      </Card>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Streak + heatmap moved up here, directly under Daily Mission — these
           are the habit-driving pieces of the page (item #16), so they sit
           above the fold instead of after two other grids where they used
           to get buried. */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Streak */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Flame className="h-4 w-4 text-accent" />
-              <CardTitle>Streak</CardTitle>
+      {/* Streak — the quick daily-log form that used to sit beside this was
+          removed: it duplicated Daily Mission's "Log study time," which is
+          now the one place sessions get logged from, per the spec's "use
+          the existing system, don't create a second one." */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Flame className="h-4 w-4 text-accent" />
+            <CardTitle>Streak</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-8">
+            <div>
+              <p className="text-hero text-4xl font-bold font-mono-tabular leading-none">{streak.current}</p>
+              <p className="text-xs text-muted mt-2">current streak</p>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex gap-8">
-              <div>
-                <p className="text-hero text-4xl font-bold font-mono-tabular leading-none">{streak.current}</p>
-                <p className="text-xs text-muted mt-2">current streak</p>
-              </div>
-              <div>
-                <p className="text-4xl font-bold font-mono-tabular text-muted leading-none">{streak.best}</p>
-                <p className="text-xs text-muted mt-2">best streak</p>
-              </div>
+            <div>
+              <p className="text-4xl font-bold font-mono-tabular text-muted leading-none">{streak.best}</p>
+              <p className="text-xs text-muted mt-2">best streak</p>
             </div>
-            <p className="text-xs text-muted mt-4">{weekHours.toFixed(1)}h logged this week</p>
-          </CardContent>
-        </Card>
-
-        {/* Today's log */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Today&apos;s study log</CardTitle>
-            <CardDescription>Log hours as you go — sessions add up across the day.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogSession} className="flex flex-col gap-3">
-              <div className="flex gap-2">
-                <Input
-                  type="number"
-                  step="0.25"
-                  min="0"
-                  placeholder="Hours"
-                  value={logHours}
-                  onChange={(e) => setLogHours(e.target.value)}
-                  className="w-28"
-                />
-                <Input
-                  placeholder="Note (optional)"
-                  value={logNote}
-                  onChange={(e) => setLogNote(e.target.value)}
-                  className="flex-1"
-                />
-              </div>
-              <Button type="submit" disabled={submitting} variant="secondary">
-                {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-                Save log
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+          <p className="text-xs text-muted mt-4">{weekHours.toFixed(1)}h logged this week</p>
+        </CardContent>
+      </Card>
 
       {/* Heatmap */}
       <Card>
