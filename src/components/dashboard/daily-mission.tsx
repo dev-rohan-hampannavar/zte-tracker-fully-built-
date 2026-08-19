@@ -118,7 +118,38 @@ export function DailyMission({
     return { allocated, loggedHours };
   }, [currentStage]);
 
+  // Current topic's own hours — separate from the stage roll-up above, so
+  // an overrun on just this topic is visible instead of being invisibly
+  // absorbed into the stage total (applyHoursToNextTopic already rolls
+  // overflow minutes into the next topic in the DB; this just surfaces
+  // that it happened).
+  const topicHours = useMemo(() => {
+    if (!nextTopic?.topic.estimated_hours) return null;
+    const allocated = nextTopic.topic.estimated_hours;
+    const loggedMinutes = nextTopic.topic.progress?.actual_minutes_spent ?? 0;
+    const loggedHours = loggedMinutes / 60;
+    return { allocated, loggedHours, overrun: Math.max(0, loggedHours - allocated) };
+  }, [nextTopic]);
+
   const todaysTotal = (todaysSessions ?? []).reduce((s, sess) => s + Number(sess.hours), 0);
+
+  // One-line "what to do right now" — answers the spec's "5 second" test
+  // without making the person read the whole checklist first.
+  const missionSummary = useMemo(() => {
+    if (!nextTopic) return null;
+    const parts: string[] = [`finish "${nextTopic.topic.title}"`];
+    const pendingExercises = (currentStage?.exercises ?? []).filter(
+      (ex) => !exerciseProgressMap.get(ex.id)?.completed
+    ).length;
+    if (pendingExercises > 0) {
+      parts.push(`${pendingExercises} exercise${pendingExercises === 1 ? "" : "s"}`);
+    }
+    if (currentProject && currentProject.progress?.status !== "completed") {
+      parts.push(`push "${currentProject.project.name}" forward`);
+    }
+    return parts.join(", ") + ".";
+  }, [nextTopic, currentStage, exerciseProgressMap, currentProject]);
+
 
   async function handleCompleteTopic() {
     if (!userId || !nextTopic) return;
@@ -252,6 +283,13 @@ export function DailyMission({
         </div>
       </CardHeader>
       <CardContent className="relative flex flex-col gap-5">
+        {missionSummary && (
+          <p className="text-sm">
+            <span className="font-medium text-foreground">Today: </span>
+            <span className="text-muted">{missionSummary}</span>
+          </p>
+        )}
+
         {/* Position */}
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
@@ -262,6 +300,16 @@ export function DailyMission({
           <p className="text-xs text-muted">
             Continue where you left off — the next incomplete task in this topic.
           </p>
+          {topicHours && (
+            <p className="text-xs font-mono-tabular mt-1">
+              <span className="text-muted">
+                {formatHours(topicHours.loggedHours)} / {formatHours(topicHours.allocated)} logged
+              </span>
+              {topicHours.overrun > 0 && (
+                <span className="text-warning"> · +{formatHours(topicHours.overrun)} over</span>
+              )}
+            </p>
+          )}
         </div>
 
         {/* Topics to cover: rest of this stage, plus a preview of what's next */}
