@@ -16,9 +16,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { StudyHeatmap } from "@/components/dashboard/heatmap";
 import { DashboardTour } from "@/components/dashboard/dashboard-tour";
 import { RevisionDueWidget } from "@/components/dashboard/revision-due-widget";
-import { useTopicDayMap, getManualDayForTopic } from "@/lib/hooks/use-manual-day";
 import { useUserSettings } from "@/lib/hooks/use-user-settings";
-import { formatHours, pct, cn, localDateISO } from "@/lib/utils";
+import { formatHours, pct, cn } from "@/lib/utils";
 import { Flame, TrendingUp, Code2, Briefcase, FolderGit2, AlertCircle, ChevronDown, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
@@ -40,7 +39,6 @@ export default function DashboardPage() {
   // something in it actually needs attention (overdue revisions) so it
   // doesn't hide something urgent behind an extra click.
   const [missionDetailsOpen, setMissionDetailsOpen] = useState(false);
-  const { data: topicDayMap } = useTopicDayMap();
 
   const allTopics = useMemo(() => phases.flatMap((p) => p.topics), [phases]);
   const completedTopics = allTopics.filter((t) => t.progress?.completed);
@@ -106,19 +104,6 @@ export default function DashboardPage() {
     }
     return null;
   }, [phases, nextTopic]);
-
-  const todaysLesson = useMemo(
-    () => getManualDayForTopic(nextTopic?.topic.id, topicDayMap),
-    [nextTopic, topicDayMap]
-  );
-
-  const yesterdaysLog = useMemo(() => {
-    if (!logs) return null;
-    const y = new Date();
-    y.setDate(y.getDate() - 1);
-    const yISO = localDateISO(y);
-    return logs.find((l) => l.date === yISO) ?? null;
-  }, [logs]);
 
   // Time-aware greeting for the dashboard hero — "Good Morning / Afternoon /
   // Evening" per the redesign spec. Computed once per render, not stored in
@@ -318,8 +303,6 @@ export default function DashboardPage() {
         exerciseProgress={exerciseProgress ?? []}
         projectProgress={projectProgress}
         orderedIncompleteTopics={orderedIncompleteTopics}
-        todaysLesson={todaysLesson}
-        yesterdaysLog={yesterdaysLog}
         onMutateProgress={mutateProgress}
         onMutateLogs={mutateLogs}
       />

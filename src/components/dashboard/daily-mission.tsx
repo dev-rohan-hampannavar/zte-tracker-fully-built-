@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Target, Clock, CheckCircle2, Loader2, ChevronDown, Dumbbell, FolderGit2, BookOpen, Plus } from "lucide-react";
+import { Target, Clock, CheckCircle2, Loader2, Dumbbell, FolderGit2, Plus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,17 +23,14 @@ import { upsertProjectProgress } from "@/lib/hooks/use-projects";
 import { toggleExerciseComplete } from "@/lib/hooks/use-exercises";
 import { logStudySession } from "@/lib/hooks/use-daily-logs";
 import { logStudySessionEntry, useTodaysSessions } from "@/lib/hooks/use-study-sessions";
-import { TodaysLesson } from "@/components/dashboard/todays-lesson";
 import { formatHours, cn } from "@/lib/utils";
 import type {
   StageWithTopics,
   PhaseWithTopics,
   ExerciseProgress,
   ProjectProgress,
-  DailyLog,
   StudySessionActivity,
 } from "@/types/database";
-import type { ManualDay } from "@/lib/hooks/use-manual-day";
 
 const ACTIVITY_LABELS: Record<StudySessionActivity, string> = {
   learn: "Learn",
@@ -51,8 +48,6 @@ interface DailyMissionProps {
   exerciseProgress: ExerciseProgress[];
   projectProgress: ProjectProgress[] | undefined;
   orderedIncompleteTopics: { id: string; title: string; estimated_hours: number | null; progress: { actual_minutes_spent: number } | null }[];
-  todaysLesson: ManualDay | null;
-  yesterdaysLog?: DailyLog | null;
   onMutateProgress: () => Promise<unknown>;
   onMutateLogs: () => Promise<unknown>;
 }
@@ -64,14 +59,11 @@ export function DailyMission({
   exerciseProgress,
   projectProgress,
   orderedIncompleteTopics,
-  todaysLesson,
-  yesterdaysLog,
   onMutateProgress,
   onMutateLogs,
 }: DailyMissionProps) {
   const [completing, setCompleting] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [lessonOpen, setLessonOpen] = useState(false);
   const [hoursInput, setHoursInput] = useState("");
   const [minutesInput, setMinutesInput] = useState("");
   const [activity, setActivity] = useState<StudySessionActivity>("learn");
@@ -361,25 +353,6 @@ export function DailyMission({
           </div>
         )}
 
-        {/* Full lesson reference, collapsed by default */}
-        {todaysLesson && (
-          <div className="pt-1 border-t border-border">
-            <button
-              onClick={() => setLessonOpen((v) => !v)}
-              className="flex items-center gap-1.5 text-xs text-muted hover:text-foreground pt-3 transition-standard"
-              aria-expanded={lessonOpen}
-            >
-              <BookOpen className="h-3 w-3" />
-              <ChevronDown className={cn("h-3 w-3 transition-transform", lessonOpen && "rotate-180")} />
-              {lessonOpen ? "Hide full lesson" : "Open full lesson"}
-            </button>
-            {lessonOpen && (
-              <div className="pt-3">
-                <TodaysLesson day={todaysLesson} userId={userId} yesterdaysLog={yesterdaysLog} />
-              </div>
-            )}
-          </div>
-        )}
       </CardContent>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
