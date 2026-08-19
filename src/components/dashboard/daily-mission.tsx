@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Target, Clock, CheckCircle2, Loader2, Dumbbell, FolderGit2, Plus } from "lucide-react";
+import { Target, Clock, CheckCircle2, Loader2, Dumbbell, FolderGit2, Plus, ListChecks, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -85,6 +85,23 @@ export function DailyMission({
     return { project, progress };
   }, [currentStage, projectProgress, nextTopic]);
 
+  // Remaining topics in the current stage — nextTopic is already the first
+  // incomplete one, so this is everything else in currentStage.topics that
+  // isn't done yet, in curriculum order (checklist, toggle-able).
+  const remainingStageTopics = useMemo(() => {
+    if (!currentStage) return [];
+    return currentStage.topics.filter((t) => !t.progress?.completed);
+  }, [currentStage]);
+
+  // Preview of what comes after this stage — orderedIncompleteTopics is
+  // already the full cross-stage remaining chain in curriculum order, so
+  // everything past this stage's own topics is "up next" (read-only, no
+  // toggling — that only happens once a topic becomes the current one).
+  const upcomingTopics = useMemo(() => {
+    const remainingIds = new Set(remainingStageTopics.map((t) => t.id));
+    return orderedIncompleteTopics.filter((t) => !remainingIds.has(t.id)).slice(0, 5);
+  }, [orderedIncompleteTopics, remainingStageTopics]);
+
   // Curriculum allocation is the STAGE's total hours (the actual source-of-
   // truth unit per the spec), not a single topic's. Logged is the sum of
   // every topic's actual_minutes_spent within this stage — real recorded
@@ -105,11 +122,17 @@ export function DailyMission({
 
   async function handleCompleteTopic() {
     if (!userId || !nextTopic) return;
+    await handleCompleteTopicById(nextTopic.topic.id, true);
+  }
+
+  async function handleCompleteTopicById(topicId: string, checked: boolean) {
+    if (!userId) return;
     setCompleting(true);
     try {
-      await toggleTopicComplete(userId, nextTopic.topic.id, true);
+      await toggleTopicComplete(userId, topicId, checked);
       await onMutateProgress();
-      toast.success(`Marked "${nextTopic.topic.title}" complete`);
+      const title = topicId === nextTopic?.topic.id ? nextTopic.topic.title : topicId;
+      toast.success(`Marked "${title}" complete`);
     } catch {
       toast.error("Couldn't update. Try again.");
     } finally {
@@ -240,6 +263,61 @@ export function DailyMission({
             Continue where you left off — the next incomplete task in this topic.
           </p>
         </div>
+
+        {/* Topics to cover: rest of this stage, plus a preview of what's next */}
+        {(remainingStageTopics.length > 0 || upcomingTopics.length > 0) && (
+          <div className="flex flex-col gap-3 pt-1 border-t border-border">
+            {remainingStageTopics.length > 0 && (
+              <div className="pt-3">
+                <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted mb-2">
+                  <ListChecks className="h-3 w-3" /> Topics to cover in this stage
+                </p>
+                <ul className="flex flex-col gap-1.5">
+                  {remainingStageTopics.map((t) => {
+                    const isCurrent = t.id === nextTopic.topic.id;
+                    return (
+                      <li key={t.id} className="flex items-start gap-2">
+                        <Checkbox
+                          checked={false}
+                          disabled={!isCurrent}
+                          onCheckedChange={(v) => isCurrent && handleCompleteTopicById(t.id, v === true)}
+                          className="mt-0.5"
+                        />
+                        <span className={cn("text-sm", isCurrent && "font-medium text-accent")}>
+                          {t.title}
+                          {isCurrent && <span className="text-muted font-normal"> — current</span>}
+                        </span>
+                        {t.estimated_hours && (
+                          <span className="ml-auto text-xs text-muted font-mono-tabular shrink-0">
+                            {formatHours(t.estimated_hours)}
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+
+            {upcomingTopics.length > 0 && (
+              <div className="pt-1">
+                <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted mb-2">
+                  <ArrowRight className="h-3 w-3" /> Up next
+                </p>
+                <ul className="flex flex-col gap-1">
+                  {upcomingTopics.map((t) => (
+                    <li key={t.id} className="flex items-center justify-between text-sm text-muted">
+                      <span>{t.title}</span>
+                      {t.estimated_hours && (
+                        <span className="text-xs font-mono-tabular shrink-0">{formatHours(t.estimated_hours)}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Checklist: exercises + project, scoped to the current stage */}
         {currentStage && (currentStage.exercises.length > 0 || currentProject) && (
