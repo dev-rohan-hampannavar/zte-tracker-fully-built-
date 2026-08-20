@@ -1,45 +1,24 @@
 import type { NextConfig } from "next";
 
-// SHA-256 hash of the one inline <script> in the app (the theme-flash-
-// prevention script in src/app/layout.tsx, which has to run before
-// hydration to avoid a flash of the wrong theme). A nonce-based CSP is
-// the more common pattern, but it requires forcing the whole app into
-// dynamic rendering (Next.js's own docs confirm this — nonces only work
-// when a fresh one is generated per request in middleware, which by
-// definition can't be pre-rendered) — that would silently defeat the
-// `revalidate = 300` ISR caching already set on /u/[slug] and
-// /api/public/[slug] (the public profile surfaces), undoing the load-time
-// work already done there. A hash-based CSP for this one known, static
-// script avoids that entirely: no middleware involvement, no nonce, no
-// forced dynamic rendering, and — same as a nonce — still no
-// 'unsafe-inline', so any *other* injected inline script is still
-// blocked. If this script's content ever changes, this hash must be
-// regenerated to match (see the comment above generateOtherScriptHash
-// pattern in Next's own CSP docs) or the script will silently stop
-// running in production.
-const THEME_SCRIPT_HASH = "'sha256-82ytc1C/jdF0a8KcD8+yfUETn3M0Ao6m6Gm+4WsCREQ='";
-
-// connect-src: 'self' (same-origin API routes) plus https://*.supabase.co
-// (REST/Auth — this app's only client-side data source; confirmed no
-// Supabase Realtime/websocket usage anywhere in the app, so no wss:
-// needed). GitHub's API is only ever called server-side
-// (getGithubActivity in /u/[slug]/page.tsx), so it doesn't need to be
-// here.
-//
-// img-src includes data: for next/image placeholders/blur — no external
-// image domains are used anywhere (no images.domains entries below, no
-// external <img> src in the app, the OG image generator is fully
-// self-contained).
-//
-// font-src 'self' only: next/font/google self-hosts font files at build
-// time, so there's no runtime dependency on fonts.googleapis.com or
-// fonts.gstatic.com.
+// The CSP below was originally hash-locked to just the one static inline
+// <script> this app ships (the theme-flash-prevention script in
+// src/app/layout.tsx). In practice, the environment this app is being
+// previewed/served in (a wrapping "dashboard" iframe) injects its own
+// inline <script> tags and an external Google Fonts stylesheet at
+// runtime — none of which come from this codebase, so hash-pinning can't
+// account for them and the page fails to load. Rather than chase an
+// unknown, changing set of hashes, script-src and style-src below now
+// allow 'unsafe-inline' so the app loads regardless of what the hosting
+// environment injects. This does reduce XSS protection compared to the
+// hash-locked version — if this app is ever deployed standalone (not
+// inside a third-party preview harness), it's worth reverting to a
+// hash- or nonce-based script-src.
 const CSP = [
   "default-src 'self'",
-  `script-src 'self' ${THEME_SCRIPT_HASH}`,
-  "style-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data:",
-  "font-src 'self'",
+  "font-src 'self' https://fonts.gstatic.com",
   "connect-src 'self' https://*.supabase.co",
   "frame-ancestors 'none'",
   "base-uri 'self'",
