@@ -33,7 +33,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+
 
 const NAV = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -87,7 +87,6 @@ const SIDEBAR_SECTIONS: { label: string | null; hrefs: string[] }[] = [
 // pinned/expanded preference across sessions like the theme toggle does.
 export function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
-  const router = useRouter();
   // Lazy initializer reads localStorage synchronously on first render instead
   // of via a post-mount effect — avoids both an extra render pass and the
   // set-state-in-effect lint rule. Safe under SSR since this component is
@@ -120,7 +119,10 @@ export function Sidebar({ className }: { className?: string }) {
   async function signOut() {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/login");
+    // A plain router.push does a client-side navigation, which can leave
+    // cached React/SWR state from the signed-out session sitting in memory
+    // momentarily. A hard navigation guarantees a clean slate.
+    window.location.href = "/login";
   }
 
   return (
@@ -165,7 +167,16 @@ export function Sidebar({ className }: { className?: string }) {
               {section.label && (
                 <p
                   className={cn(
-                    "px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-2 whitespace-nowrap transition-standard",
+                    // text-muted (not text-muted-2) — muted-2 (#71717a on
+                    // dark background) computes to a 4.12:1 contrast ratio
+                    // against this app's background, below the WCAG AA
+                    // 4.5:1 threshold for normal text, and this label is
+                    // rendered at 10px — well under the size where the
+                    // looser large-text threshold would apply. text-muted
+                    // (#a1a1aa) passes at 7.76:1. Every other muted-2 usage
+                    // in the app is a border color or chart-axis stroke,
+                    // not text, so this was the one real instance.
+                    "px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted whitespace-nowrap transition-standard",
                     expanded ? "opacity-100" : "opacity-0"
                   )}
                 >

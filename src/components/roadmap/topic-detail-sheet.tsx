@@ -41,6 +41,14 @@ export function TopicDetailSheet({
 
   useEffect(() => {
     if (!topic || !user) return;
+    // Standard "start loading, then fetch" — not the accidental-extra-
+    // render anti-pattern the rule usually flags. notes/loadingNotes can't
+    // be computed from props during render (this is a real async query),
+    // and a key-remount (the fix used for TodayForm on the Journal page)
+    // doesn't apply here since there's no already-available prop value to
+    // key on — the whole point is fetching from scratch when the sheet
+    // opens for a given topic.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoadingNotes(true);
     const supabase = createClient();
     supabase

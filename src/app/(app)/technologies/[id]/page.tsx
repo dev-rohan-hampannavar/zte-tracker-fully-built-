@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { RecordNotFound } from "@/components/ui/record-not-found";
 import useSWR from "swr";
 import { createClient } from "@/lib/supabase/client";
 import { useTechnology, useTechnologies, useTopicsForTechnology } from "@/lib/hooks/use-roadmap";
@@ -96,7 +97,7 @@ export default function TechnologyDetailPage() {
 
   if (techLoading) return <Skeleton className="h-48 w-full" />;
   if (!technology) {
-    return <p className="text-sm text-muted">Technology not found.</p>;
+    return <RecordNotFound label="Technology" backHref="/technologies" backLabel="Back to technologies" />;
   }
 
   return (

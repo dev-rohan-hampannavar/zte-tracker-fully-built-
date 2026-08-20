@@ -43,11 +43,13 @@ export function useDeveloperMode(userId: string | undefined) {
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY) === "true";
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see doc comment above; localStorage is unavailable during SSR, so this can't move to a useState initializer without a hydration mismatch
     setEnabledState(stored);
   }, []);
 
   useEffect(() => {
     if (remoteValue !== undefined && remoteValue !== enabled) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing external (SWR) state in, the documented correct case per the rule's own guidance
       setEnabledState(remoteValue);
       localStorage.setItem(STORAGE_KEY, String(remoteValue));
     }

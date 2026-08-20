@@ -39,8 +39,19 @@ export function renderWeeklySummaryEmail(data: WeeklySummaryData): { subject: st
       ? data.topicsCompletedThisWeek
           .slice(0, 10)
           .map((t) => `<li style="margin-bottom:4px;">${escapeHtml(t.title)}</li>`)
-          .join("")
-      : `<li style="color:#8a8578;">No topics finished this week — hours were still logged toward the current one.</li>`;
+          .join("") +
+        // Previously the cap at 10 was silent — if someone finished 14
+        // topics in a week, the email would just show 10 with no
+        // indication 4 more existed, understating a great week. This adds
+        // a note only when the cap actually applies.
+        (data.topicsCompletedThisWeek.length > 10
+          ? `<li style="color:#8a8578;list-style:none;margin-top:4px;">+ ${data.topicsCompletedThisWeek.length - 10} more</li>`
+          : "")
+      : `<li style="color:#8a8578;">${
+          data.hoursThisWeek > 0
+            ? "No topics finished this week — hours were still logged toward the current one."
+            : "No topics finished and no hours logged this week."
+        }</li>`;
 
   const html = `
 <!DOCTYPE html>
@@ -119,7 +130,7 @@ export function renderWeeklySummaryEmail(data: WeeklySummaryData): { subject: st
 `.trim();
 
   return {
-    subject: `${who === "They" ? "Weekly" : `${who}'s weekly`} progress: ${data.hoursThisWeek.toFixed(1)}h logged, ${data.topicsCompletedThisWeek.length} topics done`,
+    subject: `${who === "They" ? "Weekly" : `${who}'s weekly`} progress: ${data.hoursThisWeek.toFixed(1)}h logged, ${data.topicsCompletedThisWeek.length} topic${data.topicsCompletedThisWeek.length === 1 ? "" : "s"} done`,
     html,
   };
 }

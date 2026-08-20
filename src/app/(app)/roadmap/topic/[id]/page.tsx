@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { RecordNotFound } from "@/components/ui/record-not-found";
 import { useUser } from "@/lib/hooks/use-user";
 import { useTopicDetail, useProgress, useRoadmap, useAllTopicNotes, useTopicResources, addTopicResource, deleteTopicResource, updateTopicProgress, useLinkRegistry } from "@/lib/hooks/use-roadmap";
 import { useUserSettings, pinItem, unpinItem, isPinned } from "@/lib/hooks/use-user-settings";
@@ -48,7 +49,6 @@ export default function TopicDetailPage() {
   const [notes, setNotes] = useState<TopicNote[]>([]);
   const [newNote, setNewNote] = useState("");
   const [minutesInput, setMinutesInput] = useState("");
-  const [isMinutesDirty, setIsMinutesDirty] = useState(false);
   const [savingNote, setSavingNote] = useState(false);
   const [loadingNotes, setLoadingNotes] = useState(false);
 
@@ -56,6 +56,13 @@ export default function TopicDetailPage() {
 
   useEffect(() => {
     if (!params.id || !user) return;
+    // Wires up loadingNotes, which was declared and rendered ("Loading
+    // notes…") but never actually set — this fetch never marked it true,
+    // so that message could never show; it always fell straight to
+    // "No notes yet." during the fetch window instead. Mirrors the
+    // identical fetch in topic-detail-sheet.tsx, which does set it.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- standard start-loading-then-fetch, same as topic-detail-sheet.tsx
+    setLoadingNotes(true);
     const supabase = createClient();
     supabase
       .from("topic_notes")
@@ -65,6 +72,7 @@ export default function TopicDetailPage() {
       .order("created_at", { ascending: false })
       .then(({ data }) => {
         setNotes((data ?? []) as TopicNote[]);
+        setLoadingNotes(false);
       });
   }, [params.id, user]);
 
@@ -79,7 +87,13 @@ export default function TopicDetailPage() {
     return undefined;
   }, [myProgress?.actual_minutes_spent, minutesInput]);
 
-  const allTopics = roadmap?.topics ?? [];
+  // Memoized because `roadmap?.topics ?? []` creates a new array reference
+  // on every render whenever roadmap is still loading (the `?? []`
+  // fallback), which was silently defeating the memoization of
+  // orderedTopics below — same category of bug as the projectMap fix on
+  // the Resume page. useMemo keeps the reference stable across renders
+  // where roadmap.topics itself hasn't changed.
+  const allTopics = useMemo(() => roadmap?.topics ?? [], [roadmap]);
   const backlinks =
     topic && allNotes
       ? computeBacklinks({ type: "topic", id: topic.id, label: topic.title }, allNotes, allTopics, linkRegistry)
@@ -128,6 +142,29 @@ export default function TopicDetailPage() {
   // <letter>" chords live in ShortcutsHelp; these are page-local actions
   // that component has no way to reach (it doesn't know about this
   // topic's id or completion state).
+  //
+  // handleToggleComplete is wrapped in useCallback (moved above this
+  // effect, and above the early returns below, since hooks must run
+  // unconditionally on every render) and included in the dependency
+  // array below, along with router. Previously it was a plain function
+  // declared after this effect and referenced from inside the keydown
+  // handler without being a dependency — the effect did re-run when
+  // `topic`/`isLocked` changed (both were already deps), but a change to
+  // `user` alone (e.g. a session change without a full page reload)
+  // wouldn't have re-attached the listener, leaving the "x" shortcut
+  // silently bound to a stale `user` closure.
+  const handleToggleComplete = useCallback(
+    async (completed: boolean) => {
+      if (!user || !topic || isLocked) return;
+      await updateTopicProgress(user.id, topic.id, {
+        completed,
+        completed_at: completed ? new Date().toISOString() : null,
+      });
+      mutateProgress();
+    },
+    [user, topic, isLocked, mutateProgress]
+  );
+
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       const target = e.target as HTMLElement;
@@ -150,22 +187,13 @@ export default function TopicDetailPage() {
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [nextTopicId, prevTopicId, isLocked, topic, myProgress?.completed]);
+  }, [nextTopicId, prevTopicId, isLocked, topic, myProgress?.completed, handleToggleComplete, router]);
 
   if (isLoading) return <Skeleton className="h-96 w-full" />;
-  if (!topic) return <p className="text-sm text-muted">Topic not found.</p>;
+  if (!topic) return <RecordNotFound label="Topic" backHref="/roadmap" backLabel="Back to roadmap" />;
 
   const parentPhase = (roadmap?.phases ?? []).find((p) => p.id === topic.phase_id) ?? null;
   const parentStage = (roadmap?.stages ?? []).find((s) => s.id === topic.stage_id) ?? null;
-
-  async function handleToggleComplete(completed: boolean) {
-    if (!user || !topic || isLocked) return;
-    await updateTopicProgress(user.id, topic.id, {
-      completed,
-      completed_at: completed ? new Date().toISOString() : null,
-    });
-    mutateProgress();
-  }
 
   async function handleDifficultyChange(value: string) {
     if (!user || !topic) return;

@@ -101,7 +101,7 @@ export default function SkillsPage() {
             </div>
           ))}
           <p className="text-xs text-muted mt-2">
-            Note: roadmap.md doesn't tag topics with individual skills (React, SQL, etc.) — this
+            Note: roadmap.md doesn&apos;t tag topics with individual skills (React, SQL, etc.) — this
             matrix uses band (Foundation/Core/Advanced/Expert), the real grouping the source data has.
           </p>
         </CardContent>

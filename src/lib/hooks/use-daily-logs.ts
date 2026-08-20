@@ -19,23 +19,22 @@ export function useDailyLogs(userId: string | undefined) {
   });
 }
 
-export async function logStudySession(userId: string, hours: number, note?: string) {
-  const date = todayISO();
-  // Additive: if today already has a log, add to it rather than overwrite,
-  // so users can log multiple sessions across the day.
-  const { data: existing } = await supabase
-    .from("daily_logs")
-    .select("hours,note")
-    .eq("user_id", userId)
-    .eq("date", date)
-    .maybeSingle() as { data: { hours: number; note: string | null } | null };
-
-  const newHours = (existing?.hours ?? 0) + hours;
-  const newNote = [existing?.note, note].filter(Boolean).join(" · ") || null;
-
-  const { error } = await supabase
-    .from("daily_logs")
-    .upsert({ user_id: userId, date, hours: newHours, note: newNote } as never, { onConflict: "user_id,date" });
+export async function logStudySession(hours: number, note?: string) {
+  // Delegates to a SECURITY DEFINER RPC (migration 0028) that does the
+  // read-and-increment atomically inside a single SQL statement, instead
+  // of the previous select-then-upsert here in JS. That round trip had a
+  // real race: two concurrent calls (a double-click, or two tabs open)
+  // could both read the same starting `hours` before either wrote back,
+  // silently dropping one session's logged hours from the day's total —
+  // which then silently under-counted streak/heatmap/weekly-hours too,
+  // since those are all derived from this same row. The function scopes
+  // writes to auth.uid() itself (same as reset_user_progress/
+  // delete_own_account), so a userId parameter is no longer needed here.
+  const supabase = createClient();
+  const { error } = await supabase.rpc(
+    "log_study_session_hours" as never,
+    { p_date: todayISO(), p_hours: hours, p_note: note || null } as never
+  );
   if (error) throw error;
 }
 

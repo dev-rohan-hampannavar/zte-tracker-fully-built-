@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -10,6 +10,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Loader2, GitBranch, Radar, Repeat, Layers } from "lucide-react";
+
+// Maps the ?error= query param the auth callback route redirects back with
+// (see src/app/auth/callback/route.ts) to a message a user can act on.
+// Previously this param was never read, so a failed magic-link exchange
+// (expired/already-used link, network hiccup) silently dumped the user
+// back on /login with no explanation at all.
+const CALLBACK_ERROR_MESSAGES: Record<string, string> = {
+  "auth-callback-failed":
+    "That sign-in link didn't work — it may have expired or already been used. Send a new one below.",
+};
 
 // Sign-in pitch — my own framing of what this tool is and why it's
 // different, deliberately NOT lifted from Orientation/WhyThisWorks/
@@ -61,8 +71,19 @@ function LoginForm() {
   const [otp, setOtp] = useState("");
   const [stage, setStage] = useState<"enter-email" | "enter-otp">("enter-email");
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
 
   const supabase = createClient();
+
+  // Surface a failed auth callback redirect instead of silently landing
+  // back on this page with no explanation.
+  useEffect(() => {
+    const errorCode = params.get("error");
+    if (errorCode) {
+      toast.error(CALLBACK_ERROR_MESSAGES[errorCode] ?? "Sign-in failed. Please try again.");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function sendMagicLink(e: React.FormEvent) {
     e.preventDefault();
@@ -112,6 +133,24 @@ function LoginForm() {
       return;
     }
     window.location.href = next;
+  }
+
+  // Previously the only way out of a stuck/expired code was "Use a
+  // different email", which throws away the email the user already typed.
+  // This resends a fresh code to the same address without losing state.
+  async function resendOtp() {
+    setResending(true);
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: true },
+    });
+    setResending(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setOtp("");
+    toast.success("New code sent.");
   }
 
   return (
@@ -186,6 +225,7 @@ function LoginForm() {
                       type="email"
                       required
                       placeholder="you@example.com"
+                      aria-label="Email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
@@ -203,6 +243,7 @@ function LoginForm() {
                         type="email"
                         required
                         placeholder="you@example.com"
+                        aria-label="Email address"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
@@ -217,6 +258,7 @@ function LoginForm() {
                         required
                         inputMode="numeric"
                         placeholder="6-digit code"
+                        aria-label="6-digit verification code"
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
                       />
@@ -224,13 +266,23 @@ function LoginForm() {
                         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
                         Verify & sign in
                       </Button>
-                      <button
-                        type="button"
-                        onClick={() => setStage("enter-email")}
-                        className="text-xs text-muted hover:text-foreground"
-                      >
-                        Use a different email
-                      </button>
+                      <div className="flex items-center justify-between">
+                        <button
+                          type="button"
+                          onClick={resendOtp}
+                          disabled={resending}
+                          className="text-xs text-muted hover:text-foreground disabled:opacity-50"
+                        >
+                          {resending ? "Sending..." : "Resend code"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setStage("enter-email")}
+                          className="text-xs text-muted hover:text-foreground"
+                        >
+                          Use a different email
+                        </button>
+                      </div>
                     </form>
                   )}
                 </TabsContent>

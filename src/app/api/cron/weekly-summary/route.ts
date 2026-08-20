@@ -67,6 +67,16 @@ export async function GET(request: Request) {
   const supabase = createAdminClient();
   const resend = new Resend(process.env.RESEND_API_KEY);
   const { weekStart, weekEnd } = currentWeekRange();
+  // Deliberately NOT built from request.headers.get("host") — this route
+  // is triggered by an external, unauthenticated-by-IP pinger (see the
+  // comment at the top of this file), gated only by CRON_SECRET as a
+  // bearer token. A Host header (or X-Forwarded-Host behind certain
+  // proxies) is caller-supplied and not something to trust for building a
+  // link that gets emailed out to real users under this app's name — a
+  // spoofed Host would put an attacker-controlled URL in a legitimate
+  // email. NEXT_PUBLIC_SITE_URL is a fixed, deploy-time-configured value
+  // instead.
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
   const { data: optedIn, error: settingsError } = (await supabase
     .from("user_settings")
@@ -154,8 +164,8 @@ export async function GET(request: Request) {
         totalDone,
         totalTopics,
         profileUrl:
-          row.public_profile_enabled && row.public_profile_slug
-            ? `https://${request.headers.get("host") ?? ""}/u/${row.public_profile_slug}`
+          row.public_profile_enabled && row.public_profile_slug && siteUrl
+            ? `${siteUrl.replace(/\/$/, "")}/u/${row.public_profile_slug}`
             : null,
       });
 

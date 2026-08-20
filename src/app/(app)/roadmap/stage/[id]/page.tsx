@@ -2,6 +2,7 @@
 
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { RecordNotFound } from "@/components/ui/record-not-found";
 import { useUser } from "@/lib/hooks/use-user";
 import { useDisplayName } from "@/lib/hooks/use-display-name";
 import { useStageDetail, useRoadmap } from "@/lib/hooks/use-roadmap";
@@ -22,7 +23,7 @@ import { toast } from "sonner";
 export default function StageDetailPage() {
   const params = useParams<{ id: string }>();
   const { user } = useUser();
-  const { data, isLoading, mutate } = useStageDetail(params.id);
+  const { data, isLoading } = useStageDetail(params.id);
   const { data: roadmap } = useRoadmap();
   const { data: displayName } = useDisplayName(user?.id);
   const { data: progress, mutate: mutateProgress } = useProgress(user?.id);
@@ -52,7 +53,7 @@ export default function StageDetailPage() {
   }
 
   if (isLoading) return <Skeleton className="h-96 w-full" />;
-  if (!data) return <p className="text-sm text-muted">Stage not found.</p>;
+  if (!data) return <RecordNotFound label="Stage" backHref="/roadmap" backLabel="Back to roadmap" />;
 
   const { stage, topics, projects, exercises } = data;
   const completedCount = topics.filter((t) => progressMap.get(t.id)?.completed).length;

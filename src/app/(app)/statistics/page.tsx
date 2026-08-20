@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useUser } from "@/lib/hooks/use-user";
 import { usePhasesWithProgress, useClientSyncMilestones, useRoadmapMetadata } from "@/lib/hooks/use-roadmap";
-import { useDailyLogs, computeStreak, weeklyHours, weeklyBreakdown } from "@/lib/hooks/use-daily-logs";
+import { useDailyLogs, computeStreak, weeklyBreakdown } from "@/lib/hooks/use-daily-logs";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
 import { useProjectProgress, useBuildInPublicStatus } from "@/lib/hooks/use-projects";
 import { useExerciseProgress } from "@/lib/hooks/use-exercises";
@@ -94,7 +94,6 @@ export default function StatisticsPage() {
   const completedPhases = phases.filter((p) => p.topics.length > 0 && p.topics.every((t) => t.progress?.completed));
 
   const streak = computeStreak(logs ?? []);
-  const week = weeklyHours(logs ?? []);
 
   const totalLoggedHours = (logs ?? []).reduce((s, l) => s + Number(l.hours), 0);
   const daysLogged = (logs ?? []).filter((l) => l.hours > 0).length;
@@ -103,8 +102,16 @@ export default function StatisticsPage() {
   const firstLogDate = (logs ?? []).length
     ? [...(logs ?? [])].sort((a, b) => (a.date < b.date ? -1 : 1))[0].date
     : null;
+  // Pinned once per mount via a useState lazy initializer, rather than
+  // useMemo (which the react-hooks/purity rule still flags — the callback
+  // still runs during the render phase) or a bare call in the render body.
+  // Date.now() is an impure call — reading it live meant weeksSinceStart
+  // (and avgWeekly, derived from it) could silently shift if this
+  // component happened to re-render for any unrelated reason while left
+  // open, without the user doing anything that should change the numbers.
+  const [now] = useState(() => Date.now());
   const weeksSinceStart = firstLogDate
-    ? Math.max(1, Math.ceil((Date.now() - new Date(firstLogDate).getTime()) / (7 * 86400000)))
+    ? Math.max(1, Math.ceil((now - new Date(firstLogDate).getTime()) / (7 * 86400000)))
     : 1;
   const avgWeekly = totalLoggedHours / weeksSinceStart;
 

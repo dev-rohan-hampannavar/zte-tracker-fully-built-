@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Menu, X, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -24,7 +24,6 @@ const MOBILE_SECTIONS: { label: string | null; hrefs: string[] }[] = [
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   // Settings and Sign out live in a footer block on the desktop sidebar,
   // outside NAV entirely — so they were unreachable on mobile since this
@@ -32,7 +31,9 @@ export function MobileNav() {
   async function signOut() {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/login");
+    // Hard navigation to guarantee no stale signed-in state lingers in
+    // memory after logout — see sidebar.tsx signOut for the same fix.
+    window.location.href = "/login";
   }
 
   return (

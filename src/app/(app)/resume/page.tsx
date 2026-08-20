@@ -28,8 +28,6 @@ export default function ResumePage() {
     [phases]
   );
 
-  const projectMap = new Map((projectProgress ?? []).map((p) => [p.phase_id, p]));
-
   const dsaStats = useMemo(() => {
     const done = (dsa ?? []).filter((d) => d.completed);
     return {
@@ -41,6 +39,13 @@ export default function ResumePage() {
   }, [dsa]);
 
   const bullets = useMemo(() => {
+    // Built inside the memo (not hoisted above it as a plain variable) so
+    // it doesn't defeat the memoization: a `new Map(...)` built on every
+    // render fails reference-equality every time, which meant this whole
+    // useMemo was silently recomputing bullets on every render regardless
+    // of whether completedPhases/dsaStats/projectProgress/phases actually
+    // changed — the memo was providing zero benefit.
+    const projectMap = new Map((projectProgress ?? []).map((p) => [p.phase_id, p]));
     const items: { id: string; text: string; group: string }[] = [];
 
     completedPhases.forEach((phase) => {
@@ -77,7 +82,7 @@ export default function ResumePage() {
       });
 
     return items;
-  }, [completedPhases, dsaStats, projectProgress, phases, projectMap]);
+  }, [completedPhases, dsaStats, projectProgress, phases]);
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -136,7 +141,7 @@ export default function ResumePage() {
           <h1 className="text-page-title font-semibold tracking-tight">Resume Generator</h1>
           <p className="text-sm text-muted mt-1">
             Auto-drafted bullets from completed phases, capstones, deployed projects, and DSA progress.
-            Select what's relevant, copy or export.
+            Select what&apos;s relevant, copy or export.
           </p>
         </div>
         <div className="flex gap-2">

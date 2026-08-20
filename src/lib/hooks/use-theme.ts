@@ -23,6 +23,18 @@ function applyTheme(pref: ThemePreference) {
 /**
  * Local-first theme control. Applies instantly via localStorage (no flash),
  * and lazily syncs the preference to user_settings.theme when a user is known.
+ *
+ * The initial-mount effect below reads localStorage synchronously and calls
+ * setState — this trips react-hooks/set-state-in-effect, and a useState
+ * lazy initializer looks like the fix (see the identical case argued
+ * through in use-developer-mode.ts's doc comment), but it isn't one here:
+ * localStorage isn't available during server rendering, so an initializer
+ * that reads it would return a different value on the server ("system")
+ * than on the client (the real stored value) for the exact same render —
+ * a genuine hydration mismatch, not just a lint nag. This settings-page
+ * toggle's rendered output depends on `theme`, so that mismatch would be
+ * real and visible, not just theoretical. The effect-based read is the
+ * correct tool for this specific "value only exists client-side" case.
  */
 export function useTheme(userId: string | undefined) {
   const [theme, setThemeState] = useState<ThemePreference>("system");
@@ -44,12 +56,19 @@ export function useTheme(userId: string | undefined) {
 
   useEffect(() => {
     const stored = (localStorage.getItem(STORAGE_KEY) as ThemePreference | null) ?? "system";
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see doc comment above
     setThemeState(stored);
     applyTheme(stored);
   }, []);
 
   useEffect(() => {
     if (remoteTheme && remoteTheme !== theme) {
+      // This is a legitimate use of setState-in-effect, not the flash-of-
+      // wrong-value bug the initializer fix above addressed: remoteTheme
+      // comes from SWR (an external async source), so there's no way to
+      // know it during the initial render — syncing external state into
+      // local state inside an effect is exactly what effects are for.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setThemeState(remoteTheme);
       applyTheme(remoteTheme);
       localStorage.setItem(STORAGE_KEY, remoteTheme);

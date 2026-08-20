@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { RecordNotFound } from "@/components/ui/record-not-found";
 import { useUser } from "@/lib/hooks/use-user";
 import { useCompany, useExitLadder, usePhasesWithProgress, useRoadmapMetadata } from "@/lib/hooks/use-roadmap";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
@@ -79,7 +80,7 @@ export default function CompanyDetailPage() {
 
   if (isLoading) return <Skeleton className="h-48 w-full" />;
   if (!company) {
-    return <p className="text-sm text-muted">Company not found.</p>;
+    return <RecordNotFound label="Company" backHref="/companies" backLabel="Back to companies" />;
   }
 
   return (

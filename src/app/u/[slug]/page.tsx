@@ -39,6 +39,12 @@ async function getProfileData(slug: string) {
 
   const userId = settings.user_id;
 
+  // Kicked off here (as soon as github_username is known) rather than
+  // after this function returns, so it runs concurrently with the 8
+  // Supabase queries below instead of blocking behind all of them —
+  // see the call site in PublicProfilePage for why this matters.
+  const githubActivityPromise = getGithubActivity(settings.github_username);
+
   const [
     { data: phases },
     { data: topics },
@@ -75,6 +81,7 @@ async function getProfileData(slug: string) {
     projects: (projects ?? []) as ProjectProgress[],
     buildInPublic: (bip ?? []) as BuildInPublicStatus[],
     streak: streakSummary as { current_streak: number; best_streak: number; total_days_logged: number } | null,
+    githubActivity: await githubActivityPromise,
   };
 }
 
@@ -120,11 +127,18 @@ async function getGithubActivity(username: string | null): Promise<GithubActivit
 
 export default async function PublicProfilePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+
+  // getGithubActivity() is now kicked off inside getProfileData() as soon
+  // as github_username is known (see there), running concurrently with
+  // the 8 Supabase queries instead of being awaited sequentially after
+  // all of them resolved. Previously that sequential chain meant a slow
+  // or rate-limited GitHub response blocked the entire page from
+  // rendering, even though GitHub failures were already handled
+  // gracefully — the latency wasn't.
   const data = await getProfileData(slug);
   if (!data) notFound();
 
-  const { displayName, bio, githubUsername, phases, topics, capstones, progress, dsa, projects, buildInPublic, streak } = data;
-  const githubActivity = await getGithubActivity(githubUsername);
+  const { displayName, bio, githubUsername, phases, topics, capstones, progress, dsa, projects, buildInPublic, streak, githubActivity } = data;
   const progressMap = new Map(progress.map((p) => [p.topic_id, p]));
 
   const phaseCompletion = phases.map((phase) => {

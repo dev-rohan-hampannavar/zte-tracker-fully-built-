@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+
 import { useUser } from "@/lib/hooks/use-user";
 import { usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
 import { useAllTopicNotes, updateTopicProgress } from "@/lib/hooks/use-roadmap";
@@ -43,7 +43,6 @@ import type {
 
 export default function SettingsPage() {
   const { user } = useUser();
-  const router = useRouter();
   const { data: settings, mutate, isLoading } = useUserSettings(user?.id);
   const { phases, mutateProgress } = usePhasesWithProgress(user?.id);
   const { data: logs, mutate: mutateLogs } = useDailyLogs(user?.id);
@@ -75,6 +74,13 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (settings) {
+      // Syncing fetched (SWR) data into local editable-field state once it
+      // arrives — there's no way to know these values during the initial
+      // render, and they need to be local state (not just rendered directly)
+      // because the fields are editable. Same legitimate category as the
+      // remote-sync effects in use-theme.ts / use-developer-mode.ts /
+      // use-topic-locking.ts.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setGoalType(settings.weekly_goal_type);
       setGoalValue(String(settings.weekly_goal_value));
       setDisplayName(settings.display_name ?? "");
@@ -345,7 +351,12 @@ export default function SettingsPage() {
           const { topic_id, user_id: _u, ...patch } = row as Record<string, unknown> & { topic_id: string };
           void _u;
           await updateTopicProgress(user.id, topic_id, patch as never);
-        } catch {
+        } catch (err) {
+          // Previously swallowed silently — the failure toast below told
+          // users to "see console for details" but nothing was ever
+          // actually logged there, so that instruction pointed at an
+          // empty console. Logging the real error makes that message true.
+          console.error("Import: failed to restore topic_progress row", row, err);
           failures++;
         }
       }
@@ -357,7 +368,10 @@ export default function SettingsPage() {
       if ((importPreview.daily_logs ?? []).length) {
         const rows = (importPreview.daily_logs ?? []).map((log) => ({ ...log, user_id: user.id }));
         const { error } = await supabase.from("daily_logs").upsert(rows as never, { onConflict: "user_id,date" });
-        if (error) failures++;
+        if (error) {
+          console.error("Import: failed to restore daily_logs rows", error);
+          failures++;
+        }
       }
 
       // topic_notes — has its own id; upsert on id so re-importing the
@@ -365,7 +379,10 @@ export default function SettingsPage() {
       if ((importPreview.topic_notes ?? []).length) {
         const rows = (importPreview.topic_notes ?? []).map((note) => ({ ...note, user_id: user.id }));
         const { error } = await supabase.from("topic_notes").upsert(rows as never, { onConflict: "id" });
-        if (error) failures++;
+        if (error) {
+          console.error("Import: failed to restore topic_notes rows", error);
+          failures++;
+        }
       }
 
       // project_progress — same helper/conflict key as the Projects and
@@ -375,7 +392,8 @@ export default function SettingsPage() {
           const { phase_id, user_id: _u, ...patch } = row as ProjectProgress;
           void _u;
           await upsertProjectProgress(user.id, phase_id, patch as never);
-        } catch {
+        } catch (err) {
+          console.error("Import: failed to restore project_progress row", row, err);
           failures++;
         }
       }
@@ -385,20 +403,28 @@ export default function SettingsPage() {
       if ((importPreview.dsa_progress ?? []).length) {
         const rows = (importPreview.dsa_progress ?? []).map((row) => ({ ...row, user_id: user.id }));
         const { error } = await supabase.from("dsa_progress").upsert(rows as never, { onConflict: "id" });
-        if (error) failures++;
+        if (error) {
+          console.error("Import: failed to restore dsa_progress rows", error);
+          failures++;
+        }
       }
 
       // career_tracker — upsert on id, same reasoning as dsa_progress.
       if ((importPreview.career_tracker ?? []).length) {
         const rows = (importPreview.career_tracker ?? []).map((row) => ({ ...row, user_id: user.id }));
         const { error } = await supabase.from("career_tracker").upsert(rows as never, { onConflict: "id" });
-        if (error) failures++;
+        if (error) {
+          console.error("Import: failed to restore career_tracker rows", error);
+          failures++;
+        }
       }
 
       await Promise.all([mutateProgress(), mutateLogs(), mutateNotes(), mutateProjects(), mutateDsa(), mutateCareer()]);
 
       if (failures > 0) {
-        toast.error(`Import finished with ${failures} row failure${failures === 1 ? "" : "s"} — see console for details.`);
+        toast.error(
+          `Import finished, but ${failures} row${failures === 1 ? "" : "s"} couldn't be restored — check the browser console for details.`
+        );
       } else {
         toast.success("Import complete");
       }
@@ -446,7 +472,10 @@ export default function SettingsPage() {
       return;
     }
     await supabase.auth.signOut();
-    router.push("/login");
+    // Hard navigation after account deletion — same reasoning as the
+    // sidebar/mobile-nav sign-out fix: guarantees no stale state from the
+    // now-deleted account lingers in memory.
+    window.location.href = "/login";
   }
 
 
@@ -464,9 +493,9 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent className="flex items-end gap-3">
           <div>
-            <Label>Type</Label>
+            <Label htmlFor="weekly-goal-type">Type</Label>
             <Select value={goalType} onValueChange={(v) => setGoalType(v as "hours" | "topics")}>
-              <SelectTrigger className="mt-1 w-32">
+              <SelectTrigger id="weekly-goal-type" className="mt-1 w-32">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -476,8 +505,9 @@ export default function SettingsPage() {
             </Select>
           </div>
           <div>
-            <Label>Target</Label>
+            <Label htmlFor="weekly-goal-target">Target</Label>
             <Input
+              id="weekly-goal-target"
               type="number"
               className="mt-1 w-28"
               value={goalValue}
@@ -672,9 +702,10 @@ export default function SettingsPage() {
             />
           </div>
           <div>
-            <Label>Display name (shown on profile instead of your email)</Label>
+            <Label htmlFor="display-name-input">Display name (shown on profile instead of your email)</Label>
             <div className="flex gap-2 mt-1">
               <Input
+                id="display-name-input"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="e.g. Rohan K."
@@ -685,8 +716,9 @@ export default function SettingsPage() {
             </div>
           </div>
           <div>
-            <Label>Bio (shown at the top of your public profile)</Label>
+            <Label htmlFor="profile-bio-input">Bio (shown at the top of your public profile)</Label>
             <Textarea
+              id="profile-bio-input"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder='e.g. "BCA grad building in public toward a full-stack role. Self-taught, shipping projects weekly."'
@@ -701,9 +733,10 @@ export default function SettingsPage() {
             </div>
           </div>
           <div>
-            <Label>GitHub username (shows recent public activity on your profile)</Label>
+            <Label htmlFor="github-username-input">GitHub username (shows recent public activity on your profile)</Label>
             <div className="flex gap-2 mt-1">
               <Input
+                id="github-username-input"
                 value={githubUsername}
                 onChange={(e) => setGithubUsername(e.target.value)}
                 placeholder="e.g. rohan-dev"
@@ -756,8 +789,9 @@ export default function SettingsPage() {
             />
           </div>
           <div>
-            <Label>Recipient name (optional, used as &ldquo;Hi ___,&rdquo;)</Label>
+            <Label htmlFor="weekly-summary-recipient-name">Recipient name (optional, used as &ldquo;Hi ___,&rdquo;)</Label>
             <Input
+              id="weekly-summary-recipient-name"
               value={weeklySummaryRecipientName}
               onChange={(e) => setWeeklySummaryRecipientName(e.target.value)}
               placeholder="e.g. Dad"
@@ -765,9 +799,10 @@ export default function SettingsPage() {
             />
           </div>
           <div>
-            <Label>Recipient email</Label>
+            <Label htmlFor="weekly-summary-recipient-email">Recipient email</Label>
             <div className="flex gap-2 mt-1">
               <Input
+                id="weekly-summary-recipient-email"
                 type="email"
                 value={weeklySummaryRecipientEmail}
                 onChange={(e) => setWeeklySummaryRecipientEmail(e.target.value)}

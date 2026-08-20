@@ -209,7 +209,7 @@ export function DailyMission({
       // applyHoursToNextTopic) stay exactly as they were — this only adds
       // the new session-level record alongside them, it doesn't replace
       // either.
-      await logStudySession(userId, totalHours, notes || undefined);
+      await logStudySession(totalHours, notes || undefined);
       await logStudySessionEntry(userId, {
         hours: totalHours,
         activity,

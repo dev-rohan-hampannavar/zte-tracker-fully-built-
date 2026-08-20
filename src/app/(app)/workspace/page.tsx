@@ -43,7 +43,13 @@ export default function WorkspacePage() {
   const { data: milestones } = useClientSyncMilestones();
 
   const allTopics = useMemo(() => phases.flatMap((p) => p.topics), [phases]);
-  const pinned = settings?.pinned_items ?? [];
+  // Memoized for the same reason as allTopics/projectMap fixes elsewhere:
+  // `settings?.pinned_items ?? []` creates a new array reference on every
+  // render while settings is still loading, which was silently defeating
+  // the memoization of `resolved` below (it recomputes — including
+  // rebuilding <Badge> elements — on every render regardless of whether
+  // the actual pinned items changed).
+  const pinned = useMemo(() => settings?.pinned_items ?? [], [settings]);
 
   const resolved = useMemo(() => {
     return pinned.map((p) => {

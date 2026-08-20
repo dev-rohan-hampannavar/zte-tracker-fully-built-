@@ -2,6 +2,7 @@
 
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { RecordNotFound } from "@/components/ui/record-not-found";
 import { useUser } from "@/lib/hooks/use-user";
 import { usePhasesWithProgress, toggleTopicComplete, useExitLadder, useClientSyncMilestones, useMasterPhaseTable, useSkillTracks } from "@/lib/hooks/use-roadmap";
 import { useBuildInPublicStatus } from "@/lib/hooks/use-projects";
@@ -57,7 +58,7 @@ export default function PhaseDetailPage() {
   }
 
   if (isLoading) return <Skeleton className="h-96 w-full" />;
-  if (!phase) return <p className="text-sm text-muted">Phase not found.</p>;
+  if (!phase) return <RecordNotFound label="Phase" backHref="/roadmap" backLabel="Back to roadmap" />;
 
   const completedCount = phase.topics.filter((t) => t.progress?.completed).length;
 

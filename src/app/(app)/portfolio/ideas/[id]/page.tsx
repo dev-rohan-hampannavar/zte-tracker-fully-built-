@@ -44,7 +44,7 @@ export default function PortfolioIdeaDetailPage() {
       await upsertAdvancedProjectProgress(user.id, params.id, patch);
       await mutate();
     } catch {
-      toast.error("Failed to save");
+      toast.error("Couldn't save.");
     } finally {
       setSaving(false);
     }
