@@ -1,0 +1,4042 @@
+{
+  "version": 1,
+  "created_at": "2026-08-03T04:51:13.180921+00:00",
+  "source_hash": "1bf3dfbcc5651da866833a28045244c675f364a58a3841b5b0db0d9bd84a30a2",
+  "phase_count": 21,
+  "stage_count": 108,
+  "topic_count": 375,
+  "entities": [
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-01",
+      "parent_id": null,
+      "title": "Developer Environment & Foundations",
+      "order_index": 0,
+      "estimated_hours": 185
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-01b",
+      "parent_id": null,
+      "title": "TypeScript Mastery",
+      "order_index": 1,
+      "estimated_hours": 80
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-02",
+      "parent_id": null,
+      "title": "React + Next.js Core",
+      "order_index": 2,
+      "estimated_hours": 213
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-03",
+      "parent_id": null,
+      "title": "UI System & Styling",
+      "order_index": 3,
+      "estimated_hours": 135
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-04",
+      "parent_id": null,
+      "title": "State, Data Fetching & Advanced React",
+      "order_index": 4,
+      "estimated_hours": 153
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-05",
+      "parent_id": null,
+      "title": "Backend + Database + Auth",
+      "order_index": 5,
+      "estimated_hours": 314
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-06",
+      "parent_id": null,
+      "title": "Testing + CI/CD + Deployment",
+      "order_index": 6,
+      "estimated_hours": 155
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-06b",
+      "parent_id": null,
+      "title": "React Native (Mobile)",
+      "order_index": 7,
+      "estimated_hours": 111
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-07",
+      "parent_id": null,
+      "title": "API Documentation & Developer Tooling",
+      "order_index": 8,
+      "estimated_hours": 71
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-08",
+      "parent_id": null,
+      "title": "DSA & Interview Preparation",
+      "order_index": 9,
+      "estimated_hours": 331
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-09",
+      "parent_id": null,
+      "title": "Caching + Email + Payments",
+      "order_index": 10,
+      "estimated_hours": 98
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-10",
+      "parent_id": null,
+      "title": "Monitoring & Analytics",
+      "order_index": 11,
+      "estimated_hours": 103
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-11",
+      "parent_id": null,
+      "title": "Real-Time + Search + PostgreSQL Internals",
+      "order_index": 12,
+      "estimated_hours": 164
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-12",
+      "parent_id": null,
+      "title": "AI/RAG + Production AI Patterns",
+      "order_index": 13,
+      "estimated_hours": 207
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-13",
+      "parent_id": null,
+      "title": "Advanced Browser APIs + Collaboration",
+      "order_index": 14,
+      "estimated_hours": 137
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-14",
+      "parent_id": null,
+      "title": "Load Testing + Security Deep Dive",
+      "order_index": 15,
+      "estimated_hours": 89
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-15",
+      "parent_id": null,
+      "title": "Build Tooling + CSS-in-JS",
+      "order_index": 16,
+      "estimated_hours": 44
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-16",
+      "parent_id": null,
+      "title": "Infrastructure",
+      "order_index": 17,
+      "estimated_hours": 175
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-17",
+      "parent_id": null,
+      "title": "Architectural Patterns",
+      "order_index": 18,
+      "estimated_hours": 178
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-18",
+      "parent_id": null,
+      "title": "Engineering Craft + Package Publishing",
+      "order_index": 19,
+      "estimated_hours": 62
+    },
+    {
+      "entity_type": "phase",
+      "entity_id": "phase-19",
+      "parent_id": null,
+      "title": "Career & Community",
+      "order_index": 20,
+      "estimated_hours": 29
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-01-01",
+      "parent_id": "phase-01",
+      "title": "Your Workspace (before writing a single line of real code)",
+      "order_index": 0,
+      "estimated_hours": 16
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-01-02",
+      "parent_id": "phase-01",
+      "title": "Structure: HTML",
+      "order_index": 1,
+      "estimated_hours": 10
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-01-03",
+      "parent_id": "phase-01",
+      "title": "Presentation: CSS",
+      "order_index": 2,
+      "estimated_hours": 18
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-01-04",
+      "parent_id": "phase-01",
+      "title": "Behavior: JavaScript (Full Sequence, dependency-ordered)",
+      "order_index": 3,
+      "estimated_hours": 162
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-01-05",
+      "parent_id": "phase-01",
+      "title": "Adding Types: TypeScript",
+      "order_index": 4,
+      "estimated_hours": 42
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-01-06",
+      "parent_id": "phase-01",
+      "title": "Data: SQL Fundamentals",
+      "order_index": 5,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-01-07",
+      "parent_id": "phase-01",
+      "title": "Collaboration & Code Quality",
+      "order_index": 6,
+      "estimated_hours": 13
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-02-01",
+      "parent_id": "phase-02",
+      "title": "React 18 (Foundation)",
+      "order_index": 0,
+      "estimated_hours": 37
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-02-02",
+      "parent_id": "phase-02",
+      "title": "Next.js 15 App Router (Core Framework)",
+      "order_index": 1,
+      "estimated_hours": 35
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-02-03",
+      "parent_id": "phase-02",
+      "title": "App Router: Advanced Routing Features",
+      "order_index": 2,
+      "estimated_hours": 11.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-02-04",
+      "parent_id": "phase-02",
+      "title": "Client-Side Concerns",
+      "order_index": 3,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-02-05",
+      "parent_id": "phase-02",
+      "title": "Data Layer Integration",
+      "order_index": 4,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-02-06",
+      "parent_id": "phase-02",
+      "title": "Deployment",
+      "order_index": 5,
+      "estimated_hours": 8.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-03-01",
+      "parent_id": "phase-03",
+      "title": "CSS Foundations (Beyond Phase 01's CSS3 Basics)",
+      "order_index": 0,
+      "estimated_hours": 7.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-03-02",
+      "parent_id": "phase-03",
+      "title": "Tailwind CSS (Utility-First Foundation)",
+      "order_index": 1,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-03-03",
+      "parent_id": "phase-03",
+      "title": "Class Composition Utilities",
+      "order_index": 2,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-03-04",
+      "parent_id": "phase-03",
+      "title": "Component Libraries",
+      "order_index": 3,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-03-05",
+      "parent_id": "phase-03",
+      "title": "Forms & Validation",
+      "order_index": 4,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-03-06",
+      "parent_id": "phase-03",
+      "title": "General-Purpose Utilities",
+      "order_index": 5,
+      "estimated_hours": 3.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-03-07",
+      "parent_id": "phase-03",
+      "title": "Design Tokens & Alternative Styling Systems",
+      "order_index": 6,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-04-01",
+      "parent_id": "phase-04",
+      "title": "Client State: Context's Limits, Then Zustand",
+      "order_index": 0,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-04-02",
+      "parent_id": "phase-04",
+      "title": "Server State: TanStack Query, Then tRPC",
+      "order_index": 1,
+      "estimated_hours": 15
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-04-03",
+      "parent_id": "phase-04",
+      "title": "State Machines",
+      "order_index": 2,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-04-04",
+      "parent_id": "phase-04",
+      "title": "Rendering & Resilience Primitives (Applied Depth)",
+      "order_index": 3,
+      "estimated_hours": 6.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-04-05",
+      "parent_id": "phase-04",
+      "title": "Browser Observation APIs",
+      "order_index": 4,
+      "estimated_hours": 4.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-04-06",
+      "parent_id": "phase-04",
+      "title": "Virtualization & Profiling (Capstone)",
+      "order_index": 5,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-05-01",
+      "parent_id": "phase-05",
+      "title": "Server Runtime & Framework",
+      "order_index": 0,
+      "estimated_hours": 17
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-05-02",
+      "parent_id": "phase-05",
+      "title": "API Design & Hardening",
+      "order_index": 1,
+      "estimated_hours": 15
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-05-03",
+      "parent_id": "phase-05",
+      "title": "Testing the API",
+      "order_index": 2,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-05-04",
+      "parent_id": "phase-05",
+      "title": "Database Layer",
+      "order_index": 3,
+      "estimated_hours": 26.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-05-05",
+      "parent_id": "phase-05",
+      "title": "Authentication & Token Security",
+      "order_index": 4,
+      "estimated_hours": 16
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06-01",
+      "parent_id": "phase-06",
+      "title": "Unit & Component Testing",
+      "order_index": 0,
+      "estimated_hours": 15.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06-02",
+      "parent_id": "phase-06",
+      "title": "End-to-End Testing",
+      "order_index": 1,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06-03",
+      "parent_id": "phase-06",
+      "title": "Continuous Integration",
+      "order_index": 2,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06-04",
+      "parent_id": "phase-06",
+      "title": "Containerization",
+      "order_index": 3,
+      "estimated_hours": 18
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06-05",
+      "parent_id": "phase-06",
+      "title": "Deployment & Exit A Polish",
+      "order_index": 4,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06b-01",
+      "parent_id": "phase-06b",
+      "title": "React Native Foundation",
+      "order_index": 0,
+      "estimated_hours": 16
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06b-02",
+      "parent_id": "phase-06b",
+      "title": "Storage & Secure Token Handling",
+      "order_index": 1,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06b-03",
+      "parent_id": "phase-06b",
+      "title": "Native Device Capabilities",
+      "order_index": 2,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06b-04",
+      "parent_id": "phase-06b",
+      "title": "Performance & Internals",
+      "order_index": 3,
+      "estimated_hours": 6.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-06b-05",
+      "parent_id": "phase-06b",
+      "title": "Shipping",
+      "order_index": 4,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-07-01",
+      "parent_id": "phase-07",
+      "title": "Manual HTTP Tooling",
+      "order_index": 0,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-07-02",
+      "parent_id": "phase-07",
+      "title": "API Documentation",
+      "order_index": 1,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-07-03",
+      "parent_id": "phase-07",
+      "title": "GraphQL (Alternative API Paradigm)",
+      "order_index": 2,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-08-01",
+      "parent_id": "phase-08",
+      "title": "Array & String Scanning Techniques",
+      "order_index": 0,
+      "estimated_hours": 14
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-08-02",
+      "parent_id": "phase-08",
+      "title": "Hashing",
+      "order_index": 1,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-08-03",
+      "parent_id": "phase-08",
+      "title": "Linear Structures: Stack & Queue",
+      "order_index": 2,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-08-04",
+      "parent_id": "phase-08",
+      "title": "Traversal: BFS, DFS, and Trees",
+      "order_index": 3,
+      "estimated_hours": 14
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-08-05",
+      "parent_id": "phase-08",
+      "title": "Heap / Priority Queue",
+      "order_index": 4,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-08-06",
+      "parent_id": "phase-08",
+      "title": "Dynamic Programming",
+      "order_index": 5,
+      "estimated_hours": 14
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-08-07",
+      "parent_id": "phase-08",
+      "title": "Interview Meta-Skills",
+      "order_index": 6,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-09-01",
+      "parent_id": "phase-09",
+      "title": "Self-Hosted Caching Infrastructure",
+      "order_index": 0,
+      "estimated_hours": 11.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-09-02",
+      "parent_id": "phase-09",
+      "title": "Hosted & Distributed Caching",
+      "order_index": 1,
+      "estimated_hours": 3.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-09-03",
+      "parent_id": "phase-09",
+      "title": "Transactional Email",
+      "order_index": 2,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-09-04",
+      "parent_id": "phase-09",
+      "title": "Payments",
+      "order_index": 3,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-10-01",
+      "parent_id": "phase-10",
+      "title": "Request Context & Structured Logging",
+      "order_index": 0,
+      "estimated_hours": 6.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-10-02",
+      "parent_id": "phase-10",
+      "title": "Error Tracking & Uptime",
+      "order_index": 1,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-10-03",
+      "parent_id": "phase-10",
+      "title": "Log Aggregation & Observability Platforms",
+      "order_index": 2,
+      "estimated_hours": 10
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-10-04",
+      "parent_id": "phase-10",
+      "title": "Product Analytics Foundation",
+      "order_index": 3,
+      "estimated_hours": 5.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-10-05",
+      "parent_id": "phase-10",
+      "title": "Analytics-Driven Features",
+      "order_index": 4,
+      "estimated_hours": 8.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-10-06",
+      "parent_id": "phase-10",
+      "title": "Compliance",
+      "order_index": 5,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-11-01",
+      "parent_id": "phase-11",
+      "title": "Real-Time Communication",
+      "order_index": 0,
+      "estimated_hours": 15
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-11-02",
+      "parent_id": "phase-11",
+      "title": "PostgreSQL Index Depth",
+      "order_index": 1,
+      "estimated_hours": 9.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-11-03",
+      "parent_id": "phase-11",
+      "title": "Storage & Concurrency Internals",
+      "order_index": 2,
+      "estimated_hours": 13.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-11-04",
+      "parent_id": "phase-11",
+      "title": "Search",
+      "order_index": 3,
+      "estimated_hours": 16
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-12-01",
+      "parent_id": "phase-12",
+      "title": "LLM API Foundations",
+      "order_index": 0,
+      "estimated_hours": 8.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-12-02",
+      "parent_id": "phase-12",
+      "title": "Embeddings & Vector Storage",
+      "order_index": 1,
+      "estimated_hours": 9.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-12-03",
+      "parent_id": "phase-12",
+      "title": "RAG (The Synthesis)",
+      "order_index": 2,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-12-04",
+      "parent_id": "phase-12",
+      "title": "SDK & Background Jobs",
+      "order_index": 3,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-12-05",
+      "parent_id": "phase-12",
+      "title": "Claude-Specific Depth",
+      "order_index": 4,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-12-06",
+      "parent_id": "phase-12",
+      "title": "Structured Output & Multi-Model Routing",
+      "order_index": 5,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-12-07",
+      "parent_id": "phase-12",
+      "title": "Cost & Governance",
+      "order_index": 6,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-12-08",
+      "parent_id": "phase-12",
+      "title": "Prompt Engineering & Evaluation",
+      "order_index": 7,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-13-01",
+      "parent_id": "phase-13",
+      "title": "Client-Side Storage",
+      "order_index": 0,
+      "estimated_hours": 5.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-13-02",
+      "parent_id": "phase-13",
+      "title": "Parallelism",
+      "order_index": 1,
+      "estimated_hours": 4.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-13-03",
+      "parent_id": "phase-13",
+      "title": "Cross-Context Communication",
+      "order_index": 2,
+      "estimated_hours": 1.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-13-04",
+      "parent_id": "phase-13",
+      "title": "Browser Rendering & Animation Internals",
+      "order_index": 3,
+      "estimated_hours": 7.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-13-05",
+      "parent_id": "phase-13",
+      "title": "Real-Time Collaboration: The Yjs Stack",
+      "order_index": 4,
+      "estimated_hours": 12.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-13-06",
+      "parent_id": "phase-13",
+      "title": "Rich Text Editors",
+      "order_index": 5,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-14-01",
+      "parent_id": "phase-14",
+      "title": "Load Testing",
+      "order_index": 0,
+      "estimated_hours": 8.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-14-02",
+      "parent_id": "phase-14",
+      "title": "Security Threat Model & Scanning",
+      "order_index": 1,
+      "estimated_hours": 12.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-14-03",
+      "parent_id": "phase-14",
+      "title": "Secret Management",
+      "order_index": 2,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-14-04",
+      "parent_id": "phase-14",
+      "title": "Automated Security Monitoring",
+      "order_index": 3,
+      "estimated_hours": 4.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-14-05",
+      "parent_id": "phase-14",
+      "title": "Compliance",
+      "order_index": 4,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-15-01",
+      "parent_id": "phase-15",
+      "title": "Build Tools",
+      "order_index": 0,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-15-02",
+      "parent_id": "phase-15",
+      "title": "Bundle Analysis",
+      "order_index": 1,
+      "estimated_hours": 3.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-15-03",
+      "parent_id": "phase-15",
+      "title": "Performance Auditing",
+      "order_index": 2,
+      "estimated_hours": 2.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-15-04",
+      "parent_id": "phase-15",
+      "title": "CSS-in-JS",
+      "order_index": 3,
+      "estimated_hours": 7.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-16-01",
+      "parent_id": "phase-16",
+      "title": "Cloud Object Storage",
+      "order_index": 0,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-16-02",
+      "parent_id": "phase-16",
+      "title": "Infrastructure as Code",
+      "order_index": 1,
+      "estimated_hours": 11.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-16-03",
+      "parent_id": "phase-16",
+      "title": "Kubernetes Core",
+      "order_index": 2,
+      "estimated_hours": 20
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-16-04",
+      "parent_id": "phase-16",
+      "title": "Kubernetes Ecosystem",
+      "order_index": 3,
+      "estimated_hours": 9.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-17-01",
+      "parent_id": "phase-17",
+      "title": "Caching & Optimistic Update Patterns",
+      "order_index": 0,
+      "estimated_hours": 6.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-17-02",
+      "parent_id": "phase-17",
+      "title": "Database Concurrency Control",
+      "order_index": 1,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-17-03",
+      "parent_id": "phase-17",
+      "title": "Distributed Transactions & Messaging Resilience",
+      "order_index": 2,
+      "estimated_hours": 11.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-17-04",
+      "parent_id": "phase-17",
+      "title": "Architectural Styles",
+      "order_index": 3,
+      "estimated_hours": 7.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-17-05",
+      "parent_id": "phase-17",
+      "title": "Multi-Tenancy",
+      "order_index": 4,
+      "estimated_hours": 3.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-17-06",
+      "parent_id": "phase-17",
+      "title": "Deployment Strategy & Resilience Validation",
+      "order_index": 5,
+      "estimated_hours": 9.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-18-01",
+      "parent_id": "phase-18",
+      "title": "Package Publishing",
+      "order_index": 0,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-18-02",
+      "parent_id": "phase-18",
+      "title": "Decision-Making Practices",
+      "order_index": 1,
+      "estimated_hours": 4.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-18-03",
+      "parent_id": "phase-18",
+      "title": "Engineering Process Practices",
+      "order_index": 2,
+      "estimated_hours": 10
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-18-04",
+      "parent_id": "phase-18",
+      "title": "Documentation Artifacts: Decisions & Architecture",
+      "order_index": 3,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-18-05",
+      "parent_id": "phase-18",
+      "title": "Documentation Artifacts: Operational",
+      "order_index": 4,
+      "estimated_hours": 8.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-18-06",
+      "parent_id": "phase-18",
+      "title": "Documentation Artifacts: Product & Personal",
+      "order_index": 5,
+      "estimated_hours": 2.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-19-01",
+      "parent_id": "phase-19",
+      "title": "API Practice",
+      "order_index": 0,
+      "estimated_hours": 3.5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-19-02",
+      "parent_id": "phase-19",
+      "title": "Job & Talent Platforms",
+      "order_index": 1,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-19-03",
+      "parent_id": "phase-19",
+      "title": "Product Launch & Community",
+      "order_index": 2,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "stage",
+      "entity_id": "stage-19-04",
+      "parent_id": "phase-19",
+      "title": "Technical Writing Platforms",
+      "order_index": 3,
+      "estimated_hours": 3.5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-001",
+      "parent_id": "stage-01-01",
+      "title": "VS Code",
+      "order_index": 7,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-002",
+      "parent_id": "stage-01-01",
+      "title": "Bash",
+      "order_index": 9,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-003",
+      "parent_id": "stage-01-01",
+      "title": "nvm + npm",
+      "order_index": 8,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-004",
+      "parent_id": "stage-01-01",
+      "title": "SSH Keys",
+      "order_index": 10,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-005",
+      "parent_id": "stage-01-01",
+      "title": "Git + GitHub (Foundations Only — local + remote basics)",
+      "order_index": 5,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-006",
+      "parent_id": "stage-01-02",
+      "title": "HTML5",
+      "order_index": 1,
+      "estimated_hours": 10
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-007",
+      "parent_id": "stage-01-03",
+      "title": "CSS3",
+      "order_index": 2,
+      "estimated_hours": 15
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-008",
+      "parent_id": "stage-01-04",
+      "title": "JavaScript — Language Core",
+      "order_index": 8,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-009",
+      "parent_id": "stage-01-04",
+      "title": "Core Data Structures",
+      "order_index": 9,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-010",
+      "parent_id": "stage-01-04",
+      "title": "Error Handling",
+      "order_index": 10,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-011",
+      "parent_id": "stage-01-04",
+      "title": "Regular Expressions",
+      "order_index": 11,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-012",
+      "parent_id": "stage-01-04",
+      "title": "Prototypes & Inheritance",
+      "order_index": 12,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-013",
+      "parent_id": "stage-01-04",
+      "title": "Classes",
+      "order_index": 13,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-014",
+      "parent_id": "stage-01-04",
+      "title": "Iterators & Generators",
+      "order_index": 14,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-015",
+      "parent_id": "stage-01-04",
+      "title": "Symbols",
+      "order_index": 15,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-016",
+      "parent_id": "stage-01-04",
+      "title": "Collections",
+      "order_index": 16,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-017",
+      "parent_id": "stage-01-04",
+      "title": "Property Descriptors & Object Internals",
+      "order_index": 17,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-018",
+      "parent_id": "stage-01-04",
+      "title": "Reflect API",
+      "order_index": 18,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-019",
+      "parent_id": "stage-01-04",
+      "title": "Proxy",
+      "order_index": 19,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-020",
+      "parent_id": "stage-01-04",
+      "title": "Meta Programming",
+      "order_index": 20,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-021",
+      "parent_id": "stage-01-04",
+      "title": "Modules",
+      "order_index": 21,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-022",
+      "parent_id": "stage-01-04",
+      "title": "Event Loop",
+      "order_index": 22,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-023",
+      "parent_id": "stage-01-04",
+      "title": "Asynchronous JavaScript",
+      "order_index": 23,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-024",
+      "parent_id": "stage-01-04",
+      "title": "Advanced Promises",
+      "order_index": 24,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-025",
+      "parent_id": "stage-01-04",
+      "title": "Advanced Async",
+      "order_index": 25,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-026",
+      "parent_id": "stage-01-04",
+      "title": "HTTP & APIs",
+      "order_index": 26,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-027",
+      "parent_id": "stage-01-04",
+      "title": "DOM",
+      "order_index": 27,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-028",
+      "parent_id": "stage-01-04",
+      "title": "Events",
+      "order_index": 28,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-029",
+      "parent_id": "stage-01-04",
+      "title": "Forms (JS side)",
+      "order_index": 29,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-030",
+      "parent_id": "stage-01-04",
+      "title": "Browser Storage",
+      "order_index": 30,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-031",
+      "parent_id": "stage-01-04",
+      "title": "Timing Functions",
+      "order_index": 31,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-032",
+      "parent_id": "stage-01-04",
+      "title": "Browser APIs",
+      "order_index": 32,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-033",
+      "parent_id": "stage-01-04",
+      "title": "Advanced Browser APIs (Observers & Performance)",
+      "order_index": 33,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-034",
+      "parent_id": "stage-01-04",
+      "title": "Networking (Realtime)",
+      "order_index": 34,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-035",
+      "parent_id": "stage-01-04",
+      "title": "Binary Data",
+      "order_index": 35,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-036",
+      "parent_id": "stage-01-04",
+      "title": "Workers",
+      "order_index": 36,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-037",
+      "parent_id": "stage-01-04",
+      "title": "Internationalization",
+      "order_index": 37,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-038",
+      "parent_id": "stage-01-04",
+      "title": "Security",
+      "order_index": 38,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-039",
+      "parent_id": "stage-01-04",
+      "title": "Browser Rendering & Performance",
+      "order_index": 39,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-040",
+      "parent_id": "stage-01-04",
+      "title": "Frontend Performance Techniques",
+      "order_index": 40,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-041",
+      "parent_id": "stage-01-04",
+      "title": "Memory Leaks",
+      "order_index": 41,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-042",
+      "parent_id": "stage-01-04",
+      "title": "Functional Programming",
+      "order_index": 42,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-043",
+      "parent_id": "stage-01-04",
+      "title": "Advanced Functional Programming",
+      "order_index": 43,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-044",
+      "parent_id": "stage-01-04",
+      "title": "Design Patterns",
+      "order_index": 44,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-045",
+      "parent_id": "stage-01-04",
+      "title": "JavaScript Architecture",
+      "order_index": 45,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-046",
+      "parent_id": "stage-01-04",
+      "title": "Algorithms & Problem Solving in JavaScript",
+      "order_index": 46,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-047",
+      "parent_id": "stage-01-04",
+      "title": "Advanced Algorithms",
+      "order_index": 47,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-048",
+      "parent_id": "stage-01-04",
+      "title": "Testing",
+      "order_index": 48,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-049",
+      "parent_id": "stage-01-04",
+      "title": "Debugging",
+      "order_index": 49,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-050",
+      "parent_id": "stage-01-04",
+      "title": "Package Ecosystem & Tooling",
+      "order_index": 50,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-051",
+      "parent_id": "stage-01-04",
+      "title": "JavaScript Best Practices",
+      "order_index": 51,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-052",
+      "parent_id": "stage-01-04",
+      "title": "JavaScript Engine Internals",
+      "order_index": 52,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-053",
+      "parent_id": "stage-01-04",
+      "title": "JavaScript Specifications",
+      "order_index": 53,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-054",
+      "parent_id": "stage-01-04",
+      "title": "Modern JavaScript Features (ES6+) — Consolidation Checkpoint",
+      "order_index": 54,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-055",
+      "parent_id": "stage-01-05",
+      "title": "TypeScript — Introduction",
+      "order_index": 55,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-056",
+      "parent_id": "stage-01-05",
+      "title": "tsconfig.json (Deep Dive)",
+      "order_index": 56,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-057",
+      "parent_id": "stage-01-05",
+      "title": "Type Narrowing (Deep Dive)",
+      "order_index": 57,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-058",
+      "parent_id": "stage-01-05",
+      "title": "Discriminated Unions",
+      "order_index": 58,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-059",
+      "parent_id": "stage-01-05",
+      "title": "Generics",
+      "order_index": 59,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-060",
+      "parent_id": "stage-01-05",
+      "title": "as const & satisfies",
+      "order_index": 60,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-061",
+      "parent_id": "stage-01-05",
+      "title": "Utility Types",
+      "order_index": 61,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-062",
+      "parent_id": "stage-01-05",
+      "title": "Mapped Types",
+      "order_index": 62,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-063",
+      "parent_id": "stage-01-05",
+      "title": "Conditional Types",
+      "order_index": 63,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-064",
+      "parent_id": "stage-01-05",
+      "title": "Template Literal Types",
+      "order_index": 64,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-065",
+      "parent_id": "stage-01-05",
+      "title": "Declaration Files",
+      "order_index": 65,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-066",
+      "parent_id": "stage-01-05",
+      "title": "Zod",
+      "order_index": 66,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-067",
+      "parent_id": "stage-01-06",
+      "title": "SQL Fundamentals",
+      "order_index": 11,
+      "estimated_hours": 23
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-068",
+      "parent_id": "stage-01-07",
+      "title": "Git + GitHub (Collaboration Deep Dive)",
+      "order_index": 68,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-069",
+      "parent_id": "stage-01-07",
+      "title": "Conventional Commits",
+      "order_index": 6,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-070",
+      "parent_id": "stage-01-07",
+      "title": "ESLint",
+      "order_index": 12,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01-071",
+      "parent_id": "stage-01-07",
+      "title": "Prettier",
+      "order_index": 13,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl01",
+      "parent_id": "phase-01b",
+      "title": "generics",
+      "order_index": 1,
+      "estimated_hours": 11
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl02",
+      "parent_id": "phase-01b",
+      "title": "discriminated unions",
+      "order_index": 2,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl03",
+      "parent_id": "phase-01b",
+      "title": "conditional types",
+      "order_index": 3,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl04",
+      "parent_id": "phase-01b",
+      "title": "mapped types",
+      "order_index": 4,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl05",
+      "parent_id": "phase-01b",
+      "title": "utility types",
+      "order_index": 5,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl06",
+      "parent_id": "phase-01b",
+      "title": "template literal types",
+      "order_index": 6,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl07",
+      "parent_id": "phase-01b",
+      "title": "satisfies operator",
+      "order_index": 7,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl08",
+      "parent_id": "phase-01b",
+      "title": "as const",
+      "order_index": 8,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl09",
+      "parent_id": "phase-01b",
+      "title": "type narrowing",
+      "order_index": 9,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl10",
+      "parent_id": "phase-01b",
+      "title": "tsconfig.json",
+      "order_index": 10,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl11",
+      "parent_id": "phase-01b",
+      "title": "declaration files (.d.ts)",
+      "order_index": 11,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-01b-tbl12",
+      "parent_id": "phase-01b",
+      "title": "zod",
+      "order_index": 12,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-001",
+      "parent_id": "stage-02-01",
+      "title": "React Fundamentals",
+      "order_index": 1,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-002",
+      "parent_id": "stage-02-01",
+      "title": "Component Lifecycle & Effects",
+      "order_index": 2,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-003",
+      "parent_id": "stage-02-01",
+      "title": "The Full Hook Set",
+      "order_index": 3,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-004",
+      "parent_id": "stage-02-01",
+      "title": "Forms & Events",
+      "order_index": 4,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-005",
+      "parent_id": "stage-02-01",
+      "title": "Component Design Patterns",
+      "order_index": 5,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-006",
+      "parent_id": "stage-02-01",
+      "title": "Error Boundaries & Portals",
+      "order_index": 6,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-007",
+      "parent_id": "stage-02-01",
+      "title": "Suspense & Concurrent Rendering (Client-Side)",
+      "order_index": 7,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-008",
+      "parent_id": "stage-02-02",
+      "title": "Routing Fundamentals",
+      "order_index": 8,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-009",
+      "parent_id": "stage-02-02",
+      "title": "Server Components vs Client Components",
+      "order_index": 9,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-010",
+      "parent_id": "stage-02-02",
+      "title": "Data Fetching & the Caching Model",
+      "order_index": 10,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-011",
+      "parent_id": "stage-02-02",
+      "title": "Server Actions & Mutations",
+      "order_index": 11,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-012",
+      "parent_id": "stage-02-02",
+      "title": "Route Handlers (API Routes)",
+      "order_index": 12,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-013",
+      "parent_id": "stage-02-02",
+      "title": "Static Generation & ISR",
+      "order_index": 13,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-014",
+      "parent_id": "stage-02-02",
+      "title": "Metadata, SEO & Optimization APIs",
+      "order_index": 14,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-015",
+      "parent_id": "stage-02-02",
+      "title": "Middleware",
+      "order_index": 15,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-016",
+      "parent_id": "stage-02-02",
+      "title": "Fetch API (Next.js-Extended Semantics)",
+      "order_index": 16,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-017",
+      "parent_id": "stage-02-03",
+      "title": "Route Groups",
+      "order_index": 3,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-018",
+      "parent_id": "stage-02-03",
+      "title": "notFound()",
+      "order_index": 6,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-019",
+      "parent_id": "stage-02-03",
+      "title": "Parallel Routes",
+      "order_index": 4,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-020",
+      "parent_id": "stage-02-03",
+      "title": "Intercepting Routes",
+      "order_index": 5,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-021",
+      "parent_id": "stage-02-03",
+      "title": "revalidatePath()",
+      "order_index": 7,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-022",
+      "parent_id": "stage-02-03",
+      "title": "revalidateTag()",
+      "order_index": 8,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-023",
+      "parent_id": "stage-02-04",
+      "title": "Browser Storage",
+      "order_index": 23,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-024",
+      "parent_id": "stage-02-04",
+      "title": "React Router v6 (Non-Next.js Context)",
+      "order_index": 24,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-025",
+      "parent_id": "stage-02-05",
+      "title": "Client-Side Data Fetching Libraries (Conceptual Prerequisite)",
+      "order_index": 25,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-026",
+      "parent_id": "stage-02-05",
+      "title": "HydrationBoundary and dehydrate()",
+      "order_index": 9,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-027",
+      "parent_id": "stage-02-06",
+      "title": "Vercel",
+      "order_index": 11,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-028",
+      "parent_id": "stage-02-06",
+      "title": "Vercel Edge Functions",
+      "order_index": 12,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-029",
+      "parent_id": "stage-02-06",
+      "title": "Vercel Edge Runtime",
+      "order_index": 13,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-030",
+      "parent_id": "stage-02-06",
+      "title": "Image Optimization Utilities: plaiceholder",
+      "order_index": 30,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-02-031",
+      "parent_id": "stage-02-06",
+      "title": "GitHub Pages (Alternative Static Deployment)",
+      "order_index": 31,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-001",
+      "parent_id": "stage-03-01",
+      "title": "CSS Custom Properties",
+      "order_index": 3,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-002",
+      "parent_id": "stage-03-01",
+      "title": "CSS @layer (Cascade Layers)",
+      "order_index": 2,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-003",
+      "parent_id": "stage-03-01",
+      "title": "CSS Modules",
+      "order_index": 2,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-004",
+      "parent_id": "stage-03-01",
+      "title": "BEM (Block Element Modifier)",
+      "order_index": 16,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-005",
+      "parent_id": "stage-03-02",
+      "title": "Tailwind CSS",
+      "order_index": 1,
+      "estimated_hours": 22
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-006",
+      "parent_id": "stage-03-03",
+      "title": "clsx",
+      "order_index": 5,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-007",
+      "parent_id": "stage-03-03",
+      "title": "tailwind-merge",
+      "order_index": 6,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-008",
+      "parent_id": "stage-03-03",
+      "title": "CVA (Class Variance Authority)",
+      "order_index": 7,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-009",
+      "parent_id": "stage-03-04",
+      "title": "Radix UI",
+      "order_index": 8,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-010",
+      "parent_id": "stage-03-04",
+      "title": "shadcn/ui",
+      "order_index": 9,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-011",
+      "parent_id": "stage-03-04",
+      "title": "next-themes",
+      "order_index": 10,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-012",
+      "parent_id": "stage-03-05",
+      "title": "react-hook-form",
+      "order_index": 11,
+      "estimated_hours": 14
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-013",
+      "parent_id": "stage-03-05",
+      "title": "Zod (react-hook-form Integration)",
+      "order_index": 13,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-014",
+      "parent_id": "stage-03-06",
+      "title": "date-fns",
+      "order_index": 13,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-015",
+      "parent_id": "stage-03-06",
+      "title": "lodash-es",
+      "order_index": 14,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-016",
+      "parent_id": "stage-03-06",
+      "title": "nanoid",
+      "order_index": 15,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-017",
+      "parent_id": "stage-03-07",
+      "title": "Style Dictionary",
+      "order_index": 17,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-03-018",
+      "parent_id": "stage-03-07",
+      "title": "vanilla-extract",
+      "order_index": 18,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-001",
+      "parent_id": "stage-04-01",
+      "title": "React Context — Revisited: Where It Breaks Down",
+      "order_index": 1,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-002",
+      "parent_id": "stage-04-01",
+      "title": "Zustand",
+      "order_index": 2,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-003",
+      "parent_id": "stage-04-02",
+      "title": "TanStack Query v5",
+      "order_index": 3,
+      "estimated_hours": 23
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-004",
+      "parent_id": "stage-04-02",
+      "title": "tRPC v11",
+      "order_index": 4,
+      "estimated_hours": 24
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-005",
+      "parent_id": "stage-04-03",
+      "title": "XState v5",
+      "order_index": 5,
+      "estimated_hours": 20
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-006",
+      "parent_id": "stage-04-03",
+      "title": "Stately Studio",
+      "order_index": 6,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-007",
+      "parent_id": "stage-04-04",
+      "title": "React.lazy — Applied",
+      "order_index": 7,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-008",
+      "parent_id": "stage-04-04",
+      "title": "Suspense — For Data",
+      "order_index": 8,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-009",
+      "parent_id": "stage-04-04",
+      "title": "react-error-boundary",
+      "order_index": 9,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-010",
+      "parent_id": "stage-04-04",
+      "title": "ReactDOM.createPortal — Applied",
+      "order_index": 10,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-011",
+      "parent_id": "stage-04-05",
+      "title": "Intersection Observer",
+      "order_index": 11,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-012",
+      "parent_id": "stage-04-05",
+      "title": "ResizeObserver",
+      "order_index": 12,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-013",
+      "parent_id": "stage-04-06",
+      "title": "TanStack Virtual",
+      "order_index": 14,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-04-014",
+      "parent_id": "stage-04-06",
+      "title": "React DevTools Profiler",
+      "order_index": 13,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-001",
+      "parent_id": "stage-05-01",
+      "title": "Node.js",
+      "order_index": 1,
+      "estimated_hours": 34
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-002",
+      "parent_id": "stage-05-01",
+      "title": "Express.js",
+      "order_index": 2,
+      "estimated_hours": 25
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-003",
+      "parent_id": "stage-05-02",
+      "title": "REST APIs",
+      "order_index": 3,
+      "estimated_hours": 17
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-004",
+      "parent_id": "stage-05-02",
+      "title": "express-async-errors",
+      "order_index": 4,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-005",
+      "parent_id": "stage-05-02",
+      "title": "CORS",
+      "order_index": 5,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-006",
+      "parent_id": "stage-05-02",
+      "title": "Helmet.js",
+      "order_index": 6,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-007",
+      "parent_id": "stage-05-02",
+      "title": "express-rate-limit",
+      "order_index": 7,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-008",
+      "parent_id": "stage-05-02",
+      "title": "DOMPurify (Server-Side Sanitization)",
+      "order_index": 8,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-009",
+      "parent_id": "stage-05-02",
+      "title": "compression",
+      "order_index": 9,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-010",
+      "parent_id": "stage-05-03",
+      "title": "Supertest",
+      "order_index": 10,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-011",
+      "parent_id": "stage-05-04",
+      "title": "PostgreSQL",
+      "order_index": 11,
+      "estimated_hours": 52
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-012",
+      "parent_id": "stage-05-04",
+      "title": "Prisma",
+      "order_index": 12,
+      "estimated_hours": 25
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-013",
+      "parent_id": "stage-05-04",
+      "title": "Supabase",
+      "order_index": 13,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-014",
+      "parent_id": "stage-05-04",
+      "title": "Neon",
+      "order_index": 14,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-015",
+      "parent_id": "stage-05-04",
+      "title": "EXPLAIN ANALYZE",
+      "order_index": 15,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-016",
+      "parent_id": "stage-05-05",
+      "title": "bcrypt",
+      "order_index": 16,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-017",
+      "parent_id": "stage-05-05",
+      "title": "HMAC-SHA256",
+      "order_index": 21,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-018",
+      "parent_id": "stage-05-05",
+      "title": "JWT (JSON Web Tokens)",
+      "order_index": 17,
+      "estimated_hours": 15
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-019",
+      "parent_id": "stage-05-05",
+      "title": "jose",
+      "order_index": 18,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-020",
+      "parent_id": "stage-05-05",
+      "title": "httpOnly Cookies",
+      "order_index": 19,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-05-021",
+      "parent_id": "stage-05-05",
+      "title": "SameSite=Lax",
+      "order_index": 20,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-001",
+      "parent_id": "stage-06-01",
+      "title": "Vitest",
+      "order_index": 1,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-002",
+      "parent_id": "stage-06-01",
+      "title": "React Testing Library",
+      "order_index": 2,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-003",
+      "parent_id": "stage-06-01",
+      "title": "@testing-library/user-event",
+      "order_index": 3,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-004",
+      "parent_id": "stage-06-01",
+      "title": "MSW (Mock Service Worker)",
+      "order_index": 4,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-005",
+      "parent_id": "stage-06-01",
+      "title": "v8 Coverage",
+      "order_index": 5,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-006",
+      "parent_id": "stage-06-01",
+      "title": "Codecov",
+      "order_index": 6,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-007",
+      "parent_id": "stage-06-02",
+      "title": "Playwright",
+      "order_index": 7,
+      "estimated_hours": 18
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-008",
+      "parent_id": "stage-06-03",
+      "title": "GitHub Actions",
+      "order_index": 8,
+      "estimated_hours": 16
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-009",
+      "parent_id": "stage-06-04",
+      "title": "Docker",
+      "order_index": 9,
+      "estimated_hours": 25
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-010",
+      "parent_id": "stage-06-04",
+      "title": "Docker Compose",
+      "order_index": 10,
+      "estimated_hours": 10
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-011",
+      "parent_id": "stage-06-04",
+      "title": "GitHub Container Registry (GHCR)",
+      "order_index": 11,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-012",
+      "parent_id": "stage-06-04",
+      "title": "docker/build-push-action",
+      "order_index": 12,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-013",
+      "parent_id": "stage-06-05",
+      "title": "Render",
+      "order_index": 13,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-014",
+      "parent_id": "stage-06-05",
+      "title": "HTTP/2",
+      "order_index": 15,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06-015",
+      "parent_id": "stage-06-05",
+      "title": "shields.io",
+      "order_index": 14,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-001",
+      "parent_id": "stage-06b-01",
+      "title": "React Native Fundamentals",
+      "order_index": 1,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-002",
+      "parent_id": "stage-06b-01",
+      "title": "Expo + EAS Build",
+      "order_index": 2,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-003",
+      "parent_id": "stage-06b-01",
+      "title": "React Navigation",
+      "order_index": 3,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-004",
+      "parent_id": "stage-06b-01",
+      "title": "Flexbox Layout Differences (RN vs Web)",
+      "order_index": 4,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-005",
+      "parent_id": "stage-06b-02",
+      "title": "AsyncStorage + Offline-First Sync",
+      "order_index": 5,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-006",
+      "parent_id": "stage-06b-02",
+      "title": "expo-secure-store",
+      "order_index": 6,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-007",
+      "parent_id": "stage-06b-03",
+      "title": "Native APIs (Camera, Push, Permissions)",
+      "order_index": 7,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-008",
+      "parent_id": "stage-06b-03",
+      "title": "Platform-Specific Code (iOS vs Android)",
+      "order_index": 8,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-009",
+      "parent_id": "stage-06b-04",
+      "title": "FlatList Performance + Virtualization",
+      "order_index": 9,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-010",
+      "parent_id": "stage-06b-04",
+      "title": "Hermes Engine",
+      "order_index": 10,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-011",
+      "parent_id": "stage-06b-04",
+      "title": "New Architecture (Fabric + TurboModules)",
+      "order_index": 11,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-012",
+      "parent_id": "stage-06b-05",
+      "title": "App Store + Play Store Submission",
+      "order_index": 12,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-06b-013",
+      "parent_id": "stage-06b-05",
+      "title": "EAS Update (OTA Updates)",
+      "order_index": 13,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-07-001",
+      "parent_id": "stage-07-01",
+      "title": "curl",
+      "order_index": 5,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-07-002",
+      "parent_id": "stage-07-01",
+      "title": "Postman",
+      "order_index": 3,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-07-003",
+      "parent_id": "stage-07-01",
+      "title": "Insomnia",
+      "order_index": 4,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-07-004",
+      "parent_id": "stage-07-02",
+      "title": "OpenAPI 3.0",
+      "order_index": 1,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-07-005",
+      "parent_id": "stage-07-02",
+      "title": "Swagger UI",
+      "order_index": 2,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-07-006",
+      "parent_id": "stage-07-02",
+      "title": "Mermaid",
+      "order_index": 6,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-07-007",
+      "parent_id": "stage-07-03",
+      "title": "GraphQL",
+      "order_index": 7,
+      "estimated_hours": 26
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-001",
+      "parent_id": "stage-08-01",
+      "title": "Two Pointers",
+      "order_index": 1,
+      "estimated_hours": 18
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-002",
+      "parent_id": "stage-08-01",
+      "title": "Sliding Window",
+      "order_index": 2,
+      "estimated_hours": 18
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-003",
+      "parent_id": "stage-08-01",
+      "title": "Binary Search",
+      "order_index": 3,
+      "estimated_hours": 18
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-004",
+      "parent_id": "stage-08-01",
+      "title": "Kadane's Algorithm",
+      "order_index": 11,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-005",
+      "parent_id": "stage-08-02",
+      "title": "HashMap / Frequency Count Patterns",
+      "order_index": 6,
+      "estimated_hours": 15
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-006",
+      "parent_id": "stage-08-03",
+      "title": "Stack Patterns",
+      "order_index": 7,
+      "estimated_hours": 15
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-007",
+      "parent_id": "stage-08-03",
+      "title": "Monotonic Stack",
+      "order_index": 8,
+      "estimated_hours": 15
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-008",
+      "parent_id": "stage-08-03",
+      "title": "Queue / Deque Patterns",
+      "order_index": 9,
+      "estimated_hours": 11
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-009",
+      "parent_id": "stage-08-04",
+      "title": "BFS / DFS",
+      "order_index": 4,
+      "estimated_hours": 30
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-010",
+      "parent_id": "stage-08-04",
+      "title": "Tree Traversal",
+      "order_index": 10,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-011",
+      "parent_id": "stage-08-04",
+      "title": "Floyd's Cycle Detection",
+      "order_index": 10,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-012",
+      "parent_id": "stage-08-05",
+      "title": "Heap / Priority Queue",
+      "order_index": 13,
+      "estimated_hours": 22
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-013",
+      "parent_id": "stage-08-06",
+      "title": "Dynamic Programming (Memoization + Tabulation)",
+      "order_index": 5,
+      "estimated_hours": 58
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-014",
+      "parent_id": "stage-08-07",
+      "title": "Interview Frameworks (STAR, REACTO)",
+      "order_index": 14,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-08-015",
+      "parent_id": "stage-08-07",
+      "title": "System Design Interview Basics",
+      "order_index": 15,
+      "estimated_hours": 19
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-09-001",
+      "parent_id": "stage-09-01",
+      "title": "Redis",
+      "order_index": 1,
+      "estimated_hours": 19
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-09-002",
+      "parent_id": "stage-09-01",
+      "title": "ioredis",
+      "order_index": 2,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-09-003",
+      "parent_id": "stage-09-01",
+      "title": "PgBouncer",
+      "order_index": 3,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-09-004",
+      "parent_id": "stage-09-02",
+      "title": "Upstash",
+      "order_index": 4,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-09-005",
+      "parent_id": "stage-09-02",
+      "title": "@upstash/ratelimit",
+      "order_index": 5,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-09-006",
+      "parent_id": "stage-09-03",
+      "title": "Resend",
+      "order_index": 6,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-09-007",
+      "parent_id": "stage-09-03",
+      "title": "React Email",
+      "order_index": 7,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-09-008",
+      "parent_id": "stage-09-04",
+      "title": "Razorpay",
+      "order_index": 8,
+      "estimated_hours": 19
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-001",
+      "parent_id": "stage-10-01",
+      "title": "AsyncLocalStorage",
+      "order_index": 1,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-002",
+      "parent_id": "stage-10-01",
+      "title": "pino",
+      "order_index": 2,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-003",
+      "parent_id": "stage-10-01",
+      "title": "winston",
+      "order_index": 3,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-004",
+      "parent_id": "stage-10-02",
+      "title": "Sentry",
+      "order_index": 4,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-005",
+      "parent_id": "stage-10-02",
+      "title": "UptimeRobot",
+      "order_index": 5,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-006",
+      "parent_id": "stage-10-03",
+      "title": "Better Stack (formerly Logtail)",
+      "order_index": 6,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-007",
+      "parent_id": "stage-10-03",
+      "title": "Axiom",
+      "order_index": 7,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-008",
+      "parent_id": "stage-10-03",
+      "title": "Grafana Cloud",
+      "order_index": 8,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-009",
+      "parent_id": "stage-10-03",
+      "title": "Loki",
+      "order_index": 9,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-010",
+      "parent_id": "stage-10-03",
+      "title": "Datadog",
+      "order_index": 10,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-011",
+      "parent_id": "stage-10-03",
+      "title": "CloudWatch",
+      "order_index": 11,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-012",
+      "parent_id": "stage-10-04",
+      "title": "PostHog",
+      "order_index": 12,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-013",
+      "parent_id": "stage-10-04",
+      "title": "posthog-js",
+      "order_index": 13,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-014",
+      "parent_id": "stage-10-04",
+      "title": "posthog-node",
+      "order_index": 14,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-015",
+      "parent_id": "stage-10-05",
+      "title": "Feature Flags",
+      "order_index": 15,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-016",
+      "parent_id": "stage-10-05",
+      "title": "A/B Testing",
+      "order_index": 16,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-017",
+      "parent_id": "stage-10-05",
+      "title": "Funnel Analysis",
+      "order_index": 17,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-018",
+      "parent_id": "stage-10-05",
+      "title": "Session Recording",
+      "order_index": 18,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-10-019",
+      "parent_id": "stage-10-06",
+      "title": "GDPR Consent Mode",
+      "order_index": 19,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-001",
+      "parent_id": "stage-11-01",
+      "title": "SSE (EventSource)",
+      "order_index": 1,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-002",
+      "parent_id": "stage-11-01",
+      "title": "WebSockets",
+      "order_index": 2,
+      "estimated_hours": 20
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-003",
+      "parent_id": "stage-11-01",
+      "title": "WebRTC",
+      "order_index": 3,
+      "estimated_hours": 18
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-004",
+      "parent_id": "stage-11-02",
+      "title": "B-Tree Indexes",
+      "order_index": 4,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-005",
+      "parent_id": "stage-11-02",
+      "title": "Composite Indexes",
+      "order_index": 5,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-006",
+      "parent_id": "stage-11-02",
+      "title": "Partial Indexes",
+      "order_index": 6,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-007",
+      "parent_id": "stage-11-02",
+      "title": "Materialized Views",
+      "order_index": 7,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-008",
+      "parent_id": "stage-11-03",
+      "title": "MVCC (Multi-Version Concurrency Control)",
+      "order_index": 9,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-009",
+      "parent_id": "stage-11-03",
+      "title": "VACUUM",
+      "order_index": 8,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-010",
+      "parent_id": "stage-11-03",
+      "title": "WAL (Write-Ahead Log)",
+      "order_index": 10,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-011",
+      "parent_id": "stage-11-03",
+      "title": "Read Replicas",
+      "order_index": 11,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-012",
+      "parent_id": "stage-11-03",
+      "title": "pg_stat_activity",
+      "order_index": 12,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-013",
+      "parent_id": "stage-11-04",
+      "title": "PostgreSQL Full Text Search",
+      "order_index": 13,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-014",
+      "parent_id": "stage-11-04",
+      "title": "Meilisearch",
+      "order_index": 14,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-015",
+      "parent_id": "stage-11-04",
+      "title": "Typesense",
+      "order_index": 15,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-11-016",
+      "parent_id": "stage-11-04",
+      "title": "Elasticsearch",
+      "order_index": 16,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-001",
+      "parent_id": "stage-12-01",
+      "title": "OpenAI API",
+      "order_index": 1,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-002",
+      "parent_id": "stage-12-01",
+      "title": "GPT-4o",
+      "order_index": 2,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-003",
+      "parent_id": "stage-12-01",
+      "title": "Anthropic API",
+      "order_index": 11,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-004",
+      "parent_id": "stage-12-02",
+      "title": "text-embedding-3-small",
+      "order_index": 3,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-005",
+      "parent_id": "stage-12-02",
+      "title": "pgvector",
+      "order_index": 5,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-006",
+      "parent_id": "stage-12-02",
+      "title": "IVFFlat Index",
+      "order_index": 6,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-007",
+      "parent_id": "stage-12-02",
+      "title": "HNSW Index",
+      "order_index": 7,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-008",
+      "parent_id": "stage-12-03",
+      "title": "RAG Pattern",
+      "order_index": 8,
+      "estimated_hours": 24
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-009",
+      "parent_id": "stage-12-04",
+      "title": "Vercel AI SDK",
+      "order_index": 4,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-010",
+      "parent_id": "stage-12-04",
+      "title": "BullMQ",
+      "order_index": 9,
+      "estimated_hours": 16
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-011",
+      "parent_id": "stage-12-04",
+      "title": "Bull Board",
+      "order_index": 10,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-012",
+      "parent_id": "stage-12-05",
+      "title": "Claude Model Tier Strategy",
+      "order_index": 12,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-013",
+      "parent_id": "stage-12-05",
+      "title": "Extended Thinking",
+      "order_index": 13,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-014",
+      "parent_id": "stage-12-05",
+      "title": "Prompt Caching",
+      "order_index": 14,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-015",
+      "parent_id": "stage-12-06",
+      "title": "Tool Calling for Structured Extraction",
+      "order_index": 15,
+      "estimated_hours": 13
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-016",
+      "parent_id": "stage-12-06",
+      "title": "Multi-Model Routing",
+      "order_index": 16,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-017",
+      "parent_id": "stage-12-07",
+      "title": "AI Cost Tracking",
+      "order_index": 17,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-018",
+      "parent_id": "stage-12-07",
+      "title": "Token Budget Enforcement",
+      "order_index": 18,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-019",
+      "parent_id": "stage-12-08",
+      "title": "System Prompt Engineering",
+      "order_index": 19,
+      "estimated_hours": 13
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-12-020",
+      "parent_id": "stage-12-08",
+      "title": "Eval-Driven AI Development",
+      "order_index": 20,
+      "estimated_hours": 16
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-001",
+      "parent_id": "stage-13-01",
+      "title": "IndexedDB",
+      "order_index": 1,
+      "estimated_hours": 13
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-002",
+      "parent_id": "stage-13-01",
+      "title": "idb",
+      "order_index": 2,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-003",
+      "parent_id": "stage-13-02",
+      "title": "Web Workers",
+      "order_index": 3,
+      "estimated_hours": 10
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-004",
+      "parent_id": "stage-13-02",
+      "title": "comlink",
+      "order_index": 4,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-005",
+      "parent_id": "stage-13-03",
+      "title": "Broadcast Channel API",
+      "order_index": 5,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-006",
+      "parent_id": "stage-13-04",
+      "title": "requestAnimationFrame",
+      "order_index": 7,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-007",
+      "parent_id": "stage-13-04",
+      "title": "requestIdleCallback",
+      "order_index": 8,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-008",
+      "parent_id": "stage-13-04",
+      "title": "View Transitions API",
+      "order_index": 6,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-009",
+      "parent_id": "stage-13-04",
+      "title": "CSS Houdini",
+      "order_index": 9,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-010",
+      "parent_id": "stage-13-05",
+      "title": "Yjs",
+      "order_index": 10,
+      "estimated_hours": 19
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-011",
+      "parent_id": "stage-13-05",
+      "title": "y-websocket",
+      "order_index": 12,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-012",
+      "parent_id": "stage-13-05",
+      "title": "y-webrtc",
+      "order_index": 13,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-013",
+      "parent_id": "stage-13-05",
+      "title": "y-indexeddb",
+      "order_index": 14,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-014",
+      "parent_id": "stage-13-05",
+      "title": "Hocuspocus",
+      "order_index": 11,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-015",
+      "parent_id": "stage-13-06",
+      "title": "ProseMirror",
+      "order_index": 16,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-13-016",
+      "parent_id": "stage-13-06",
+      "title": "Tiptap",
+      "order_index": 15,
+      "estimated_hours": 13
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-001",
+      "parent_id": "stage-14-01",
+      "title": "k6",
+      "order_index": 1,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-002",
+      "parent_id": "stage-14-01",
+      "title": "k6 Cloud",
+      "order_index": 2,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-003",
+      "parent_id": "stage-14-01",
+      "title": "Artillery",
+      "order_index": 3,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-004",
+      "parent_id": "stage-14-02",
+      "title": "OWASP Top 10",
+      "order_index": 4,
+      "estimated_hours": 17
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-005",
+      "parent_id": "stage-14-02",
+      "title": "OWASP ZAP",
+      "order_index": 5,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-006",
+      "parent_id": "stage-14-02",
+      "title": "Nonce-Based CSP",
+      "order_index": 6,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-007",
+      "parent_id": "stage-14-02",
+      "title": "JWT Algorithm Pinning",
+      "order_index": 7,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-008",
+      "parent_id": "stage-14-03",
+      "title": "trufflehog",
+      "order_index": 8,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-009",
+      "parent_id": "stage-14-03",
+      "title": "git-secrets",
+      "order_index": 9,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-010",
+      "parent_id": "stage-14-04",
+      "title": "securityheaders.com",
+      "order_index": 10,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-011",
+      "parent_id": "stage-14-04",
+      "title": "CSP Evaluator",
+      "order_index": 11,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-012",
+      "parent_id": "stage-14-04",
+      "title": "Dependabot",
+      "order_index": 12,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-013",
+      "parent_id": "stage-14-04",
+      "title": "npm audit",
+      "order_index": 13,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-014",
+      "parent_id": "stage-14-05",
+      "title": "SOC 2 Basics",
+      "order_index": 14,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-14-015",
+      "parent_id": "stage-14-05",
+      "title": "GDPR",
+      "order_index": 15,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-15-001",
+      "parent_id": "stage-15-01",
+      "title": "Vite",
+      "order_index": 1,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-15-002",
+      "parent_id": "stage-15-01",
+      "title": "tsup",
+      "order_index": 2,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-15-003",
+      "parent_id": "stage-15-02",
+      "title": "@next/bundle-analyzer",
+      "order_index": 3,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-15-004",
+      "parent_id": "stage-15-02",
+      "title": "vite-bundle-visualizer",
+      "order_index": 4,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-15-005",
+      "parent_id": "stage-15-02",
+      "title": "rollup-plugin-visualizer",
+      "order_index": 5,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-15-006",
+      "parent_id": "stage-15-03",
+      "title": "lighthouse-ci",
+      "order_index": 6,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-15-007",
+      "parent_id": "stage-15-04",
+      "title": "styled-components",
+      "order_index": 7,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-15-008",
+      "parent_id": "stage-15-04",
+      "title": "Emotion",
+      "order_index": 8,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-15-009",
+      "parent_id": "stage-15-04",
+      "title": "Linaria",
+      "order_index": 9,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-001",
+      "parent_id": "stage-16-01",
+      "title": "AWS S3",
+      "order_index": 1,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-002",
+      "parent_id": "stage-16-02",
+      "title": "Terraform",
+      "order_index": 2,
+      "estimated_hours": 31
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-003",
+      "parent_id": "stage-16-02",
+      "title": "Terraform Cloud",
+      "order_index": 3,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-004",
+      "parent_id": "stage-16-02",
+      "title": "tfsec",
+      "order_index": 4,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-005",
+      "parent_id": "stage-16-03",
+      "title": "Kubernetes",
+      "order_index": 5,
+      "estimated_hours": 46
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-006",
+      "parent_id": "stage-16-03",
+      "title": "kind (Kubernetes in Docker)",
+      "order_index": 6,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-007",
+      "parent_id": "stage-16-03",
+      "title": "kubectl",
+      "order_index": 7,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-008",
+      "parent_id": "stage-16-04",
+      "title": "Helm",
+      "order_index": 8,
+      "estimated_hours": 10
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-009",
+      "parent_id": "stage-16-04",
+      "title": "HPA (Horizontal Pod Autoscaler)",
+      "order_index": 9,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-16-010",
+      "parent_id": "stage-16-04",
+      "title": "external-secrets",
+      "order_index": 10,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-001",
+      "parent_id": "stage-17-01",
+      "title": "Cache-Aside Caching",
+      "order_index": 2,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-002",
+      "parent_id": "stage-17-01",
+      "title": "Write-Through Caching",
+      "order_index": 3,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-003",
+      "parent_id": "stage-17-01",
+      "title": "Optimistic Updates",
+      "order_index": 1,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-004",
+      "parent_id": "stage-17-02",
+      "title": "Optimistic Locking",
+      "order_index": 5,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-005",
+      "parent_id": "stage-17-02",
+      "title": "Pessimistic Locking",
+      "order_index": 6,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-006",
+      "parent_id": "stage-17-02",
+      "title": "Idempotency",
+      "order_index": 4,
+      "estimated_hours": 7
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-007",
+      "parent_id": "stage-17-03",
+      "title": "Saga Pattern",
+      "order_index": 7,
+      "estimated_hours": 13
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-008",
+      "parent_id": "stage-17-03",
+      "title": "Outbox Pattern",
+      "order_index": 8,
+      "estimated_hours": 10
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-009",
+      "parent_id": "stage-17-03",
+      "title": "Dead Letter Queue",
+      "order_index": 9,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-010",
+      "parent_id": "stage-17-03",
+      "title": "Circuit Breaker",
+      "order_index": 10,
+      "estimated_hours": 8
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-011",
+      "parent_id": "stage-17-04",
+      "title": "Event-Driven Architecture",
+      "order_index": 11,
+      "estimated_hours": 13
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-012",
+      "parent_id": "stage-17-04",
+      "title": "CQRS (Command Query Responsibility Segregation)",
+      "order_index": 12,
+      "estimated_hours": null
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-013",
+      "parent_id": "stage-17-05",
+      "title": "Multi-Tenancy",
+      "order_index": 13,
+      "estimated_hours": 12
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-014",
+      "parent_id": "stage-17-06",
+      "title": "Blue-Green Deployments",
+      "order_index": 14,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-17-015",
+      "parent_id": "stage-17-06",
+      "title": "Chaos Engineering",
+      "order_index": 15,
+      "estimated_hours": 9
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-001",
+      "parent_id": "stage-18-01",
+      "title": "Changesets",
+      "order_index": 1,
+      "estimated_hours": 5
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-002",
+      "parent_id": "stage-18-02",
+      "title": "ADRs (Architectural Decision Records)",
+      "order_index": 2,
+      "estimated_hours": 4
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-003",
+      "parent_id": "stage-18-02",
+      "title": "RFCs (Request for Comments)",
+      "order_index": 3,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-004",
+      "parent_id": "stage-18-03",
+      "title": "DORA Metrics",
+      "order_index": 4,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-005",
+      "parent_id": "stage-18-03",
+      "title": "Blameless Post-Mortems",
+      "order_index": 5,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-006",
+      "parent_id": "stage-18-03",
+      "title": "Technical Debt Tracking",
+      "order_index": 6,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-007",
+      "parent_id": "stage-18-03",
+      "title": "Estimation Tracking",
+      "order_index": 7,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-008",
+      "parent_id": "stage-18-03",
+      "title": "Code Review Conventions",
+      "order_index": 8,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-009",
+      "parent_id": "stage-18-03",
+      "title": "Ramp-Up Strategy",
+      "order_index": 9,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-010",
+      "parent_id": "stage-18-04",
+      "title": "docs/adr/",
+      "order_index": 20,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-011",
+      "parent_id": "stage-18-04",
+      "title": "ARCHITECTURE.md",
+      "order_index": 10,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-012",
+      "parent_id": "stage-18-04",
+      "title": "DECISIONS.md",
+      "order_index": 11,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-013",
+      "parent_id": "stage-18-05",
+      "title": "PERFORMANCE.md",
+      "order_index": 12,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-014",
+      "parent_id": "stage-18-05",
+      "title": "SECURITY.md",
+      "order_index": 13,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-015",
+      "parent_id": "stage-18-05",
+      "title": "MONITORING.md",
+      "order_index": 14,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-016",
+      "parent_id": "stage-18-05",
+      "title": "OPERATIONS.md",
+      "order_index": 15,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-017",
+      "parent_id": "stage-18-05",
+      "title": "incidents/",
+      "order_index": 19,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-018",
+      "parent_id": "stage-18-05",
+      "title": "TECH_DEBT.md",
+      "order_index": 18,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-019",
+      "parent_id": "stage-18-06",
+      "title": "PRODUCT_DECISIONS.md",
+      "order_index": 16,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-18-020",
+      "parent_id": "stage-18-06",
+      "title": "READING_NOTES.md",
+      "order_index": 17,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-001",
+      "parent_id": "stage-19-01",
+      "title": "JSONPlaceholder API",
+      "order_index": 1,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-002",
+      "parent_id": "stage-19-01",
+      "title": "GitHub API",
+      "order_index": 2,
+      "estimated_hours": 6
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-003",
+      "parent_id": "stage-19-02",
+      "title": "Wellfound (formerly AngelList)",
+      "order_index": 3,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-004",
+      "parent_id": "stage-19-02",
+      "title": "Instahyre",
+      "order_index": 4,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-005",
+      "parent_id": "stage-19-02",
+      "title": "LinkedIn",
+      "order_index": 5,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-006",
+      "parent_id": "stage-19-03",
+      "title": "Product Hunt",
+      "order_index": 6,
+      "estimated_hours": 2
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-007",
+      "parent_id": "stage-19-03",
+      "title": "Indie Hackers",
+      "order_index": 7,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-008",
+      "parent_id": "stage-19-03",
+      "title": "SaaS India Slack",
+      "order_index": 8,
+      "estimated_hours": 1
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-009",
+      "parent_id": "stage-19-04",
+      "title": "dev.to",
+      "order_index": 9,
+      "estimated_hours": 3
+    },
+    {
+      "entity_type": "topic",
+      "entity_id": "topic-19-010",
+      "parent_id": "stage-19-04",
+      "title": "Hashnode",
+      "order_index": 10,
+      "estimated_hours": 1
+    }
+  ]
+}

@@ -1,0 +1,357 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  /* ---- Light theme ----
+     Kept for completeness / prefers-color-scheme fallback, but the product
+     ships dark-first per the redesign spec (html has color-scheme: dark
+     and the boot script defaults to the dark class). */
+  --background: #fafafa;
+  --surface: #ffffff;
+  --surface-2: #f4f4f5;
+  --surface-hover: #e4e4e7;
+  --border: #e4e4e7;
+  --foreground: #09090b;
+  --muted: #71717a;
+  --accent: #6366f1;
+  --accent-foreground: #ffffff;
+  --secondary-accent: #10b981;
+  --highlight: #8b5cf6;
+  --reward: #f59e0b;
+  --success: #10b981;
+  --warning: #f97316;
+  --danger: #f43f5e;
+  --info: #6366f1;
+  --ring: #6366f1;
+  --radius: 0.875rem; /* 14px — buttons/inputs baseline */
+}
+
+.dark {
+  /* ---- Dark theme (default) ----
+     Refined dark palette: indigo primary, emerald secondary, violet
+     highlight, amber reward — per the design system spec. */
+  --background: #09090b;
+  --surface: #18181b;      /* card background */
+  --surface-2: #111113;    /* secondary background */
+  --surface-hover: #202023;
+  --border: #27272a;
+  --foreground: #fafafa;
+  --muted: #a1a1aa;        /* secondary text */
+  --muted-2: #71717a;      /* tertiary / caption text */
+  --accent: #6366f1;       /* indigo — primary accent */
+  --accent-foreground: #fafafa;
+  --secondary-accent: #10b981; /* emerald */
+  --highlight: #8b5cf6;    /* violet */
+  --reward: #f59e0b;       /* amber — XP / rewards */
+  --success: #10b981;      /* emerald */
+  --warning: #f97316;      /* orange */
+  --danger: #f43f5e;       /* rose */
+  --info: #6366f1;
+  --ring: #6366f1;
+
+  /* ---- "Wow" layer additions ----
+     Glow/gradient tokens for the bolder visual language pass. Additive
+     only — every existing --color-* token above is untouched, so any
+     component that hasn't opted into the new look keeps rendering
+     exactly as before. These are used sparingly (signature moments,
+     hero numbers, primary CTAs) rather than applied everywhere, per the
+     "spend your boldness in one place" principle. */
+  --accent-glow: 99 102 241;      /* rgb triplet of --accent, for glow/shadow alpha */
+  --highlight-glow: 139 92 246;   /* rgb triplet of --highlight */
+  --success-glow: 16 185 129;     /* rgb triplet of --success */
+  --reward-glow: 245 158 11;      /* rgb triplet of --reward */
+  --gradient-accent: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #6366f1 100%);
+  --gradient-reward: linear-gradient(135deg, #f59e0b 0%, #f43f5e 100%);
+  --gradient-mesh: radial-gradient(at 20% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                   radial-gradient(at 80% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-secondary-accent: var(--secondary-accent);
+  --color-highlight: var(--highlight);
+  --color-reward: var(--reward);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-ring: var(--ring);
+
+  --color-accent-glow: var(--accent-glow);
+  --color-highlight-glow: var(--highlight-glow);
+  --color-success-glow: var(--success-glow);
+  --color-reward-glow: var(--reward-glow);
+
+  /* Radius scale — 14px base (buttons/inputs), with named steps for
+     cards (20px) and dialogs (24px) per the design spec. --radius-lg
+     stays an alias of the base so existing `rounded-lg` usage in
+     components upgrades automatically; use rounded-card / rounded-dialog
+     directly where the spec calls for a bigger curve. */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-card: 1.25rem;    /* 20px */
+  --radius-dialog: 1.5rem;   /* 24px */
+  --radius-image: 1.5rem;    /* 24px */
+
+  --font-sans: var(--font-geist-sans), "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale from the design spec, exposed as text-* utilities
+     (e.g. text-hero, text-page-title) alongside Tailwind's defaults. */
+  --text-hero: 3.5rem;         /* 56px */
+  --text-hero--line-height: 1.05;
+  --text-page-title: 2.25rem;  /* 36px */
+  --text-page-title--line-height: 1.15;
+  --text-section-title: 1.5rem; /* 24px */
+  --text-section-title--line-height: 1.3;
+  --text-card-title: 1.25rem;  /* 20px */
+  --text-card-title--line-height: 1.4;
+  --text-body: 1rem;           /* 16px */
+  --text-body--line-height: 1.6;
+  --text-caption: 0.875rem;    /* 14px */
+  --text-caption--line-height: 1.4;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+.font-mono-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Standard motion tokens — use these instead of ad hoc transition-* utility
+   combinations so hover/press/appear motion feels consistent app-wide.
+   Applied across app pages, layout, and roadmap components (item #19).
+   Exception: base UI primitives (button, input, switch, tabs, etc. in
+   src/components/ui/) intentionally keep plain transition-colors — those
+   are single-property color transitions on form controls, and forcing the
+   6-property transition-standard set onto every checkbox/switch adds
+   nothing but overhead. Also exempt: transitions on non-color/transform
+   properties (e.g. width-based step indicators), which transition-standard
+   doesn't cover and shouldn't silently swallow. */
+.transition-standard {
+  transition-property: color, background-color, border-color, opacity, transform, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Progress bar fill color escalation — low completion reads as warning
+   (still a lot of ground to cover), mid-range as accent (on track),
+   100% as success (done). Applied via a data attribute on the Indicator
+   rather than inline logic in every call site. */
+[data-progress-tier="low"] { background: var(--warning); }
+[data-progress-tier="mid"] { background: var(--accent); }
+[data-progress-tier="done"] { background: var(--success); }
+
+/* Scrollbar (item #20). 10px felt cramped as a touch/trackpad target, so
+   this widens it slightly to 12px and adds a bit more thumb padding via a
+   transparent border-clip trick (keeps the visual thumb slim while the hit
+   area is bigger). `scrollbar-*` properties give Firefox the same
+   treatment — previously only WebKit browsers were styled at all, so
+   Firefox fell back to the OS default scrollbar with no thickness or
+   color control. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--muted); background-clip: padding-box; }
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.heat-0 { background: var(--surface-2); }
+.heat-1 { background: color-mix(in srgb, var(--accent) 20%, var(--surface-2)); }
+.heat-2 { background: color-mix(in srgb, var(--accent) 45%, var(--surface-2)); }
+.heat-3 { background: color-mix(in srgb, var(--accent) 70%, var(--surface-2)); }
+.heat-4 { background: var(--accent); }
+
+/* ============================================================================
+   "Wow" layer — bold visual language + motion additions.
+
+   Scoped as opt-in utility classes rather than changes to base primitives'
+   default appearance, so existing pages that don't reach for these keep
+   their current flat, restrained look unless deliberately upgraded. All
+   respect prefers-reduced-motion via the existing global rule above (any
+   animation/transition here is covered by that blanket override).
+   ============================================================================ */
+
+/* Gradient text — used sparingly for hero numbers/headlines, not body text. */
+.text-gradient-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-gradient-success {
+  background: var(--gradient-success);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-gradient-reward {
+  background: var(--gradient-reward);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Ambient mesh background — for a page's hero/top section only, never
+   tiled across the whole app (that would just be visual noise). */
+.bg-mesh {
+  background-image: var(--gradient-mesh);
+}
+
+/* Glow-on-hover card — an escalation of Card's existing interactive prop.
+   Box-shadow alpha uses the rgb-triplet tokens so it composites correctly
+   in dark mode without a separate light-mode override. */
+.glow-card {
+  transition: box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1), transform 200ms cubic-bezier(0.4, 0, 0.2, 1), border-color 200ms;
+}
+.glow-card:hover {
+  border-color: rgb(var(--accent-glow) / 0.6);
+  box-shadow: 0 0 0 1px rgb(var(--accent-glow) / 0.25), 0 16px 40px -8px rgb(var(--accent-glow) / 0.5);
+  transform: translateY(-6px) scale(1.015);
+}
+
+/* Animated gradient border — a moving conic-gradient ring behind a card,
+   revealed through a small padding gap. Used for exactly one "signature"
+   element at a time (e.g. today's featured task), not broadly. */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes border-spin {
+  to { --border-angle: 360deg; }
+}
+.gradient-border {
+  position: relative;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from var(--border-angle), var(--accent), var(--highlight), var(--success), var(--accent));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-spin 6s linear infinite;
+  z-index: -1;
+}
+
+/* Shimmer sweep — for loading skeletons or a one-time "just unlocked"
+   flourish, not a persistent idle animation. */
+@keyframes shimmer-sweep {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgb(var(--accent-glow) / 0.25) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-sweep 2s ease-in-out infinite;
+}
+
+/* Soft pulse — for a live/active indicator (e.g. focus timer running),
+   replacing a static dot with gentle breathing rather than a hard blink. */
+@keyframes soft-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.15); }
+}
+.pulse-dot {
+  animation: soft-pulse 2s ease-in-out infinite;
+}
+
+/* Glass panel — for elevated overlays (dialogs, popovers) that want to
+   feel "above" the page rather than just another flat card. */
+.glass-panel {
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+/* Print styles — used by the public profile's "Download as PDF" button
+   (window.print()). Scoped narrowly: only affects elements explicitly
+   opted in via .print-* classes on the /u/[slug] page, so nothing else
+   in the app is affected by printing from elsewhere. */
+@media print {
+  .print\:hidden {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .print-surface {
+    background: white !important;
+    border-color: #ddd !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  a {
+    color: #1a1a1a !important;
+    text-decoration: underline;
+  }
+  /* Motion primitives (FadeUp/StaggerContainer/etc.) set inline opacity/
+     transform via Framer Motion's JS-driven initial/animate states. Print
+     rendering can capture the DOM before that JS has resolved (or a
+     "Save as PDF" export may serialize a static snapshot), which would
+     otherwise leave content stuck invisible/offset on the printed page.
+     This forces every element back to its resting, fully-visible state
+     for print regardless of what Framer Motion's inline styles say. */
+  * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
