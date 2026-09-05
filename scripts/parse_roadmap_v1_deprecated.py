@@ -8,7 +8,7 @@ Parses Zero_to_Elite roadmap markdown into structured JSON seed data:
 """
 import re, json, sys
 
-SRC = "roadmap.md"
+SRC = "docs/roadmap.md"
 with open(SRC, encoding="utf-8") as f:
     text = f.read()
 

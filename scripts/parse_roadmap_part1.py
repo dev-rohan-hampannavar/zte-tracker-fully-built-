@@ -13,7 +13,7 @@ Writes: data/seed_part1.json  (merged into data/seed.json by merge_seed.py)
 """
 import re, json, sys
 
-SRC = "roadmap.md"
+SRC = "docs/roadmap.md"
 with open(SRC, encoding="utf-8") as f:
     text = f.read()
 lines = text.split("\n")

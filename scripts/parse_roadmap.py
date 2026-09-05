@@ -18,7 +18,7 @@ a projects block, no topic titles dropped vs. topic tables where tables exist.
 """
 import re, json, sys, hashlib
 
-SRC = "roadmap.md"
+SRC = "docs/roadmap.md"
 with open(SRC, encoding="utf-8") as f:
     text = f.read()
 

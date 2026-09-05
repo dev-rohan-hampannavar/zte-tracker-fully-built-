@@ -26,7 +26,7 @@ from datetime import datetime, timezone
 with open("data/seed.json", encoding="utf-8") as f:
     seed = json.load(f)
 
-with open("roadmap.md", "rb") as f:
+with open("docs/roadmap.md", "rb") as f:
     source_hash = hashlib.sha256(f.read()).hexdigest()
 
 existing = sorted(glob.glob("data/roadmap_snapshot_v*.json"))
