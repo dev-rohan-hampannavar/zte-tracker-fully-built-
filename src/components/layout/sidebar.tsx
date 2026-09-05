@@ -108,7 +108,7 @@ const NAV_SECTIONS: { id: string; label: string; icon: typeof Home; hrefs: strin
 // need its own rewrite to keep working.
 const SIDEBAR_SECTIONS = NAV_SECTIONS.map((s) => ({ label: s.label, hrefs: s.hrefs }));
 
-const DEFAULT_OPEN_SECTIONS = ["home", "execute", "career"];
+const DEFAULT_OPEN_SECTIONS: string[] = [];
 
 export function Sidebar({ className }: { className?: string }) {
   const router = useRouter();
