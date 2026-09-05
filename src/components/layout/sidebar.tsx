@@ -113,7 +113,8 @@ const DEFAULT_OPEN_SECTIONS = ["home", "execute", "career"];
 export function Sidebar({ className }: { className?: string }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [expanded, setExpanded] = React.useState(false);
+  const [pinned, setPinned] = React.useState(false);
+  const [hovering, setHovering] = React.useState(false);
   const asideRef = React.useRef<HTMLElement>(null);
 
   function activeSectionSet() {
@@ -132,33 +133,25 @@ export function Sidebar({ className }: { className?: string }) {
     });
   }
 
-  function toggleExpanded() {
-    setExpanded((prev) => !prev);
+  function togglePinned() {
+    setPinned((prev) => !prev);
   }
 
   function closeDrawer() {
-    setExpanded(false);
+    setPinned(false);
+    setHovering(false);
   }
 
-  // Collapse back to the default/active-page section whenever the drawer
-  // closes — don't remember manually opened submenus across sessions.
+  const expanded = pinned || hovering;
+
+  // Collapse back to the default/active-page section whenever the sidebar
+  // closes (mouse leaves and it isn't pinned open) — don't remember manually
+  // opened submenus across hovers.
   React.useEffect(() => {
     if (!expanded) {
       setOpenSections(activeSectionSet());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expanded]);
-
-  // Click outside the sidebar closes it.
-  React.useEffect(() => {
-    if (!expanded) return;
-    function handlePointerDown(e: MouseEvent) {
-      if (asideRef.current && !asideRef.current.contains(e.target as Node)) {
-        closeDrawer();
-      }
-    }
-    document.addEventListener("mousedown", handlePointerDown);
-    return () => document.removeEventListener("mousedown", handlePointerDown);
   }, [expanded]);
 
   async function signOut() {
@@ -170,17 +163,15 @@ export function Sidebar({ className }: { className?: string }) {
   return (
     <aside
       ref={asideRef}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
       className={cn(
         "group/sidebar relative flex h-full shrink-0 flex-col border-r border-border bg-surface transition-[width] duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]",
         expanded ? "w-64" : "w-[68px]",
         className
       )}
     >
-      <button
-        onClick={toggleExpanded}
-        title={expanded ? "Close sidebar" : "Open sidebar"}
-        className="flex items-center gap-2 px-4 h-14 border-b border-border overflow-hidden w-full text-left"
-      >
+      <div className="flex items-center gap-2 px-4 h-14 border-b border-border overflow-hidden">
         <div className="flex h-7 w-7 shrink-0 items-center justify-center">
           <Image
             src="/icons/logo-mark.png"
@@ -198,7 +189,7 @@ export function Sidebar({ className }: { className?: string }) {
         >
           ZTE Tracker
         </span>
-      </button>
+      </div>
 
       <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-3 flex flex-col gap-1">
         {NAV_SECTIONS.map((section) => {
@@ -292,13 +283,13 @@ export function Sidebar({ className }: { className?: string }) {
 
       <div className="border-t border-border p-2 flex flex-col gap-0.5">
         <button
-          onClick={toggleExpanded}
-          title={expanded ? "Close sidebar" : "Open sidebar"}
+          onClick={togglePinned}
+          title={expanded ? "Collapse sidebar" : "Expand sidebar"}
           className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted transition-standard hover:bg-surface-2 hover:text-foreground"
         >
           <PanelLeft className="h-4 w-4 shrink-0" />
           <span className={cn("whitespace-nowrap transition-standard", expanded ? "opacity-100" : "opacity-0")}>
-            Close
+            {pinned ? "Collapse" : "Keep open"}
           </span>
         </button>
         <Link
