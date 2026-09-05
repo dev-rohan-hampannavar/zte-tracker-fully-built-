@@ -113,8 +113,8 @@ const DEFAULT_OPEN_SECTIONS = ["home", "execute", "career"];
 export function Sidebar({ className }: { className?: string }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [pinned, setPinned] = React.useState(false);
-  const [hovering, setHovering] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
+  const asideRef = React.useRef<HTMLElement>(null);
 
   function activeSectionSet() {
     const active = NAV_SECTIONS.find((s) => s.hrefs.some((h) => pathname === h || pathname.startsWith(h + "/")));
@@ -132,20 +132,33 @@ export function Sidebar({ className }: { className?: string }) {
     });
   }
 
-  function togglePinned() {
-    setPinned((prev) => !prev);
+  function toggleExpanded() {
+    setExpanded((prev) => !prev);
   }
 
-  const expanded = pinned || hovering;
+  function closeDrawer() {
+    setExpanded(false);
+  }
 
-  // Collapse back to the default/active-page section whenever the sidebar
-  // closes (mouse leaves and it isn't pinned open) — don't remember manually
-  // opened submenus across hovers.
+  // Collapse back to the default/active-page section whenever the drawer
+  // closes — don't remember manually opened submenus across sessions.
   React.useEffect(() => {
     if (!expanded) {
       setOpenSections(activeSectionSet());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expanded]);
+
+  // Click outside the sidebar closes it.
+  React.useEffect(() => {
+    if (!expanded) return;
+    function handlePointerDown(e: MouseEvent) {
+      if (asideRef.current && !asideRef.current.contains(e.target as Node)) {
+        closeDrawer();
+      }
+    }
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
   }, [expanded]);
 
   async function signOut() {
@@ -156,15 +169,18 @@ export function Sidebar({ className }: { className?: string }) {
 
   return (
     <aside
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
+      ref={asideRef}
       className={cn(
         "group/sidebar relative flex h-full shrink-0 flex-col border-r border-border bg-surface transition-[width] duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]",
         expanded ? "w-64" : "w-[68px]",
         className
       )}
     >
-      <div className="flex items-center gap-2 px-4 h-14 border-b border-border overflow-hidden">
+      <button
+        onClick={toggleExpanded}
+        title={expanded ? "Close sidebar" : "Open sidebar"}
+        className="flex items-center gap-2 px-4 h-14 border-b border-border overflow-hidden w-full text-left"
+      >
         <div className="flex h-7 w-7 shrink-0 items-center justify-center">
           <Image
             src="/icons/logo-mark.png"
@@ -182,7 +198,7 @@ export function Sidebar({ className }: { className?: string }) {
         >
           ZTE Tracker
         </span>
-      </div>
+      </button>
 
       <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-3 flex flex-col gap-1">
         {NAV_SECTIONS.map((section) => {
@@ -237,6 +253,7 @@ export function Sidebar({ className }: { className?: string }) {
                           <Link
                             key={href}
                             href={href}
+                            onClick={closeDrawer}
                             title={expanded ? undefined : label}
                             className={cn(
                               "relative flex items-center gap-2.5 rounded-lg border-l-2 px-2.5 py-2 ml-1 text-sm font-medium transition-standard",
@@ -275,17 +292,18 @@ export function Sidebar({ className }: { className?: string }) {
 
       <div className="border-t border-border p-2 flex flex-col gap-0.5">
         <button
-          onClick={togglePinned}
-          title={expanded ? "Collapse sidebar" : "Expand sidebar"}
+          onClick={toggleExpanded}
+          title={expanded ? "Close sidebar" : "Open sidebar"}
           className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted transition-standard hover:bg-surface-2 hover:text-foreground"
         >
           <PanelLeft className="h-4 w-4 shrink-0" />
           <span className={cn("whitespace-nowrap transition-standard", expanded ? "opacity-100" : "opacity-0")}>
-            {pinned ? "Collapse" : "Keep open"}
+            Close
           </span>
         </button>
         <Link
           href="/settings"
+          onClick={closeDrawer}
           title={expanded ? undefined : "Settings"}
           className={cn(
             "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-standard",
