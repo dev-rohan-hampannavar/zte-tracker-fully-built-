@@ -1,11 +1,15 @@
-export type CareerPlanTrack = "plan_a" | "plan_b";
+export type CareerPlanTrack = "plan_a" | "sap" | "ba_pm" | "ops";
+
+export type PlanTone = "blue" | "green" | "purple" | "amber";
 
 export interface PlanPath {
   id: CareerPlanTrack;
   eyebrow: string;
   title: string;
   summary: string;
-  tone: "blue" | "green";
+  tone: PlanTone;
+  ceiling: string;
+  ceilingLpa: number;
   actions: string[];
 }
 
@@ -40,26 +44,58 @@ export const FULL_PLAN = {
 export const PLAN_PATHS: PlanPath[] = [
   {
     id: "plan_a",
-    eyebrow: "Plan A · stability",
-    title: "Stay and climb in Operations",
-    summary: "Protect the paycheck, automate the day job, and build toward Analyst/BI ownership or an internal move.",
-    tone: "blue",
-    actions: [
-      "Automate repeatable work with Excel, SQL, and scripts.",
-      "Collect measurable outcomes that strengthen the internal promotion case.",
-      "Review an internal Analyst/BI move around months 12–18.",
-    ],
-  },
-  {
-    id: "plan_b",
-    eyebrow: "Plan B · active sprint",
-    title: "Transition to SDE-1",
-    summary: "Use the job to fund a serious engineering runway: learn, ship ClientSync, apply early, and improve from market feedback.",
+    eyebrow: "Plan A · primary",
+    title: "Transition to SDE-1 (ZTE full-stack)",
+    summary: "The core Zero to Elite plan: use the job to fund a serious engineering runway — learn, ship ClientSync, apply early, and improve from market feedback.",
     tone: "green",
+    ceiling: "₹35–50L",
+    ceilingLpa: 50,
     actions: [
       "Run the roadmap at a sustainable target, mostly nights and weekends.",
       "Ship one deployed flagship project instead of collecting half-finished demos.",
       "Start applications at the first credible exit; do not wait for perfection.",
+    ],
+  },
+  {
+    id: "sap",
+    eyebrow: "Plan B · fork",
+    title: "SAP SD/MM consultant",
+    summary: "Build SD/MM exposure on the job now, then invest in certification — the hard gate that unlocks staffing-payroll consulting roles.",
+    tone: "purple",
+    ceiling: "₹35–45L",
+    ceilingLpa: 45,
+    actions: [
+      "Shadow SD/MM transactions in the current ops role and log every transaction code touched.",
+      "Budget ₹40–80k for SD/MM (or S/4HANA) certification — non-negotiable before Year 2.",
+      "Target staffing-payroll seats at Deloitte, Accenture, TCS, or IBM once certified.",
+    ],
+  },
+  {
+    id: "ba_pm",
+    eyebrow: "Plan B · fork",
+    title: "BA → Product Manager",
+    summary: "Turn stakeholder comms and process documentation into a PM career — the highest 10-year ceiling of the four tracks, but the least mechanical path.",
+    tone: "amber",
+    ceiling: "₹50–80L",
+    ceilingLpa: 80,
+    actions: [
+      "Write lightweight PRDs for internal process changes now, unprompted — build the portfolio early.",
+      "Learn SQL for metric self-service; volunteer for cross-functional projects.",
+      "Target an APM/PM-associate seat at a Series A/B startup by Year 2–4.",
+    ],
+  },
+  {
+    id: "ops",
+    eyebrow: "Plan B · fork",
+    title: "Ops → Supply Chain leadership",
+    summary: "Compound ground-floor execution experience into regional P&L ownership, then national supply-chain strategy.",
+    tone: "blue",
+    ceiling: "₹40–70L",
+    ceilingLpa: 70,
+    actions: [
+      "Track your own dispatch/error-rate numbers as the Year 1–2 promotion case.",
+      "Build cross-vendor coordination experience toward a senior analyst / SCM seat.",
+      "Target regional ops-manager roles (Swiggy/Zomato/Meesho-tier) by Year 4–7.",
     ],
   },
 ];
@@ -146,16 +182,30 @@ export const MONTH_24_CHECKLIST = [
 ] as const;
 
 export const SALARY_REFERENCE: SalaryReference[] = [
-  { track: "plan_a", label: "Entry · 0–2 yrs", range: "₹4.0–5.5 LPA", evidence: "Business Ops Associate / Analyst I" },
-  { track: "plan_a", label: "Early · 2–4 yrs", range: "₹6.0–8.5 LPA", evidence: "Operations Analyst II + SQL/data skills" },
-  { track: "plan_a", label: "Mid · 4–7 yrs", range: "₹8.0–12.5 LPA", evidence: "Senior Analyst / Specialist" },
-  { track: "plan_a", label: "Experienced · 7+ yrs", range: "₹11.4–20 LPA", evidence: "Lead / Manager track" },
-  { track: "plan_b", label: "Exit A · ~7 mo", range: "₹6–10 LPA", evidence: "Junior full-stack, deployed" },
-  { track: "plan_b", label: "Exit B · ~7.5 mo", range: "₹8–12 LPA", evidence: "API-literate junior-to-mid" },
-  { track: "plan_b", label: "Exit ★1 · ~9.5 mo", range: "₹8–15 LPA", evidence: "Interview-ready + DSA" },
-  { track: "plan_b", label: "Exit C · ~10.6 mo", range: "₹12–18 LPA", evidence: "Production-grade + observability" },
-  { track: "plan_b", label: "Exit ★2 · ~11.6 mo", range: "₹15–25 LPA", evidence: "Real-time + search" },
-  { track: "plan_b", label: "Exit D · ~12.8 mo", range: "₹20–30 LPA", evidence: "AI-capable mid-senior" },
-  { track: "plan_b", label: "Exit 3 · ~16.4 mo", range: "₹25–40 LPA", evidence: "Senior distributed systems" },
-  { track: "plan_b", label: "Exit E · ~16.9 mo", range: "₹35–50 LPA", evidence: "Complete profile / founding engineer" },
+  { track: "plan_a", label: "Exit A · ~7 mo", range: "₹6–10 LPA", evidence: "Junior full-stack, deployed" },
+  { track: "plan_a", label: "Exit B · ~7.5 mo", range: "₹8–12 LPA", evidence: "API-literate junior-to-mid" },
+  { track: "plan_a", label: "Exit ★1 · ~9.5 mo", range: "₹8–15 LPA", evidence: "Interview-ready + DSA" },
+  { track: "plan_a", label: "Exit C · ~10.6 mo", range: "₹12–18 LPA", evidence: "Production-grade + observability" },
+  { track: "plan_a", label: "Exit ★2 · ~11.6 mo", range: "₹15–25 LPA", evidence: "Real-time + search" },
+  { track: "plan_a", label: "Exit D · ~12.8 mo", range: "₹20–30 LPA", evidence: "AI-capable mid-senior" },
+  { track: "plan_a", label: "Exit 3 · ~16.4 mo", range: "₹25–40 LPA", evidence: "Senior distributed systems" },
+  { track: "plan_a", label: "Exit E · ~16.9 mo", range: "₹35–50 LPA", evidence: "Complete profile / founding engineer" },
+
+  { track: "sap", label: "Now", range: "₹4.6 LPA", evidence: "Business ops associate, building SD/MM exposure" },
+  { track: "sap", label: "Year 2–4", range: "₹6–10 LPA", evidence: "Junior SAP consultant (Deloitte/Accenture/TCS/IBM)" },
+  { track: "sap", label: "Year 5–7", range: "₹15–22 LPA", evidence: "Senior consultant, S/4HANA, client ownership" },
+  { track: "sap", label: "Year 8–10", range: "₹25–35 LPA", evidence: "Solution architect / PM, multi-module" },
+  { track: "sap", label: "Year 10+", range: "₹35–45 LPA", evidence: "Principal / practice lead" },
+
+  { track: "ba_pm", label: "Now", range: "₹4–6 LPA", evidence: "Business analyst" },
+  { track: "ba_pm", label: "Year 2–4", range: "₹10–18 LPA", evidence: "APM / PM associate, Series A/B" },
+  { track: "ba_pm", label: "Year 4–7", range: "₹18–30 LPA", evidence: "Product manager, 0→1 builds" },
+  { track: "ba_pm", label: "Year 7–10", range: "₹30–50 LPA", evidence: "Senior / Group PM" },
+  { track: "ba_pm", label: "Year 10+", range: "₹50–80 LPA", evidence: "Director / VP Product" },
+
+  { track: "ops", label: "Now", range: "₹3–5 LPA", evidence: "Operations executive" },
+  { track: "ops", label: "Year 2–4", range: "₹8–14 LPA", evidence: "Senior analyst / SCM" },
+  { track: "ops", label: "Year 4–7", range: "₹14–22 LPA", evidence: "Operations manager (city/region P&L)" },
+  { track: "ops", label: "Year 7–10", range: "₹22–40 LPA", evidence: "Supply chain director" },
+  { track: "ops", label: "Year 10+", range: "₹40–70 LPA", evidence: "VP Ops / COO track" },
 ];

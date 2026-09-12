@@ -148,17 +148,18 @@ export default function ExitLadderPage() {
     () => (careerDecisions ? detectEndlessPlanB(careerDecisions) : null),
     [careerDecisions]
   );
-  // The exit ladder is the Plan B (SDE) track only — there is no Plan A
-  // equivalent, since Plan A is a fallback career, not a roadmap. So the
-  // Month-24 go/no-go must be judged on Plan B applications only: a
-  // response to a Plan A (Operations) application isn't evidence the SDE
-  // transition is working. Falls back to the plan-agnostic totals if the
-  // planMetrics view isn't available yet (migration 0043 not applied), so
-  // this degrades instead of breaking.
-  const planBMetrics = planMetrics?.find((m) => m.career_plan === "plan_b");
-  const month24Applications = planMetrics ? planBMetrics?.total_applications ?? 0 : applicationMetrics?.total_applications ?? 0;
-  const month24Interviews = planMetrics ? planBMetrics?.reached_interview_count ?? 0 : applicationMetrics?.reached_interview_count ?? 0;
-  const month24Offers = planMetrics ? planBMetrics?.offer_count ?? 0 : applicationMetrics?.offer_count ?? 0;
+  // The exit ladder is the SDE (ZTE) track only — there is no meaningful
+  // equivalent for the alternative forks, since those are separate
+  // careers, not this roadmap. So the Month-24 go/no-go must be judged on
+  // Plan A (SDE) applications only: a response to a Plan B (alternative
+  // fork) application isn't evidence the SDE transition is working. Falls
+  // back to the plan-agnostic totals if the planMetrics view isn't
+  // available yet (migration 0043 not applied), so this degrades instead
+  // of breaking.
+  const primaryPlanMetrics = planMetrics?.find((m) => m.career_plan === "plan_a");
+  const month24Applications = planMetrics ? primaryPlanMetrics?.total_applications ?? 0 : applicationMetrics?.total_applications ?? 0;
+  const month24Interviews = planMetrics ? primaryPlanMetrics?.reached_interview_count ?? 0 : applicationMetrics?.reached_interview_count ?? 0;
+  const month24Offers = planMetrics ? primaryPlanMetrics?.offer_count ?? 0 : applicationMetrics?.offer_count ?? 0;
   const month24 = useMemo(() => {
     if (!currentRung) return null;
     const exitReadinessPct = currentRung.cumulativeTotal > 0

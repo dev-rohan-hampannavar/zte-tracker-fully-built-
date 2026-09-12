@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { NAV, SIDEBAR_SECTIONS } from "./sidebar";
+import { CareerTrackBadge } from "@/components/career-plan/career-track-badge";
 
 // Mobile has no top bar, so unlike the desktop sidebar it shows every item
 // — nothing is hidden as "already pinned elsewhere." Pinned items just get
@@ -108,6 +109,7 @@ export function MobileNav() {
                         >
                           <Icon className="h-4 w-4" />
                           {label}
+                          {href === "/career-plan" && <CareerTrackBadge className="ml-auto" />}
                         </Link>
                       );
                     })}

@@ -58,6 +58,8 @@ import {
   Columns3,
   Calendar,
   Workflow,
+  Rocket,
+  ArrowRight,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { TopicWithProgress, StageWithTopics, PhaseWithTopics, Difficulty, Technology } from "@/types/database";
@@ -1086,6 +1088,9 @@ export default function RoadmapPage() {
         <div>
           <h1 className="text-page-title font-semibold tracking-tight">Roadmap</h1>
           <p className="text-sm text-muted mt-1">21 phases · stages · topics · exercises · projects · capstones</p>
+          <Link href="/career-plan" className="text-xs text-accent hover:underline inline-flex items-center gap-1 mt-1.5">
+            <Rocket className="h-3 w-3" /> See where this roadmap leads in Career Plan <ArrowRight className="h-3 w-3" />
+          </Link>
         </div>
         <Tabs value={activeTab} onValueChange={setTab}>
           <TabsList>

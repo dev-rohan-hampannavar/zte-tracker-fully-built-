@@ -44,6 +44,7 @@ import { NotebookText } from "lucide-react";
 import { CalendarRange } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { CareerTrackBadge } from "@/components/career-plan/career-track-badge";
 
 // Flat item registry — same shape as before so app-topbar.tsx and
 // mobile-nav.tsx (which both import NAV directly) keep working unchanged.
@@ -269,6 +270,9 @@ export function Sidebar({ className }: { className?: string }) {
                             >
                               {label}
                             </span>
+                            {href === "/career-plan" && expanded && (
+                              <CareerTrackBadge className="ml-auto" />
+                            )}
                           </Link>
                         );
                       })}

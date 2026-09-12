@@ -36,6 +36,8 @@ import {
   computeWeeklyVariance,
 } from "@/lib/plan-position";
 import { computeCareerPlanSnapshot, formatPlanDate } from "@/lib/career-plan";
+import type { CareerPlanTrack, PlanTone } from "@/data/full-plan";
+import { CareerPathExplorer } from "@/components/career-plan/career-path-explorer";
 import {
   DISCIPLINE_RULES,
   FAILURE_MODES,
@@ -68,8 +70,17 @@ function todayISO() {
   return localDateISO(new Date());
 }
 
-function sectionTone(tone: "blue" | "green") {
-  return tone === "green" ? "border-success/30 bg-success/5" : "border-info/30 bg-info/5";
+function sectionTone(tone: PlanTone) {
+  switch (tone) {
+    case "green":
+      return "border-success/30 bg-success/5";
+    case "purple":
+      return "border-accent/30 bg-accent/5";
+    case "amber":
+      return "border-warning/30 bg-warning/5";
+    default:
+      return "border-info/30 bg-info/5";
+  }
 }
 
 export default function CareerPlanPage() {
@@ -92,7 +103,7 @@ export default function CareerPlanPage() {
   const weekStart = useMemo(() => mondayOfToday(), []);
   const { data: weekTaskRows } = useDailyPlanTaskStateRange(user?.id, weekStart, todayISO());
 
-  const [track, setTrack] = useState<"plan_a" | "plan_b">("plan_b");
+  const [track, setTrack] = useState<CareerPlanTrack>("plan_a");
   const [startDate, setStartDate] = useState("");
   const [deadlineDate, setDeadlineDate] = useState("");
   const [weeklyHours, setWeeklyHours] = useState("40");
@@ -292,10 +303,10 @@ export default function CareerPlanPage() {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
         {PLAN_PATHS.map((path) => (
-          <Card key={path.id} className={cn("h-full", sectionTone(path.tone), path.id === track && "ring-1 ring-accent/60")}>
-            <CardHeader><div className="flex items-center justify-between gap-3"><CardTitle size="lg">{path.title}</CardTitle>{path.id === track && <Badge variant="accent">Selected</Badge>}</div><CardDescription>{path.summary}</CardDescription></CardHeader>
+          <Card key={path.id} interactive className={cn("h-full", sectionTone(path.tone), path.id === track && "ring-1 ring-accent/60")} onClick={() => setTrack(path.id)}>
+            <CardHeader><div className="flex items-center justify-between gap-3"><CardTitle size="lg">{path.title}</CardTitle>{path.id === track && <Badge variant="accent">Selected</Badge>}</div><CardDescription>{path.summary}</CardDescription><Badge variant="outline" className="w-fit mt-1">10-yr ceiling: {path.ceiling}</Badge></CardHeader>
             <CardContent><ul className="flex flex-col gap-2 text-sm text-muted">{path.actions.map((action) => <li key={action} className="flex gap-2"><CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />{action}</li>)}</ul></CardContent>
           </Card>
         ))}
@@ -306,7 +317,7 @@ export default function CareerPlanPage() {
       <Card id="plan-settings">
         <CardHeader><CardTitle>Make the plan yours</CardTitle><CardDescription>These preferences personalize the playbook. Progress, readiness, and evidence remain live from the existing tracker.</CardDescription></CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4 items-end">
-          <div className="space-y-2"><Label>Active fork</Label><Select value={track} onValueChange={(value) => setTrack(value as "plan_a" | "plan_b")}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="plan_b">Plan B · SDE sprint</SelectItem><SelectItem value="plan_a">Plan A · Operations climb</SelectItem></SelectContent></Select></div>
+          <div className="space-y-2"><Label>Active fork</Label><Select value={track} onValueChange={(value) => setTrack(value as CareerPlanTrack)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{PLAN_PATHS.map((path) => <SelectItem key={path.id} value={path.id}>{path.eyebrow.replace(" · ", " · ").concat(" — ").concat(path.title)}</SelectItem>)}</SelectContent></Select></div>
           <div className="space-y-2"><Label htmlFor="plan-start">Clock starts</Label><Input id="plan-start" type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} /></div>
           <div className="space-y-2"><Label htmlFor="plan-deadline">Hard deadline</Label><Input id="plan-deadline" type="date" value={deadlineDate} onChange={(event) => setDeadlineDate(event.target.value)} /></div>
           <div className="space-y-2"><Label htmlFor="plan-hours">Weekly target</Label><Input id="plan-hours" type="number" min={1} max={168} step={1} value={weeklyHours} onChange={(event) => setWeeklyHours(event.target.value)} /></div>
@@ -337,7 +348,12 @@ export default function CareerPlanPage() {
         <Card><CardHeader><CardTitle className="flex items-center gap-2"><Target className="h-5 w-5 text-accent" /> Month-24 checklist</CardTitle><CardDescription>Answer these in writing on the deadline—whatever the decision.</CardDescription></CardHeader><CardContent className="flex flex-col gap-3">{MONTH_24_CHECKLIST.map((item) => <div key={item} className="flex gap-2 text-sm text-muted"><CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />{item}</div>)}</CardContent></Card>
       </section>
 
-      <Card><CardHeader><CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-accent" /> Salary planning reference</CardTitle><CardDescription>Indicative ranges from the supplied playbook, not promises or compensation advice. Validate current market data before making a decision.</CardDescription></CardHeader><CardContent><div className="grid grid-cols-1 md:grid-cols-2 gap-6">{(["plan_a", "plan_b"] as const).map((pathId) => <div key={pathId}><p className="text-sm font-semibold mb-2">{pathId === "plan_a" ? "Plan A · Operations" : "Plan B · Engineering exits"}</p><div className="flex flex-col divide-y divide-border/50">{SALARY_REFERENCE.filter((row) => row.track === pathId).map((row) => <div key={row.label} className="flex items-center justify-between gap-4 py-2"><div><p className="text-xs font-medium">{row.label}</p><p className="text-[11px] text-muted">{row.evidence}</p></div><span className="text-sm font-mono-tabular text-accent whitespace-nowrap">{row.range}</span></div>)}</div></div>)}</div><p className="text-[11px] text-muted mt-5">Source context: the supplied Zero to Elite playbook and its internal exit ladder. Ranges are planning inputs; offers depend on role, company, location, interview performance, and market conditions.</p></CardContent></Card>
+      <section>
+        <div className="flex items-end justify-between gap-3 mb-3"><div><p className="text-xs uppercase tracking-[0.16em] text-muted">Career Strategy</p><h2 className="text-section-title font-semibold mt-1">Compare every fork</h2></div><Badge variant="outline">{PLAN_PATHS.length} paths</Badge></div>
+        <CareerPathExplorer userId={user?.id} activeTrack={track} onSelectTrack={(id) => setTrack(id)} />
+      </section>
+
+      <Card><CardHeader><CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-accent" /> Salary planning reference</CardTitle><CardDescription>Indicative ranges from the supplied playbook, not promises or compensation advice. Validate current market data before making a decision.</CardDescription></CardHeader><CardContent><div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">{PLAN_PATHS.map((path) => <div key={path.id}><p className="text-sm font-semibold mb-2">{path.title}</p><div className="flex flex-col divide-y divide-border/50">{SALARY_REFERENCE.filter((row) => row.track === path.id).map((row) => <div key={row.label} className="flex items-center justify-between gap-4 py-2"><div><p className="text-xs font-medium">{row.label}</p><p className="text-[11px] text-muted">{row.evidence}</p></div><span className="text-sm font-mono-tabular text-accent whitespace-nowrap">{row.range}</span></div>)}</div></div>)}</div><p className="text-[11px] text-muted mt-5">Source context: the supplied Zero to Elite playbook and its internal exit ladder. Ranges are planning inputs; offers depend on role, company, location, interview performance, and market conditions.</p></CardContent></Card>
 
       <Card><CardHeader><CardTitle className="flex items-center gap-2"><Target className="h-5 w-5 text-accent" /> Role readiness</CardTitle><CardDescription>Same explainable readiness breakdown as Job Readiness, surfaced here so the career plan has a market-facing signal.</CardDescription></CardHeader><CardContent>{roleReadiness ? <div className="flex flex-col gap-3"><div className="flex flex-wrap items-center gap-2"><Badge variant={roleReadiness.overallPct >= 75 ? "success" : roleReadiness.overallPct >= 45 ? "warning" : "outline"}>{roleReadiness.overallPct}% ready</Badge><span className="text-sm text-muted">{roleReadiness.roleName}</span></div><div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">{roleReadiness.pillars.map((pillar) => <div key={pillar.key} className="rounded-lg border border-border/50 p-2"><p className="text-[10px] text-muted truncate">{pillar.label}</p><p className="text-sm font-semibold mt-1">{pillar.score === null ? "—" : `${pillar.score}%`}</p></div>)}</div><Link href="/job-readiness" className="text-sm text-accent hover:underline">Open full role breakdown <ArrowRight className="inline h-3.5 w-3.5" /></Link></div> : <p className="text-sm text-muted">Choose a target role in Job Readiness to see the explainable score here.</p>}</CardContent></Card>
 

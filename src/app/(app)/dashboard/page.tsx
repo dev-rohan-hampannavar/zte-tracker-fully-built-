@@ -20,6 +20,7 @@ import { useNotifications } from "@/lib/hooks/use-notifications";
 import { useActivityLog, ACTIVITY_LABELS } from "@/lib/hooks/use-activity-log";
 import { DailyMission } from "@/components/dashboard/daily-mission";
 import { FocusTimer } from "@/components/dashboard/focus-timer";
+import { CareerPlanWidget } from "@/components/dashboard/career-plan-widget";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -622,6 +623,10 @@ export default function DashboardPage() {
               </Card>
             </StaggerItem>
           )}
+
+          <StaggerItem>
+            <CareerPlanWidget />
+          </StaggerItem>
 
           {(overdueRevisions.length > 0 || currentProject || nextDsaProblem) && (
             <StaggerItem>

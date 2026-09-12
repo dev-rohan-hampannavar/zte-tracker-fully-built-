@@ -204,16 +204,16 @@ export default function CareerTrackerPage() {
       {planMetrics && planMetrics.length > 0 && (
         <StaggerItem>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {(["plan_b", "plan_a"] as const).map((plan) => {
+            {(["plan_a", "plan_b"] as const).map((plan) => {
               const m = planMetrics.find((p) => p.career_plan === plan);
-              const label = plan === "plan_b" ? "Plan B — SDE Sprint" : "Plan A — Operations Fallback";
+              const label = plan === "plan_a" ? "Plan A — SDE Sprint" : "Plan B — Alternative fork";
               return (
-                <Card key={plan} className={cn(plan === "plan_a" && "border-info/30")}>
+                <Card key={plan} className={cn(plan === "plan_b" && "border-info/30")}>
                   <CardContent noHeader className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
                       <p className="text-xs font-mono uppercase tracking-wide text-muted">{label}</p>
-                      {plan === "plan_b" && <Badge variant="accent">Active</Badge>}
-                      {plan === "plan_a" && <Badge variant="outline">Fallback</Badge>}
+                      {plan === "plan_a" && <Badge variant="accent">Active</Badge>}
+                      {plan === "plan_b" && <Badge variant="outline">Fallback</Badge>}
                     </div>
                     {m ? (
                       <div className="grid grid-cols-3 gap-2 text-center">
@@ -359,15 +359,15 @@ export default function CareerTrackerPage() {
               <div>
                 <Label>Career plan</Label>
                 <Select
-                  value={editing.career_plan ?? "plan_b"}
+                  value={editing.career_plan ?? "plan_a"}
                   onValueChange={(v) => setEditing({ ...editing, career_plan: v as "plan_a" | "plan_b" })}
                 >
                   <SelectTrigger className="mt-1">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="plan_b">Plan B — SDE Sprint</SelectItem>
-                    <SelectItem value="plan_a">Plan A — Operations Fallback</SelectItem>
+                    <SelectItem value="plan_a">Plan A — SDE Sprint</SelectItem>
+                    <SelectItem value="plan_b">Plan B — Alternative fork</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

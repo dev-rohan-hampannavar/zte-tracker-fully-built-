@@ -17,7 +17,7 @@ import { computeAchievements } from "@/lib/achievements";
 import { EmptyState } from "@/components/ui/empty-state";
 import { DownloadProfilePdfButton } from "@/components/profile/download-profile-pdf-button";
 import { getGithubActivity } from "@/lib/github-activity";
-import { PLAN_PATHS } from "@/data/full-plan";
+import { PLAN_PATHS, type CareerPlanTrack } from "@/data/full-plan";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion/primitives";
 
 export const revalidate = 300; // 5 min cache — public pages don't need to be live-live
@@ -39,7 +39,7 @@ async function getProfileData(slug: string) {
       display_name: string | null;
       public_profile_bio: string | null;
       github_username: string | null;
-      career_plan_track: "plan_a" | "plan_b" | null;
+      career_plan_track: CareerPlanTrack | null;
     } | null;
   };
 

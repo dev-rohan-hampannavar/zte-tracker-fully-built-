@@ -936,7 +936,7 @@ export interface UserSettings {
   dashboard_tour_seen: boolean;
   timezone: string;
   career_plan_version: string;
-  career_plan_track: "plan_a" | "plan_b";
+  career_plan_track: "plan_a" | "sap" | "ba_pm" | "ops";
   career_plan_start_date: string | null;
   career_plan_deadline_date: string | null;
   career_plan_weekly_hours: number;

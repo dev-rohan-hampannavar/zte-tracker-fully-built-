@@ -27,9 +27,10 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { toast } from "sonner";
-import { Plus, Trash2, Loader2, Target, ChevronDown, ChevronRight, Flag, CircleCheckBig, CalendarClock } from "lucide-react";
+import { Plus, Trash2, Loader2, Target, ChevronDown, ChevronRight, Flag, CircleCheckBig, CalendarClock, Rocket, ArrowRight } from "lucide-react";
 import type { Goal, GoalPriority, GoalWithMilestones, Milestone } from "@/types/database";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { StaggerContainer, StaggerItem, FadeUp } from "@/components/motion/primitives";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
 import { motion, AnimatePresence } from "framer-motion";
@@ -182,6 +183,9 @@ export default function GoalsPage() {
             <p className="text-sm text-muted mt-1">
               Goal → milestones → daily execution. Progress here is always computed live from milestone completion.
             </p>
+            <Link href="/career-plan" className="text-xs text-accent hover:underline inline-flex items-center gap-1 mt-1.5">
+              <Rocket className="h-3 w-3" /> Track a career path from Career Plan <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
           <Button onClick={openNew} size="lg">
             <Plus className="h-4 w-4" /> New goal
@@ -426,6 +430,11 @@ function GoalCard({
                 {goal.title}
               </button>
               <Badge variant={PRIORITY_VARIANT[goal.priority]}>{goal.priority}</Badge>
+              {goal.category?.startsWith("career_track:") && (
+                <Badge variant="accent" className="gap-1">
+                  <Rocket className="h-3 w-3" /> Career Plan
+                </Badge>
+              )}
               {goal.status !== "active" && <Badge variant="outline">{goal.status}</Badge>}
               {goal.target_date && (
                 <span className="text-xs text-muted font-mono-tabular">

@@ -182,9 +182,9 @@ export function useApplicationMetricsByPlan(userId: string | undefined) {
   });
 }
 
-/** Updates which career-plan fork (Plan A / Operations fallback, or Plan
- * B / SDE) a single application belongs to. User-set only — never
- * inferred from role/company text. */
+/** Updates which career-plan fork (Plan A / SDE, or Plan B / an
+ * alternative fork — SAP, BA->PM, or Ops) a single application belongs
+ * to. User-set only — never inferred from role/company text. */
 export async function updateApplicationPlan(applicationId: string, careerPlan: "plan_a" | "plan_b") {
   const { error } = await supabase
     .from("career_tracker")
