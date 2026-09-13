@@ -10,6 +10,7 @@ import { useSkillEvidence } from "@/lib/hooks/use-skills";
 import { useInterviewWeaknesses } from "@/lib/hooks/use-interview-prep";
 import { useCareerTracker } from "@/lib/hooks/use-career";
 import { isOverdue } from "@/lib/revision-schedule";
+import { todayISO } from "@/lib/utils";
 import { generateDailyPlan, type GeneratedPlan } from "@/lib/daily-planner";
 
 // Isolates the one impure call (Date.now()) behind a plain function so the
@@ -89,6 +90,14 @@ export function useDailyPlan(availableMinutes: number) {
 
   const historicalCompletionRate = useMemo(() => computeCompletionRate(logs), [logs]);
 
+  // Item 23 — today's energy check-in, sourced from the same daily_logs
+  // row everything else here already reads (todayISO match), not a
+  // separate fetch.
+  const todaysEnergyLevel = useMemo(() => {
+    const todayStr = todayISO();
+    return logs?.find((l) => l.date === todayStr)?.energy_level ?? null;
+  }, [logs]);
+
   const plan: GeneratedPlan | null = useMemo(() => {
     if (phasesLoading) return null;
     return generateDailyPlan({
@@ -104,6 +113,7 @@ export function useDailyPlan(availableMinutes: number) {
       nextTopicTitle: nextTopic ? nextTopic.title : null,
       nextTopicId: nextTopic ? nextTopic.id : null,
       historicalCompletionRate,
+      todaysEnergyLevel,
     });
   }, [
     phasesLoading,
@@ -117,6 +127,7 @@ export function useDailyPlan(availableMinutes: number) {
     currentProject,
     nextTopic,
     historicalCompletionRate,
+    todaysEnergyLevel,
   ]);
 
   return { plan, isLoading: phasesLoading, historicalCompletionRate };

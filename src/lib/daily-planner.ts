@@ -58,6 +58,11 @@ interface GeneratePlanInput {
   nextTopicTitle: string | null;
   nextTopicId: string | null;
   historicalCompletionRate: number | null; // 0-1, or null if not enough history
+  // Item 23 — today's self-reported energy (1-5), or null if not checked
+  // in. Only used to re-order within priority tiers (see below); never
+  // changes which candidates get generated or removes anything from the
+  // plan a full-energy day would have gotten.
+  todaysEnergyLevel: number | null;
 }
 
 export interface GeneratedPlan {
@@ -69,6 +74,22 @@ export interface GeneratedPlan {
   // Viable Day fallback (single cheapest candidate) was used instead —
   // the only case where totalPlannedMinutes can exceed availableMinutes.
   minimumViableDay: boolean;
+  // Item 21 — context-switch signal. Honest and minimal: just how many
+  // distinct activity kinds the plan asks for and whether it alternates
+  // between "deep" kinds (project/learning, which benefit from a
+  // sustained block) and "shallow" ones (revision/dsa/interview_prep,
+  // which are naturally short) back-to-back. Deliberately NOT a modeled
+  // "cost in minutes" — there's no real data in this app to calibrate
+  // that number against, so it stays qualitative rather than fabricating
+  // false precision.
+  distinctActivityKinds: number;
+  hasDeepShallowAlternation: boolean;
+  // Item 23 — true if today's plan order was adjusted for low reported
+  // energy (candidates re-sorted lighter-first within their existing
+  // priority tiers). Surfaced so the UI can be honest about why the
+  // order looks different from a normal day, rather than silently
+  // reshuffling.
+  lowEnergyReordered: boolean;
 }
 
 /**
@@ -220,6 +241,34 @@ export function generateDailyPlan(input: GeneratePlanInput): GeneratedPlan {
     });
   }
 
+  // Item 23 — on a low-energy day (self-reported 1-2/5), re-sort within
+  // each priority tier (same `kind`) by estimatedMinutes ascending, so
+  // lighter tasks in a tier surface before heavier ones. This is a stable
+  // sort scoped to each kind's own slice of the list — it never moves a
+  // task across tiers (a goal_deadline task never drops below a learning
+  // task just because it's long), it only changes ordering *within* a
+  // tier, and only which candidates get pushed earlier is affected, not
+  // which ones exist. On a normal/unset-energy day this is a no-op.
+  const lowEnergyReordered = input.todaysEnergyLevel !== null && input.todaysEnergyLevel <= 2;
+  if (lowEnergyReordered) {
+    const byKind = new Map<PlanTaskKind, PlanTask[]>();
+    for (const c of candidates) {
+      const bucket = byKind.get(c.kind) ?? [];
+      bucket.push(c);
+      byKind.set(c.kind, bucket);
+    }
+    for (const bucket of byKind.values()) {
+      bucket.sort((a, b) => a.estimatedMinutes - b.estimatedMinutes);
+    }
+    const nextIndexForKind = new Map<PlanTaskKind, number>();
+    for (let i = 0; i < candidates.length; i++) {
+      const kind = candidates[i].kind;
+      const idx = nextIndexForKind.get(kind) ?? 0;
+      candidates[i] = byKind.get(kind)![idx];
+      nextIndexForKind.set(kind, idx + 1);
+    }
+  }
+
   // Fill the budget in priority order (candidates are already pushed in
   // priority order above, so a stable greedy fill respects rule #7's
   // ordering without needing a separate sort/weight step).
@@ -269,5 +318,28 @@ export function generateDailyPlan(input: GeneratePlanInput): GeneratedPlan {
       ? "Your planned time was reduced based on how much you've actually completed on past plans — better a shorter list you finish than a long one you don't."
       : null,
     minimumViableDay,
+    lowEnergyReordered,
+    ...computeContextSwitchSignal(tasks),
   };
+}
+
+const DEEP_ACTIVITY_KINDS: PlanTaskKind[] = ["project", "learning"];
+const SHALLOW_ACTIVITY_KINDS: PlanTaskKind[] = ["revision", "dsa" as PlanTaskKind, "interview_prep"];
+
+function computeContextSwitchSignal(tasks: PlanTask[]): { distinctActivityKinds: number; hasDeepShallowAlternation: boolean } {
+  const distinctActivityKinds = new Set(tasks.map((t) => t.kind)).size;
+  let hasDeepShallowAlternation = false;
+  for (let i = 0; i < tasks.length - 1; i++) {
+    const a = tasks[i].kind;
+    const b = tasks[i + 1].kind;
+    const aDeep = DEEP_ACTIVITY_KINDS.includes(a);
+    const bDeep = DEEP_ACTIVITY_KINDS.includes(b);
+    const aShallow = SHALLOW_ACTIVITY_KINDS.includes(a);
+    const bShallow = SHALLOW_ACTIVITY_KINDS.includes(b);
+    if ((aDeep && bShallow) || (aShallow && bDeep)) {
+      hasDeepShallowAlternation = true;
+      break;
+    }
+  }
+  return { distinctActivityKinds, hasDeepShallowAlternation };
 }

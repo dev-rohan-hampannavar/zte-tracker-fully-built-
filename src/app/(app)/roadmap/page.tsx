@@ -541,6 +541,7 @@ function RoadmapListView() {
   const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"list" | "cards" | "kanban" | "calendar" | "path" | "timeline">("list");
+  const [hideCompletedPhases, setHideCompletedPhases] = useState(false);
 
   const hasActiveFilters =
     search.trim() !== "" || bandFilter !== "all" || difficultyFilter !== "all" || domainFilter !== "all";
@@ -641,6 +642,30 @@ function RoadmapListView() {
       })[0];
     return next?.phase.id ?? null;
   }, [phases]);
+
+  // Item 9 — auto-collapse locked/completed roadmap sections in the List
+  // (accordion) view. computeStageTopicLocks/isPhaseLocked already knows
+  // what's locked; this just seeds which AccordionItems start open so a
+  // 21-phase list doesn't dump everything expanded. Controlled (not just
+  // defaultValue) so it also re-collapses a phase you just finished,
+  // rather than only affecting first paint. Manual toggles still work —
+  // this only sets the *initial* open set per phases-list identity, not
+  // a persistent override every render.
+  const [openPhaseIds, setOpenPhaseIds] = useState<string[] | null>(null);
+  const autoOpenPhaseIds = useMemo(() => {
+    return filteredPhases
+      .map((phase) => {
+        const phaseIndex = phases.findIndex((p) => p.id === phase.id);
+        const total = phase.topics.length;
+        const completed = phase.topics.filter((t) => t.progress?.completed).length;
+        const isCompleted = total > 0 && completed === total;
+        const isLocked = isPhaseLocked(phaseIndex).locked && !unlockedOverride.has(phase.id);
+        return { id: phase.id, keepOpen: !isCompleted && !isLocked };
+      })
+      .filter((p) => p.keepOpen)
+      .map((p) => p.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredPhases, phases, unlockedOverride]);
 
   async function handleToggle(topicId: string, completed: boolean) {
     if (!user) return;
@@ -743,6 +768,16 @@ function RoadmapListView() {
             <X className="h-3.5 w-3.5 mr-1" /> Clear
           </Button>
         )}
+        {viewMode === "list" && (
+          <Button
+            variant={hideCompletedPhases ? "default" : "outline"}
+            size="sm"
+            onClick={() => setHideCompletedPhases((v) => !v)}
+            className="shrink-0"
+          >
+            {hideCompletedPhases ? "Showing active only" : "Hide completed"}
+          </Button>
+        )}
         <div className="flex items-center gap-0.5 rounded-full border border-border bg-surface-2 p-1 shrink-0 flex-wrap">
           <button
             onClick={() => setViewMode("list")}
@@ -837,8 +872,19 @@ function RoadmapListView() {
       ) : viewMode === "timeline" ? (
         <TimelineView monthByMonth={monthByMonth ?? []} phases={phases} actualHours={actualHours} />
       ) : (
-      <Accordion type="multiple" className="flex flex-col gap-3">
-        {filteredPhases.map((phase) => {
+      <Accordion
+        type="multiple"
+        className="flex flex-col gap-3"
+        value={openPhaseIds ?? autoOpenPhaseIds}
+        onValueChange={setOpenPhaseIds}
+      >
+        {filteredPhases
+          .filter((phase) => {
+            if (!hideCompletedPhases) return true;
+            const total = phase.topics.length;
+            return total === 0 || phase.topics.filter((t) => t.progress?.completed).length < total;
+          })
+          .map((phase) => {
           const phaseIndex = phases.findIndex((p) => p.id === phase.id);
           const completedCount = phase.topics.filter((t) => t.progress?.completed).length;
           const totalCount = phase.topics.length;

@@ -414,6 +414,7 @@ export interface DailyLog {
   tomorrow_goal: string | null;
   updated_at: string;
   day_job_hours: number | null;
+  energy_level: number | null; // 1 (lowest) to 5 (highest); item 23
 }
 
 export type StudySessionActivity = "learn" | "practice" | "project" | "revision" | "dsa" | "other";
@@ -818,6 +819,24 @@ export interface ActivityLogEntry {
   created_at: string;
 }
 
+// ---------- Quick Capture (items 10, 13, 18) ----------
+
+export type QuickCaptureKind = "idea" | "blocker";
+export type QuickCaptureSource = "text" | "voice";
+
+export interface QuickCapture {
+  id: string;
+  user_id: string;
+  body: string;
+  kind: QuickCaptureKind;
+  source: QuickCaptureSource;
+  context_entity_type: string | null;
+  context_entity_id: string | null;
+  context_label: string | null;
+  resolved_at: string | null;
+  created_at: string;
+}
+
 // ---------- Community Leaderboard (P2) ----------
 
 export interface LeaderboardEntry {
@@ -944,6 +963,13 @@ export interface UserSettings {
   // Per-kind notification opt-out (migration 0059) — distinct from
   // per-instance dismiss/snooze in notification_dismissals.
   muted_notification_kinds: string[];
+  // Today's single non-negotiable commitment (migration 0066) — distinct
+  // from pinned_items, which is a multi-item cross-session bookmark list.
+  daily_commitment_type: "topic" | "project" | "dsa_problem" | "custom" | null;
+  daily_commitment_id: string | null;
+  daily_commitment_label: string | null;
+  daily_commitment_date: string | null;
+  daily_commitment_done_at: string | null;
   updated_at: string;
 }
 

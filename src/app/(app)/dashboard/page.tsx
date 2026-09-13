@@ -4,9 +4,12 @@ import { useEffect, useMemo, useState, useCallback, memo } from "react";
 import { useUser } from "@/lib/hooks/use-user";
 import { usePhasesWithProgress, useExitLadder, useRoadmapMetadata, useMonthByMonth } from "@/lib/hooks/use-roadmap";
 import { computePlanPosition } from "@/lib/plan-position";
-import { useDailyLogs, computeStreak, weeklyHours, syncPublicStreakSummary } from "@/lib/hooks/use-daily-logs";
+import { useDailyLogs, computeStreak, weeklyHours, computeDailyPace, syncPublicStreakSummary } from "@/lib/hooks/use-daily-logs";
+import { useCareerPlanSettings } from "@/lib/hooks/use-career-plan";
+import { nextExitPoint } from "@/data/full-plan";
 import { useAllStudySessions } from "@/lib/hooks/use-study-sessions";
-import { detectFailureSignals, detectTutorialDependency, detectPerfectionism, detectIgnoringDayJob, detectSkillDecay, computeSmartAction, getStaleApplications } from "@/lib/plan-position";
+import { detectFailureSignals, detectTutorialDependency, detectPerfectionism, detectIgnoringDayJob, detectSkillDecay, computeSmartAction, getStaleApplications, computeMonthlyApplicationStats, computeLastShipped, computeSkipCostDays } from "@/lib/plan-position";
+import { recommendNextDsaProblems } from "@/lib/dsa-analytics";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
 import { isOverdue } from "@/lib/revision-schedule";
 import { useCareerTracker, useApplicationMetrics } from "@/lib/hooks/use-career";
@@ -28,7 +31,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { StudyHeatmap } from "@/components/dashboard/heatmap";
 import { DashboardTour } from "@/components/dashboard/dashboard-tour";
 import { RevisionDueWidget } from "@/components/dashboard/revision-due-widget";
-import { useUserSettings } from "@/lib/hooks/use-user-settings";
+import { useUserSettings, resolveDailyCommitment, setDailyCommitment, completeDailyCommitment, clearDailyCommitment } from "@/lib/hooks/use-user-settings";
+import { useContinuityNudge } from "@/lib/hooks/use-continuity";
+import { toast } from "sonner";
 import { pct, cn } from "@/lib/utils";
 import {
   Flame,
@@ -53,6 +58,12 @@ import {
   ArrowRight,
   Zap,
   Rocket,
+  Send,
+  Pin,
+  PinOff,
+  CheckSquare,
+  Square,
+  History as HistoryIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { StaggerContainer, StaggerItem, FadeUp } from "@/components/motion/primitives";
@@ -130,7 +141,7 @@ StatCard.displayName = "StatCard";
 // ---- Main Component ----
 export default function DashboardPage() {
   const { user } = useUser();
-  const { data: userSettings } = useUserSettings(user?.id);
+  const { data: userSettings, mutate: mutateSettings } = useUserSettings(user?.id);
   const { phases, isLoading, mutateProgress } = usePhasesWithProgress(user?.id);
   const { data: exitLadder } = useExitLadder();
   const { data: logs, mutate: mutateLogs } = useDailyLogs(user?.id);
@@ -174,6 +185,12 @@ export default function DashboardPage() {
   const { data: activityLog } = useActivityLog(user?.id, 8);
   const [missionDetailsOpen, setMissionDetailsOpen] = useState(false);
   const { plan: dailyPlan } = useDailyPlan(120);
+
+  // Item 11 — today's non-negotiable commitment.
+  const dailyCommitment = useMemo(() => resolveDailyCommitment(userSettings), [userSettings]);
+
+  // Item 20 — cross-device continuity nudge.
+  const continuityNudge = useContinuityNudge(user?.id);
 
   // ---- Memoised derived state ----
   const allTopics = useMemo(() => phases.flatMap((p) => p.topics), [phases]);
@@ -220,6 +237,16 @@ export default function DashboardPage() {
     if (hour < 18) return "Good afternoon";
     return "Good evening";
   }, []);
+
+  // Item 14 — morning/evening dashboard mode. Three bands (not just two)
+  // because "afternoon" genuinely has no distinct framing of its own in
+  // this app — it's just more of the working day — so it shares the
+  // morning "plan the day" framing rather than inventing a third distinct
+  // mode with nothing real to differentiate it.
+  const dayMode: "morning" | "evening" = useMemo(() => {
+    const hour = new Date().getHours();
+    return hour >= 18 || hour < 5 ? "evening" : "morning";
+  }, []);
   const firstName = useMemo(() => {
     if (userSettings?.display_name) return userSettings.display_name.split(" ")[0];
     const email = user?.email;
@@ -230,6 +257,28 @@ export default function DashboardPage() {
 
   const streak = useMemo(() => computeStreak(logs ?? []), [logs]);
   const weekHours = useMemo(() => weeklyHours(logs ?? []), [logs]);
+  const { data: careerPlanSettings } = useCareerPlanSettings(user?.id);
+  const dailyPace = useMemo(
+    () => computeDailyPace(logs ?? [], careerPlanSettings?.career_plan_weekly_hours ?? null),
+    [logs, careerPlanSettings?.career_plan_weekly_hours]
+  );
+
+  // Item 8 — streak "about to break" nudge. Both current streak and
+  // today's log status already exist (computeStreak / computeDailyPace
+  // above); this just combines them with time-of-day into a proactive
+  // warning, rather than the passive hover-only tooltip on the streak
+  // pill. Threshold of 2+ days: a 1-day "streak" isn't yet something
+  // losing feels bad about, so warning on day 1 would just be noise.
+  const streakAtRisk = useMemo(
+    () => dayMode === "evening" && streak.current >= 2 && dailyPace.todayHours === 0,
+    [dayMode, streak, dailyPace.todayHours]
+  );
+  const dayModeSubtext = useMemo(() => {
+    if (dayMode === "evening") {
+      return dailyPace.todayHours > 0 ? "Nice work today — here's how it went." : "Evening check-in — anything to log before the day ends?";
+    }
+    return "Ready to ship the roadmap";
+  }, [dayMode, dailyPace.todayHours]);
 
   // Sync streak
   useEffect(() => {
@@ -290,19 +339,35 @@ export default function DashboardPage() {
   );
 
   const staleApplications = useMemo(() => getStaleApplications(applications ?? []), [applications]);
+  const monthlyApplicationStats = useMemo(() => computeMonthlyApplicationStats(applications ?? []), [applications]);
+  const lastShipped = useMemo(() => computeLastShipped(projectProgress ?? []), [projectProgress]);
 
-  const smartAction = useMemo(
-    () =>
-      computeSmartAction({
-        failureSignals,
-        overdueTopicCount: overdueRevisions.length,
-        overdueDsaCount,
-        staleApplications,
-        currentPhaseTitle: nextTopic?.phase.title ?? null,
-        currentPhaseIncompleteTopicTitle: nextTopic?.topic.title ?? null,
-      }),
-    [failureSignals, overdueRevisions, overdueDsaCount, staleApplications, nextTopic]
-  );
+  // Item 19 — "cost of skipping today," same computation Exit Ladder
+  // already shows, surfaced here too so it's visible without a click.
+  // Uses the roadmap's overall remaining hours (planPosition), not a
+  // single exit rung, since Dashboard isn't scoped to one exit point.
+  const dailySkipCostDays = useMemo(() => {
+    if (!planPosition || !logs) return null;
+    const weeklyTarget = careerPlanSettings?.career_plan_weekly_hours ?? 0;
+    const remainingHours = Math.max(0, planPosition.totalPlanHours - planPosition.actualHours);
+    return computeSkipCostDays(remainingHours, logs, weeklyTarget / 7);
+  }, [planPosition, logs, careerPlanSettings?.career_plan_weekly_hours]);
+
+  const smartAction = useMemo(() => {
+    const nextCareerExit =
+      careerPlanSettings?.career_plan_track === "plan_a" && planPosition
+        ? nextExitPoint(planPosition.overallProgressPct)
+        : null;
+    return computeSmartAction({
+      failureSignals,
+      overdueTopicCount: overdueRevisions.length,
+      overdueDsaCount,
+      staleApplications,
+      currentPhaseTitle: nextTopic?.phase.title ?? null,
+      currentPhaseIncompleteTopicTitle: nextTopic?.topic.title ?? null,
+      nextExit: nextCareerExit,
+    });
+  }, [failureSignals, overdueRevisions, overdueDsaCount, staleApplications, nextTopic, careerPlanSettings?.career_plan_track, planPosition]);
 
   const recommendedAction = useMemo(() => {
     if (smartAction) return { text: smartAction.title, href: smartAction.href };
@@ -316,7 +381,11 @@ export default function DashboardPage() {
     return { text: "You're caught up — start a new project or review career readiness.", href: "/job-readiness" };
   }, [smartAction, atRiskGoal, staleSkillsCount, nextTopic]);
 
-  const nextDsaProblem = useMemo(() => (dsaProblems ?? []).find((p) => !p.completed) ?? null, [dsaProblems]);
+  // Item 5 — honest DSA recommendation: reuses the same
+  // overdue-revision > weakest-pattern > oldest-backlog logic already
+  // proven on /dsa, rather than the previous naive "first unsolved row
+  // in whatever order they were fetched."
+  const dsaRecommendation = useMemo(() => recommendNextDsaProblems(dsaProblems ?? [], 1)[0] ?? null, [dsaProblems]);
 
   const currentExit = useMemo(() => {
     if (!exitLadder) return null;
@@ -347,6 +416,41 @@ export default function DashboardPage() {
   const handleMutateProgress = useCallback(() => mutateProgress?.(), [mutateProgress]);
   const handleMutateLogs = useCallback(() => mutateLogs?.(), [mutateLogs]);
 
+  // Item 11 handlers — set today's commitment to the currently-recommended
+  // next topic, mark it done, or clear it. Kept intentionally simple (one
+  // "set to next topic" action) rather than a full item picker, since the
+  // recommended action / next topic is already the thing being surfaced
+  // everywhere else on this page.
+  const handleSetCommitmentToNextTopic = useCallback(async () => {
+    if (!user || !nextTopic) return;
+    try {
+      await setDailyCommitment(user.id, { type: "topic", id: nextTopic.topic.id, label: nextTopic.topic.title });
+      await mutateSettings();
+    } catch {
+      toast.error("Couldn't set today's commitment.");
+    }
+  }, [user, nextTopic, mutateSettings]);
+
+  const handleCompleteCommitment = useCallback(async () => {
+    if (!user) return;
+    try {
+      await completeDailyCommitment(user.id);
+      await mutateSettings();
+    } catch {
+      toast.error("Couldn't update commitment.");
+    }
+  }, [user, mutateSettings]);
+
+  const handleClearCommitment = useCallback(async () => {
+    if (!user) return;
+    try {
+      await clearDailyCommitment(user.id);
+      await mutateSettings();
+    } catch {
+      toast.error("Couldn't clear commitment.");
+    }
+  }, [user, mutateSettings]);
+
   // ---- Enhanced Skeleton ----
   if (isLoading) {
     return (
@@ -376,6 +480,22 @@ export default function DashboardPage() {
       {/* Tour */}
       {user && userSettings?.dashboard_tour_seen === false && <DashboardTour userId={user.id} />}
 
+      {/* --- Item 20: cross-device continuity nudge --- */}
+      {continuityNudge && (
+        <FadeUp>
+          <Link
+            href={continuityNudge.href}
+            className="flex items-center gap-3 rounded-xl border border-border/40 bg-surface/60 px-4 py-2.5 text-sm hover:border-accent/30 transition-colors group"
+          >
+            <HistoryIcon className="h-4 w-4 text-muted-foreground shrink-0" />
+            <span className="text-muted-foreground">
+              Pick up where you left off — <span className="text-foreground font-medium">{continuityNudge.label}</span>
+            </span>
+            <ArrowRight className="h-3.5 w-3.5 text-muted-foreground shrink-0 ml-auto group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+        </FadeUp>
+      )}
+
       {/* --- Greeting --- */}
       <FadeUp>
         <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-gradient-to-br from-surface via-surface/90 to-surface/80 p-6 shadow-xl backdrop-blur-sm ring-1 ring-white/10 dark:ring-white/5">
@@ -391,24 +511,38 @@ export default function DashboardPage() {
               </h1>
               <p className="text-muted-foreground mt-1 flex items-center gap-2">
                 <span className="inline-block h-2 w-2 rounded-full bg-green-500 animate-pulse shrink-0" />
-                Ready to ship the roadmap
+                {dayModeSubtext}
               </p>
             </div>
             <div className="flex items-center gap-4 flex-wrap">
               {streak.current > 0 && (
-                <div className="flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-full border border-accent/20 backdrop-blur-sm">
-                  <Flame className="h-5 w-5 text-accent" />
+                <div
+                  className={cn(
+                    "flex items-center gap-2 px-4 py-2 rounded-full border backdrop-blur-sm",
+                    dailyPace.todayHours > 0
+                      ? "bg-accent/10 border-accent/20"
+                      : "bg-warning/10 border-warning/30"
+                  )}
+                  title={
+                    dailyPace.todayHours > 0
+                      ? undefined
+                      : `Log something today to keep your ${streak.current}-day streak`
+                  }
+                >
+                  <Flame className={cn("h-5 w-5", dailyPace.todayHours > 0 ? "text-accent" : "text-warning")} />
                   <span className="font-bold text-xl min-w-[2.5rem] text-center">
                     <AnimatedCounter value={streak.current} />
                   </span>
-                  <span className="text-xs text-muted-foreground">day streak</span>
+                  <span className="text-xs text-muted-foreground">
+                    {dailyPace.todayHours > 0 ? "day streak" : "day streak — log today!"}
+                  </span>
                 </div>
               )}
               <Link
-                href="/daily-plan"
+                href={dayMode === "evening" ? "/dashboard#focus" : "/daily-plan"}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:scale-105 active:scale-95"
               >
-                <Zap className="h-4 w-4" /> Start session
+                <Zap className="h-4 w-4" /> {dayMode === "evening" ? "Log time" : "Start session"}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
@@ -421,6 +555,23 @@ export default function DashboardPage() {
           </div>
         </div>
       </FadeUp>
+
+      {/* --- Item 8: Streak about to break --- */}
+      {streakAtRisk && (
+        <FadeUp>
+          <div className="rounded-xl border border-danger/30 bg-danger/5 p-4 flex items-start gap-3">
+            <Flame className="h-4 w-4 text-danger shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-medium text-danger">
+                Your {streak.current}-day streak is about to break
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Nothing logged today yet — log any amount of study time before the day ends to keep it alive.
+              </p>
+            </div>
+          </div>
+        </FadeUp>
+      )}
 
       {/* --- Failure Mode Warnings --- */}
       {failureSignals.length > 0 && (
@@ -530,6 +681,22 @@ export default function DashboardPage() {
             />
           </StaggerItem>
         )}
+        {applicationMetrics && applicationMetrics.total_applications > 0 && (
+          <StaggerItem>
+            <StatCard
+              href="/career"
+              icon={<Send className="h-4 w-4" />}
+              iconBg="bg-accent/15 text-accent"
+              label="This Month"
+              value={`${monthlyApplicationStats.count}`}
+              sub={
+                monthlyApplicationStats.count === 0
+                  ? "No applications yet this month"
+                  : `${monthlyApplicationStats.responded} responded, ${monthlyApplicationStats.interviews} interview${monthlyApplicationStats.interviews !== 1 ? "s" : ""}`
+              }
+            />
+          </StaggerItem>
+        )}
         {leaderboardRank && (
           <StaggerItem>
             <StatCard
@@ -559,6 +726,60 @@ export default function DashboardPage() {
               onMutateProgress={handleMutateProgress}
               onMutateLogs={handleMutateLogs}
             />
+          </StaggerItem>
+
+          {/* --- Item 11: Today's non-negotiable --- */}
+          <StaggerItem>
+            <Card className={cn("shadow-sm bg-surface/80 backdrop-blur-sm", dailyCommitment && !dailyCommitment.doneAt && "border-accent/40")}>
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-sm">
+                  <Pin className="h-4 w-4" /> Today&apos;s non-negotiable
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {!dailyCommitment ? (
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-sm text-muted-foreground">
+                      No commitment set for today — pick the one thing that has to happen.
+                    </p>
+                    {nextTopic && (
+                      <button
+                        onClick={handleSetCommitmentToNextTopic}
+                        className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:underline shrink-0"
+                      >
+                        <Pin className="h-3 w-3" /> Commit to &quot;{nextTopic.topic.title}&quot;
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <button
+                        onClick={dailyCommitment.doneAt ? undefined : handleCompleteCommitment}
+                        disabled={!!dailyCommitment.doneAt}
+                        aria-label={dailyCommitment.doneAt ? "Done" : "Mark done"}
+                        className="shrink-0"
+                      >
+                        {dailyCommitment.doneAt ? (
+                          <CheckSquare className="h-4 w-4 text-success" />
+                        ) : (
+                          <Square className="h-4 w-4 text-muted-foreground hover:text-accent transition-colors" />
+                        )}
+                      </button>
+                      <span className={cn("text-sm truncate", dailyCommitment.doneAt && "line-through text-muted-foreground")}>
+                        {dailyCommitment.label}
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleClearCommitment}
+                      className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-danger shrink-0"
+                    >
+                      <PinOff className="h-3 w-3" /> Clear
+                    </button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </StaggerItem>
 
           <StaggerItem>
@@ -628,7 +849,7 @@ export default function DashboardPage() {
             <CareerPlanWidget />
           </StaggerItem>
 
-          {(overdueRevisions.length > 0 || currentProject || nextDsaProblem) && (
+          {(overdueRevisions.length > 0 || currentProject || dsaRecommendation) && (
             <StaggerItem>
               <Card className="shadow-sm bg-surface/80 backdrop-blur-sm">
                 <CardContent className="py-3">
@@ -672,8 +893,13 @@ export default function DashboardPage() {
                         >
                           <Code2 className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                           <span className="text-muted-foreground truncate">
-                            {nextDsaProblem ? nextDsaProblem.problem_name : "No DSA problems yet"}
+                            {dsaRecommendation ? dsaRecommendation.row.problem_name : "No DSA problems yet"}
                           </span>
+                          {dsaRecommendation && (
+                            <span className="text-[10px] text-muted-foreground/70 truncate shrink-0 ml-auto">
+                              {dsaRecommendation.reason}
+                            </span>
+                          )}
                         </Link>
                       </div>
                     </div>
@@ -704,6 +930,32 @@ export default function DashboardPage() {
                     <AnimatedCounter value={weekHours} decimals={1} duration="fast" />h this week
                   </p>
                 </div>
+                <div className="flex items-center justify-between text-xs text-muted-foreground -mt-1">
+                  <span>
+                    Today <span className="font-mono-tabular text-foreground">{dailyPace.todayHours.toFixed(1)}h</span>
+                    {" · "}Yesterday <span className="font-mono-tabular">{dailyPace.yesterdayHours.toFixed(1)}h</span>
+                  </span>
+                  {dailyPace.weeklyTargetHours != null && dailyPace.paceNeededPerDay != null && (
+                    <span>
+                      {dailyPace.paceNeededPerDay > 0 ? (
+                        <>Need <span className="font-mono-tabular text-foreground">{dailyPace.paceNeededPerDay.toFixed(1)}h/day</span> to hit {dailyPace.weeklyTargetHours}h</>
+                      ) : (
+                        <span className="text-success">Weekly target met</span>
+                      )}
+                    </span>
+                  )}
+                </div>
+                {dailySkipCostDays !== null && dailySkipCostDays > 0 && (
+                  <p className="text-xs text-muted-foreground -mt-1">
+                    Skipping today shifts your finish by roughly {dailySkipCostDays} day{dailySkipCostDays === 1 ? "" : "s"}.
+                  </p>
+                )}
+                {lastShipped && (
+                  <p className={cn("text-xs -mt-1", lastShipped.daysSince >= 7 ? "text-warning" : "text-muted-foreground")}>
+                    Last project {lastShipped.label} {lastShipped.daysSince === 0 ? "today" : `${lastShipped.daysSince}d ago`}
+                    {lastShipped.daysSince >= 7 && " — hours logged don't always mean something shipped"}
+                  </p>
+                )}
                 <StudyHeatmap logs={logs ?? []} />
               </CardContent>
             </Card>

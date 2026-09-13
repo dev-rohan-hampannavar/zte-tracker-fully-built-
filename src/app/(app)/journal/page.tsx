@@ -5,6 +5,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@/lib/hooks/use-user";
 import { useDailyLogs, saveJournalEntry } from "@/lib/hooks/use-daily-logs";
+import { useTodaysSessions } from "@/lib/hooks/use-study-sessions";
+import { FOCUS_ACTIVITY_LABELS } from "@/lib/hooks/use-focus-session";
 import { usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
 import { useDebouncedCallback } from "@/lib/hooks/use-debounced-callback";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,9 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { todayISO, formatHours, localDateISO } from "@/lib/utils";
+import { todayISO, formatHours, localDateISO, cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { BookMarked, Lightbulb, AlertTriangle, Sparkles, Target, Loader2, ChevronDown, CalendarRange } from "lucide-react";
+import { BookMarked, Lightbulb, AlertTriangle, Sparkles, Target, Loader2, ChevronDown, CalendarRange, Zap } from "lucide-react";
 import type { DailyLog } from "@/types/database";
 import { FadeUp } from "@/components/motion/primitives";
 
@@ -25,12 +27,23 @@ import { FadeUp } from "@/components/motion/primitives";
  * simpler and avoids the setState-in-effect pattern that a "hydrate once
  * data arrives" useEffect would need.
  */
-function TodayForm({ userId, todayLog, onSaved }: { userId: string; todayLog: DailyLog | undefined; onSaved: () => void }) {
+function TodayForm({
+  userId,
+  todayLog,
+  todaysSessions,
+  onSaved,
+}: {
+  userId: string;
+  todayLog: DailyLog | undefined;
+  todaysSessions: import("@/types/database").StudySession[];
+  onSaved: () => void;
+}) {
   const [learned, setLearned] = useState(todayLog?.learned ?? "");
   const [mistakes, setMistakes] = useState(todayLog?.mistakes ?? "");
   const [wins, setWins] = useState(todayLog?.wins ?? "");
   const [tomorrowGoal, setTomorrowGoal] = useState(todayLog?.tomorrow_goal ?? "");
   const [dayJobHours, setDayJobHours] = useState(todayLog?.day_job_hours?.toString() ?? "");
+  const [energyLevel, setEnergyLevel] = useState<number | null>(todayLog?.energy_level ?? null);
   const [saving, setSaving] = useState(false);
   // Separate from `saving`: the explicit Save button's spinner should only
   // reflect an explicit click, not a background autosave, so the two don't
@@ -44,7 +57,31 @@ function TodayForm({ userId, todayLog, onSaved }: { userId: string; todayLog: Da
   // no-op upsert).
   const hasEditedRef = useRef(false);
 
-  async function persist(values: { learned: string; mistakes: string; wins: string; tomorrowGoal: string; dayJobHours: string }) {
+  // Today's logged sessions, summarized into a short "what you actually
+  // did" line and used to shape the placeholders below — this never
+  // writes into learned/mistakes/wins/tomorrowGoal itself. Prefilling
+  // those with guessed text would put words in a reflective field the
+  // person hasn't actually said yet; a smarter placeholder still requires
+  // them to type the real reflection, it just removes the blank-page
+  // problem of not remembering what today even was.
+  const sessionsSummary = useMemo(() => {
+    if (!todaysSessions.length) return null;
+    const totalHours = todaysSessions.reduce((sum, s) => sum + Number(s.hours), 0);
+    const activityCounts = new Map<string, number>();
+    for (const s of todaysSessions) {
+      activityCounts.set(s.activity, (activityCounts.get(s.activity) ?? 0) + 1);
+    }
+    const activities = [...activityCounts.keys()]
+      .sort((a, b) => (activityCounts.get(b) ?? 0) - (activityCounts.get(a) ?? 0))
+      .map((a) => FOCUS_ACTIVITY_LABELS[a as keyof typeof FOCUS_ACTIVITY_LABELS] ?? a);
+    return { totalHours, activities };
+  }, [todaysSessions]);
+
+  const learnedPlaceholder = sessionsSummary
+    ? `You logged ${sessionsSummary.activities.join(" + ")} today (${sessionsSummary.totalHours.toFixed(1)}h) — what actually clicked?`
+    : "The concept, pattern, or technique that clicked today…";
+
+  async function persist(values: { learned: string; mistakes: string; wins: string; tomorrowGoal: string; dayJobHours: string; energyLevel: number | null }) {
     const parsedDayJobHours = values.dayJobHours.trim() === "" ? null : Number(values.dayJobHours);
     await saveJournalEntry(userId, {
       learned: values.learned.trim(),
@@ -52,13 +89,14 @@ function TodayForm({ userId, todayLog, onSaved }: { userId: string; todayLog: Da
       wins: values.wins.trim(),
       tomorrow_goal: values.tomorrowGoal.trim(),
       day_job_hours: parsedDayJobHours !== null && Number.isFinite(parsedDayJobHours) ? parsedDayJobHours : null,
+      energy_level: values.energyLevel,
     });
   }
 
   async function handleSave() {
     setSaving(true);
     try {
-      await persist({ learned, mistakes, wins, tomorrowGoal, dayJobHours });
+      await persist({ learned, mistakes, wins, tomorrowGoal, dayJobHours, energyLevel });
       onSaved();
       toast.success("Journal saved");
     } catch {
@@ -69,7 +107,7 @@ function TodayForm({ userId, todayLog, onSaved }: { userId: string; todayLog: Da
   }
 
   const debouncedAutosave = useDebouncedCallback(
-    async (values: { learned: string; mistakes: string; wins: string; tomorrowGoal: string; dayJobHours: string }) => {
+    async (values: { learned: string; mistakes: string; wins: string; tomorrowGoal: string; dayJobHours: string; energyLevel: number | null }) => {
       setAutosaveStatus("saving");
       try {
         await persist(values);
@@ -98,9 +136,9 @@ function TodayForm({ userId, todayLog, onSaved }: { userId: string; todayLog: Da
   useEffect(() => {
     if (!hasEditedRef.current) return;
     setAutosaveStatus("saving");
-    debouncedAutosave({ learned, mistakes, wins, tomorrowGoal, dayJobHours });
+    debouncedAutosave({ learned, mistakes, wins, tomorrowGoal, dayJobHours, energyLevel });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [learned, mistakes, wins, tomorrowGoal, dayJobHours]);
+  }, [learned, mistakes, wins, tomorrowGoal, dayJobHours, energyLevel]);
 
   function markEdited() {
     hasEditedRef.current = true;
@@ -115,6 +153,43 @@ function TodayForm({ userId, todayLog, onSaved }: { userId: string; todayLog: Da
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
+        {sessionsSummary && (
+          <p className="text-xs text-muted -mt-1">
+            Logged today: {sessionsSummary.activities.join(", ")} · {sessionsSummary.totalHours.toFixed(1)}h total
+          </p>
+        )}
+        <div>
+          <Label className="mb-1.5 flex items-center gap-1.5">
+            <Zap className="h-3.5 w-3.5 text-warning" /> Energy today <span className="text-muted font-normal">(optional)</span>
+          </Label>
+          <div className="flex items-center gap-1.5">
+            {[1, 2, 3, 4, 5].map((level) => (
+              <button
+                key={level}
+                type="button"
+                onClick={() => {
+                  markEdited();
+                  setEnergyLevel(energyLevel === level ? null : level);
+                }}
+                aria-pressed={energyLevel === level}
+                className={cn(
+                  "h-8 w-8 rounded-full border text-sm font-medium transition-colors",
+                  energyLevel === level
+                    ? "bg-accent text-accent-foreground border-accent"
+                    : "border-border text-muted hover:bg-surface-2"
+                )}
+                title={`${level}/5`}
+              >
+                {level}
+              </button>
+            ))}
+            {energyLevel !== null && (
+              <span className="text-xs text-muted ml-1">
+                {energyLevel <= 2 ? "Low" : energyLevel === 3 ? "Okay" : "High"}
+              </span>
+            )}
+          </div>
+        </div>
         <div>
           <Label className="flex items-center gap-1.5 mb-1.5">
             <Lightbulb className="h-3.5 w-3.5 text-accent" /> What did you learn?
@@ -125,7 +200,7 @@ function TodayForm({ userId, todayLog, onSaved }: { userId: string; todayLog: Da
               markEdited();
               setLearned(e.target.value);
             }}
-            placeholder="The concept, pattern, or technique that clicked today…"
+            placeholder={learnedPlaceholder}
             rows={2}
           />
         </div>
@@ -215,6 +290,7 @@ function TodayForm({ userId, todayLog, onSaved }: { userId: string; todayLog: Da
 export default function JournalPage() {
   const { user } = useUser();
   const { data: logs, isLoading, mutate } = useDailyLogs(user?.id);
+  const { data: todaysSessions } = useTodaysSessions(user?.id);
   const { phases } = usePhasesWithProgress(user?.id);
   const [expandedDate, setExpandedDate] = useState<string | null>(null);
 
@@ -280,7 +356,7 @@ export default function JournalPage() {
       </FadeUp>
 
       {user && (
-        <TodayForm userId={user.id} todayLog={todayLog} onSaved={mutate} key={todayLog?.updated_at ?? "new"} />
+        <TodayForm userId={user.id} todayLog={todayLog} todaysSessions={todaysSessions ?? []} onSaved={mutate} key={todayLog?.updated_at ?? "new"} />
       )}
 
       {hasAnyDataThisWeek && (

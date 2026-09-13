@@ -47,7 +47,14 @@ export async function logStudySession(hours: number, note?: string) {
  */
 export async function saveJournalEntry(
   userId: string,
-  entry: { learned?: string; mistakes?: string; wins?: string; tomorrow_goal?: string; day_job_hours?: number | null },
+  entry: {
+    learned?: string;
+    mistakes?: string;
+    wins?: string;
+    tomorrow_goal?: string;
+    day_job_hours?: number | null;
+    energy_level?: number | null; // item 23 — 1 (lowest) to 5 (highest)
+  },
   date: string = todayISO()
 ) {
   const { error } = await supabase.from("daily_logs").upsert(
@@ -59,6 +66,7 @@ export async function saveJournalEntry(
       wins: entry.wins || null,
       tomorrow_goal: entry.tomorrow_goal || null,
       day_job_hours: entry.day_job_hours ?? null,
+      energy_level: entry.energy_level ?? null,
     } as never,
     { onConflict: "user_id,date" }
   );
@@ -146,6 +154,47 @@ export function weeklyHours(logs: DailyLog[]): number {
   return logs
     .filter((l) => l.date >= weekAgoISO)
     .reduce((sum, l) => sum + Number(l.hours), 0);
+}
+
+export interface DailyPace {
+  todayHours: number;
+  yesterdayHours: number;
+  weekHours: number;
+  weeklyTargetHours: number | null;
+  // Hours/day needed for the rest of THIS calendar week (Mon-anchored, same
+  // bucketing as weeklyBreakdown below) to still land on weeklyTargetHours
+  // by Sunday. null when there's no target set, or the week is already met
+  // or already lost (0 remaining days) — callers show 0 or omit the line
+  // in each of those cases rather than a misleading number.
+  paceNeededPerDay: number | null;
+}
+
+/**
+ * Same-day and same-week comparison used by the Dashboard's pace card —
+ * "how does today compare to yesterday, and to the pace this week's target
+ * actually requires." All inputs are logs already fetched by the caller;
+ * this does no fetching itself, matching computeStreak/weeklyHours above.
+ */
+export function computeDailyPace(logs: DailyLog[], weeklyTargetHours: number | null): DailyPace {
+  const todayISOStr = todayISO();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayISOStr = localDateISO(yesterday);
+
+  const todayHours = logs.find((l) => l.date === todayISOStr)?.hours ?? 0;
+  const yesterdayHours = logs.find((l) => l.date === yesterdayISOStr)?.hours ?? 0;
+  const weekHoursTotal = weeklyHours(logs);
+
+  let paceNeededPerDay: number | null = null;
+  if (weeklyTargetHours != null && weeklyTargetHours > 0) {
+    const now = new Date();
+    const day = now.getDay(); // 0 = Sunday
+    const daysRemainingInWeek = day === 0 ? 1 : 7 - day + 1; // today through Sunday, inclusive
+    const remainingTarget = weeklyTargetHours - weekHoursTotal;
+    paceNeededPerDay = remainingTarget > 0 ? remainingTarget / daysRemainingInWeek : 0;
+  }
+
+  return { todayHours: Number(todayHours), yesterdayHours: Number(yesterdayHours), weekHours: weekHoursTotal, weeklyTargetHours, paceNeededPerDay };
 }
 
 /**
