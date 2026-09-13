@@ -340,6 +340,44 @@ export function useNotifications() {
   };
 }
 
+// Item 16 — notification digest. All the underlying data already existed
+// (useNotifications computes everything correctly); what was missing was
+// ever consolidating it into groups before rendering — the bell just
+// mapped the flat array straight into a scrollable list. This groups the
+// same notifications by urgency so the bell can render "3 urgent · 5
+// this week" instead of an undifferentiated scroll, with no new data
+// fetching and no change to what counts as a notification.
+export type DigestGroup = "urgent" | "this_week" | "other";
+
+const URGENT_KINDS: NotificationKind[] = ["revision_overdue", "interview_reminder", "follow_up_reminder", "skill_stale"];
+const THIS_WEEK_KINDS: NotificationKind[] = ["goal_deadline", "exit_almost_ready", "project_inactive"];
+
+export function digestGroupFor(kind: NotificationKind): DigestGroup {
+  if (URGENT_KINDS.includes(kind)) return "urgent";
+  if (THIS_WEEK_KINDS.includes(kind)) return "this_week";
+  return "other";
+}
+
+export interface NotificationDigest {
+  urgent: AppNotification[];
+  this_week: AppNotification[];
+  other: AppNotification[];
+  counts: Record<DigestGroup, number>;
+}
+
+export function groupNotificationsForDigest(notifications: AppNotification[]): NotificationDigest {
+  const urgent: AppNotification[] = [];
+  const this_week: AppNotification[] = [];
+  const other: AppNotification[] = [];
+  for (const n of notifications) {
+    const group = digestGroupFor(n.kind);
+    if (group === "urgent") urgent.push(n);
+    else if (group === "this_week") this_week.push(n);
+    else other.push(n);
+  }
+  return { urgent, this_week, other, counts: { urgent: urgent.length, this_week: this_week.length, other: other.length } };
+}
+
 export function useNotificationDismissals(userId: string | undefined) {
   return useSWR(userId ? ["notification-dismissals", userId] : null, async () => {
     const { data, error } = await supabase.from("notification_dismissals").select("*").eq("user_id", userId!);

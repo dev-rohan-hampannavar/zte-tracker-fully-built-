@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Play, Check, X, Undo2, Loader2, History } from "lucide-react";
+import { Play, Check, X, Undo2, Loader2, History, Timer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StaggerItem } from "@/components/motion/primitives";
@@ -28,6 +28,12 @@ interface PlanTaskRowProps {
   planDate: string;
   onStateChange: () => Promise<unknown>;
   onFocusStarted: () => Promise<unknown>;
+  // Item 24 — "just do 10 minutes" mode. Set when this task's task_key
+  // has been carried forward STALLED_CARRY_THRESHOLD+ times (computed by
+  // the caller from useDailyPlanTaskStateRange + computeCarryCounts, not
+  // this component, since it needs a week of history this row doesn't
+  // otherwise fetch).
+  stalled?: boolean;
 }
 
 /**
@@ -44,7 +50,7 @@ interface PlanTaskRowProps {
  * progress." Tasks with no linkable activity (e.g. a goal-deadline nudge)
  * can still be marked done/skipped directly with no timer.
  */
-export function PlanTaskRow({ task, icon: Icon, kindLabel, userId, state, planDate, onStateChange, onFocusStarted }: PlanTaskRowProps) {
+export function PlanTaskRow({ task, icon: Icon, kindLabel, userId, state, planDate, onStateChange, onFocusStarted, stalled }: PlanTaskRowProps) {
   const [busy, setBusy] = useState(false);
   const status = state?.status ?? "pending";
   const isDone = status === "completed";
@@ -52,12 +58,13 @@ export function PlanTaskRow({ task, icon: Icon, kindLabel, userId, state, planDa
   const isInProgress = status === "in_progress";
   const carried = !!state?.carried_from_date;
 
-  async function handleStart() {
+  async function handleStart(shortMode = false) {
     if (!userId || !task.activity) return;
     setBusy(true);
     try {
       await startFocusSession(userId, {
-        mode: "pomodoro",
+        mode: shortMode ? "countdown" : "pomodoro",
+        plannedSeconds: shortMode ? 10 * 60 : null,
         activity: task.activity,
         topicId: task.topicId,
         stageProjectId: task.stageProjectId,
@@ -73,7 +80,7 @@ export function PlanTaskRow({ task, icon: Icon, kindLabel, userId, state, planDa
       await markDailyPlanTaskStarted(userId, planDate, task);
       await onFocusStarted();
       await onStateChange();
-      toast.success("Focus session started — see the timer on your dashboard.");
+      toast.success(shortMode ? "10-minute timer started." : "Focus session started — see the timer on your dashboard.");
     } catch {
       toast.error("Couldn't start a focus session.");
     } finally {
@@ -139,6 +146,11 @@ export function PlanTaskRow({ task, icon: Icon, kindLabel, userId, state, planDa
               <History className="h-2.5 w-2.5" /> Carried
             </Badge>
           )}
+          {stalled && !isDone && !isSkipped && (
+            <Badge variant="warning" className="text-[10px] gap-1">
+              Stalled
+            </Badge>
+          )}
           {isInProgress && (
             <Badge variant="accent" className="text-[10px]">
               In progress
@@ -157,9 +169,22 @@ export function PlanTaskRow({ task, icon: Icon, kindLabel, userId, state, planDa
           ) : (
             <>
               {task.activity && !isInProgress && (
-                <Button size="icon" variant="ghost" className="h-7 w-7" onClick={handleStart} title="Start a focus session">
-                  <Play className="h-3.5 w-3.5" />
-                </Button>
+                <>
+                  {stalled && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-7 gap-1 text-[11px] px-2"
+                      onClick={() => handleStart(true)}
+                      title="Start a short 10-minute session — just enough to break the stall"
+                    >
+                      <Timer className="h-3 w-3" /> Just 10 min
+                    </Button>
+                  )}
+                  <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => handleStart(false)} title="Start a focus session">
+                    <Play className="h-3.5 w-3.5" />
+                  </Button>
+                </>
               )}
               <Button size="icon" variant="ghost" className="h-7 w-7" onClick={handleComplete} title="Mark done">
                 <Check className="h-3.5 w-3.5" />

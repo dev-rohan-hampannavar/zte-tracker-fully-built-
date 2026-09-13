@@ -244,6 +244,16 @@ export function GlobalSearch() {
                     <Sun className="h-3.5 w-3.5 text-muted" /> Toggle theme
                   </Command.Item>
                   <Command.Item
+                    value="quick capture idea blocker note"
+                    onSelect={() => {
+                      window.dispatchEvent(new Event("zte:open-quick-capture"));
+                      setOpen(false);
+                    }}
+                    className="flex items-center gap-2 rounded-md px-2 py-2 text-sm cursor-pointer aria-selected:bg-surface-2"
+                  >
+                    <NotebookPen className="h-3.5 w-3.5 text-muted" /> Quick capture (idea/blocker)
+                  </Command.Item>
+                  <Command.Item
                     value="export data backup settings"
                     onSelect={() => { router.push("/settings"); setOpen(false); }}
                     className="flex items-center gap-2 rounded-md px-2 py-2 text-sm cursor-pointer aria-selected:bg-surface-2"

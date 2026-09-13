@@ -24,8 +24,10 @@ import {
   dismissNotification,
   snoozeNotification,
   markAllRead,
+  groupNotificationsForDigest,
   type AppNotification,
   type NotificationKind,
+  type DigestGroup,
 } from "@/lib/hooks/use-notifications";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -58,10 +60,18 @@ const KIND_COLOR: Record<NotificationKind, string> = {
   career_milestone: "text-success",
 };
 
+const GROUP_LABEL: Record<DigestGroup, string> = {
+  urgent: "Urgent",
+  this_week: "This week",
+  other: "Other",
+};
+
 export function NotificationBell() {
   const [open, setOpen] = useState(false);
   const { user } = useUser();
   const { notifications, isLoading, mutateDismissals } = useNotifications();
+  const digest = groupNotificationsForDigest(notifications);
+  const orderedGroups: DigestGroup[] = ["urgent", "this_week", "other"];
 
   async function handleMarkAllRead() {
     if (!user) return;
@@ -124,7 +134,17 @@ export function NotificationBell() {
           >
             <div className="px-3 py-2 border-b border-border flex items-center justify-between">
               <p className="text-xs font-medium text-muted">
-                {isLoading ? "Loading…" : `${notifications.length} thing${notifications.length === 1 ? "" : "s"} need attention`}
+                {isLoading
+                  ? "Loading…"
+                  : notifications.length === 0
+                    ? "Nothing needs attention"
+                    : [
+                        digest.counts.urgent > 0 && `${digest.counts.urgent} urgent`,
+                        digest.counts.this_week > 0 && `${digest.counts.this_week} this week`,
+                        digest.counts.other > 0 && `${digest.counts.other} other`,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
               </p>
               {notifications.length > 0 && (
                 <button
@@ -139,39 +159,50 @@ export function NotificationBell() {
               {!isLoading && notifications.length === 0 && (
                 <p className="px-3 py-6 text-sm text-muted text-center">You&apos;re all caught up.</p>
               )}
-              {notifications.map((n: AppNotification) => {
-                const Icon = KIND_ICON[n.kind];
+              {orderedGroups.map((group) => {
+                const items = digest[group];
+                if (items.length === 0) return null;
                 return (
-                  <Link
-                    key={n.id}
-                    href={n.href}
-                    onClick={() => setOpen(false)}
-                    className="group flex items-start gap-2.5 px-3 py-2.5 hover:bg-surface-2 transition-standard border-b border-border last:border-0"
-                  >
-                    <Icon className={`h-4 w-4 shrink-0 mt-0.5 ${KIND_COLOR[n.kind]}`} />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium leading-snug">{n.title}</p>
-                      <p className="text-xs text-muted mt-0.5 line-clamp-2">{n.detail}</p>
-                    </div>
-                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-standard shrink-0">
-                      <button
-                        onClick={(e) => handleSnooze(e, n.id)}
-                        className="text-muted hover:text-foreground p-0.5"
-                        aria-label="Snooze 24h"
-                        title="Snooze 24h"
-                      >
-                        <Clock className="h-3 w-3" />
-                      </button>
-                      <button
-                        onClick={(e) => handleDismiss(e, n.id)}
-                        className="text-muted hover:text-danger p-0.5"
-                        aria-label="Dismiss"
-                        title="Dismiss"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  </Link>
+                  <div key={group}>
+                    <p className="px-3 pt-2.5 pb-1 text-[10px] uppercase tracking-wider text-muted/70 font-medium sticky top-0 bg-surface">
+                      {GROUP_LABEL[group]}
+                    </p>
+                    {items.map((n: AppNotification) => {
+                      const Icon = KIND_ICON[n.kind];
+                      return (
+                        <Link
+                          key={n.id}
+                          href={n.href}
+                          onClick={() => setOpen(false)}
+                          className="group flex items-start gap-2.5 px-3 py-2.5 hover:bg-surface-2 transition-standard border-b border-border last:border-0"
+                        >
+                          <Icon className={`h-4 w-4 shrink-0 mt-0.5 ${KIND_COLOR[n.kind]}`} />
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium leading-snug">{n.title}</p>
+                            <p className="text-xs text-muted mt-0.5 line-clamp-2">{n.detail}</p>
+                          </div>
+                          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-standard shrink-0">
+                            <button
+                              onClick={(e) => handleSnooze(e, n.id)}
+                              className="text-muted hover:text-foreground p-0.5"
+                              aria-label="Snooze 24h"
+                              title="Snooze 24h"
+                            >
+                              <Clock className="h-3 w-3" />
+                            </button>
+                            <button
+                              onClick={(e) => handleDismiss(e, n.id)}
+                              className="text-muted hover:text-danger p-0.5"
+                              aria-label="Dismiss"
+                              title="Dismiss"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
                 );
               })}
             </div>

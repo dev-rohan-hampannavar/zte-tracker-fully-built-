@@ -1,4 +1,4 @@
-import type { DailyLog, MonthByMonthRow } from "@/types/database";
+import type { DailyLog, MonthByMonthRow, CareerTrackerRow } from "@/types/database";
 
 /**
  * Derives "where the user actually is" in the 24-month Zero to Elite plan
@@ -535,6 +535,25 @@ export function computeExitEta(remainingTopicHours: number, logs: DailyLog[]): E
   };
 }
 
+/**
+ * How many extra days the current pace-based ETA (computeExitEta) shifts
+ * by if today's target hours go unlogged — pure arithmetic derived from
+ * the same "remaining hours ÷ weekly pace" projection used everywhere
+ * else, not a guilt-based framing. Returns null when there's no
+ * established weekly pace to project from yet (avgWeeklyHours would be
+ * 0), since "skipping a day" is meaningless against a pace of zero.
+ * Deliberately factual/neutral in tone — this exists to make a real
+ * tradeoff visible, not to shame a missed day.
+ */
+export function computeSkipCostDays(remainingTopicHours: number, logs: DailyLog[], targetHoursPerDay: number): number | null {
+  const etaWithToday = computeExitEta(remainingTopicHours, logs);
+  if (etaWithToday.estimatedWeeks === null || targetHoursPerDay <= 0) return null;
+  const etaWithoutToday = computeExitEta(remainingTopicHours + targetHoursPerDay, logs);
+  if (etaWithoutToday.estimatedWeeks === null) return null;
+  const deltaWeeks = etaWithoutToday.estimatedWeeks - etaWithToday.estimatedWeeks;
+  return Math.max(0, Math.round(deltaWeeks * 7));
+}
+
 export function computePlanPosition(
   monthByMonth: MonthByMonthRow[],
   logs: DailyLog[]
@@ -632,6 +651,9 @@ export function computeSmartAction(inputs: {
   staleApplications: StaleApplication[];
   currentPhaseTitle: string | null;
   currentPhaseIncompleteTopicTitle: string | null;
+  // Optional so existing callers (or non-plan_a tracks, which have no
+  // exit-point ladder) keep working unchanged — only plan_a has this data.
+  nextExit?: { label: string; range: string } | null;
 }): SmartAction | null {
   const candidates: SmartAction[] = [];
 
@@ -669,9 +691,12 @@ export function computeSmartAction(inputs: {
   }
 
   if (inputs.currentPhaseIncompleteTopicTitle && inputs.currentPhaseTitle) {
+    const exitContext = inputs.nextExit
+      ? ` Keep going and ${inputs.nextExit.label} (${inputs.nextExit.range}) is the next real checkpoint.`
+      : "";
     candidates.push({
       title: `Continue: ${inputs.currentPhaseIncompleteTopicTitle}`,
-      reason: `Next topic in ${inputs.currentPhaseTitle}, your current phase.`,
+      reason: `Next topic in ${inputs.currentPhaseTitle}, your current phase.${exitContext}`,
       href: "/roadmap",
       priority: 5,
     });
@@ -679,4 +704,198 @@ export function computeSmartAction(inputs: {
 
   if (candidates.length === 0) return null;
   return candidates.sort((a, b) => a.priority - b.priority)[0];
+}
+
+export interface MonthlyApplicationStats {
+  count: number;
+  responded: number;
+  interviews: number;
+}
+
+/**
+ * This-calendar-month application counts, for a daily "are you still
+ * applying" gauge — separate from ApplicationMetrics/ApplicationMetricsByPlan
+ * (both all-time totals from a DB view), since neither answers "how many
+ * this month" without refetching with a date filter. Computed client-side
+ * from applications already fetched by the caller (useCareerTracker), so
+ * no new query or view is needed.
+ */
+export function computeMonthlyApplicationStats(applications: CareerTrackerRow[]): MonthlyApplicationStats {
+  const now = new Date();
+  const monthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  const thisMonth = applications.filter((a) => a.applied_at && a.applied_at.slice(0, 7) === monthStart);
+  return {
+    count: thisMonth.length,
+    responded: thisMonth.filter((a) => a.application_status !== "applied" && a.application_status !== "wishlist").length,
+    interviews: thisMonth.filter((a) => a.interview_date !== null).length,
+  };
+}
+
+export interface LastShippedInfo {
+  daysSince: number;
+  label: string; // "completed" | "updated" — which kind of event this was
+}
+
+/**
+ * Time since the most recent genuine project output — a completed
+ * project, or a project row that gained a deployment/GitHub link — as
+ * distinct from hours logged studying. The two frequently diverge: it's
+ * possible to log real hours for days while shipping nothing externally
+ * visible on ClientSync or any other project, which this is meant to
+ * surface honestly rather than let study-hours alone imply progress.
+ * Uses updated_at as an approximation for "when a link was added" since
+ * project_progress has no per-field timestamp — this can overcount if a
+ * row was updated for an unrelated reason (e.g. editing notes), so it's
+ * framed as "last touched a project" rather than a stronger claim.
+ */
+export function computeLastShipped(projects: { status: string; completed_at: string | null; updated_at: string }[]): LastShippedInfo | null {
+  if (projects.length === 0) return null;
+  const completedDates = projects.filter((p) => p.completed_at).map((p) => ({ date: p.completed_at!, label: "completed" as const }));
+  const updatedDates = projects.map((p) => ({ date: p.updated_at, label: "updated" as const }));
+  const all = [...completedDates, ...updatedDates].sort((a, b) => (a.date < b.date ? 1 : -1));
+  if (all.length === 0) return null;
+  const mostRecent = all[0];
+  const daysSince = Math.floor((Date.now() - new Date(mostRecent.date).getTime()) / 86400000);
+  return { daysSince, label: mostRecent.label };
+}
+
+export interface WeeklyRisk {
+  dimension: string;
+  message: string;
+  recommendation: string;
+  severity: "high" | "medium";
+}
+
+/**
+ * #27 — Derives the single biggest risk signal for the current week from
+ * data the daily-plan page already has — no new query.
+ *
+ * Two candidate sources:
+ *
+ * 1. Pace drop: Mon-through-today hours this week vs the identical Mon-
+ *    through-same-weekday window last week. Comparing the same elapsed
+ *    window (not full weeks) is intentional — if today is Wednesday, last
+ *    week's Mon-Wed is the fair baseline, not all seven days, which would
+ *    always look ahead of a mid-week comparison.
+ *    Only fires when last week's window had ≥4h so a genuinely first week
+ *    of use doesn't show a "pace collapsed from 0" false alarm.
+ *
+ * 2. Worst weekly variance item — the planned metric furthest behind its
+ *    target, normalized as a fraction of the planned value so a 10-session
+ *    deficit on DSA (from a 4-session target) doesn't accidentally out-rank
+ *    a 15h deficit on engineering (from a 40h target).
+ *
+ * Returns the worse of the two candidates, or null if neither clears the
+ * minimum bar (no data / trivially close to target).
+ */
+export function computeBiggestWeeklyRisk(
+  weekStart: string,
+  logs: { date: string; hours: number }[],
+  variance: WeeklyVarianceItem[],
+): WeeklyRisk | null {
+  // Inline date formatter — avoids importing @/lib/utils into a pure-math
+  // file, keeping plan-position.ts dependency-free (only @/types/database).
+  function isoDate(d: Date): string {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
+
+  type Candidate = WeeklyRisk & { score: number };
+  const candidates: Candidate[] = [];
+
+  // ── Candidate 1: pace drop ────────────────────────────────────────────
+  const todayDate = new Date();
+  todayDate.setHours(0, 0, 0, 0);
+  const todayISO = isoDate(todayDate);
+
+  // Last week's Monday (7 days before this week's Monday)
+  const thisMonday = new Date(weekStart + "T00:00:00");
+  const lastMonday = new Date(thisMonday);
+  lastMonday.setDate(lastMonday.getDate() - 7);
+
+  // Last week's equivalent of "today" — same weekday, one week back
+  const lastWeekToday = new Date(todayDate);
+  lastWeekToday.setDate(lastWeekToday.getDate() - 7);
+
+  const lastMondayISO = isoDate(lastMonday);
+  const lastWeekTodayISO = isoDate(lastWeekToday);
+
+  const thisWeekHours = logs
+    .filter((l) => l.date >= weekStart && l.date <= todayISO)
+    .reduce((sum, l) => sum + Number(l.hours), 0);
+
+  const lastWeekWindowHours = logs
+    .filter((l) => l.date >= lastMondayISO && l.date <= lastWeekTodayISO)
+    .reduce((sum, l) => sum + Number(l.hours), 0);
+
+  if (lastWeekWindowHours >= 4) {
+    const ratio = thisWeekHours / lastWeekWindowHours;
+    const dropPct = Math.round((1 - ratio) * 100);
+    if (ratio < 0.5) {
+      candidates.push({
+        dimension: "Engineering pace",
+        message: `${Math.round(thisWeekHours)}h logged so far this week vs ${Math.round(lastWeekWindowHours)}h at the same point last week — pace down ${dropPct}%.`,
+        recommendation: "Log at least one session today before the gap compounds into a missed week.",
+        severity: "high",
+        score: 100 - ratio * 100,
+      });
+    } else if (ratio < 0.75) {
+      candidates.push({
+        dimension: "Engineering pace",
+        message: `${Math.round(thisWeekHours)}h so far this week vs ${Math.round(lastWeekWindowHours)}h at the same point last week — pace down ${dropPct}%.`,
+        recommendation: "One session today closes most of the gap vs last week's pace.",
+        severity: "medium",
+        score: 60 - ratio * 60,
+      });
+    }
+  }
+
+  // ── Candidate 2: worst variance item ─────────────────────────────────
+  // Parse the planned string ("40h", "3–6 sessions", "1+ update") into a
+  // numeric midpoint to normalise variance scores across dimensions.
+  function parsePlannedMidpoint(planned: string): number | null {
+    // "40h" → 40; "3–6 sessions" → 4.5; "1+ update" → 1
+    const rangeMatch = planned.match(/(\d+(?:\.\d+)?)[–\-](\d+(?:\.\d+)?)/);
+    if (rangeMatch) return (parseFloat(rangeMatch[1]) + parseFloat(rangeMatch[2])) / 2;
+    const singleMatch = planned.match(/(\d+(?:\.\d+)?)/);
+    if (singleMatch) return parseFloat(singleMatch[1]);
+    return null;
+  }
+
+  let worstVarianceItem: WeeklyVarianceItem | null = null;
+  let worstVarianceScore = 0;
+  for (const item of variance) {
+    if (item.status === "under" && item.variance < 0) {
+      const mid = parsePlannedMidpoint(item.planned);
+      if (mid !== null && mid > 0) {
+        const score = Math.abs(item.variance) / mid;
+        if (score > worstVarianceScore) {
+          worstVarianceScore = score;
+          worstVarianceItem = item;
+        }
+      }
+    }
+  }
+
+  if (worstVarianceItem && worstVarianceScore >= 0.3) {
+    const item = worstVarianceItem;
+    const severity: "high" | "medium" = worstVarianceScore >= 0.6 ? "high" : "medium";
+    const recs: Record<string, string> = {
+      Engineering: "Log a study session today — even two hours moves the weekly total meaningfully.",
+      DSA: "One focused DSA session (30–45 min) stops the slide and keeps the spaced-rep schedule intact.",
+      Project: "Ship one small concrete thing this week — a PR, a working route, a schema migration.",
+      "Career Evidence": "One career update (a tailored application, a LinkedIn post, a follow-up) closes this gap.",
+    };
+    candidates.push({
+      dimension: item.label,
+      message: `${item.label}: ${item.actual} logged this week vs plan of ${item.planned} — ${Math.round(worstVarianceScore * 100)}% under target.`,
+      recommendation: recs[item.label] ?? "One focused session here closes most of this gap.",
+      severity,
+      score: worstVarianceScore * 80,
+    });
+  }
+
+  if (candidates.length === 0) return null;
+  candidates.sort((a, b) => b.score - a.score);
+  const top = candidates[0];
+  return { dimension: top.dimension, message: top.message, recommendation: top.recommendation, severity: top.severity };
 }

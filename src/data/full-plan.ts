@@ -209,3 +209,38 @@ export const SALARY_REFERENCE: SalaryReference[] = [
   { track: "ops", label: "Year 7–10", range: "₹22–40 LPA", evidence: "Supply chain director" },
   { track: "ops", label: "Year 10+", range: "₹40–70 LPA", evidence: "VP Ops / COO track" },
 ];
+
+// The ~19-month figure matches career-path-stages.ts's ZTE curriculum
+// note ("21 phases · ~19 months") — the core-curriculum timeline the
+// plan_a exit-point months below are plotted against, not FULL_PLAN's
+// 24-month deadline (which includes buffer beyond the core curriculum).
+const ZTE_CORE_CURRICULUM_MONTHS = 19;
+
+export interface NextExitPoint {
+  label: string; // e.g. "Exit ★1"
+  range: string;
+  approxMonth: number;
+}
+
+/**
+ * Given overall plan progress (0-100, from computePlanPosition's
+ * overallProgressPct), estimates the current month against the ~19-month
+ * core curriculum and returns the next plan_a exit point not yet reached —
+ * so a "why does today's topic matter" reason can name a real, specific
+ * upcoming milestone instead of just "your current phase." Returns null
+ * once progress is past the last listed exit point (Exit E) — there's
+ * nothing further to reference.
+ */
+export function nextExitPoint(overallProgressPct: number): NextExitPoint | null {
+  const estimatedMonth = (overallProgressPct / 100) * ZTE_CORE_CURRICULUM_MONTHS;
+  const exitRows = SALARY_REFERENCE.filter((r) => r.track === "plan_a");
+  for (const row of exitRows) {
+    const match = row.label.match(/~([\d.]+)\s*mo/);
+    if (!match) continue;
+    const rowMonth = Number(match[1]);
+    if (rowMonth > estimatedMonth) {
+      return { label: row.label.split(" · ")[0], range: row.range, approxMonth: rowMonth };
+    }
+  }
+  return null;
+}

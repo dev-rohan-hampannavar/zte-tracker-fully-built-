@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useUser } from "@/lib/hooks/use-user";
 import { useExitLadder, usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
 import { useDailyLogs } from "@/lib/hooks/use-daily-logs";
-import { computeExitEta, assessMonth24Decision, detectEndlessPlanB } from "@/lib/plan-position";
+import { useCareerPlanSettings } from "@/lib/hooks/use-career-plan";
+import { computeExitEta, computeSkipCostDays, assessMonth24Decision, detectEndlessPlanB } from "@/lib/plan-position";
 import { useApplicationMetrics, useApplicationMetricsByPlan, useCareerDecisions, logCareerDecision } from "@/lib/hooks/use-career";
 import { useInterviewWeaknesses } from "@/lib/hooks/use-interview-prep";
 import { useDisplayName } from "@/lib/hooks/use-display-name";
@@ -136,10 +137,17 @@ export default function ExitLadderPage() {
   // Hooks must run on every render, including the loading render below.
   const currentRung = rungs.find((r) => r.status === "current");
   const { data: logs } = useDailyLogs(user?.id);
+  const { data: careerPlanSettings } = useCareerPlanSettings(user?.id);
   const currentEta = useMemo(
     () => (currentRung && logs ? computeExitEta(currentRung.remainingHours, logs) : null),
     [currentRung, logs]
   );
+  const skipCostDays = useMemo(() => {
+    if (!currentRung || !logs) return null;
+    const weeklyTarget = careerPlanSettings?.career_plan_weekly_hours ?? 0;
+    const dailyTarget = weeklyTarget / 7;
+    return computeSkipCostDays(currentRung.remainingHours, logs, dailyTarget);
+  }, [currentRung, logs, careerPlanSettings?.career_plan_weekly_hours]);
   const { data: applicationMetrics } = useApplicationMetrics(user?.id);
   const { data: planMetrics } = useApplicationMetricsByPlan(user?.id);
   const { data: interviewWeaknesses } = useInterviewWeaknesses(user?.id);
@@ -211,6 +219,9 @@ export default function ExitLadderPage() {
                 {currentRung.remainingHours > 0 && ` (~${currentRung.remainingHours}h)`}.
                 {currentEta?.estimatedWeeks !== null && currentEta?.estimatedWeeks !== undefined && (
                   <> At your recent pace, about {currentEta.estimatedWeeks} week{currentEta.estimatedWeeks === 1 ? "" : "s"} away.</>
+                )}
+                {skipCostDays !== null && skipCostDays > 0 && (
+                  <> Skipping today&apos;s target shifts this by roughly {skipCostDays} day{skipCostDays === 1 ? "" : "s"}.</>
                 )}
               </p>
             </div>

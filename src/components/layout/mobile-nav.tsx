@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { NAV, SIDEBAR_SECTIONS } from "./sidebar";
 import { CareerTrackBadge } from "@/components/career-plan/career-track-badge";
+import { QuickCaptureButton } from "./quick-capture-button";
 
 // Mobile has no top bar, so unlike the desktop sidebar it shows every item
 // — nothing is hidden as "already pinned elsewhere." Pinned items just get
@@ -54,9 +55,12 @@ export function MobileNav() {
           </div>
           <span className="text-sm font-semibold">ZTE Tracker</span>
         </div>
-        <button onClick={() => setOpen(true)} className="p-2 text-muted">
-          <Menu className="h-5 w-5" />
-        </button>
+        <div className="flex items-center gap-1">
+          <QuickCaptureButton />
+          <button onClick={() => setOpen(true)} className="p-2 text-muted">
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>

@@ -6,6 +6,7 @@ import { X, Keyboard } from "lucide-react";
 
 const NAV_SHORTCUTS: { keys: string; label: string; href?: string }[] = [
   { keys: "⌘ / Ctrl K", label: "Open global search" },
+  { keys: "Q", label: "Quick capture (idea/blocker)" },
   { keys: "?", label: "Show this help" },
   { keys: "G then D", label: "Go to Dashboard", href: "/dashboard" },
   { keys: "G then R", label: "Go to Roadmap", href: "/roadmap" },
@@ -56,6 +57,11 @@ export function ShortcutsHelp() {
       if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         setOpen((v) => !v);
+        return;
+      }
+      if (e.key.toLowerCase() === "q" && !e.metaKey && !e.ctrlKey && !gPending) {
+        e.preventDefault();
+        window.dispatchEvent(new Event("zte:open-quick-capture"));
         return;
       }
       if (e.key === "Escape") {

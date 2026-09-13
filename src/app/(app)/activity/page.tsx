@@ -12,7 +12,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { toast } from "sonner";
-import { History, Undo2, Loader2 } from "lucide-react";
+import { History, Undo2, Loader2, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import type { ActivityLogEntry, CareerTrackerRow, UserSkill, ApplicationStatus, ActivityAction } from "@/types/database";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion/primitives";
 
@@ -36,6 +37,38 @@ function dayLabel(iso: string): string {
   if (sameDay(date, today)) return "Today";
   if (sameDay(date, yesterday)) return "Yesterday";
   return date.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "short" });
+}
+
+/**
+ * Maps an activity entry back to the page it actually happened on, so
+ * "resume this" is a real jump rather than always landing on a generic
+ * list. Only entity_types with a genuine per-item route get a link —
+ * career_plan (entityId is the user's own id, not a page) and
+ * career_tracker (entityId can fall back to a company name string rather
+ * than a real row id — see use-career.ts) are deliberately excluded here
+ * rather than build a link that might 404 or point at the wrong thing.
+ * goal/milestone/user_skill/weekly_commitment route to their list page
+ * since none of those pages support a per-item deep link today — still
+ * useful (closer than Activity History itself), just not exact.
+ */
+function resumeHref(entry: ActivityLogEntry): string | null {
+  switch (entry.entity_type) {
+    case "topic":
+      return `/roadmap/topic/${entry.entity_id}`;
+    case "project_progress":
+      return `/roadmap/phase/${entry.entity_id}`;
+    case "dsa_progress":
+      return "/dsa";
+    case "goal":
+    case "milestone":
+      return "/goals";
+    case "user_skill":
+      return "/skills";
+    case "weekly_commitment":
+      return "/execution";
+    default:
+      return null;
+  }
 }
 
 function canUndo(entry: ActivityLogEntry): boolean {
@@ -147,6 +180,13 @@ export default function ActivityHistoryPage() {
                           {entry.undone && <span className="text-xs text-muted italic">undone</span>}
                         </div>
                       </div>
+                      {resumeHref(entry) && !entry.undone && (
+                        <Link href={resumeHref(entry)!}>
+                          <Button size="sm" variant="ghost">
+                            Resume <ArrowRight className="h-3.5 w-3.5" />
+                          </Button>
+                        </Link>
+                      )}
                       {canUndo(entry) && (
                         <Button size="sm" variant="ghost" onClick={() => handleUndo(entry)} disabled={undoing === entry.id}>
                           {undoing === entry.id ? (

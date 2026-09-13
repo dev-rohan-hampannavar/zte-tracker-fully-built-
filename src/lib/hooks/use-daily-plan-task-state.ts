@@ -157,3 +157,22 @@ export function useDailyPlanTaskStateForDate(userId: string | undefined, planDat
     return (data ?? []) as DailyPlanTaskState[];
   });
 }
+
+/**
+ * Item 24 — "just do 10 minutes" mode. Counts, per task_key, how many
+ * 'carried_forward' rows exist across the given range — i.e. how many
+ * prior days this exact task has been pushed forward without being
+ * finished. Built entirely from data the carry-forward mechanism (0057)
+ * already produces; no new column or table. A task carried 2+ times is
+ * treated as "stalled" — genuinely stuck, not just "planned yesterday."
+ */
+export function computeCarryCounts(rangeRows: DailyPlanTaskState[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const row of rangeRows) {
+    if (row.status !== "carried_forward") continue;
+    counts.set(row.task_key, (counts.get(row.task_key) ?? 0) + 1);
+  }
+  return counts;
+}
+
+export const STALLED_CARRY_THRESHOLD = 2;
