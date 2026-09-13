@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,8 +21,79 @@ import { DownloadProfilePdfButton } from "@/components/profile/download-profile-
 import { getGithubActivity } from "@/lib/github-activity";
 import { PLAN_PATHS, type CareerPlanTrack } from "@/data/full-plan";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion/primitives";
+import { SITE_URL, SITE_NAME } from "@/lib/site-config";
 
 export const revalidate = 300; // 5 min cache — public pages don't need to be live-live
+
+// Lightweight lookup for metadata only — mirrors the same minimal-columns
+// pattern opengraph-image.tsx already uses for this route, rather than
+// running the full getProfileData() (8 queries + GitHub call) just to read
+// a display name and bio. generateMetadata and the page component run as
+// separate server invocations for the same request in Next's App Router,
+// so this is an intentionally separate, cheap query rather than a
+// duplicate of the expensive one.
+async function getProfileMeta(slug: string) {
+  const supabase = createAdminClient();
+  const { data } = (await supabase
+    .from("user_settings")
+    .select("public_profile_enabled, display_name, public_profile_bio")
+    .eq("public_profile_slug", slug)
+    .single()) as {
+    data: { public_profile_enabled: boolean; display_name: string | null; public_profile_bio: string | null } | null;
+  };
+  if (!data || !data.public_profile_enabled) return null;
+  return data;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const meta = await getProfileMeta(slug);
+
+  // Disabled or nonexistent profiles: noindex rather than a generic
+  // fallback title, since this URL will 404 in the page component anyway
+  // — no reason to hand Google a title for a page that doesn't render.
+  if (!meta) {
+    return { title: "Profile not found", robots: { index: false, follow: false } };
+  }
+
+  const name = meta.display_name || "Zero to Elite";
+  const title = `${name}'s Progress`;
+  const description = meta.public_profile_bio
+    ? meta.public_profile_bio.slice(0, 155)
+    : `Follow ${name}'s daily progress on the Zero to Elite engineering roadmap — topics completed, DSA problems solved, and projects shipped.`;
+  const canonicalUrl = `${SITE_URL}/u/${slug}`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    // Every other route defaults to noindex via the root layout — this is
+    // one of the two places (along with the root "/") that explicitly
+    // opts back in, since a public progress profile is exactly the kind
+    // of page worth being discoverable.
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      type: "profile",
+      // opengraph-image.tsx already exists as a route-level image
+      // generator for this same [slug] segment — Next automatically
+      // wires it up as this page's og:image without listing it here.
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
 async function getProfileData(slug: string) {
   // Public profiles cross the server-side projection boundary only. The
@@ -111,6 +184,23 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   if (!data) notFound();
 
   const { displayName, bio, githubUsername, careerPlanTrack, phases, topics, capstones, progress, dsa, projects, buildInPublic, streak, exitLadder, githubActivity } = data;
+
+  // JSON-LD ProfilePage schema (spec item 16). Only fields backed by real
+  // data on this page — no fabricated ratings, prices, or org info. Google
+  // treats ProfilePage as an experimental type; worst case it's ignored,
+  // it never risks a manual action the way fake review/rating schema
+  // would.
+  const profileJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    dateModified: new Date().toISOString(),
+    mainEntity: {
+      "@type": "Person",
+      name: displayName || "Zero to Elite learner",
+      ...(bio ? { description: bio } : {}),
+      ...(githubUsername ? { sameAs: [`https://github.com/${githubUsername}`] } : {}),
+    },
+  };
   const progressMap = new Map(progress.map((p) => [p.topic_id, p]));
 
   const phaseCompletion = phases.map((phase) => {
@@ -196,8 +286,21 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
     buildInPublicTimeline.length === 0 &&
     !streak?.total_days_logged;
 
+  // The CSP set in middleware.ts requires a nonce on every inline script
+  // (no bare 'unsafe-inline' for script-src) — same requirement and same
+  // header the root layout's theme-flash script already satisfies this
+  // way, so the JSON-LD tag below needs it too or the browser silently
+  // drops it.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* JSON-LD ProfilePage schema built from real profile data above — no user-controlled HTML */}
+      <script
+        type="application/ld+json"
+        nonce={nonce}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(profileJsonLd) }}
+      />
       <div className="max-w-3xl mx-auto px-4 py-10 flex flex-col gap-6">
         <FadeUp>
         <div>

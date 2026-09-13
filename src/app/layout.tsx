@@ -9,6 +9,7 @@ import "@fontsource/montserrat/800.css";
 import { Toaster } from "sonner";
 import { OfflineIndicator } from "@/components/layout/offline-indicator";
 import { InstallPrompt } from "@/components/layout/install-prompt";
+import { SITE_URL, SITE_NAME } from "@/lib/site-config";
 import "./globals.css";
 
 // Montserrat is self-hosted via @fontsource/montserrat (static CSS files
@@ -17,10 +18,41 @@ import "./globals.css";
 // fonts.googleapis.com during the build.
 
 export const metadata: Metadata = {
-  title: "ZTE Tracker — Zero to Elite Roadmap Companion",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "ZTE Tracker — Zero to Elite Roadmap Companion",
+    // Lets any page opt into "Page Name | ZTE Tracker" via
+    // `title: "Page Name"` in its own metadata export without repeating
+    // the suffix everywhere — see /u/[slug]'s generateMetadata.
+    template: "%s | ZTE Tracker",
+  },
   description:
     "Daily execution tracker for the Zero to Elite engineering roadmap. Ship the roadmap, don't just read it.",
   manifest: "/manifest.json",
+  // Default to noindex,nofollow at the root layout. This app is almost
+  // entirely an authenticated personal tracker (dashboard, journal,
+  // roadmap, etc.) — those routes have no business appearing in Google,
+  // and a crawler that hits them unauthenticated only ever sees a login
+  // redirect anyway, so indexing them would just pollute search results
+  // with sign-in pages. The few genuinely public routes (/, /u/[slug])
+  // explicitly override this back to indexable in their own metadata —
+  // see root page.tsx and u/[slug]/page.tsx. This is the "keep noindex on
+  // private/authenticated pages, remove it from public ones" split the
+  // spec asks for, just implemented as an opt-in default rather than
+  // auditing dozens of individual (app)/ routes for a tag none of them
+  // currently set anyway.
+  robots: {
+    index: false,
+    follow: false,
+  },
+  openGraph: {
+    siteName: SITE_NAME,
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
