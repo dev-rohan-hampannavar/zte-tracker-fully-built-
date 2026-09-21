@@ -25,6 +25,8 @@ export interface PlanWindow {
 export interface SalaryReference {
   track: CareerPlanTrack;
   label: string;
+  /** Exit code key into EXIT_HOURS_REQUIRED. Null for non-plan_a tracks. */
+  exitCode: string | null;
   range: string;
   evidence: string;
 }
@@ -181,33 +183,70 @@ export const MONTH_24_CHECKLIST = [
   "A protected Plan A fallback with operations tenure and automation wins intact.",
 ] as const;
 
+/**
+ * Canonical cumulative hours required to reach each plan_a exit point.
+ * Source: career_tracker.xlsx (Exit Plan sheet) and career_timeline_zte.docx §8.
+ * These values are also seeded into exit_ladder.exit_hours_required via
+ * migration 0067_career_system_merge.sql.
+ */
+export const EXIT_HOURS_REQUIRED: Record<string, number> = {
+  A:    1235, // Phase 06  — Junior Full-Stack
+  A2:   1346, // Phase 06b — Mobile add-on
+  B:    1417, // Phase 07  — Junior-to-Mid
+  "★1": 1748, // Phase 08  — Interview-ready (DSA)
+  C:    1949, // Phase 10  — Mid, production-grade
+  "★2": 2113, // Phase 11  — Mid-level
+  D:    2320, // Phase 12  — Mid-Senior, AI-capable
+  "3":  2943, // Phase 17  — Senior
+  E:    3034, // Phase 19  — Complete profile
+};
+
+const WEEKS_PER_MONTH = 4.33;
+
+/**
+ * Projected months to reach an exit at a given weekly hour pace.
+ * Replaces the hardcoded ~N mo strings that assumed 40 h/wk.
+ */
+export function computeExitMonths(exitCode: string, weeklyHours: number): number | null {
+  const hours = EXIT_HOURS_REQUIRED[exitCode];
+  if (!hours || weeklyHours <= 0) return null;
+  return hours / (weeklyHours * WEEKS_PER_MONTH);
+}
+
+/** Human-readable label: "9.5 mo" */
+export function computeExitMonthsLabel(exitCode: string, weeklyHours: number): string {
+  const months = computeExitMonths(exitCode, weeklyHours);
+  if (months === null) return "—";
+  return `${months.toFixed(1)} mo`;
+}
+
 export const SALARY_REFERENCE: SalaryReference[] = [
-  { track: "plan_a", label: "Exit A · ~7 mo", range: "₹6–10 LPA", evidence: "Junior full-stack, deployed" },
-  { track: "plan_a", label: "Exit B · ~7.5 mo", range: "₹8–12 LPA", evidence: "API-literate junior-to-mid" },
-  { track: "plan_a", label: "Exit ★1 · ~9.5 mo", range: "₹8–15 LPA", evidence: "Interview-ready + DSA" },
-  { track: "plan_a", label: "Exit C · ~10.6 mo", range: "₹12–18 LPA", evidence: "Production-grade + observability" },
-  { track: "plan_a", label: "Exit ★2 · ~11.6 mo", range: "₹15–25 LPA", evidence: "Real-time + search" },
-  { track: "plan_a", label: "Exit D · ~12.8 mo", range: "₹20–30 LPA", evidence: "AI-capable mid-senior" },
-  { track: "plan_a", label: "Exit 3 · ~16.4 mo", range: "₹25–40 LPA", evidence: "Senior distributed systems" },
-  { track: "plan_a", label: "Exit E · ~16.9 mo", range: "₹35–50 LPA", evidence: "Complete profile / founding engineer" },
+  { track: "plan_a", exitCode: "A",    label: "Exit A",   range: "₹6–10 LPA",   evidence: "Junior full-stack, deployed" },
+  { track: "plan_a", exitCode: "B",    label: "Exit B",   range: "₹8–12 LPA",   evidence: "API-literate junior-to-mid" },
+  { track: "plan_a", exitCode: "★1",   label: "Exit ★1",  range: "₹8–15 LPA",   evidence: "Interview-ready + DSA" },
+  { track: "plan_a", exitCode: "C",    label: "Exit C",   range: "₹12–18 LPA",  evidence: "Production-grade + observability" },
+  { track: "plan_a", exitCode: "★2",   label: "Exit ★2",  range: "₹15–25 LPA",  evidence: "Real-time + search" },
+  { track: "plan_a", exitCode: "D",    label: "Exit D",   range: "₹20–30 LPA",  evidence: "AI-capable mid-senior" },
+  { track: "plan_a", exitCode: "3",    label: "Exit 3",   range: "₹25–40 LPA",  evidence: "Senior distributed systems" },
+  { track: "plan_a", exitCode: "E",    label: "Exit E",   range: "₹35–50 LPA",  evidence: "Complete profile / founding engineer" },
 
-  { track: "sap", label: "Now", range: "₹4.6 LPA", evidence: "Business ops associate, building SD/MM exposure" },
-  { track: "sap", label: "Year 2–4", range: "₹6–10 LPA", evidence: "Junior SAP consultant (Deloitte/Accenture/TCS/IBM)" },
-  { track: "sap", label: "Year 5–7", range: "₹15–22 LPA", evidence: "Senior consultant, S/4HANA, client ownership" },
-  { track: "sap", label: "Year 8–10", range: "₹25–35 LPA", evidence: "Solution architect / PM, multi-module" },
-  { track: "sap", label: "Year 10+", range: "₹35–45 LPA", evidence: "Principal / practice lead" },
+  { track: "sap", exitCode: null, label: "Now",       range: "₹4.6 LPA",   evidence: "Business ops associate, building SD/MM exposure" },
+  { track: "sap", exitCode: null, label: "Year 2–4",  range: "₹6–10 LPA",  evidence: "Junior SAP consultant (Deloitte/Accenture/TCS/IBM)" },
+  { track: "sap", exitCode: null, label: "Year 5–7",  range: "₹15–22 LPA", evidence: "Senior consultant, S/4HANA, client ownership" },
+  { track: "sap", exitCode: null, label: "Year 8–10", range: "₹25–35 LPA", evidence: "Solution architect / PM, multi-module" },
+  { track: "sap", exitCode: null, label: "Year 10+",  range: "₹35–45 LPA", evidence: "Principal / practice lead" },
 
-  { track: "ba_pm", label: "Now", range: "₹4–6 LPA", evidence: "Business analyst" },
-  { track: "ba_pm", label: "Year 2–4", range: "₹10–18 LPA", evidence: "APM / PM associate, Series A/B" },
-  { track: "ba_pm", label: "Year 4–7", range: "₹18–30 LPA", evidence: "Product manager, 0→1 builds" },
-  { track: "ba_pm", label: "Year 7–10", range: "₹30–50 LPA", evidence: "Senior / Group PM" },
-  { track: "ba_pm", label: "Year 10+", range: "₹50–80 LPA", evidence: "Director / VP Product" },
+  { track: "ba_pm", exitCode: null, label: "Now",       range: "₹4–6 LPA",   evidence: "Business analyst" },
+  { track: "ba_pm", exitCode: null, label: "Year 2–4",  range: "₹10–18 LPA", evidence: "APM / PM associate, Series A/B" },
+  { track: "ba_pm", exitCode: null, label: "Year 4–7",  range: "₹18–30 LPA", evidence: "Product manager, 0→1 builds" },
+  { track: "ba_pm", exitCode: null, label: "Year 7–10", range: "₹30–50 LPA", evidence: "Senior / Group PM" },
+  { track: "ba_pm", exitCode: null, label: "Year 10+",  range: "₹50–80 LPA", evidence: "Director / VP Product" },
 
-  { track: "ops", label: "Now", range: "₹3–5 LPA", evidence: "Operations executive" },
-  { track: "ops", label: "Year 2–4", range: "₹8–14 LPA", evidence: "Senior analyst / SCM" },
-  { track: "ops", label: "Year 4–7", range: "₹14–22 LPA", evidence: "Operations manager (city/region P&L)" },
-  { track: "ops", label: "Year 7–10", range: "₹22–40 LPA", evidence: "Supply chain director" },
-  { track: "ops", label: "Year 10+", range: "₹40–70 LPA", evidence: "VP Ops / COO track" },
+  { track: "ops", exitCode: null, label: "Now",       range: "₹3–5 LPA",   evidence: "Operations executive" },
+  { track: "ops", exitCode: null, label: "Year 2–4",  range: "₹8–14 LPA",  evidence: "Senior analyst / SCM" },
+  { track: "ops", exitCode: null, label: "Year 4–7",  range: "₹14–22 LPA", evidence: "Operations manager (city/region P&L)" },
+  { track: "ops", exitCode: null, label: "Year 7–10", range: "₹22–40 LPA", evidence: "Supply chain director" },
+  { track: "ops", exitCode: null, label: "Year 10+",  range: "₹40–70 LPA", evidence: "VP Ops / COO track" },
 ];
 
 // The ~19-month figure matches career-path-stages.ts's ZTE curriculum
@@ -217,29 +256,32 @@ export const SALARY_REFERENCE: SalaryReference[] = [
 const ZTE_CORE_CURRICULUM_MONTHS = 19;
 
 export interface NextExitPoint {
-  label: string; // e.g. "Exit ★1"
+  label: string;    // e.g. "Exit ★1"
   range: string;
   approxMonth: number;
 }
 
 /**
- * Given overall plan progress (0-100, from computePlanPosition's
- * overallProgressPct), estimates the current month against the ~19-month
- * core curriculum and returns the next plan_a exit point not yet reached —
- * so a "why does today's topic matter" reason can name a real, specific
- * upcoming milestone instead of just "your current phase." Returns null
- * once progress is past the last listed exit point (Exit E) — there's
- * nothing further to reference.
+ * Given overall plan progress (0–100) and the user's weekly study hours,
+ * returns the next plan_a exit point not yet reached.
+ *
+ * @param overallProgressPct - from computePlanPosition().overallProgressPct
+ * @param weeklyHours        - from user_settings.career_plan_weekly_hours
+ *                             Defaults to 40 for backward compatibility but
+ *                             should always be passed explicitly.
  */
-export function nextExitPoint(overallProgressPct: number): NextExitPoint | null {
+export function nextExitPoint(
+  overallProgressPct: number,
+  weeklyHours: number = 40
+): NextExitPoint | null {
   const estimatedMonth = (overallProgressPct / 100) * ZTE_CORE_CURRICULUM_MONTHS;
-  const exitRows = SALARY_REFERENCE.filter((r) => r.track === "plan_a");
+  const exitRows = SALARY_REFERENCE.filter((r) => r.track === "plan_a" && r.exitCode);
+
   for (const row of exitRows) {
-    const match = row.label.match(/~([\d.]+)\s*mo/);
-    if (!match) continue;
-    const rowMonth = Number(match[1]);
-    if (rowMonth > estimatedMonth) {
-      return { label: row.label.split(" · ")[0], range: row.range, approxMonth: rowMonth };
+    const months = computeExitMonths(row.exitCode!, weeklyHours);
+    if (months === null) continue;
+    if (months > estimatedMonth) {
+      return { label: row.label, range: row.range, approxMonth: months };
     }
   }
   return null;

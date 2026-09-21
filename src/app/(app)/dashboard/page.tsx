@@ -33,6 +33,9 @@ import { DashboardTour } from "@/components/dashboard/dashboard-tour";
 import { RevisionDueWidget } from "@/components/dashboard/revision-due-widget";
 import { useUserSettings, resolveDailyCommitment, setDailyCommitment, completeDailyCommitment, clearDailyCommitment } from "@/lib/hooks/use-user-settings";
 import { useContinuityNudge } from "@/lib/hooks/use-continuity";
+import { useExitLadderWithHours, useFinancialProfileExtended } from "@/lib/hooks/use-career-merge";
+import { computeAllExitStatuses } from "@/lib/career-exit-engine";
+import { computeRunwayAnalysis } from "@/lib/career-runway-engine";
 import { toast } from "sonner";
 import { pct, cn } from "@/lib/utils";
 import {
@@ -183,6 +186,8 @@ export default function DashboardPage() {
   const { data: leaderboard } = useLeaderboard();
   const { notifications } = useNotifications();
   const { data: activityLog } = useActivityLog(user?.id, 8);
+  const { data: exitLadderWithHours } = useExitLadderWithHours();
+  const { data: financialProfile } = useFinancialProfileExtended(user?.id);
   const [missionDetailsOpen, setMissionDetailsOpen] = useState(false);
   const { plan: dailyPlan } = useDailyPlan(120);
 
@@ -262,6 +267,57 @@ export default function DashboardPage() {
     () => computeDailyPace(logs ?? [], careerPlanSettings?.career_plan_weekly_hours ?? null),
     [logs, careerPlanSettings?.career_plan_weekly_hours]
   );
+
+  // Total hours logged across all daily logs — used for exit hours progress.
+  const totalHoursLogged = useMemo(
+    () => (logs ?? []).reduce((sum, l) => sum + Number(l.hours ?? 0), 0),
+    [logs]
+  );
+
+  // Exit point statuses derived from cumulative hours vs exit_hours_required.
+  const exitStatuses = useMemo(() => {
+    if (
+      !exitLadderWithHours ||
+      !careerPlanSettings?.career_plan_start_date ||
+      !careerPlanSettings?.career_plan_weekly_hours
+    ) return [];
+    return computeAllExitStatuses(
+      exitLadderWithHours,
+      totalHoursLogged,
+      careerPlanSettings.career_plan_weekly_hours,
+      careerPlanSettings.career_plan_start_date,
+      weekHours // trailing weekly average as recent pace
+    );
+  }, [exitLadderWithHours, totalHoursLogged, careerPlanSettings, weekHours]);
+
+  // The current target exit: lowest not-yet-reached.
+  const nextExitStatus = useMemo(
+    () => exitStatuses.find((s) => s.status !== "reached") ?? null,
+    [exitStatuses]
+  );
+
+  // Financial runway: is the 6-month buffer funded before Exit A?
+  const runwayAnalysis = useMemo(() => {
+    if (
+      !financialProfile ||
+      !careerPlanSettings?.career_plan_start_date ||
+      !careerPlanSettings?.career_plan_weekly_hours ||
+      !nextExitStatus
+    ) return null;
+    return computeRunwayAnalysis({
+      financialProfile: {
+        monthly_income:        financialProfile.monthly_income,
+        monthly_expenses:      financialProfile.monthly_expenses,
+        savings:               financialProfile.savings,
+        emergency_months:      financialProfile.emergency_months,
+        minimum_switch_salary: financialProfile.minimum_switch_salary,
+        notice_period_days:    financialProfile.notice_period_days ?? 60,
+      },
+      weeklyHours:           careerPlanSettings.career_plan_weekly_hours,
+      startDate:             careerPlanSettings.career_plan_start_date,
+      exitAHoursRequired:    nextExitStatus.hoursRequired,
+    });
+  }, [financialProfile, careerPlanSettings, nextExitStatus]);
 
   // Item 8 — streak "about to break" nudge. Both current streak and
   // today's log status already exist (computeStreak / computeDailyPace
@@ -356,7 +412,10 @@ export default function DashboardPage() {
   const smartAction = useMemo(() => {
     const nextCareerExit =
       careerPlanSettings?.career_plan_track === "plan_a" && planPosition
-        ? nextExitPoint(planPosition.overallProgressPct)
+        ? nextExitPoint(
+            planPosition.overallProgressPct,
+            careerPlanSettings?.career_plan_weekly_hours ?? 30
+          )
         : null;
     return computeSmartAction({
       failureSignals,
@@ -593,6 +652,48 @@ export default function DashboardPage() {
         </FadeUp>
       )}
 
+      {/* --- Runway warning: savings buffer readiness vs Exit A timing --- */}
+      {runwayAnalysis && runwayAnalysis.warningLevel !== "ok" && (
+        <FadeUp>
+          <div
+            className={cn(
+              "rounded-xl border p-4 flex items-start gap-3",
+              runwayAnalysis.warningLevel === "critical"
+                ? "border-danger/30 bg-danger/5"
+                : "border-warning/30 bg-warning/5"
+            )}
+          >
+            <AlertCircle
+              className={cn(
+                "h-4 w-4 shrink-0 mt-0.5",
+                runwayAnalysis.warningLevel === "critical" ? "text-danger" : "text-warning"
+              )}
+            />
+            <div className="flex-1 min-w-0">
+              <p
+                className={cn(
+                  "text-sm font-medium",
+                  runwayAnalysis.warningLevel === "critical" ? "text-danger" : "text-warning"
+                )}
+              >
+                {runwayAnalysis.summary}
+              </p>
+              {runwayAnalysis.actionRequired && (
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {runwayAnalysis.actionRequired}
+                </p>
+              )}
+            </div>
+            <Link
+              href="/career-plan"
+              className="text-xs text-accent hover:underline shrink-0 self-center"
+            >
+              Review →
+            </Link>
+          </div>
+        </FadeUp>
+      )}
+
       {/* --- Mission Strip: where the plan says you should be vs. where you are --- */}
       {planPosition && (
         <FadeUp>
@@ -665,8 +766,15 @@ export default function DashboardPage() {
             icon={<TrendingUp className="h-4 w-4" />}
             iconBg="bg-success/15 text-success"
             label="Exit Point"
-            value={currentExit?.exit_code || "—"}
-            sub={nextExit ? `Next: ${nextExit.exit_code}` : "Reached top"}
+            value={nextExitStatus?.exitLabel ?? currentExit?.exit_code ?? "—"}
+            sub={
+              nextExitStatus
+                ? `${nextExitStatus.pctComplete}% · ${Math.round(nextExitStatus.hoursRemaining)}h left`
+                : nextExit
+                ? `Next: ${nextExit.exit_code}`
+                : "Complete"
+            }
+            progress={nextExitStatus?.pctComplete}
           />
         </StaggerItem>
         {applicationMetrics && applicationMetrics.total_applications > 0 && (
