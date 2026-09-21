@@ -15,7 +15,7 @@ import type { ExitLadderRowWithHours } from "@/types/career-merge";
  * useful exit status anyway).
  */
 export function useExitLadderWithHours() {
-  const { data: user } = useUser();
+  const { user } = useUser();
   const supabase = createClient();
 
   return useSWR(
