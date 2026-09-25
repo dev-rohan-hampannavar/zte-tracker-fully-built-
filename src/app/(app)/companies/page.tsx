@@ -198,9 +198,6 @@ export default function CompaniesPage() {
               <p className="text-[11px] text-muted">{tier.note}</p>
             </div>
           ))}
-        </CardContent>
-      </Card>
-
           <p className="text-[11px] text-muted">
             <span className="text-accent font-semibold">BCA filter note:</span> Referrals bypass the ATS filter. At companies that list "B.Tech/B.E." in requirements, a referral from someone inside the team is the most reliable way in — the recruiter sees the application differently when it comes with a vouch. Quality of the referral matters more than the company's stated policy.
           </p>
