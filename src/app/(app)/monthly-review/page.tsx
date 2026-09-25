@@ -7,7 +7,7 @@ import { useCareerTracker } from "@/lib/hooks/use-career";
 import { useInterviewAttempts } from "@/lib/hooks/use-interview-prep";
 import { usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
 import { computeMonthlyReview } from "@/lib/monthly-review";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion/primitives";
@@ -158,6 +158,33 @@ export default function MonthlyReviewPage() {
           )}
         </CardContent>
       </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Quarterly review template</CardTitle>
+          <CardDescription>Answer these six questions in writing every 3 months. Source: career_timeline_zte.docx §35.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3">
+          {([
+            { q: "Hours", prompt: "How many hours did I log vs plan? If behind, is it pace (hard to study) or interest (don't want to)? Fix the cause, not the symptom." },
+            { q: "Phases", prompt: "Which phases completed? Which are in progress? Is the roadmap still the right one, or do I need to skip or shorten anything based on what I've learned?" },
+            { q: "Build-in-public", prompt: "How many posts shipped? Were any posts based on something I actually learned vs something I summarised? Quality beats quantity." },
+            { q: "Applications", prompt: "How many sent, how many responses, how many interviews? If response rate is under 5% after 20+ tailored apps, the resume or portfolio needs work first." },
+            { q: "Savings", prompt: "Current savings vs 6-month buffer target. Months to buffer at current surplus. Am I on track to have the buffer ready before Exit A?" },
+            { q: "Ops status", prompt: "Is the ops job still safe? Any promotions, changes, or internal moves available? Any friction that needs managing before the switch?" },
+          ] as const).map((item) => (
+            <div key={item.q} className="rounded-lg border border-border/50 p-3">
+              <p className="text-xs font-semibold text-accent">{item.q}</p>
+              <p className="text-xs text-muted mt-1">{item.prompt}</p>
+            </div>
+          ))}
+          <div className="rounded-lg border border-border/50 bg-surface-2/30 p-3">
+            <p className="text-xs font-medium mb-1">After answering all six, write one sentence:</p>
+            <p className="text-xs text-muted italic">"Based on this quarter's evidence, my plan for next quarter is ______. The one thing I'm changing is ______."</p>
+            <p className="text-[11px] text-muted mt-2">Keep the answers in a doc or journal entry. Compare them quarter over quarter — the pattern is more useful than any single answer.</p>
+          </div>
+        </CardContent>
+      </Card>
+
     </div>
   );
 }

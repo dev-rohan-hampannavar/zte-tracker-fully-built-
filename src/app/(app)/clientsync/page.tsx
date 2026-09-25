@@ -7,7 +7,7 @@ import { useClientSyncMilestones, usePhasesWithProgress, useAllTopicNotes, useLi
 import { useProjectProgress, upsertProjectProgress } from "@/lib/hooks/use-projects";
 import { computeBacklinks } from "@/lib/note-links";
 import { ReferencedInPanel } from "@/components/roadmap/referenced-in-panel";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -161,6 +161,118 @@ export default function ClientSyncPage() {
           anchor project, tracked independently of the phase roadmap.
         </p>
       </div>
+
+      {/* ── Per-phase evidence requirements (§7) ── */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Phase evidence requirements</CardTitle>
+          <CardDescription>
+            What ClientSync must demonstrate at each exit point for the milestone to count. A live URL that loads is the minimum for every phase. Source: career_timeline_zte.docx §7.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border/50">
+                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Phase / Exit</th>
+                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">ClientSync must show</th>
+                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2">Hard gate?</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/30">
+                {([
+                  {
+                    phase: "Phase 05",
+                    exit: null,
+                    must: "Schema designed, seed data working, basic CRUD for clients and projects. Commit history shows iterative work, not a single dump.",
+                    gate: false,
+                  },
+                  {
+                    phase: "Phase 06",
+                    exit: "Exit A",
+                    must: "Live deployment URL (Vercel or Railway). Green CI badge on README. Docker container builds and runs. Auth (login/logout) works. At least one automated test passes in CI. README with: what it does, how to run it, one screenshot.",
+                    gate: true,
+                  },
+                  {
+                    phase: "Phase 06b",
+                    exit: "Exit A2",
+                    must: "React Native / Expo client fetches real data from the same API. Optional — skip if time is short.",
+                    gate: false,
+                  },
+                  {
+                    phase: "Phase 09",
+                    exit: null,
+                    must: "Razorpay payment webhook integrated and tested. Invoices generated and emailed via Resend. At least one E2E test covering the payment flow.",
+                    gate: false,
+                  },
+                  {
+                    phase: "Phase 10",
+                    exit: "Exit C",
+                    must: "Grafana/Datadog dashboard showing real metrics. p95 latency, error rate, and uptime visible. At least one alert configured. Postmortem doc for one real or simulated incident.",
+                    gate: true,
+                  },
+                  {
+                    phase: "Phase 11",
+                    exit: "Exit ★2",
+                    must: "PostgreSQL query plans reviewed and at least two slow queries optimised (show EXPLAIN ANALYZE before/after). Redis cache in place for at least one hot path.",
+                    gate: false,
+                  },
+                  {
+                    phase: "Phase 18",
+                    exit: "Exit 3",
+                    must: "Multi-tenant isolation verified — one tenant cannot access another's data under any auth path. Penetration test notes (even a manual checklist). OWASP Top 10 review documented.",
+                    gate: false,
+                  },
+                  {
+                    phase: "Phase 19",
+                    exit: "Exit E",
+                    must: "Full audit trail. GDPR/data-deletion flow. SOC 2 Type 1 controls checklist. At least one integration test per critical path. Coverage report in CI.",
+                    gate: false,
+                  },
+                ] as const).map((row) => (
+                  <tr key={row.phase}>
+                    <td className="py-2.5 pr-4 align-top">
+                      <span className="text-xs font-medium text-accent">{row.phase}</span>
+                      {row.exit && (
+                        <span className="ml-1.5 text-[10px] font-semibold text-success bg-success/10 rounded px-1 py-0.5">{row.exit}</span>
+                      )}
+                    </td>
+                    <td className="py-2.5 pr-4 text-xs text-muted align-top">{row.must}</td>
+                    <td className="py-2.5 text-xs align-top">
+                      {row.gate
+                        ? <span className="text-danger font-semibold">Yes — do not apply without this</span>
+                        : <span className="text-muted">No</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <p className="text-xs font-medium mb-2">Phase capstone projects (alongside ClientSync)</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {([
+                { phase: "02", name: "CivicBoard",   desc: "Community issue tracker — Next.js, SQLite, auth, basic CRUD. First deployed project." },
+                { phase: "03", name: "Atlas",         desc: "CLI note-taking tool — Node.js, file system, argument parsing, unit tests." },
+                { phase: "04", name: "Pulse",         desc: "Habit tracker — REST API, PostgreSQL, JWT auth, input validation, OpenAPI spec." },
+                { phase: "05", name: "Ledger",        desc: "Personal finance tracker — complex schema, aggregate SQL queries, multi-user isolation." },
+                { phase: "06", name: "Shipwright",    desc: "CI/CD pipeline demo — GitHub Actions, Docker, automated tests, deployment to cloud." },
+                { phase: "07",  name: "TaxStack",     desc: "GST invoice generator — post-Exit ★1, second flagship, finance-domain differentiator." },
+              ] as const).map((cap) => (
+                <div key={cap.phase} className="rounded-lg border border-border/50 p-3">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="font-mono-tabular text-[10px]">Phase {cap.phase}</Badge>
+                    <span className="text-xs font-semibold">{cap.name}</span>
+                  </div>
+                  <p className="text-xs text-muted mt-1">{cap.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="relative flex flex-col gap-3">
         <div className="absolute left-[19px] top-4 bottom-4 w-px bg-border" />

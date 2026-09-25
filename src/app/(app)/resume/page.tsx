@@ -6,7 +6,7 @@ import { useCareerTracker } from "@/lib/hooks/use-career";
 import { usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
 import { useProjectProgress } from "@/lib/hooks/use-projects";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -242,6 +242,78 @@ export default function ResumePage() {
           </CardContent>
         </Card>
       )}
+
+      {/* ── Two-resume rule + LinkedIn plan ── */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Two-resume rule</CardTitle>
+          <CardDescription>Never send the ops CV for a dev role or the reverse. Source: career_timeline_zte.docx §22 and §33.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="rounded-lg border border-border/50 p-4">
+              <p className="text-xs font-semibold text-accent uppercase tracking-wide mb-2">Dev CV (use for dev roles)</p>
+              <ul className="text-xs text-muted flex flex-col gap-1.5">
+                <li><span className="text-foreground font-medium">Header:</span> [Name] | Bangalore | [phone] | [email] | GitHub: rohan-hampannavar | Live: [ClientSync URL]</li>
+                <li><span className="text-foreground font-medium">Summary (2 lines):</span> Full-stack developer (Next.js, TypeScript, PostgreSQL) with two years of operations experience at Applied Materials. Ships production-style projects with CI, Docker and tests.</li>
+                <li><span className="text-foreground font-medium">Projects first:</span> ClientSync → [capstone names]. Live URL, CI badge, one measurable result per project.</li>
+                <li><span className="text-foreground font-medium">Experience:</span> Biz Ops Associate, Applied Materials — listed as "2 years professional experience" with any automation work.</li>
+                <li><span className="text-foreground font-medium">Skills:</span> TypeScript, React, Next.js, Node, PostgreSQL, SQL, Git, Docker, CI/CD. Only list what you can talk about for 5 minutes.</li>
+                <li><span className="text-foreground font-medium">Education:</span> BCA, [university], 2025</li>
+              </ul>
+            </div>
+            <div className="rounded-lg border border-border/50 p-4">
+              <p className="text-xs font-semibold text-warning uppercase tracking-wide mb-2">Ops CV (keep for internal moves / ops roles only)</p>
+              <ul className="text-xs text-muted flex flex-col gap-1.5">
+                <li>Applied Materials achievements with numbers (cost, time, error rate).</li>
+                <li>SQL and analytics skills, process improvements.</li>
+                <li>Any automation work as a bridge signal.</li>
+                <li className="text-warning font-medium">Never send this for a dev role.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-medium mb-2">LinkedIn headline change plan</p>
+            <div className="flex flex-col gap-2">
+              {([
+                { when: "Now", headline: "Biz Ops Associate at Applied Materials | Learning full-stack development in public" },
+                { when: "At Exit A", headline: "Biz Ops Associate → Full-Stack Developer (Next.js, TypeScript) | Building in public" },
+                { when: "After first offer", headline: "Update to the new role and post once." },
+              ] as const).map((row) => (
+                <div key={row.when} className="flex gap-3 rounded-lg border border-border/50 p-3">
+                  <span className="text-[10px] uppercase text-muted shrink-0 w-20">{row.when}</span>
+                  <p className="text-xs text-foreground">{row.headline}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-medium mb-2">60-second interview pitch</p>
+            <div className="rounded-lg border border-border/50 bg-surface-2/30 p-3 text-xs text-muted leading-relaxed">
+              "I've spent two years in business operations at Applied Materials, working on [specific process]. I taught myself full-stack development over the past [X] months and built <span className="text-foreground">ClientSync</span>, a [description]. I like this work because [reason tied to something you shipped]. I'm looking for a team where I can bring both the business context and the engineering."
+              <p className="mt-2 text-[11px] text-accent">Replace every bracket with real details before using.</p>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-medium mb-2">Recruiter 90-second checklist (ZTE's own test)</p>
+            <ul className="text-xs text-muted flex flex-col gap-1">
+              <li>☐ Live URL that loads and works on mobile</li>
+              <li>☐ Green CI badge on the README</li>
+              <li>☐ README with: what it does, how to run it, one screenshot or GIF, what you learned</li>
+              <li>☐ Commit history spread over weeks with Conventional Commits from Phase 04 — do not dump commits on the last day</li>
+              <li>☐ 2–3 pinned repos on GitHub, not 40</li>
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-xs font-medium mb-2">Build-in-public rule</p>
+            <p className="text-xs text-muted">One visible post per ZTE phase on GitHub / LinkedIn / dev.to. Write about a specific decision or bug — not a tutorial recap. <span className="text-foreground">Skip Phase 08 (DSA) and Phase 15 posts</span> per ZTE. Suggested first posts: Phase 05 (a schema decision in Ledger), Phase 06 (a CI failure you fixed), Phase 09 (Razorpay webhook handling).</p>
+          </div>
+        </CardContent>
+      </Card>
 
       {bullets.length === 0 && (
         <Card>

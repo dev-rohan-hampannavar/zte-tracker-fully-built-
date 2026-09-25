@@ -694,6 +694,38 @@ export default function DashboardPage() {
         </FadeUp>
       )}
 
+      {/* --- Core rule reminder: switch only when offer > ops pay --- */}
+      {careerPlanSettings?.career_plan_track === "plan_a" && (
+        <FadeUp>
+          <div className="rounded-xl border border-border/40 bg-surface/40 p-3 flex items-start gap-3">
+            <span className="text-accent text-xs font-semibold shrink-0 mt-0.5">Rule</span>
+            <p className="text-xs text-muted">
+              Switch to dev only when an offer beats your current ops pay (₹4.6L CTC baseline). Until then: keep the job, fund the buffer, keep studying. The worst case is lost study time, not lost income.
+            </p>
+          </div>
+        </FadeUp>
+      )}
+
+      {/* --- Burnout rule: lighter week every 6th week --- */}
+      {(() => {
+        if (!careerPlanSettings?.career_plan_start_date) return null;
+        const start = new Date(`${careerPlanSettings.career_plan_start_date}T00:00:00`);
+        const now = new Date();
+        const weeksElapsed = Math.floor((now.getTime() - start.getTime()) / (7 * 24 * 3600 * 1000));
+        const isLighterWeek = weeksElapsed > 0 && weeksElapsed % 6 === 5; // every 6th week (0-indexed)
+        if (!isLighterWeek) return null;
+        return (
+          <FadeUp>
+            <div className="rounded-xl border border-accent/30 bg-accent/5 p-3 flex items-start gap-3">
+              <span className="text-accent text-xs font-semibold shrink-0 mt-0.5">Week {weeksElapsed + 1}</span>
+              <p className="text-xs text-muted">
+                <span className="text-accent font-medium">Lighter week.</span> Every 6th week is for review, not new material. Consolidate what you've done, re-solve one problem you looked up, write a build-in-public post. 20h minimum, not 30.
+              </p>
+            </div>
+          </FadeUp>
+        );
+      })()}
+
       {/* --- Mission Strip: where the plan says you should be vs. where you are --- */}
       {planPosition && (
         <FadeUp>

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useUser } from "@/lib/hooks/use-user";
 import { useDsaProgress, addDsaProblem, toggleDsaComplete, deleteDsaProblem } from "@/lib/hooks/use-dsa";
 import { useRoadmapMetadata } from "@/lib/hooks/use-roadmap";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -223,6 +223,58 @@ export default function DsaTrackerPage() {
         </Card>
         </StaggerItem>
       </StaggerContainer>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Phase 08 — DSA breakdown</CardTitle>
+          <CardDescription>6 blocks, 331 hours total. Source: career_timeline_zte.docx §32.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border/50">
+                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Block</th>
+                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Topic</th>
+                  <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Hours</th>
+                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2">Gate</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/30">
+                {([
+                  { block: "01", topic: "Complexity, arrays, strings, two pointers, sliding window", hours: 48, gate: "Solve 20 easy problems without hints under 20 min each" },
+                  { block: "02", topic: "Hash maps, sets, prefix sums, sorting and searching", hours: 56, gate: "Solve 25 easy / 5 medium without hints" },
+                  { block: "03", topic: "Linked lists, stacks, queues, recursion, trees", hours: 62, gate: "First timed mock — complete any easy in 20 min, any medium in 35 min" },
+                  { block: "04", topic: "Binary trees, BST, heap, greedy, dynamic programming (1D)", hours: 68, gate: "Solve 10 mediums under 40 min each" },
+                  { block: "05", topic: "Graphs (BFS/DFS/Dijkstra), tries, intervals, advanced DP (2D)", hours: 67, gate: "Solve any graph medium in under 45 min" },
+                  { block: "06", topic: "System design basics + review, mock interviews ×6", hours: 30, gate: "2 full mock loops — OA + DSA round + HM — before Phase 09" },
+                ] as const).map((row) => (
+                  <tr key={row.block}>
+                    <td className="py-2 pr-4 text-xs text-muted">Block {row.block}</td>
+                    <td className="py-2 pr-4 text-xs">{row.topic}</td>
+                    <td className="py-2 pr-4 text-right font-mono-tabular text-xs">{row.hours}h</td>
+                    <td className="py-2 text-xs text-muted">{row.gate}</td>
+                  </tr>
+                ))}
+                <tr className="border-t-2 border-border/70 font-semibold">
+                  <td className="py-2 pr-4 text-xs" colSpan={2}>Total</td>
+                  <td className="py-2 pr-4 text-right font-mono-tabular text-xs">331h</td>
+                  <td className="py-2 text-xs text-muted">= Exit ★1 gate (interview-ready)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="rounded-lg border border-border/50 bg-surface-2/30 p-3">
+            <p className="text-xs font-medium mb-1">REACTO per problem (25-min cutoff)</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 text-xs text-muted">
+              {(["R — Restate problem", "E — Examples (2–3)", "A — Approach (brute → optimal)", "C — Code (talk aloud)", "T — Test with examples", "O — Optimise if time"] as const).map((s) => (
+                <span key={s} className="flex gap-1"><span className="text-accent">•</span>{s}</span>
+              ))}
+            </div>
+            <p className="text-[11px] text-muted mt-2">Re-solve every problem you looked up a solution for the next day, without the solution open. If it takes &gt;25 min the second time, it goes back to the queue.</p>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
