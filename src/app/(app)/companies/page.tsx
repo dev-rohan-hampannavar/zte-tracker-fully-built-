@@ -110,13 +110,13 @@ export default function CompaniesPage() {
           </div>
 
           <div className="rounded-lg border border-border/50 p-3">
-            <p className="text-xs font-semibold mb-2">How to check a company's degree policy in 15 minutes</p>
+            <p className="text-xs font-semibold mb-2">How to check a company&apos;s degree policy in 15 minutes</p>
             <ol className="text-xs text-muted flex flex-col gap-1 list-decimal list-inside">
-              <li>Search the company's LinkedIn jobs page for "software engineer fresher" or "SDE 1".</li>
-              <li>Open 3 listings. Look for "B.E./B.Tech" or "degree in CS" in the requirements section.</li>
-              <li>If all 3 say B.Tech: referral-only or skip. If 1 of 3 says "equivalent": apply with a strong project.</li>
+              <li>Search the company&apos;s LinkedIn jobs page for &quot;software engineer fresher&quot; or &quot;SDE 1&quot;.</li>
+              <li>Open 3 listings. Look for &quot;B.E./B.Tech&quot; or &quot;degree in CS&quot; in the requirements section.</li>
+              <li>If all 3 say B.Tech: referral-only or skip. If 1 of 3 says &quot;equivalent&quot;: apply with a strong project.</li>
               <li>Check their engineering blog or careers page — companies that post on dev.to/Medium rarely ATS-filter hard.</li>
-              <li>Ask anyone who works there on LinkedIn: "Do you screen on degree?" — most people reply honestly.</li>
+              <li>Ask anyone who works there on LinkedIn: &quot;Do you screen on degree?&quot; — most people reply honestly.</li>
             </ol>
           </div>
 
@@ -138,69 +138,6 @@ export default function CompaniesPage() {
               ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* ── Company shortlist by exit point ── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Info className="h-5 w-5 text-accent" /> Target company shortlist by exit
-          </CardTitle>
-          <CardDescription>
-            Specific Bangalore companies worth targeting at each exit point. Check each for degree filters before applying (guide above). Source: career_timeline_zte.docx §30.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-3">
-          {([
-            {
-              exit: "Exit A",      hours: "1,235h", label: "Junior Full-Stack · ₹6–10L",      borderCls: "border-success/30",  textCls: "text-success",
-              companies: ["Seed-stage startups on Wellfound and WorkAtAStartup", "Any company that posts 'fresher' or '0–1 yr exp' roles with a specific tech stack listed", "Ex-Applied Materials contacts' companies — referral is the key lever at this stage"],
-              note: "Volume is the strategy here: 30–40 well-tailored applications per interview at ~3% cold rate. Focus on companies with a technical blog post — they value craft.",
-            },
-            {
-              exit: "Exit A–B",    hours: "1,235–1,417h", label: "Junior-to-Mid · ₹8–12L",   borderCls: "border-accent/30",   textCls: "text-accent",
-              companies: ["Postman", "Hasura", "ToolJet", "AppSmith", "Plane", "Hoppscotch"],
-              note: "Developer-tool companies appreciate ZTE-grade portfolio work — open source contributions to their repos (even docs or bug fixes) outperform cold applications.",
-            },
-            {
-              exit: "Exit ★1",     hours: "1,748h", label: "Interview-ready · ₹8–15L",        borderCls: "border-accent/30",   textCls: "text-accent",
-              companies: ["Chargebee", "BrowserStack", "Juspay", "Setu (by Pine Labs)", "Multiplier", "Leegality", "Dezerv", "Smallcase", "Finbox"],
-              note: "These are product-first B2B companies where ops context is a hiring plus. Referral conversion is 40–65% vs 3% cold — find one connection per company before applying.",
-            },
-            {
-              exit: "Exit C–★2",   hours: "1,949–2,113h", label: "Mid, production-grade · ₹12–25L", borderCls: "border-warning/30",  textCls: "text-warning",
-              companies: ["Razorpay", "CRED (early round)", "Zepto (tech team)", "Groww", "Fi Money", "Slice", "Jupiter", "Open Financial"],
-              note: "These companies run multi-stage loops including system design at the mid level. Phase 10 (monitoring/observability) and Phase 11 (DB optimisation) are the differentiators.",
-            },
-            {
-              exit: "Exit D–3",    hours: "2,320–2,943h", label: "Mid-Senior · ₹20–40L",      borderCls: "border-warning/30",  textCls: "text-warning",
-              companies: ["Sarvam AI", "Krutrim", "Glance / InMobi", "Meesho platform team", "Swiggy engineering", "Zomato", "PhonePe", "Flipkart platform"],
-              note: "At this level the BCA filter is mostly gone — companies care about what you've shipped. GitHub profile + ClientSync + TaxStack should carry the interview to the technical round.",
-            },
-            {
-              exit: "Exit 3–E",    hours: "2,943–3,034h", label: "Senior / Founding · ₹25–50L", borderCls: "border-danger/30",   textCls: "text-danger",
-              companies: ["Walmart Global Tech India", "Target India", "JPMC India", "Goldman Sachs India", "Adobe India", "Salesforce India", "Atlassian India"],
-              note: "GCCs often require a B.Tech/MCA degree at this level. These are reachable after 3–5 years at a product company — not a direct-from-fresher target. FAANG India falls in the same bucket.",
-            },
-          ] as const).map((tier) => (
-            <div key={tier.exit} className={cn("rounded-lg border p-3", tier.borderCls)}>
-              <div className="flex items-center gap-2 mb-2">
-                <span className={cn("text-xs font-semibold", tier.textCls)}>{tier.exit}</span>
-                <Badge variant="outline" className="text-[10px] font-mono-tabular">{tier.hours}</Badge>
-                <span className="text-xs text-muted">{tier.label}</span>
-              </div>
-              <div className="flex flex-wrap gap-1.5 mb-2">
-                {tier.companies.map((c) => (
-                  <span key={c} className="text-[11px] bg-surface-2 border border-border/50 rounded px-2 py-0.5">{c}</span>
-                ))}
-              </div>
-              <p className="text-[11px] text-muted">{tier.note}</p>
-            </div>
-          ))}
-          <p className="text-[11px] text-muted">
-            <span className="text-accent font-semibold">BCA filter note:</span> Referrals bypass the ATS filter. At companies that list "B.Tech/B.E." in requirements, a referral from someone inside the team is the most reliable way in — the recruiter sees the application differently when it comes with a vouch. Quality of the referral matters more than the company's stated policy.
-          </p>
         </CardContent>
       </Card>
 

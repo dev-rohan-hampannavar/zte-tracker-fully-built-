@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { useUser } from "@/lib/hooks/use-user";
+import { useActiveUserRoadmap } from "@/lib/hooks/use-user-roadmap";
+import { DetailedTrackDailyPlan } from "@/components/daily-plan/detailed-track-daily-plan";
 import { useDailyPlan } from "@/lib/hooks/use-daily-plan";
 import { useDailyPlanTaskState, useDailyPlanTaskStateRange, planTaskKey, computeCarryCounts, STALLED_CARRY_THRESHOLD } from "@/lib/hooks/use-daily-plan-task-state";
 import { useDailyLogs } from "@/lib/hooks/use-daily-logs";
@@ -46,6 +48,16 @@ const TIME_PRESETS = [30, 60, 120, 180, 300];
 
 export default function DailyPlanPage() {
   const { user } = useUser();
+  const { data: activeRoadmap, isLoading: enrollmentLoading } = useActiveUserRoadmap(user?.id);
+  if (enrollmentLoading) return <Skeleton className="h-96 w-full" />;
+  if (activeRoadmap && activeRoadmap.roadmap_id !== "zte-core-v1" && user?.id) {
+    return <DetailedTrackDailyPlan userId={user.id} />;
+  }
+  return <LegacyDailyPlanPage userId={user?.id} />;
+}
+
+function LegacyDailyPlanPage({ userId }: { userId: string | undefined }) {
+  const user = userId ? { id: userId } : null;
   const [availableMinutes, setAvailableMinutes] = useState(120);
   const { plan, isLoading, historicalCompletionRate } = useDailyPlan(availableMinutes);
   const planDate = todayISO();

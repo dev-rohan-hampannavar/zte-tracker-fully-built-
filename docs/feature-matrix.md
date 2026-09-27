@@ -6,13 +6,19 @@ This is the honest release status for the prioritized feature list. “Implement
 
 | Feature | Source status | Release status |
 | --- | --- | --- |
-| Supabase migration verification and rollback | Rollback plan in `docs/migration-report.md`; read-only `npm run verify:supabase` gate | Migrations 0051–0055 are not applied/verified against the production project |
+| Supabase migration verification and rollback | Rollback plan in `docs/migration-report.md`; read-only `npm run verify:supabase` gate now probes migrations 0077–0085 | Migrations 0077–0085 and the detailed-track seed have not been applied/verified against a live project |
 | Automated database backups and restore testing | Settings JSON backup/import and reset coverage | Supabase platform backups and an authenticated restore round-trip are not verified |
-| Error monitoring and uptime | Public `/api/health`, strict smoke checker, optional CI smoke job | External error monitor (for example Sentry) is not configured; current live deployment still has the old protected health route |
+| Error monitoring and uptime | Public `/api/health`, strict smoke checker, optional CI smoke job | External error monitor (for example Sentry) is not configured; live deployment status was not checked |
 | End-to-end smoke journeys | In-process health/smoke contract tests | Authenticated login, progress, logging, applications, settings, export, and reset journeys still require a signed-in browser/session |
 | Mobile/keyboard/accessibility/loading QA | Responsive/loading/error states; public 390×844 check passed | Full authenticated manual/accessibility pass remains pending |
 | Clear onboarding | Welcome tour plus Career Plan setup for fork, dates, hours, and flagship project | Implemented in source |
 | Vercel deployment health endpoint | Public source route and JSON contract | Must be deployed before the live domain can pass the strict probe |
+
+## Roadmap platform status
+
+Three detailed track families are generated from the existing 21-phase curriculum plus authored role-specific additions. They contain 63 phases, 1,193 topics, and 614 applied projects; all ten target roles currently seeded in the project map to one of these families. Enrollment-aware dashboard, roadmap, and daily-plan views save topic/project progress, surface prerequisites, and schedule suggested reviews. Final onboarding and enrollment are committed together by a database function. Admins can create drafts, add and edit phases/modules/topics/projects, update topic resources and prerequisites, map roles to tracks, and publish through a review/test workflow. Feature switches and aggregate funnel reporting are also available in admin.
+
+The curriculum generator passes its structural checks. Human subject-matter review and live Supabase validation remain pending. Migration 0084 validates content structure before review and keeps published versions read-only. New migrations and generated seed SQL must be applied to the target Supabase project before these features work in a deployed app.
 
 ## Essential career-plan features
 
@@ -23,7 +29,7 @@ All of these are implemented in source: Execution OS time blocks with local `.ic
 | Feature | Status |
 | --- | --- |
 | GitHub activity | Lightweight public-events activity view; no OAuth/full contribution sync |
-| Role readiness | Implemented for frontend/backend/full-stack/SDE tracks and BI/Data Analyst |
+| Role readiness | Three detailed roadmap families mapped to all ten target roles currently seeded; specialist depth differs by family |
 | Resume evidence bullets | Implemented from real completed/evidence data |
 | Timed interview simulator | Implemented and writes to shared interview history |
 | Progress analytics | Implemented from live activity/application/readiness data |

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useUser } from "@/lib/hooks/use-user";
+import { useActiveUserRoadmap } from "@/lib/hooks/use-user-roadmap";
 import { useDsaProgress, addDsaProblem, toggleDsaComplete, deleteDsaProblem } from "@/lib/hooks/use-dsa";
 import { useRoadmapMetadata } from "@/lib/hooks/use-roadmap";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -24,9 +25,11 @@ import { weakestPatterns, accuracyByDifficulty, averageSolveTimeMinutes, recentM
 import { rateDsaConfidence } from "@/lib/hooks/use-dsa";
 import { ConfidencePicker } from "@/components/revision/confidence-picker";
 import { CONFIDENCE_LABEL, isOverdue, type ConfidenceRating } from "@/lib/revision-schedule";
+import { resolveDsaTargets } from "@/lib/personalization-engine";
 
 export default function DsaTrackerPage() {
   const { user } = useUser();
+  const { data: activeRoadmap } = useActiveUserRoadmap(user?.id);
   const { data: problems, mutate, isLoading } = useDsaProgress(user?.id);
   const { data: metadata } = useRoadmapMetadata();
 
@@ -43,8 +46,7 @@ export default function DsaTrackerPage() {
   const easyDone = (problems ?? []).filter((p) => p.difficulty === "easy" && p.completed).length;
   const mediumDone = (problems ?? []).filter((p) => p.difficulty === "medium" && p.completed).length;
   const hardDone = (problems ?? []).filter((p) => p.difficulty === "hard" && p.completed).length;
-  const easyTarget = metadata?.dsa_easy_target ?? 75;
-  const mediumTarget = metadata?.dsa_medium_target ?? 50;
+  const { easyTarget, mediumTarget } = resolveDsaTargets(activeRoadmap, metadata);
 
   const filtered = useMemo(() => {
     return (problems ?? []).filter((p) => {
@@ -197,7 +199,7 @@ export default function DsaTrackerPage() {
               <AnimatedCounter value={easyDone} />
               <span className="text-sm text-muted font-normal"> / {easyTarget}</span>
             </p>
-            <Progress value={pct(easyDone, easyTarget)} className="mt-2" glow={easyDone >= easyTarget && easyTarget > 0} />
+            <Progress value={pct(easyDone, easyTarget)} className="mt-2" glow={easyDone >= easyTarget && easyTarget > 0} label={`Easy problems: ${easyDone} of ${easyTarget} done`} />
           </CardContent>
         </Card>
         </StaggerItem>
@@ -209,7 +211,7 @@ export default function DsaTrackerPage() {
               <AnimatedCounter value={mediumDone} />
               <span className="text-sm text-muted font-normal"> / {mediumTarget}</span>
             </p>
-            <Progress value={pct(mediumDone, mediumTarget)} className="mt-2" glow={mediumDone >= mediumTarget && mediumTarget > 0} />
+            <Progress value={pct(mediumDone, mediumTarget)} className="mt-2" glow={mediumDone >= mediumTarget && mediumTarget > 0} label={`Medium problems: ${mediumDone} of ${mediumTarget} done`} />
           </CardContent>
         </Card>
         </StaggerItem>
@@ -440,7 +442,7 @@ export default function DsaTrackerPage() {
                     <div key={w.label} className="flex items-center justify-between gap-3">
                       <span className="text-sm">{w.label}</span>
                       <div className="flex items-center gap-2">
-                        <Progress value={w.completionPct} className="w-24 h-1.5" />
+                        <Progress value={w.completionPct} className="w-24 h-1.5" label={`${w.label}: ${w.done} of ${w.total}`} />
                         <Badge variant="warning" className="font-mono-tabular text-xs w-14 justify-center">
                           {w.done}/{w.total}
                         </Badge>
@@ -463,7 +465,7 @@ export default function DsaTrackerPage() {
                         {done}/{group.problems.length}
                       </Badge>
                     </div>
-                    <Progress value={pct(done, group.problems.length)} className="w-24 h-1.5" />
+                    <Progress value={pct(done, group.problems.length)} className="w-24 h-1.5" label={`${group.label}: ${done} of ${group.problems.length}`} />
                   </div>
                   <div className="flex flex-col gap-1">
                     {group.problems.map((p) => (
@@ -573,7 +575,7 @@ export default function DsaTrackerPage() {
                         {w.avgAttempts !== null && (
                           <span className="text-xs text-muted">{w.avgAttempts} avg attempts</span>
                         )}
-                        <Progress value={w.accuracyPct} className="w-24 h-1.5" />
+                        <Progress value={w.accuracyPct} className="w-24 h-1.5" label={`${w.pattern} accuracy: ${w.accuracyPct}%`} />
                         <Badge variant="warning" className="font-mono-tabular text-xs w-14 justify-center">
                           {w.solved}/{w.total}
                         </Badge>

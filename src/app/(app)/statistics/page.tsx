@@ -42,7 +42,7 @@ function StatisticsOverviewTab() {
   const milestones = (milestonesRaw ?? []) as ClientSyncMilestone[];
   const { data: exerciseProgress } = useExerciseProgress(user?.id);
   const { data: bipStatus } = useBuildInPublicStatus(user?.id);
-  const { data: roadmap } = useRoadmap();
+  const { data: roadmap } = useRoadmap(user?.id);
   const { data: metadata } = useRoadmapMetadata();
 
   const allTopics = useMemo(() => phases.flatMap((p) => p.topics), [phases]);
@@ -472,7 +472,7 @@ function StatisticsOverviewTab() {
                   {axis.label}
                 </div>
                 <p className="text-xl font-bold font-mono-tabular">{axis.pct}%</p>
-                <Progress value={axis.pct} className="h-1.5" />
+                <Progress value={axis.pct} className="h-1.5" label={`${axis.label}: ${axis.pct}%`} />
                 <p className="text-xs font-medium">{axis.summary}</p>
                 <p className="text-[11px] text-muted leading-snug">{axis.detail}</p>
               </div>

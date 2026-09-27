@@ -101,6 +101,13 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: settingsError.message }, { status: 500 });
   }
 
+  // Per-user results (raw user_id UUIDs and failure reason strings, which
+  // can include provider error text) are kept in-process only and never
+  // returned in the response body — this endpoint has no session/caller
+  // identity beyond the shared CRON_SECRET, so its JSON response is
+  // effectively as exposed as anything logged by the external pinger that
+  // calls it. Only aggregate counts go back over the wire; the detailed
+  // array stays server-side for whoever has direct log access.
   const results: { userId: string; status: "sent" | "skipped" | "failed"; reason?: string }[] = [];
 
   for (const row of optedIn ?? []) {
@@ -192,5 +199,16 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ weekStart, weekEnd, results });
+  // Aggregate-only response: no user_id, no email, no provider error text.
+  // The pinger's own success/failure signal is the HTTP status plus these
+  // counts; per-recipient detail (results) is intentionally not returned.
+  const sent = results.filter((r) => r.status === "sent").length;
+  const skipped = results.filter((r) => r.status === "skipped").length;
+  const failed = results.filter((r) => r.status === "failed").length;
+  console.log(
+    `[weekly-summary] ${weekStart}..${weekEnd}: sent=${sent} skipped=${skipped} failed=${failed}`,
+    failed > 0 ? results.filter((r) => r.status === "failed") : ""
+  );
+
+  return NextResponse.json({ weekStart, weekEnd, sent, skipped, failed, total: results.length });
 }

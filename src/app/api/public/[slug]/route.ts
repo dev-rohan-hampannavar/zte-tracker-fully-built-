@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const revalidate = 300; // same cache window as the profile page itself
 
@@ -17,6 +18,15 @@ export const revalidate = 300; // same cache window as the profile page itself
  * topic breakdown beyond phase-level completion.
  */
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
+  // Best-effort, single-instance limiter — see src/lib/rate-limit.ts for
+  // the honest limitation. 30 requests/minute per IP across all slugs on
+  // this route: generous for any legitimate embed use (a resume site
+  // polling once per page load), restrictive against a scraping loop.
+  const ip = getClientIp(_request);
+  if (!checkRateLimit(`public-profile:${ip}`, 30, 60_000)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const { slug } = await params;
   // This endpoint is the server-side public projection boundary. It may use
   // the service role only after resolving an opted-in profile, and selects

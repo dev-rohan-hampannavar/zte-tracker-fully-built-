@@ -179,7 +179,7 @@ export default function MonthlyReviewPage() {
           ))}
           <div className="rounded-lg border border-border/50 bg-surface-2/30 p-3">
             <p className="text-xs font-medium mb-1">After answering all six, write one sentence:</p>
-            <p className="text-xs text-muted italic">"Based on this quarter's evidence, my plan for next quarter is ______. The one thing I'm changing is ______."</p>
+            <p className="text-xs text-muted italic">&quot;Based on this quarter&apos;s evidence, my plan for next quarter is ______. The one thing I&apos;m changing is ______.&quot;</p>
             <p className="text-[11px] text-muted mt-2">Keep the answers in a doc or journal entry. Compare them quarter over quarter — the pattern is more useful than any single answer.</p>
           </div>
         </CardContent>

@@ -257,7 +257,7 @@ export default function ResumePage() {
                 <li><span className="text-foreground font-medium">Header:</span> [Name] | Bangalore | [phone] | [email] | GitHub: rohan-hampannavar | Live: [ClientSync URL]</li>
                 <li><span className="text-foreground font-medium">Summary (2 lines):</span> Full-stack developer (Next.js, TypeScript, PostgreSQL) with two years of operations experience at Applied Materials. Ships production-style projects with CI, Docker and tests.</li>
                 <li><span className="text-foreground font-medium">Projects first:</span> ClientSync → [capstone names]. Live URL, CI badge, one measurable result per project.</li>
-                <li><span className="text-foreground font-medium">Experience:</span> Biz Ops Associate, Applied Materials — listed as "2 years professional experience" with any automation work.</li>
+                <li><span className="text-foreground font-medium">Experience:</span> Biz Ops Associate, Applied Materials — listed as &quot;2 years professional experience&quot; with any automation work.</li>
                 <li><span className="text-foreground font-medium">Skills:</span> TypeScript, React, Next.js, Node, PostgreSQL, SQL, Git, Docker, CI/CD. Only list what you can talk about for 5 minutes.</li>
                 <li><span className="text-foreground font-medium">Education:</span> BCA, [university], 2025</li>
               </ul>
@@ -292,13 +292,13 @@ export default function ResumePage() {
           <div>
             <p className="text-xs font-medium mb-2">60-second interview pitch</p>
             <div className="rounded-lg border border-border/50 bg-surface-2/30 p-3 text-xs text-muted leading-relaxed">
-              "I've spent two years in business operations at Applied Materials, working on [specific process]. I taught myself full-stack development over the past [X] months and built <span className="text-foreground">ClientSync</span>, a [description]. I like this work because [reason tied to something you shipped]. I'm looking for a team where I can bring both the business context and the engineering."
+              &quot;I&apos;ve spent two years in business operations at Applied Materials, working on [specific process]. I taught myself full-stack development over the past [X] months and built <span className="text-foreground">ClientSync</span>, a [description]. I like this work because [reason tied to something you shipped]. I&apos;m looking for a team where I can bring both the business context and the engineering.&quot;
               <p className="mt-2 text-[11px] text-accent">Replace every bracket with real details before using.</p>
             </div>
           </div>
 
           <div>
-            <p className="text-xs font-medium mb-2">Recruiter 90-second checklist (ZTE's own test)</p>
+            <p className="text-xs font-medium mb-2">Recruiter 90-second checklist (ZTE&apos;s own test)</p>
             <ul className="text-xs text-muted flex flex-col gap-1">
               <li>☐ Live URL that loads and works on mobile</li>
               <li>☐ Green CI badge on the README</li>

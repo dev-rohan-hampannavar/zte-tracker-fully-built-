@@ -10,6 +10,8 @@ import { useCareerTracker, useInterviewRounds } from "@/lib/hooks/use-career";
 import { useProjectSkills, countProjectsWithEvidence } from "@/lib/hooks/use-project-skills";
 import { useUserSettings } from "@/lib/hooks/use-user-settings";
 import { useRoadmapMetadata } from "@/lib/hooks/use-roadmap";
+import { useActiveUserRoadmap } from "@/lib/hooks/use-user-roadmap";
+import { resolveDsaTargets } from "@/lib/personalization-engine";
 
 const supabase = createClient();
 
@@ -38,6 +40,7 @@ function useRoleRequirements(roleId: string | undefined) {
  */
 export function useJobReadiness(userId: string | undefined, role: TargetRole | undefined) {
   const { data: requirements } = useRoleRequirements(role?.id);
+  const { data: activeRoadmap } = useActiveUserRoadmap(userId);
   const { data: skillEvidence } = useSkillEvidence(userId);
   const { data: dsaProgress } = useDsaProgress(userId);
   const { data: metadata } = useRoadmapMetadata();
@@ -60,8 +63,8 @@ export function useJobReadiness(userId: string | undefined, role: TargetRole | u
       requirements: requirements!,
       skillEvidence: skillEvidence!,
       dsaProgress: dsaProgress!,
-      dsaEasyTarget: metadata?.dsa_easy_target ?? null,
-      dsaMediumTarget: metadata?.dsa_medium_target ?? null,
+      dsaEasyTarget: resolveDsaTargets(activeRoadmap, metadata).easyTarget,
+      dsaMediumTarget: resolveDsaTargets(activeRoadmap, metadata).mediumTarget,
       githubUsername: settings?.github_username ?? null,
       projectsWithEvidence: countProjectsWithEvidence(projectSkills!),
       applications: applications!,

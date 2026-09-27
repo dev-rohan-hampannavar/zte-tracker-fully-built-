@@ -6,27 +6,25 @@
 -- All marked as "example" in the doc — replace with real figures
 -- via the Settings UI once the page is updated.
 --
--- The user_id must be replaced with Rohan's actual Supabase auth UID.
--- Find it with:
---   SELECT id FROM auth.users WHERE email = '<your email>';
+-- REPLACE THE EMAIL BELOW with the actual account email before running.
+-- This resolves by email, not "first user created" — the old version of
+-- this file used `ORDER BY created_at LIMIT 1`, which is exactly the
+-- anti-pattern the multi-user transformation's audit flagged as
+-- unacceptable for a production app (docs/AUDIT.md, section 5): once a
+-- second real user signs up, "first user" silently stops meaning "Rohan"
+-- and this script would attach his career data to whoever happened to
+-- sign up first chronologically. Fixed to resolve by email explicitly.
 -- ============================================================
-
--- Set a variable for the user ID. Supabase SQL editor does not support
--- \set, so replace :USER_ID with the actual UUID string below.
--- Example:
---   DO $$ DECLARE user_id uuid := 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'; ...
 
 DO $$
 DECLARE
   target_user_id uuid;
+  target_email text := 'rohanhampannavar3@gmail.com'; -- change this if seeding a different account
 BEGIN
-  -- *** REPLACE THIS LINE with your actual user ID ***
-  -- SELECT id INTO target_user_id FROM auth.users WHERE email = 'your@email.com';
-  -- For now, we use the "first user" approach for a single-user deployment:
-  SELECT id INTO target_user_id FROM auth.users ORDER BY created_at LIMIT 1;
+  SELECT id INTO target_user_id FROM auth.users WHERE email = target_email;
 
   IF target_user_id IS NULL THEN
-    RAISE EXCEPTION 'No user found — log in via the app first, then re-run this script.';
+    RAISE EXCEPTION 'No user found with email %. Log in via the app with that email first, then re-run this script.', target_email;
   END IF;
 
   -- ---- 1. Career plan settings in user_settings ----------------
@@ -93,10 +91,11 @@ END $$;
 DO $$
 DECLARE
   target_user_id uuid;
+  target_email text := 'rohanhampannavar3@gmail.com'; -- keep in sync with the block above
   checkpoint_goal_id uuid;
   start_date date := '2026-09-21';
 BEGIN
-  SELECT id INTO target_user_id FROM auth.users ORDER BY created_at LIMIT 1;
+  SELECT id INTO target_user_id FROM auth.users WHERE email = target_email;
   IF target_user_id IS NULL THEN RETURN; END IF;
 
   -- Create (or find) the career checkpoints goal

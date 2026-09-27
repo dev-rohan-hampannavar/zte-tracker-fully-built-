@@ -4,6 +4,11 @@ import type { NextConfig } from "next";
 // request-scoped nonce for Next's required inline bootstrap scripts.
 const nextConfig: NextConfig = {
   turbopack: { root: process.cwd() },
+  experimental: {
+    // Keep Next's validation workers on threads in restricted Windows
+    // environments where spawning child processes can fail with EPERM.
+    workerThreads: true,
+  },
   async redirects() {
     return [
       { source: "/dependency-graph", destination: "/roadmap?tab=learning-path", permanent: true },

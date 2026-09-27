@@ -364,7 +364,7 @@ export default function CareerPlanPage() {
             <CircleAlert className="h-5 w-5 text-warning" /> Pay reality check
           </CardTitle>
           <CardDescription>
-            Three numbers for the same thing: your own estimate, the market average, and ZTE's band. Plan on the lowest. Source: career_timeline_zte.docx §9 and §14.
+            Three numbers for the same thing: your own estimate, the market average, and ZTE&apos;s band. Plan on the lowest. Source: career_timeline_zte.docx §9 and §14.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-5">
@@ -418,9 +418,9 @@ export default function CareerPlanPage() {
           <div className="rounded-lg border border-border/50 p-3 bg-surface-2/30">
             <p className="text-xs font-medium">Negotiation rules</p>
             <ul className="mt-2 flex flex-col gap-1 text-xs text-muted">
-              <li>• Never give a number first. Ask: <span className="text-foreground">"What is the budgeted range for this role?"</span></li>
+              <li>• Never give a number first. Ask: <span className="text-foreground">&quot;What is the budgeted range for this role?&quot;</span></li>
               <li>• Compare fixed pay, not CTC. Variable and ESOPs are not spendable.</li>
-              <li>• Use ops experience explicitly: <span className="text-foreground">"I have 2 years of professional experience and ship production code in ClientSync."</span></li>
+              <li>• Use ops experience explicitly: <span className="text-foreground">&quot;I have 2 years of professional experience and ship production code in ClientSync.&quot;</span></li>
               <li>• Get it in writing: base, variable, joining bonus, notice period, probation length.</li>
               <li>• ESOPs: value them at zero when comparing offers. Anything above is a bonus.</li>
             </ul>
@@ -501,88 +501,6 @@ export default function CareerPlanPage() {
         </CardContent>
       </Card>
 
-      {/* ── Career ladders: ops path and dev path ── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-accent" /> Career ladders
-          </CardTitle>
-          <CardDescription>
-            Step-by-step progression for each path with what you need to move up. CTC is the base case; low–high range in brackets. Ages 38+ are carried from the original timeline with no sourced data — treat as rough. Source: career_timeline_zte.docx §4 and §12.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-5">
-          <div>
-            <p className="text-xs font-semibold text-warning mb-2 uppercase tracking-wide">Pure Ops path</p>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/50">
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-3">Age</th>
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-3">Title</th>
-                    <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2 pr-3">CTC (₹L)</th>
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2">What moves you up</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/30">
-                  {([
-                    { age: 24, title: "Biz Ops Associate", ctc: "4.6", what: "Reliable execution; get on cross-functional projects early" },
-                    { age: 26, title: "Sr. Order Mgmt / Ops Exec", ctc: "7 (5.5–8.5)", what: "Own a process end to end; measurable improvement (cost, time, error rate)" },
-                    { age: 28, title: "SC / Biz Ops Analyst", ctc: "11 (8–14)", what: "SQL, Excel, BI tools; a case with numbers you can quote" },
-                    { age: 31, title: "Sr. SC Analyst / Asst. Manager", ctc: "18 (12.5–24)", what: "Lead projects across teams; start managing people or vendors" },
-                    { age: 34, title: "Ops / SC Manager", ctc: "26 (17–36)", what: "People management; budget ownership; often needs MBA or strong internal sponsor" },
-                    { age: "38*", title: "Senior Manager", ctc: "42–60*", what: "Run multiple teams; visibility to senior leadership" },
-                    { age: "44*", title: "Director (Operations)", ctc: "70–100*", what: "Director seat opening at your company; rare in product startups" },
-                  ] as const).map((row) => (
-                    <tr key={row.age} className={String(row.age).includes("*") ? "opacity-60" : ""}>
-                      <td className="py-2 pr-3 text-xs text-muted">{row.age}</td>
-                      <td className="py-2 pr-3 text-xs">{row.title}</td>
-                      <td className="py-2 pr-3 text-right font-mono-tabular text-xs">{row.ctc}</td>
-                      <td className="py-2 text-xs text-muted">{row.what}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-[11px] text-muted mt-1">* Rows marked with asterisk have no sourced data — treat as directional only. MBA or a strong internal sponsor is the gate to director level.</p>
-          </div>
-
-          <div>
-            <p className="text-xs font-semibold text-success mb-2 uppercase tracking-wide">Hybrid (Dev) path</p>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/50">
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-3">Age</th>
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-3">Title</th>
-                    <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2 pr-3">CTC (₹L)</th>
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2">What moves you up</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/30">
-                  {([
-                    { age: 26, title: "Junior Full-Stack", ctc: "7 (4–12)", what: "ZTE Exit A/B: deployed ClientSync, green CI, Docker, API docs; DSA (Exit ★1) widens the pool" },
-                    { age: 28, title: "Full-Stack Dev (1–2 yrs)", ctc: "11 (6.5–20)", what: "Own features end to end; ZTE Phases 09–11 (payments, monitoring, real-time)" },
-                    { age: 31, title: "Senior Full-Stack", ctc: "17 (10.5–32)", what: "System design, mentoring, influence on product; ZTE Phases 12–17 (AI, infra, architecture)" },
-                    { age: 34, title: "Senior / Tech Lead", ctc: "25 (15–45)", what: "Own a whole product surface; lead architecture or a small team; no MBA needed" },
-                    { age: "38*", title: "Principal / Eng Manager", ctc: "70–120*", what: "High-leverage technical decisions, or manage 15–30 engineers" },
-                    { age: "44*", title: "Director Eng / VP", ctc: "1.2–2Cr*", what: "Company-wide technical direction; needs leadership, not just technical skill" },
-                  ] as const).map((row) => (
-                    <tr key={row.age} className={String(row.age).includes("*") ? "opacity-60" : ""}>
-                      <td className="py-2 pr-3 text-xs text-muted">{row.age}</td>
-                      <td className="py-2 pr-3 text-xs">{row.title}</td>
-                      <td className="py-2 pr-3 text-right font-mono-tabular text-xs">{row.ctc}</td>
-                      <td className="py-2 text-xs text-muted">{row.what}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-[11px] text-muted mt-1">* No sourced data at ages 38+. Dev IC track to Staff does not require an MBA — this is the structural advantage over the ops path past Manager.</p>
-          </div>
-        </CardContent>
-      </Card>
-
       {/* ── Two-path comparison ── */}
       <Card>
         <CardHeader>
@@ -657,7 +575,7 @@ export default function CareerPlanPage() {
             </div>
           </div>
           <p className="text-[11px] text-muted">
-            The base cases tie. Dev's edge is the high case only (+₹64L over 10 yrs). Hybrid's floor is ops income — you switch only when a dev offer beats your ops pay, so the worst case is lost study time, not lost income.
+            The base cases tie. Dev&apos;s edge is the high case only (+₹64L over 10 yrs). Hybrid&apos;s floor is ops income — you switch only when a dev offer beats your ops pay, so the worst case is lost study time, not lost income.
           </p>
         </CardContent>
       </Card>
@@ -723,7 +641,7 @@ export default function CareerPlanPage() {
           </div>
           <div className="rounded-lg border border-border/50 p-3 bg-surface-2/30">
             <p className="text-xs font-medium mb-1">What the model leaves out</p>
-            <p className="text-xs text-muted">Cost of study time, tax (pay up to ~₹12.75L is effectively tax-free under new regime), ESOPs and variable pay, MBA or MCA fees, and the pivot options (§26–28) which could improve either path. At 10% P(high), the edge is ~₹8L over ten years — under ₹1L/year. A GCC or FAANG offer often filters BCA, so 10% may be generous. The stronger argument for hybrid is <span className="text-foreground font-medium">asymmetry and cheap information</span>, not average pay — by Exit A you'll know if you can sustain 30h/wk and if you like the work.</p>
+            <p className="text-xs text-muted">Cost of study time, tax (pay up to ~₹12.75L is effectively tax-free under new regime), ESOPs and variable pay, MBA or MCA fees, and the pivot options (§26–28) which could improve either path. At 10% P(high), the edge is ~₹8L over ten years — under ₹1L/year. A GCC or FAANG offer often filters BCA, so 10% may be generous. The stronger argument for hybrid is <span className="text-foreground font-medium">asymmetry and cheap information</span>, not average pay — by Exit A you&apos;ll know if you can sustain 30h/wk and if you like the work.</p>
           </div>
         </CardContent>
       </Card>
@@ -811,288 +729,7 @@ export default function CareerPlanPage() {
           </div>
 
           <p className="text-[11px] text-muted mt-2">
-            Third strategy — hybrid-pivot: use ZTE Phases 01 and 05–07 (SQL, backend, testing, APIs) to move into an analytics or business-systems role at or near Applied Materials. Lowers the risk of hybrid because you don't need a pure dev offer. Pay trajectory not modelled; treat it as a fourth path between ops and hybrid.</p>
-        </CardContent>
-      </Card>
-
-      {/* ── Hybrid-pivot: the third strategy ── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-accent" /> Third strategy: hybrid-pivot
-          </CardTitle>
-          <CardDescription>
-            Not ops. Not dev. Use ZTE SQL and backend skills to move into an analytics or systems role at or near Applied Materials — then grow from there. Source: career_timeline_zte.docx §17 and §28.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="rounded-lg border border-border/50 p-3">
-              <p className="text-[10px] uppercase text-muted">What it is</p>
-              <p className="text-xs mt-1">Use ZTE Phases 01 (SQL), 03 (APIs), 05 (DB schema), 07 (testing) to qualify for an internal analytics or systems analyst role. No dev offer needed. No ops plateau either.</p>
-            </div>
-            <div className="rounded-lg border border-accent/30 bg-accent/5 p-3">
-              <p className="text-[10px] uppercase text-muted">Why it matters</p>
-              <p className="text-xs mt-1">Lowers the risk of hybrid: the floor is not "lost study time" — it's a salary step-up inside or near your current employer, reachable by Phase 05 (month 4–5).</p>
-            </div>
-            <div className="rounded-lg border border-border/50 p-3">
-              <p className="text-[10px] uppercase text-muted">What it doesn't do</p>
-              <p className="text-xs mt-1">Doesn't model the salary trajectory (not included in the scenario table). Treat it as a hedge, not the plan. If the IT Systems Analyst role opens up, take it — it doesn't close the dev path.</p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium">Execution steps</p>
-            {([
-              { step: "Phase 01 (month 1–2)", action: "Automate one recurring report using SQL. Show your manager. Frame it as a process improvement, not a career signal." },
-              { step: "Phase 03–05 (month 3–5)", action: "Build Ledger (personal finance tracker with PostgreSQL + REST API). This is your portfolio proof for an analyst or systems role." },
-              { step: "Month 3", action: "Ask your manager which internal teams hire ex-ops with SQL skills. Get a name. Ask to shadow one meeting." },
-              { step: "Month 6", action: "Apply to IT Systems Analyst, QA Automation, or SCM Data Analyst roles — internally first, then externally. Continue ZTE in parallel." },
-              { step: "If offer arrives", action: "Take it if the pay beats current ops pay. You're still building ClientSync. The roles above are stepping stones to DevOps or platform engineering, not dead ends." },
-            ] as const).map((r) => (
-              <div key={r.step} className="flex gap-3 rounded-lg border border-border/50 p-3">
-                <span className="text-xs font-medium text-accent shrink-0 w-36">{r.step}</span>
-                <p className="text-xs text-muted">{r.action}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-[11px] text-muted">
-            Pay trajectory: supply-chain analytics mid-level ₹8–16L, business systems ₹10–22L, SAP/ERP ₹10–22L (low-confidence source). This path feeds naturally into DevOps or data engineering after 2–3 years — see pivot O1→O2 and D3 in the pivot ranking above.
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* ── 90-day plan ── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CalendarDays className="h-5 w-5 text-accent" /> 90-day execution plan
-          </CardTitle>
-          <CardDescription>
-            Week-by-week breakdown for the first 13 weeks. After week 13, the roadmap and daily plan take over. Source: career_timeline_zte.docx §31.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2">
-          {([
-            { weeks: "1–2",  hours: "30h/wk", phase: "Phase 01", deliverable: "Dev environment working: VS Code, Node, Git, npm, terminal. First CLI script that reads a file and outputs a result. Commit it.", note: "If you can't do 30h in week 1, log what you actually did and set the real weekly target from that." },
-            { weeks: "3–4",  hours: "30h/wk", phase: "Phase 01", deliverable: "JavaScript fundamentals done (functions, arrays, objects, async/await). Smallest possible to-do app without a tutorial — blank file only.", note: null },
-            { weeks: "5–6",  hours: "30h/wk", phase: "Phase 01b", deliverable: "TypeScript basics. Rewrite the to-do app in TypeScript. One file, proper types, no any.", note: "Week 6 is lighter week 1. Review and consolidate — no new material." },
-            { weeks: "7–8",  hours: "30h/wk", phase: "Phase 02", deliverable: "React fundamentals. CivicBoard started: issue list, add-issue form, basic routing with Next.js App Router.", note: null },
-            { weeks: "9–10", hours: "30h/wk", phase: "Phase 02", deliverable: "CivicBoard live: deployed to Vercel, SQLite persistence, auth with NextAuth. README with screenshot. First deployed project.", note: null },
-            { weeks: "11–12", hours: "30h/wk", phase: "Phase 03 start", deliverable: "REST API fundamentals. Build a simple API (Atlas note-taking tool) with Express, GET/POST/PUT/DELETE routes, manual testing with Postman or curl.", note: "Week 12 is lighter week 2. Re-solve 3 problems from earlier. Review TypeScript types you found confusing." },
-            { weeks: "13",   hours: "30h/wk", phase: "Phase 03", deliverable: "Day-90 gate: 390h logged (minimum 270h), CivicBoard live and working, React basics solid, API concepts understood. Two-week hours audit completed and real weekly target set.", note: "Month 3 kill-criteria checkpoint. If below 270h, assess: is it time or interest? Fix the cause." },
-          ] as const).map((row) => (
-            <div key={row.weeks} className="rounded-lg border border-border/50 p-3">
-              <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                <span className="text-xs font-semibold text-accent">Weeks {row.weeks}</span>
-                <Badge variant="outline" className="text-[10px]">{row.phase}</Badge>
-                <span className="text-[10px] text-muted">{row.hours}</span>
-              </div>
-              <p className="text-xs">{row.deliverable}</p>
-              {row.note && <p className="text-[11px] text-warning mt-1.5">{row.note}</p>}
-            </div>
-          ))}
-          <p className="text-[11px] text-muted mt-1">
-            After week 13: the roadmap page drives the plan. Daily plan page shows the next topic. Monthly review tracks the quarterly checkpoints. The 90-day plan's job is to get you to a consistent habit — the roadmap does the rest.
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* ── Financial planning: full picture ── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CircleAlert className="h-5 w-5 text-warning" /> Financial planning: the full picture
-          </CardTitle>
-          <CardDescription>Everything that affects the switch decision beyond the salary numbers. Source: career_timeline_zte.docx §19 and §20.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-5">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="rounded-lg border border-danger/30 bg-danger/5 p-3">
-              <p className="text-xs font-semibold text-danger mb-1">Three rules — never break these</p>
-              <ul className="text-xs text-muted flex flex-col gap-1">
-                <li>1. Apply while employed. Resign only when you hold a signed offer that beats ops pay.</li>
-                <li>2. Build 6 months of expenses as a buffer before resigning — not before applying, before resigning.</li>
-                <li>3. Emergency fund order: (1) fund 6 months → (2) health cover → (3) invest. The switch is the priority use of the surplus.</li>
-              </ul>
-            </div>
-            <div className="rounded-lg border border-border/50 p-3">
-              <p className="text-xs font-semibold mb-1">Notice period timing</p>
-              <p className="text-xs text-muted">Check your Applied Materials offer letter for: notice period, any buyout clause, service bond, joining-bonus clawback. If notice is 90 days, start applying 3+ months before your target resign date, not 1.</p>
-            </div>
-          </div>
-
-          <div>
-            <p className="text-xs font-medium mb-2">In-hand take-home by CTC (new tax regime, FY 2026-27)</p>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/50">
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">CTC</th>
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Tax (new regime)</th>
-                    <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2">Approx in-hand/month</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/30">
-                  {([
-                    { ctc: "₹4.6L (now)", tax: "Nil",                   inhand: "~₹28,000" },
-                    { ctc: "₹8L",          tax: "Nil",                   inhand: "~₹55–60,000" },
-                    { ctc: "₹12L",         tax: "Nil",                   inhand: "~₹80–85,000" },
-                    { ctc: "₹15L",         tax: "~₹1.55L (incl. cess)", inhand: "~₹90–95,000" },
-                    { ctc: "₹25L",         tax: "~₹4.5–5L",             inhand: "~₹1.4–1.5L" },
-                  ] as const).map((row) => (
-                    <tr key={row.ctc}>
-                      <td className="py-2 pr-4 text-xs font-medium">{row.ctc}</td>
-                      <td className="py-2 pr-4 text-xs text-success">{row.tax}</td>
-                      <td className="py-2 text-right font-mono-tabular text-xs text-accent">{row.inhand}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-[11px] text-muted mt-2">₹12.75L gross is effectively tax-free under the new regime (₹12L nil-tax slab + ₹75K standard deduction). ZTE Exits A to B land fully in this zone. CTC includes variable and stock — ask for the fixed/variable split before comparing offers. ESOPs: value at ₹0.</p>
-          </div>
-
-          <div>
-            <p className="text-xs font-medium mb-2">Bangalore cost of living note</p>
-            <p className="text-xs text-muted">Bangalore pays a 15–20% premium over other cities but has higher rent and commute costs. A ₹40L Hyderabad offer can beat a ₹45L Bangalore one after rent and commute. Remote roles decouple pay from city rent — worth factoring for any remote-first offer.</p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* ── Company type comparison ── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Flag className="h-5 w-5 text-accent" /> Company type comparison
-          </CardTitle>
-          <CardDescription>Which company type to target at which exit. BCA filter varies significantly. Source: career_timeline_zte.docx §19.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border/50">
-                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Type</th>
-                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Upside</th>
-                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Downside</th>
-                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2">Fit for you</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/30">
-                {([
-                  { type: "Startup (seed–Series B)", up: "Fast learning, no degree filter, ESOP upside", down: "Instability, uneven pay, long hours", fit: "Good at Exit A/B — BCA-friendly, referral-accessible" },
-                  { type: "Product company", up: "Best pay and growth, strong engineering culture", down: "Harder interviews, often want DSA and system design", fit: "Target at Exit ★1 and above" },
-                  { type: "Service company (TCS etc.)", up: "Stability, easy entry", down: "₹3.5–5L, BCA filter at campus level, slow growth", fit: "Only as a fallback — keep studying to the next exit" },
-                  { type: "GCC (global capability centre)", up: "Rising pay, stability, global exposure", down: "Often wants CS degree or campus; late-career filter", fit: "Hard without B.Tech; try at Exit 3 or later, or via referral" },
-                ] as const).map((row) => (
-                  <tr key={row.type}>
-                    <td className="py-2 pr-4 text-xs font-medium">{row.type}</td>
-                    <td className="py-2 pr-4 text-xs text-success">{row.up}</td>
-                    <td className="py-2 pr-4 text-xs text-warning">{row.down}</td>
-                    <td className="py-2 text-xs text-muted">{row.fit}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* ── Weekly rhythm + 20h floor + what changes the advice ── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock3 className="h-5 w-5 text-accent" /> Weekly rhythm and when to stop
-          </CardTitle>
-          <CardDescription>Sustainable study patterns and the conditions that change the advice. Source: career_timeline_zte.docx §16, §20, §6.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div>
-            <p className="text-xs font-medium mb-2">Weekly rhythm templates (weekday + weekend split)</p>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/50">
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Pattern</th>
-                    <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Weekday</th>
-                    <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Weekend (each day)</th>
-                    <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2">Total</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/30">
-                  {([
-                    { pattern: "25h/wk (minimum floor)", weekday: "2h × 5 = 10h", weekend: "7.5h × 2 = 15h", total: "25h" },
-                    { pattern: "30h/wk (plan target)", weekday: "2.5h × 5 = 12.5h", weekend: "8.75h × 2 = 17.5h", total: "30h", highlight: true },
-                    { pattern: "40h/wk (sprint, not baseline)", weekday: "3h × 5 = 15h", weekend: "12.5h × 2 = 25h", total: "40h" },
-                  ] as const).map((row) => (
-                    <tr key={row.pattern} className={"highlight" in row && row.highlight ? "bg-accent/5" : ""}>
-                      <td className="py-2 pr-4 text-xs font-medium">{row.pattern}</td>
-                      <td className="py-2 pr-4 text-right text-xs text-muted font-mono-tabular">{row.weekday}</td>
-                      <td className="py-2 pr-4 text-right text-xs text-muted font-mono-tabular">{row.weekend}</td>
-                      <td className="py-2 text-right text-xs font-mono-tabular text-accent">{row.total}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-[11px] text-muted mt-2">20h/wk is the absolute floor. Below that the plan drifts past the ops catch-up point — Exit A slips from month 9.5 to month 15+. Do the 2-week hours audit first: log every free block of 45+ minutes for 14 days, then set your target from what is real, not hoped-for. 40h alongside a job leads to burnout within months — treat it as a sprint, not a baseline.</p>
-          </div>
-          <div className="rounded-lg border border-warning/30 bg-warning/5 p-3">
-            <p className="text-xs font-semibold text-warning mb-2">What would change the advice</p>
-            <ul className="text-xs text-muted flex flex-col gap-1.5">
-              <li>• <span className="text-foreground">Can't sustain 25–30h/week alongside the job</span> → ops with an MBA or a systems/analytics pivot is equally sound. No shame in this — it is the honest signal.</li>
-              <li>• <span className="text-foreground">Dislike coding by the end of Phase 03</span> → stop. Three phases is enough data. The plan has no value if the work itself is the problem.</li>
-              <li>• <span className="text-foreground">CS degree filter looks insurmountable</span> → GCCs and FAANG India often filter BCA at the ATS stage. If the high case (product company / GCC) looks unrealistic, the expected gain vs ops shrinks and an MCA or MBA starts making more sense. See the MBA/MCA card below.</li>
-              <li>• <span className="text-foreground">Ops promotion arrives mid-plan</span> → compare the new ops pay against the dev low case. Don't decline an ops raise to keep the plan. Pause and re-decide at the next checkpoint.</li>
-              <li>• <span className="text-foreground">Market bad at Exit A</span> → widen to QA/automation, systems analyst, or implementation roles. These are not dead ends — they are closer to dev than ops and keep the path open. Keep studying to Exit ★1 in parallel.</li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* ── MBA vs MCA ── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Flag className="h-5 w-5 text-accent" /> Third path: MBA or MCA
-          </CardTitle>
-          <CardDescription>
-            If hybrid stalls (can't do 25h/wk, dislike coding by Phase 3, degree filter is a hard block), ops + MBA or ops + MCA is an equally sound alternative. Source: career_timeline_zte.docx §23.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border/50">
-                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-6 w-1/3"></th>
-                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">MBA</th>
-                  <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2">MCA</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/30">
-                {([
-                  { label: "Cost", mba: "₹10–30L (top schools ₹15–30L)", mca: "Govt ₹30K–1L; private up to ₹8L; typical ₹50K–5L" },
-                  { label: "Duration", mba: "2 years; part-time / online options", mca: "2 years; IGNOU/BITS Workex part-time options" },
-                  { label: "Fresher salary", mba: "₹6–12L average; ₹20–25L at IIMs/ISB", mca: "₹3–8L; some product offers up to ₹15L" },
-                  { label: "Mid-career", mba: "₹12–30L", mca: "₹8–20L" },
-                  { label: "Removes", mba: "The management ceiling in ops (MBA = director-level odds)", mca: "BCA filter at FAANG India, IT services, PSUs" },
-                  { label: "Best if", mba: "You choose ops and want director-level odds without internal sponsor", mca: "You choose dev and want big-tech or GCC options later" },
-                  { label: "Decide when", mba: "Month 18 checkpoint (ops branch)", mca: "After Exit ★1, if FAANG/GCC is a goal" },
-                ] as const).map((row) => (
-                  <tr key={row.label}>
-                    <td className="py-2 pr-6 text-xs font-medium text-muted">{row.label}</td>
-                    <td className="py-2 pr-4 text-xs">{row.mba}</td>
-                    <td className="py-2 text-xs">{row.mca}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="text-[11px] text-muted">
-            MCA fresher pay overlaps general junior-dev pay (₹3–8L). The degree doesn't obviously raise the first offer — it mostly removes a filter. MBA cost is high relative to the ops ceiling: a mid-tier MBA at ₹8–15L while earning ₹4.6L is a big bet. Compare it against staying in ops and reaching ~₹18L by 31 in the base case. MCA is the cheaper hedge. Decide at the relevant checkpoint, not now.
-          </p>
-          <p className="text-[11px] text-muted">Note: most salary sources for MBA and MCA are college or edtech marketing pages — treat as directional, not precise.</p>
+            Third strategy — hybrid-pivot: use ZTE Phases 01 and 05–07 (SQL, backend, testing, APIs) to move into an analytics or business-systems role at or near Applied Materials. Lowers the risk of hybrid because you don&apos;t need a pure dev offer. Pay trajectory not modelled; treat it as a fourth path between ops and hybrid.</p>
         </CardContent>
       </Card>
 

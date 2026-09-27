@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, useCallback, memo } from "react";
 import { useUser } from "@/lib/hooks/use-user";
+import { useActiveUserRoadmap } from "@/lib/hooks/use-user-roadmap";
 import { usePhasesWithProgress, useExitLadder, useRoadmapMetadata, useMonthByMonth } from "@/lib/hooks/use-roadmap";
 import { computePlanPosition } from "@/lib/plan-position";
 import { useDailyLogs, computeStreak, weeklyHours, computeDailyPace, syncPublicStreakSummary } from "@/lib/hooks/use-daily-logs";
@@ -22,6 +23,8 @@ import { useLeaderboard } from "@/lib/hooks/use-leaderboard";
 import { useNotifications } from "@/lib/hooks/use-notifications";
 import { useActivityLog, ACTIVITY_LABELS } from "@/lib/hooks/use-activity-log";
 import { DailyMission } from "@/components/dashboard/daily-mission";
+import { DetailedTrackDashboard } from "@/components/dashboard/detailed-track-dashboard";
+import { useFeatureFlag } from "@/lib/hooks/use-feature-flag";
 import { FocusTimer } from "@/components/dashboard/focus-timer";
 import { CareerPlanWidget } from "@/components/dashboard/career-plan-widget";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,6 +39,7 @@ import { useContinuityNudge } from "@/lib/hooks/use-continuity";
 import { useExitLadderWithHours, useFinancialProfileExtended } from "@/lib/hooks/use-career-merge";
 import { computeAllExitStatuses } from "@/lib/career-exit-engine";
 import { computeRunwayAnalysis } from "@/lib/career-runway-engine";
+import { resolveDsaTargets } from "@/lib/personalization-engine";
 import { toast } from "sonner";
 import { pct, cn } from "@/lib/utils";
 import {
@@ -72,6 +76,7 @@ import Link from "next/link";
 import { StaggerContainer, StaggerItem, FadeUp } from "@/components/motion/primitives";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
 import type { NotificationKind, AppNotification } from "@/lib/hooks/use-notifications";
+import type { UserRoadmap } from "@/types/database";
 
 // ---- Constants ----
 const NOTIF_ICON: Record<NotificationKind, typeof Target> = {
@@ -134,7 +139,7 @@ const StatCard = memo(({ href, icon, iconBg, label, value, sub, progress }: Stat
           <p className="text-2xl font-bold font-mono-tabular leading-none">{value}</p>
         )}
         {sub && <p className="text-xs text-muted-foreground mt-1">{sub}</p>}
-        {progress !== undefined && <Progress value={progress} className="mt-2 h-1 w-full" />}
+        {progress !== undefined && <Progress value={progress} className="mt-2 h-1 w-full" label={`${label}: ${progress}%`} />}
       </CardContent>
     </Card>
   </Link>
@@ -144,6 +149,17 @@ StatCard.displayName = "StatCard";
 // ---- Main Component ----
 export default function DashboardPage() {
   const { user } = useUser();
+  const { data: activeRoadmap, isLoading: enrollmentLoading } = useActiveUserRoadmap(user?.id);
+  const { data: newDashboardEnabled } = useFeatureFlag("new_dashboard", true);
+  if (user?.id && enrollmentLoading) return <Skeleton className="h-96 w-full" />;
+  if (newDashboardEnabled !== false && activeRoadmap && activeRoadmap.roadmap_id !== "zte-core-v1" && user?.id) {
+    return <DetailedTrackDashboard userId={user.id} />;
+  }
+  return <LegacyDashboardPage userId={user?.id} email={user?.email} activeRoadmap={activeRoadmap} />;
+}
+
+function LegacyDashboardPage({ userId, email, activeRoadmap }: { userId: string | undefined; email: string | undefined; activeRoadmap: UserRoadmap | null | undefined }) {
+  const user = useMemo(() => userId ? { id: userId, email } : null, [userId, email]);
   const { data: userSettings, mutate: mutateSettings } = useUserSettings(user?.id);
   const { phases, isLoading, mutateProgress } = usePhasesWithProgress(user?.id);
   const { data: exitLadder } = useExitLadder();
@@ -215,7 +231,30 @@ export default function DashboardPage() {
   }, [phases]);
 
   const nextTopic = useMemo(() => {
-    const candidates = phases.flatMap((phase, phaseIdx) =>
+    // Phase 7/9 integration: if this enrollment has a recommended
+    // starting_phase_id (migration 0073), skip phases before it — but
+    // only when the user hasn't touched anything in those earlier
+    // phases. A recommendation is not a restriction (the personalization
+    // engine's own doc comment: "users can skip prerequisites if they
+    // choose"), so if a user went back and started earlier anyway,
+    // their actual progress always wins over the recommendation; this
+    // only changes what "next" means for phases nobody has touched yet.
+    const startingPhaseOrderIndex = activeRoadmap?.starting_phase_id
+      ? (phases.find((p) => p.id === activeRoadmap.starting_phase_id)?.order_index ?? null)
+      : null;
+
+    const hasAnyTouchedProgressBeforeStart =
+      startingPhaseOrderIndex !== null &&
+      phases
+        .filter((p) => p.order_index < startingPhaseOrderIndex)
+        .some((p) => (p.stages ?? []).some((s) => s.topics.some((t) => t.progress)));
+
+    const eligiblePhases =
+      startingPhaseOrderIndex !== null && !hasAnyTouchedProgressBeforeStart
+        ? phases.filter((p) => p.order_index >= startingPhaseOrderIndex)
+        : phases;
+
+    const candidates = eligiblePhases.flatMap((phase, phaseIdx) =>
       (phase.stages ?? []).flatMap((stage, stageIdx) =>
         stage.topics.map((topic, topicIdx) => ({ topic, phase, phaseIdx, stageIdx, topicIdx }))
       )
@@ -224,7 +263,7 @@ export default function DashboardPage() {
       .filter((c) => !c.topic.progress?.completed)
       .sort((a, b) => a.phaseIdx - b.phaseIdx || a.stageIdx - b.stageIdx || a.topicIdx - b.topicIdx)[0];
     return next ? { topic: next.topic, phase: next.phase } : null;
-  }, [phases]);
+  }, [phases, activeRoadmap?.starting_phase_id]);
 
   const currentStage = useMemo(() => {
     if (!nextTopic) return null;
@@ -426,7 +465,7 @@ export default function DashboardPage() {
       currentPhaseIncompleteTopicTitle: nextTopic?.topic.title ?? null,
       nextExit: nextCareerExit,
     });
-  }, [failureSignals, overdueRevisions, overdueDsaCount, staleApplications, nextTopic, careerPlanSettings?.career_plan_track, planPosition]);
+  }, [failureSignals, overdueRevisions, overdueDsaCount, staleApplications, nextTopic, careerPlanSettings?.career_plan_track, careerPlanSettings?.career_plan_weekly_hours, planPosition]);
 
   const recommendedAction = useMemo(() => {
     if (smartAction) return { text: smartAction.title, href: smartAction.href };
@@ -719,7 +758,7 @@ export default function DashboardPage() {
             <div className="rounded-xl border border-accent/30 bg-accent/5 p-3 flex items-start gap-3">
               <span className="text-accent text-xs font-semibold shrink-0 mt-0.5">Week {weeksElapsed + 1}</span>
               <p className="text-xs text-muted">
-                <span className="text-accent font-medium">Lighter week.</span> Every 6th week is for review, not new material. Consolidate what you've done, re-solve one problem you looked up, write a build-in-public post. 20h minimum, not 30.
+                <span className="text-accent font-medium">Lighter week.</span> Every 6th week is for review, not new material. Consolidate what you&apos;ve done, re-solve one problem you looked up, write a build-in-public post. 20h minimum, not 30.
               </p>
             </div>
           </FadeUp>
@@ -779,7 +818,7 @@ export default function DashboardPage() {
             iconBg="bg-highlight/15 text-highlight"
             label="DSA"
             value={`${dsaEasyDone}E · ${dsaMediumDone}M${dsaHardDone > 0 ? ` · ${dsaHardDone}H` : ""}`}
-            sub={`${metadata?.dsa_easy_target || "—"} easy target`}
+            sub={`${resolveDsaTargets(activeRoadmap, metadata).easyTarget} easy target`}
           />
         </StaggerItem>
         <StaggerItem>

@@ -13,6 +13,8 @@ const welcomePage = await readFile(resolve(root, "src/app/welcome/page.tsx"), "u
 const middleware = await readFile(resolve(root, "src/lib/supabase/middleware.ts"), "utf8");
 const smoke = await readFile(resolve(root, "scripts/smoke-check.mjs"), "utf8");
 const smokeTest = await readFile(resolve(root, "tests/smoke-check.test.mjs"), "utf8");
+const weeklySummaryCron = await readFile(resolve(root, "src/app/api/cron/weekly-summary/route.ts"), "utf8");
+const resetProgressMigration = await readFile(resolve(root, "supabase/migrations/0086_fix_reset_financial_profile.sql"), "utf8");
 
 // These are executable contract checks for the highest-risk cross-cutting
 // guarantees. Full RLS/transaction assertions still run against Supabase in
@@ -30,7 +32,7 @@ for (const required of [
 }
 
 for (const required of [
-  "const EXPORT_VERSION = 4",
+  "const EXPORT_VERSION = 5",
   "weekly_commitments",
   "time_blocks",
   "evidence_items",
@@ -48,4 +50,38 @@ assert.ok(welcomePage.includes("ZTE Tracker turns the Zero to Elite curriculum")
 assert.ok(middleware.includes("const isHealthRoute"), "health route must be explicitly public");
 assert.ok(smoke.includes("health must remain public"), "smoke check must reject a login redirect for health");
 assert.ok(smokeTest.includes("public JSON health payload accepted"), "smoke behavior test missing");
-console.log("production contracts: study-event, completion-guard, backup, PWA, job-analyzer, welcome-copy, and health checks passed");
+
+// The weekly-summary cron route has no caller session — only a shared
+// bearer secret — so its JSON response is effectively as exposed as
+// anything an external pinger logs. It must fail closed on a missing
+// secret and must never return raw user_id values or per-recipient error
+// text; only aggregate counts belong in the response body.
+assert.ok(
+  weeklySummaryCron.includes('!process.env.CRON_SECRET') &&
+    weeklySummaryCron.includes('status: 500'),
+  "weekly-summary cron must fail closed when CRON_SECRET is unset"
+);
+assert.ok(
+  !/NextResponse\.json\(\{\s*weekStart,\s*weekEnd,\s*results\s*\}\)/.test(weeklySummaryCron),
+  "weekly-summary cron response must not leak the per-user results array (user_id, error text)"
+);
+assert.ok(
+  weeklySummaryCron.includes("sent, skipped, failed, total"),
+  "weekly-summary cron must return aggregate-only counts"
+);
+console.log("production contracts: study-event, completion-guard, backup, PWA, job-analyzer, welcome-copy, health, and weekly-summary privacy checks passed");
+
+// reset_user_progress() must clear every table that Settings' export/import
+// (backup) round-trip treats as personal/progress data — otherwise "Reset
+// progress" silently leaves that data behind while the UI implies a full
+// reset. financial_profiles was the concrete gap found and fixed in
+// migration 0086; this test pins that fix and gives future additions to
+// the backup domain list a corresponding check to update.
+for (const table of [
+  "delete from public.financial_profiles where user_id = caller",
+  "delete from public.evidence_items where user_id = caller",
+  "delete from public.career_tracker where user_id = caller",
+]) {
+  assert.ok(resetProgressMigration.includes(table), `reset_user_progress must clear: ${table}`);
+}
+console.log("reset_user_progress contract: financial_profiles (and existing career/evidence tables) confirmed cleared");

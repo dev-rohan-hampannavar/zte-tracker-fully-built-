@@ -163,7 +163,7 @@ export function PlanTaskRow({ task, icon: Icon, kindLabel, userId, state, planDa
           {busy ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin text-muted" />
           ) : isDone || isSkipped ? (
-            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={handleUndo} title="Undo">
+            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={handleUndo} title="Undo" aria-label="Undo">
               <Undo2 className="h-3.5 w-3.5" />
             </Button>
           ) : (
@@ -181,15 +181,15 @@ export function PlanTaskRow({ task, icon: Icon, kindLabel, userId, state, planDa
                       <Timer className="h-3 w-3" /> Just 10 min
                     </Button>
                   )}
-                  <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => handleStart(false)} title="Start a focus session">
+                  <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => handleStart(false)} title="Start a focus session" aria-label="Start a focus session">
                     <Play className="h-3.5 w-3.5" />
                   </Button>
                 </>
               )}
-              <Button size="icon" variant="ghost" className="h-7 w-7" onClick={handleComplete} title="Mark done">
+              <Button size="icon" variant="ghost" className="h-7 w-7" onClick={handleComplete} title="Mark done" aria-label="Mark done">
                 <Check className="h-3.5 w-3.5" />
               </Button>
-              <Button size="icon" variant="ghost" className="h-7 w-7 text-muted" onClick={handleSkip} title="Skip today">
+              <Button size="icon" variant="ghost" className="h-7 w-7 text-muted" onClick={handleSkip} title="Skip today" aria-label="Skip today">
                 <X className="h-3.5 w-3.5" />
               </Button>
             </>

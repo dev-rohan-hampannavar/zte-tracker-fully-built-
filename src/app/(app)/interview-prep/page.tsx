@@ -277,7 +277,7 @@ export default function InterviewPrepPage() {
               </div>
             ))}
           </div>
-          <p className="text-[11px] text-muted mt-3">25-minute cutoff rule: if you haven't reached T (test) in 25 minutes, say "I'll outline the rest" and walk through the logic verbally. Never go silent for more than 30 seconds.</p>
+          <p className="text-[11px] text-muted mt-3">25-minute cutoff rule: if you haven&apos;t reached T (test) in 25 minutes, say &quot;I&apos;ll outline the rest&quot; and walk through the logic verbally. Never go silent for more than 30 seconds.</p>
         </CardContent>
       </Card>
 
@@ -290,13 +290,13 @@ export default function InterviewPrepPage() {
         </CardHeader>
         <CardContent>
           <ul className="flex flex-col gap-2 text-xs text-muted">
-            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">1.</span>Never give a number first. Say: <span className="text-foreground">"What is the budgeted range for this role?"</span></li>
-            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">2.</span>Compare fixed pay, not CTC. Variable, joining bonus and ESOPs are not spendable income — they're often zero.</li>
+            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">1.</span>Never give a number first. Say: <span className="text-foreground">&quot;What is the budgeted range for this role?&quot;</span></li>
+            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">2.</span>Compare fixed pay, not CTC. Variable, joining bonus and ESOPs are not spendable income — they&apos;re often zero.</li>
             <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">3.</span>Value ESOPs at ₹0 when comparing. Treat any vested value above zero as upside.</li>
-            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">4.</span>Use your ops experience: <span className="text-foreground">"I have 2 years of professional experience and ship production code in ClientSync."</span></li>
+            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">4.</span>Use your ops experience: <span className="text-foreground">&quot;I have 2 years of professional experience and ship production code in ClientSync.&quot;</span></li>
             <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">5.</span>Pay up to ~₹12.75L/year is effectively tax-free under the new regime (FY2025-26). Factor this when comparing offers.</li>
             <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">6.</span>Get it in writing: base, variable, joining bonus, notice period during probation, and probation length.</li>
-            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">7.</span>Switch only when the offer beats your current ops pay. If it doesn't, keep studying to the next exit — your floor is already funded.</li>
+            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">7.</span>Switch only when the offer beats your current ops pay. If it doesn&apos;t, keep studying to the next exit — your floor is already funded.</li>
           </ul>
         </CardContent>
       </Card>

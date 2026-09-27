@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { RecordNotFound } from "@/components/ui/record-not-found";
 import { useUser } from "@/lib/hooks/use-user";
+import { useActiveUserRoadmap } from "@/lib/hooks/use-user-roadmap";
 import { useCompany, useExitLadder, usePhasesWithProgress, useRoadmapMetadata } from "@/lib/hooks/use-roadmap";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
 import { useCareerTracker } from "@/lib/hooks/use-career";
@@ -27,6 +28,7 @@ import {
   StickyNote,
 } from "lucide-react";
 import type { Company } from "@/types/database";
+import { resolveDsaTargets } from "@/lib/personalization-engine";
 
 const DIFFICULTY_VARIANT: Record<NonNullable<Company["hiring_difficulty"]>, "success" | "warning" | "danger"> = {
   low: "success",
@@ -37,6 +39,7 @@ const DIFFICULTY_VARIANT: Record<NonNullable<Company["hiring_difficulty"]>, "suc
 export default function CompanyDetailPage() {
   const params = useParams<{ id: string }>();
   const { user } = useUser();
+  const { data: activeRoadmap } = useActiveUserRoadmap(user?.id);
   const { data: company, isLoading } = useCompany(params.id);
   const { data: exitLadder } = useExitLadder();
   const { phases } = usePhasesWithProgress(user?.id);
@@ -72,7 +75,11 @@ export default function CompanyDetailPage() {
   const totalRelevantTopics = relevantPhases.reduce((sum, p) => sum + p.topics.length, 0);
 
   const dsaCompleted = (dsaProblems ?? []).filter((p) => p.completed).length;
-  const dsaTarget = (metadata?.dsa_easy_target ?? 0) + (metadata?.dsa_medium_target ?? 0);
+  const { easyTarget: dsaEasyTargetResolved, mediumTarget: dsaMediumTargetResolved } = resolveDsaTargets(
+    activeRoadmap,
+    metadata
+  );
+  const dsaTarget = dsaEasyTargetResolved + dsaMediumTargetResolved;
 
   const existingApplication = (applications ?? []).find((a) =>
     a.company.toLowerCase().includes(company?.name.toLowerCase() ?? "")
@@ -236,7 +243,7 @@ export default function CompanyDetailPage() {
                   {completedRelevantTopics}/{totalRelevantTopics}
                 </span>
               </div>
-              <Progress value={pct(completedRelevantTopics, totalRelevantTopics)} className="h-1.5" />
+              <Progress value={pct(completedRelevantTopics, totalRelevantTopics)} className="h-1.5" label={`Roadmap topics through this tier: ${completedRelevantTopics} of ${totalRelevantTopics}`} />
             </div>
             <div>
               <div className="flex items-center justify-between mb-1">
@@ -247,7 +254,7 @@ export default function CompanyDetailPage() {
                   {dsaCompleted}/{dsaTarget || "—"}
                 </span>
               </div>
-              <Progress value={pct(dsaCompleted, dsaTarget)} className="h-1.5" />
+              <Progress value={pct(dsaCompleted, dsaTarget)} className="h-1.5" label={`DSA problems: ${dsaCompleted} of ${dsaTarget || 0}`} />
             </div>
             {targetExit.highlights && (
               <p className="text-xs text-muted pt-2 border-t border-border">{targetExit.highlights}</p>

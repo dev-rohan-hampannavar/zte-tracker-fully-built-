@@ -45,8 +45,8 @@ export default function ProjectsPage() {
   const { data: projectSkills, mutate: mutateProjectSkills } = useProjectSkills(user?.id);
   const { data: technologies } = useTechnologies();
   const { data: allNotes } = useAllTopicNotes(user?.id);
-  const { data: roadmap } = useRoadmap();
-  const linkRegistry = useLinkRegistry();
+  const { data: roadmap } = useRoadmap(user?.id);
+  const linkRegistry = useLinkRegistry(user?.id);
   const { data: settings, mutate: mutateSettings } = useUserSettings(user?.id);
   const { data: exitLadder } = useExitLadder();
   const exitByPhaseNumber = new Map((exitLadder ?? []).filter((e) => e.linked_phase).map((e) => [e.linked_phase, e]));
@@ -440,35 +440,6 @@ export default function ProjectsPage() {
       </div>
         </TabsContent>
       </Tabs>
-
-      {/* ── TaxStack: second flagship after Exit ★1 ── */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Layers className="h-4 w-4 text-accent" /> TaxStack — second flagship project
-          </CardTitle>
-          <CardDescription>
-            Build TaxStack after Exit ★1 (Phase 08 done, ~1,748h). It is a GST invoice generator / finance-flavoured SaaS that gives you a fintech-credible second flagship alongside ClientSync. Source: career_timeline_zte.docx §7 and §12.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-3">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="rounded-lg border border-border/50 p-3">
-              <p className="text-[10px] uppercase text-muted">What it is</p>
-              <p className="text-xs mt-1">GST invoice generator with multi-tenant isolation, PDF generation, email delivery via Resend, and a billing backend. Finance-domain proof alongside ClientSync's client management.</p>
-            </div>
-            <div className="rounded-lg border border-border/50 p-3">
-              <p className="text-[10px] uppercase text-muted">Why after Exit ★1</p>
-              <p className="text-xs mt-1">ZTE Part VII lists it as a post-ClientSync advanced project. Build it after Phase 08 (DSA), not before Exit A — ClientSync must be complete first. Treat it as the finance angle for mid-level fintech applications.</p>
-            </div>
-            <div className="rounded-lg border border-border/50 p-3">
-              <p className="text-[10px] uppercase text-muted">Fintech caveat</p>
-              <p className="text-xs mt-1">ClientSync itself is a client-management app, not a finance product. TaxStack is the ZTE-sanctioned route to a fintech-flavoured portfolio. The Razorpay integration in Phase 09 connects both projects.</p>
-            </div>
-          </div>
-          <p className="text-[11px] text-muted">Tech stack: Next.js, TypeScript, PostgreSQL, Razorpay, Resend, PDF generation library (e.g. @react-pdf/renderer), Docker, CI. Target companies at this level: Chargebee, BrowserStack, Juspay, Razorpay (mid-level), fi.money.</p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

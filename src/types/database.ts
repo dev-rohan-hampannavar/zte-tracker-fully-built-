@@ -40,6 +40,214 @@ export interface Phase {
   skip_build_in_public: boolean;
   order_index: number;
   created_at: string;
+  // Added in migration 0070. Nullable because it's backfilled, not because
+  // a phase can legitimately have no roadmap — every existing phase is
+  // backfilled to 'zte-core-v1' by that migration's seed step.
+  roadmap_id: string | null;
+  roadmap_version_id: string | null;
+}
+
+// Added in migration 0070 (Phase 3/4 of the multi-user transformation).
+// Catalog of roadmaps — currently always exactly one row ('zte-core-v1').
+// Nothing in the app reads this yet; it exists so Phase 5 (enrollment)
+// and Phase 8 (additional public tracks) have somewhere to land.
+export interface Roadmap {
+  id: string;
+  title: string;
+  track: string | null;
+  description: string | null;
+  is_public: boolean;
+  created_at: string;
+}
+
+export interface RoadmapVersion {
+  id: string;
+  roadmap_id: string;
+  version_number: number;
+  label: string | null;
+  is_current: boolean;
+  released_at: string;
+  status: "draft" | "review" | "test" | "published";
+  created_by: string | null;
+  published_at: string | null;
+}
+
+export interface FeatureFlag {
+  key: string;
+  enabled: boolean;
+  description: string;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface ProductFunnelRow {
+  event_name: string;
+  user_count: number;
+  first_event_at: string | null;
+  last_event_at: string | null;
+}
+
+export interface DetailedRoadmapPhase {
+  id: string;
+  roadmap_id: string;
+  roadmap_version_id: string;
+  phase_number: string;
+  title: string;
+  band: "Foundation" | "Core" | "Advanced" | "Expert";
+  description: string;
+  estimated_hours: number;
+  order_index: number;
+}
+
+export interface DetailedRoadmapModule {
+  id: string;
+  phase_id: string;
+  module_number: number;
+  title: string;
+  description: string;
+  estimated_hours: number;
+  order_index: number;
+}
+
+export interface DetailedRoadmapTopic {
+  id: string;
+  module_id: string;
+  title: string;
+  learning_objectives: string[];
+  practice_tasks: string[];
+  completion_evidence: string[];
+  prerequisite_topic_ids: string[];
+  learning_resources: Array<{ label: string; url: string; type?: string }>;
+  estimated_minutes: number;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  order_index: number;
+}
+
+export interface DetailedRoadmapProject {
+  id: string;
+  phase_id: string;
+  title: string;
+  problem_statement: string;
+  requirements: string[];
+  milestones: string[];
+  deliverables: string[];
+  skills: string[];
+  difficulty: "beginner" | "intermediate" | "advanced";
+  order_index: number;
+}
+
+export interface UserRoadmapProjectProgress {
+  user_id: string;
+  project_id: string;
+  status: "not_started" | "planning" | "building" | "review" | "complete";
+  repository_url: string | null;
+  deployed_url: string | null;
+  evidence: unknown[];
+  notes: string | null;
+  updated_at: string;
+}
+
+export interface UserRoadmapTopicProgress {
+  user_id: string;
+  topic_id: string;
+  status: "not_started" | "learning" | "practicing" | "applied" | "mastered";
+  evidence: unknown[];
+  confidence: number | null;
+  last_reviewed_at: string | null;
+  next_review_at: string | null;
+  review_interval_days: number | null;
+  review_count: number;
+  updated_at: string;
+}
+
+export interface DetailedRoadmapTopicNote {
+  id: string;
+  user_id: string;
+  topic_id: string;
+  note: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// Added in migration 0074 (Phase 8 — role-to-roadmap assignment
+// infrastructure). Every row currently points at 'zte-core-v1' since
+// it's the only roadmap that exists; see the migration's own comment
+// for why this is infrastructure, not a claim that multiple real tracks
+// exist yet.
+export interface RoleRoadmapAssignment {
+  role_id: string;
+  roadmap_id: string;
+  priority: number;
+}
+
+// Added in migration 0071 (Phase 5 — enrollment). A user's enrollment in
+// a roadmap, kept separate from the roadmap's own content so phases/
+// topics are never duplicated per user. user_settings.roadmap_id is kept
+// in sync with whichever row here has status = 'active' by a database
+// trigger — read that column for "what roadmap is this user on right
+// now", read this type for enrollment detail (target date, weekly
+// hours, status) or history.
+export interface UserRoadmap {
+  id: string;
+  user_id: string;
+  roadmap_id: string;
+  roadmap_version_id: string | null;
+  started_at: string;
+  target_date: string | null;
+  weekly_hours: number | null;
+  status: "active" | "paused" | "completed" | "abandoned";
+  // Added in migration 0073 (Phase 7 — personalization engine). Null
+  // means no starting point was recorded, not "starts at phase one" —
+  // see the migration's own comment.
+  starting_phase_id: string | null;
+  // Added in migration 0079 for versioned detailed roadmaps. Kept separate
+  // from starting_phase_id because that column points at legacy phases.
+  starting_detailed_phase_id: string | null;
+  // Added in migration 0075 (Phase 7 — DSA target personalization).
+  // Null means no override was recorded; callers must fall back to
+  // roadmap_metadata.dsa_easy_target/dsa_medium_target (the global
+  // default), never treat null as zero.
+  dsa_easy_target: number | null;
+  dsa_medium_target: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// Added in migration 0072 (Phase 6 — onboarding). One row per user, the
+// answers given during signup onboarding. A point-in-time snapshot, not
+// a live-synced preference — see UserSkill / career_tracker for the
+// ongoing evidence-based versions of "what does this user actually
+// know/want now". completed_at is null while onboarding is in progress.
+export interface OnboardingResponses {
+  user_id: string;
+  goal:
+    | "first_job"
+    | "get_better"
+    | "interview_prep"
+    | "build_projects"
+    | "career_switch"
+    | "upskill"
+    | "other"
+    | null;
+  goal_other: string | null;
+  target_role_id: string | null;
+  experience_level: "beginner" | "foundation" | "intermediate" | "advanced" | null;
+  existing_skills: string[] | null;
+  weekly_hours: number | null;
+  target_date: string | null;
+  existing_projects_note: string | null;
+  dsa_level: "none" | "beginner" | "intermediate" | "advanced" | null;
+  interview_readiness: "none" | "beginner" | "some_experience" | "strong" | null;
+  career_situation:
+    | "student"
+    | "recent_graduate"
+    | "career_switcher"
+    | "working_developer"
+    | "experienced_professional"
+    | null;
+  completed_at: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Topic {
@@ -970,6 +1178,20 @@ export interface UserSettings {
   daily_commitment_label: string | null;
   daily_commitment_date: string | null;
   daily_commitment_done_at: string | null;
+  // Multi-user personalization config (migration 0069). Every account
+  // created before this migration defaults to roadmap_id "zte-core-v1",
+  // is_personalized true, onboarding_completed true (the personal
+  // curriculum, unchanged). Accounts created after it start with
+  // is_personalized/onboarding_completed false and get routed through
+  // onboarding (Phase 6) instead.
+  roadmap_id: string;
+  is_personalized: boolean;
+  onboarding_completed: boolean;
+  onboarding_completed_at: string | null;
+  // Added in migration 0076 (Phase 19 — admin/content management).
+  // Grants write access to shared content tables. False for everyone
+  // by default, set manually per account.
+  is_admin: boolean;
   updated_at: string;
 }
 
@@ -1319,6 +1541,84 @@ export interface Database {
         Update: Partial<UserSettings>;
         Relationships: [];
       };
+      roadmaps: {
+        Row: Roadmap;
+        Insert: Partial<Roadmap> & { id: string; title: string };
+        Update: Partial<Roadmap>;
+        Relationships: [];
+      };
+      roadmap_versions: {
+        Row: RoadmapVersion;
+        Insert: Partial<RoadmapVersion> & { roadmap_id: string; version_number: number };
+        Update: Partial<RoadmapVersion>;
+        Relationships: [];
+      };
+      feature_flags: {
+        Row: FeatureFlag;
+        Insert: Partial<FeatureFlag> & { key: string; description: string };
+        Update: Partial<FeatureFlag>;
+        Relationships: [];
+      };
+      roadmap_phases: {
+        Row: DetailedRoadmapPhase;
+        Insert: Partial<DetailedRoadmapPhase> & { id: string; roadmap_id: string; roadmap_version_id: string; phase_number: string; title: string; band: DetailedRoadmapPhase["band"]; description: string; estimated_hours: number; order_index: number };
+        Update: Partial<DetailedRoadmapPhase>;
+        Relationships: [];
+      };
+      roadmap_modules: {
+        Row: DetailedRoadmapModule;
+        Insert: Partial<DetailedRoadmapModule> & { id: string; phase_id: string; module_number: number; title: string; description: string; estimated_hours: number; order_index: number };
+        Update: Partial<DetailedRoadmapModule>;
+        Relationships: [];
+      };
+      roadmap_topics: {
+        Row: DetailedRoadmapTopic;
+        Insert: Partial<DetailedRoadmapTopic> & { id: string; module_id: string; title: string };
+        Update: Partial<DetailedRoadmapTopic>;
+        Relationships: [];
+      };
+      roadmap_projects: {
+        Row: DetailedRoadmapProject;
+        Insert: Partial<DetailedRoadmapProject> & { id: string; phase_id: string; title: string; problem_statement: string };
+        Update: Partial<DetailedRoadmapProject>;
+        Relationships: [];
+      };
+      user_roadmap_topic_progress: {
+        Row: UserRoadmapTopicProgress;
+        Insert: Partial<UserRoadmapTopicProgress> & { user_id: string; topic_id: string };
+        Update: Partial<UserRoadmapTopicProgress>;
+        Relationships: [];
+      };
+      roadmap_topic_notes: {
+        Row: DetailedRoadmapTopicNote;
+        Insert: Partial<DetailedRoadmapTopicNote> & { user_id: string; topic_id: string; note: string };
+        Update: Partial<DetailedRoadmapTopicNote>;
+        Relationships: [];
+      };
+      user_roadmap_project_progress: {
+        Row: UserRoadmapProjectProgress;
+        Insert: Partial<UserRoadmapProjectProgress> & { user_id: string; project_id: string };
+        Update: Partial<UserRoadmapProjectProgress>;
+        Relationships: [];
+      };
+      role_roadmap_assignments: {
+        Row: RoleRoadmapAssignment;
+        Insert: Partial<RoleRoadmapAssignment> & { role_id: string; roadmap_id: string };
+        Update: Partial<RoleRoadmapAssignment>;
+        Relationships: [];
+      };
+      user_roadmaps: {
+        Row: UserRoadmap;
+        Insert: Partial<UserRoadmap> & { user_id: string; roadmap_id: string };
+        Update: Partial<UserRoadmap>;
+        Relationships: [];
+      };
+      onboarding_responses: {
+        Row: OnboardingResponses;
+        Insert: Partial<OnboardingResponses> & { user_id: string };
+        Update: Partial<OnboardingResponses>;
+        Relationships: [];
+      };
       study_sessions: {
         Row: StudySession;
         Insert: Partial<StudySession> & { user_id: string; date: string; hours: number };
@@ -1482,6 +1782,39 @@ export interface Database {
       };
       complete_milestone: {
         Args: { p_milestone_id: string };
+        Returns: void;
+      };
+      complete_onboarding: {
+        Args: {
+          p_user_id: string;
+          p_answers: Record<string, unknown>;
+          p_roadmap_id: string;
+          p_roadmap_version_id: string | null;
+          p_starting_phase_id: string | null;
+          p_starting_detailed_phase_id: string | null;
+          p_dsa_easy_target: number | null;
+          p_dsa_medium_target: number | null;
+        };
+        Returns: void;
+      };
+      create_roadmap_draft: {
+        Args: { p_roadmap_id: string };
+        Returns: string;
+      };
+      set_roadmap_version_status: {
+        Args: { p_roadmap_version_id: string; p_status: "draft" | "review" | "test" | "published" };
+        Returns: void;
+      };
+      record_product_event: {
+        Args: { p_event_name: string; p_roadmap_id?: string | null; p_topic_id?: string | null; p_project_id?: string | null; p_legacy_topic_id?: string | null };
+        Returns: void;
+      };
+      get_product_funnel: {
+        Args: Record<string, never>;
+        Returns: ProductFunnelRow[];
+      };
+      set_role_roadmap_assignment: {
+        Args: { p_role_id: string; p_roadmap_id: string };
         Returns: void;
       };
       record_study_activity: {

@@ -1,11 +1,12 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import Link from "next/link";
 import { RecordNotFound } from "@/components/ui/record-not-found";
 import { useUser } from "@/lib/hooks/use-user";
 import { useDisplayName } from "@/lib/hooks/use-display-name";
-import { useStageDetail, useRoadmap } from "@/lib/hooks/use-roadmap";
+import { useStageDetail, useRoadmap, useDetailedRoadmap } from "@/lib/hooks/use-roadmap";
 import { useProgress, toggleTopicComplete } from "@/lib/hooks/use-roadmap";
 import { useExerciseProgress, toggleExerciseComplete } from "@/lib/hooks/use-exercises";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,15 +24,23 @@ import { toast } from "sonner";
 
 export default function StageDetailPage() {
   const params = useParams<{ id: string }>();
+  const router = useRouter();
   const { user } = useUser();
   const { data, isLoading } = useStageDetail(params.id);
-  const { data: roadmap } = useRoadmap();
+  const { data: roadmap } = useRoadmap(user?.id);
+  const { data: detailedRoadmap } = useDetailedRoadmap(user?.id);
   const { data: displayName } = useDisplayName(user?.id);
   const { data: progress, mutate: mutateProgress } = useProgress(user?.id);
   const { data: exerciseProgress, mutate: mutateExerciseProgress } = useExerciseProgress(user?.id);
 
   const progressMap = new Map((progress ?? []).map((p) => [p.topic_id, p]));
   const exerciseProgressMap = new Map((exerciseProgress ?? []).map((e) => [e.exercise_id, e]));
+
+  useEffect(() => {
+    if (detailedRoadmap?.some((phase) => phase.modules.some((module) => module.id === params.id))) {
+      router.replace("/learning-path");
+    }
+  }, [detailedRoadmap, params.id, router]);
 
   async function handleExerciseToggle(exerciseId: string, completed: boolean) {
     if (!user) return;

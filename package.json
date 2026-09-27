@@ -9,11 +9,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node tests/safe-redirect.test.mjs && node tests/production-contract.test.mjs && node tests/smoke-check.test.mjs",
-    "test:unit": "node tests/safe-redirect.test.mjs && node tests/production-contract.test.mjs && node tests/smoke-check.test.mjs",
+    "test": "node tests/safe-redirect.test.mjs && node tests/production-contract.test.mjs && node tests/product-platform.test.mjs && node tests/smoke-check.test.mjs && node tests/personalization-engine.test.mjs && node tests/dashboard-next-topic.test.mjs && node tests/rate-limit.test.mjs",
+    "test:unit": "node tests/safe-redirect.test.mjs && node tests/production-contract.test.mjs && node tests/product-platform.test.mjs && node tests/smoke-check.test.mjs && node tests/personalization-engine.test.mjs && node tests/dashboard-next-topic.test.mjs && node tests/rate-limit.test.mjs",
     "test:smoke": "node scripts/smoke-check.mjs",
     "verify:supabase": "node scripts/verify-supabase-release.mjs",
-    "validate:curriculum": "node scripts/validate-curriculum.mjs"
+    "verify:isolation": "node scripts/verify-user-isolation.mjs",
+    "validate:curriculum": "node scripts/validate-curriculum.mjs",
+    "generate:roadmap-tracks": "node scripts/generate-roadmap-tracks.mjs",
+    "validate:roadmap-tracks": "node scripts/validate-roadmap-tracks.mjs"
   },
   "dependencies": {
     "@fontsource/montserrat": "^5.3.0",

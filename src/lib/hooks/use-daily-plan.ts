@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useUser } from "@/lib/hooks/use-user";
+import { useActiveUserRoadmap } from "@/lib/hooks/use-user-roadmap";
 import { usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
 import { useDailyLogs } from "@/lib/hooks/use-daily-logs";
 import { useProjectProgress } from "@/lib/hooks/use-projects";
@@ -38,6 +39,7 @@ function computeCompletionRate(logs: { date: string; hours: number }[] | undefin
 
 export function useDailyPlan(availableMinutes: number) {
   const { user } = useUser();
+  const { data: activeRoadmap } = useActiveUserRoadmap(user?.id);
   const { phases, isLoading: phasesLoading } = usePhasesWithProgress(user?.id);
   const { data: logs } = useDailyLogs(user?.id);
   const { data: projectProgress } = useProjectProgress(user?.id);
@@ -54,7 +56,40 @@ export function useDailyPlan(availableMinutes: number) {
   );
 
   const nextTopic = useMemo(() => {
-    const candidates = phases.flatMap((phase, phaseIdx) =>
+    // Same Phase 7/9 integration as the dashboard's nextTopic (src/app/
+    // (app)/dashboard/page.tsx) — skip phases before a recorded
+    // starting_phase_id, but only when nothing in those earlier phases
+    // has been touched. Kept as a near-duplicate of that block rather
+    // than extracted into a shared helper in this pass: the two already
+    // differ slightly in what they return (topic+phase there, just
+    // topic here) and in scope (this file doesn't already import
+    // Phase/PhaseWithTopics types), so extracting now would be a larger,
+    // less certain change than duplicating six lines of skip logic.
+    // Worth revisiting if a third caller needs the same logic.
+    //
+    // Depends on the whole `activeRoadmap` object below (not the
+    // narrowed `.starting_phase_id`) because the React Compiler's
+    // preserve-manual-memoization check rejected the narrowed dependency
+    // here specifically — the equivalent block in the dashboard page
+    // didn't trigger the same warning, so this may be a quirk of
+    // analyzing a plain hook file vs. a component body; using the whole
+    // object is the safe, portable choice either way.
+    const startingPhaseOrderIndex = activeRoadmap?.starting_phase_id
+      ? (phases.find((p) => p.id === activeRoadmap.starting_phase_id)?.order_index ?? null)
+      : null;
+
+    const hasAnyTouchedProgressBeforeStart =
+      startingPhaseOrderIndex !== null &&
+      phases
+        .filter((p) => p.order_index < startingPhaseOrderIndex)
+        .some((p) => (p.stages ?? []).some((s) => s.topics.some((t) => t.progress)));
+
+    const eligiblePhases =
+      startingPhaseOrderIndex !== null && !hasAnyTouchedProgressBeforeStart
+        ? phases.filter((p) => p.order_index >= startingPhaseOrderIndex)
+        : phases;
+
+    const candidates = eligiblePhases.flatMap((phase, phaseIdx) =>
       (phase.stages ?? []).flatMap((stage, stageIdx) =>
         stage.topics.map((topic, topicIdx) => ({ topic, phaseIdx, stageIdx, topicIdx }))
       )
@@ -62,7 +97,7 @@ export function useDailyPlan(availableMinutes: number) {
     return candidates
       .filter((c) => !c.topic.progress?.completed)
       .sort((a, b) => a.phaseIdx - b.phaseIdx || a.stageIdx - b.stageIdx || a.topicIdx - b.topicIdx)[0]?.topic ?? null;
-  }, [phases]);
+  }, [phases, activeRoadmap]);
 
   const currentProject = useMemo(() => {
     const inProgress = (projectProgress ?? []).find((p) => p.status === "in_progress");

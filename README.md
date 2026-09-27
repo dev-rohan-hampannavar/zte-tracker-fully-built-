@@ -23,11 +23,15 @@ Stack: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4 + Supabase (Postgr
 2. Go to **Project Settings → API** and copy:
    - `Project URL`
    - `anon public` key
-3. Go to the **SQL Editor** in the Supabase dashboard and run, in order:
-   1. `supabase/migrations/0001_init.sql` — creates all tables, RLS policies, triggers.
-   2. `supabase/seed_data.sql` — loads the parsed roadmap content (21 phases, 375 topics,
-      9 exit-ladder rungs). This is regenerated from the roadmap markdown — see
-      [Regenerating seed data](#6-regenerating-seed-data-roadmap-import) below.
+3. Apply every SQL file in `supabase/migrations/` in numeric filename order, including
+   migrations `0077`–`0085`. On an existing project, first compare its migration history
+   with the files; do not replay migrations that have already been applied.
+4. Run `supabase/seed_data.sql` to load the original roadmap content (21 phases, 375
+   topics, 9 exit-ladder rungs), then run `supabase/seed_roadmap_tracks.sql` to load the
+   three detailed, role-mapped learning tracks. The latter is generated from the source
+   JSON and the owner's original roadmap; see [Regenerating seed data](#6-regenerating-seed-data-roadmap-import).
+   Do not run `supabase/seed_rohan_career_plan.sql` unless you intentionally want its
+   owner-specific career data and have reviewed its account targeting.
 4. Under **Authentication → Providers**, ensure **Email** is enabled. This app uses
    **magic link** and **email OTP** only — no passwords. Under **Authentication → URL
    Configuration**, add your deployed URL (and `http://localhost:3000` for local dev) to
@@ -91,8 +95,8 @@ key or put it in a client-visible environment variable.
 
 ## 6. Regenerating seed data (roadmap import)
 
-If you update the roadmap markdown (new topics, reordered phases, changed hours), the
-seed data can be regenerated without touching the app code:
+If you update the original roadmap source or detailed track content, regenerate the
+corresponding SQL seed files:
 
 ```bash
 # 1. Place the updated roadmap markdown at the repo root as roadmap.md
@@ -103,6 +107,11 @@ python3 scripts/parse_roadmap.py
 python3 scripts/generate_seed_sql.py
 
 # 4. Re-run supabase/seed_data.sql in the Supabase SQL editor
+
+# 5. Regenerate the detailed role tracks after editing their source JSON
+npm run validate:roadmap-tracks
+npm run generate:roadmap-tracks
+# Then apply supabase/seed_roadmap_tracks.sql in the Supabase SQL editor
 ```
 
 `scripts/parse_roadmap.py` extracts phases (band, hours, exit code, build-in-public

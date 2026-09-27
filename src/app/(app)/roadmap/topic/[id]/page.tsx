@@ -7,6 +7,7 @@ import { RecordNotFound } from "@/components/ui/record-not-found";
 import { useUser } from "@/lib/hooks/use-user";
 import { useTopicDetail, useProgress, useRoadmap, useAllTopicNotes, useTopicResources, addTopicResource, deleteTopicResource, updateTopicProgress, useLinkRegistry } from "@/lib/hooks/use-roadmap";
 import { useUserSettings, pinItem, unpinItem, isPinned } from "@/lib/hooks/use-user-settings";
+import { useDetailedRoadmap } from "@/lib/hooks/use-roadmap";
 import { useTopicLockingDisabled } from "@/lib/hooks/use-topic-locking";
 import { isTopicLocked } from "@/lib/topic-prerequisites";
 import { computeNextReviewDue, MASTERY_REVIEW_COUNT } from "@/lib/revision-schedule";
@@ -36,9 +37,10 @@ export default function TopicDetailPage() {
   const notesTextareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { data: topic, isLoading } = useTopicDetail(params.id);
   const { data: progress, mutate: mutateProgress } = useProgress(user?.id);
-  const { data: roadmap } = useRoadmap();
+  const { data: roadmap } = useRoadmap(user?.id);
+  const { data: detailedRoadmap } = useDetailedRoadmap(user?.id);
   const { data: allNotes } = useAllTopicNotes(user?.id);
-  const linkRegistry = useLinkRegistry();
+  const linkRegistry = useLinkRegistry(user?.id);
   const { data: resources, mutate: mutateResources } = useTopicResources(user?.id, params.id);
   const { disabled: topicLockingDisabled } = useTopicLockingDisabled(user?.id);
   const { data: settings, mutate: mutateSettings } = useUserSettings(user?.id);
@@ -54,6 +56,12 @@ export default function TopicDetailPage() {
   const [loadingNotes, setLoadingNotes] = useState(false);
 
   const myProgress = (progress ?? []).find((p) => p.topic_id === params.id);
+
+  useEffect(() => {
+    if (detailedRoadmap?.some((phase) => phase.modules.some((module) => module.topics.some((topic) => topic.id === params.id)))) {
+      router.replace("/learning-path");
+    }
+  }, [detailedRoadmap, params.id, router]);
 
   useEffect(() => {
     if (!params.id || !user) return;

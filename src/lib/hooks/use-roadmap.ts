@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { createClient } from "@/lib/supabase/client";
 import { buildLinkRegistry } from "@/lib/note-links";
 import { logActivity } from "@/lib/hooks/use-activity-log";
+import { recordProductEvent } from "@/lib/product-analytics";
 import { normalizeHttpUrl } from "@/lib/validate-url";
 import type {
   Phase,
@@ -35,11 +36,32 @@ import type {
   ResourceType,
   Technology,
   ClientSyncMilestone,
+  DetailedRoadmapPhase,
+  DetailedRoadmapModule,
+  DetailedRoadmapTopic,
+  DetailedRoadmapProject,
+  UserRoadmapProjectProgress,
+  UserRoadmapTopicProgress,
+  DetailedRoadmapTopicNote,
 } from "@/types/database";
 
 const supabase = createClient();
 
-async function fetchRoadmap() {
+async function fetchRoadmap(userId: string) {
+  const [{ data: settings, error: settingsError }, { data: activeEnrollments, error: activeError }] = await Promise.all([
+    supabase
+    .from("user_settings")
+    .select("roadmap_id")
+    .eq("user_id", userId)
+    .maybeSingle(),
+    supabase.from("user_roadmaps").select("roadmap_id").eq("user_id", userId).eq("status", "active").limit(1),
+  ]);
+  if (settingsError) throw settingsError;
+  if (activeError) throw activeError;
+  const roadmapId = ((activeEnrollments ?? [])[0] as { roadmap_id?: string } | undefined)?.roadmap_id
+    ?? (settings as { roadmap_id?: string | null } | null)?.roadmap_id;
+  const phaseQuery = supabase.from("phases").select("*").order("order_index");
+  const scopedPhaseQuery = roadmapId ? phaseQuery.eq("roadmap_id", roadmapId) : phaseQuery;
   const [
     { data: phases, error: pErr },
     { data: topics, error: tErr },
@@ -48,7 +70,7 @@ async function fetchRoadmap() {
     { data: stageExercises, error: seErr },
     { data: capstones, error: cErr },
   ] = await Promise.all([
-    supabase.from("phases").select("*").order("order_index"),
+    scopedPhaseQuery,
     supabase.from("topics").select("*").order("phase_id").order("order_index"),
     supabase.from("stages").select("*").order("phase_id").order("order_index"),
     supabase.from("stage_projects").select("*"),
@@ -61,6 +83,7 @@ async function fetchRoadmap() {
   if (spErr) throw spErr;
   if (seErr) throw seErr;
   if (cErr) throw cErr;
+  if (roadmapId && phases?.length) void recordProductEvent("roadmap_viewed", { roadmapId });
   return {
     phases: (phases ?? []) as Phase[],
     topics: (topics ?? []) as Topic[],
@@ -80,17 +103,146 @@ async function fetchProgress(userId: string) {
   return (data ?? []) as TopicProgress[];
 }
 
-export function useRoadmap() {
-  return useSWR("roadmap", fetchRoadmap, { revalidateOnFocus: false });
+export function useRoadmap(userId?: string) {
+  return useSWR(userId ? ["roadmap", userId] : null, () => fetchRoadmap(userId!), { revalidateOnFocus: false });
 }
 
 export function useProgress(userId: string | undefined) {
   return useSWR(userId ? ["progress", userId] : null, () => fetchProgress(userId!));
 }
 
+export interface DetailedRoadmapPhaseView extends DetailedRoadmapPhase {
+  modules: Array<DetailedRoadmapModule & { topics: Array<DetailedRoadmapTopic & { progress: UserRoadmapTopicProgress | null }> }>;
+  projects: Array<DetailedRoadmapProject & { progress: UserRoadmapProjectProgress | null }>;
+}
+
+export function useDetailedRoadmap(userId: string | undefined) {
+  return useSWR(userId ? ["detailed-roadmap", userId] : null, async () => {
+    const [{ data: settings, error: settingsError }, { data: enrollments, error: enrollmentError }] = await Promise.all([
+      supabase.from("user_settings").select("roadmap_id").eq("user_id", userId!).maybeSingle(),
+      supabase.from("user_roadmaps").select("roadmap_id, roadmap_version_id").eq("user_id", userId!).eq("status", "active").limit(1),
+    ]);
+    if (settingsError) throw settingsError;
+    if (enrollmentError) throw enrollmentError;
+    const enrollment = (enrollments ?? [])[0] as { roadmap_id: string; roadmap_version_id: string | null } | undefined;
+    const roadmapId = enrollment?.roadmap_id ?? (settings as { roadmap_id?: string | null } | null)?.roadmap_id;
+    if (!roadmapId || roadmapId === "zte-core-v1") return null;
+
+    let phaseQuery = supabase.from("roadmap_phases").select("*").eq("roadmap_id", roadmapId).order("order_index");
+    if (enrollment?.roadmap_version_id) phaseQuery = phaseQuery.eq("roadmap_version_id", enrollment.roadmap_version_id);
+    const { data: phases, error: phaseError } = await phaseQuery;
+    if (phaseError) throw phaseError;
+    const phaseRows = (phases ?? []) as DetailedRoadmapPhase[];
+    const phaseIds = phaseRows.map((phase) => phase.id);
+    if (!phaseIds.length) return [] as DetailedRoadmapPhaseView[];
+    void recordProductEvent("roadmap_viewed", { roadmapId });
+
+    const [{ data: modules, error: modulesError }, { data: projects, error: projectsError }] = await Promise.all([
+      supabase.from("roadmap_modules").select("*").in("phase_id", phaseIds).order("order_index"),
+      supabase.from("roadmap_projects").select("*").in("phase_id", phaseIds).order("order_index"),
+    ]);
+    if (modulesError) throw modulesError;
+    if (projectsError) throw projectsError;
+    const moduleRows = (modules ?? []) as DetailedRoadmapModule[];
+    const projectRows = (projects ?? []) as DetailedRoadmapProject[];
+    const { data: projectProgress, error: projectProgressError } = projectRows.length
+      ? await supabase.from("user_roadmap_project_progress").select("*").eq("user_id", userId!).in("project_id", projectRows.map((project) => project.id))
+      : { data: [], error: null };
+    if (projectProgressError) throw projectProgressError;
+    const progressByProject = new Map(((projectProgress ?? []) as UserRoadmapProjectProgress[]).map((row) => [row.project_id, row]));
+    const moduleIds = moduleRows.map((module) => module.id);
+    const { data: topics, error: topicsError } = moduleIds.length
+      ? await supabase.from("roadmap_topics").select("*").in("module_id", moduleIds).order("order_index")
+      : { data: [], error: null };
+    if (topicsError) throw topicsError;
+    const topicRows = (topics ?? []) as DetailedRoadmapTopic[];
+    const { data: progress, error: progressError } = topicRows.length
+      ? await supabase.from("user_roadmap_topic_progress").select("*").eq("user_id", userId!).in("topic_id", topicRows.map((topic) => topic.id))
+      : { data: [], error: null };
+    if (progressError) throw progressError;
+    const progressByTopic = new Map(((progress ?? []) as UserRoadmapTopicProgress[]).map((row) => [row.topic_id, row]));
+
+    return phaseRows.map((phase) => ({
+      ...phase,
+      modules: moduleRows.filter((module) => module.phase_id === phase.id).map((module) => ({
+        ...module,
+        topics: topicRows.filter((topic) => topic.module_id === module.id).map((topic) => ({ ...topic, progress: progressByTopic.get(topic.id) ?? null })),
+      })),
+      projects: projectRows.filter((project) => project.phase_id === phase.id).map((project) => ({ ...project, progress: progressByProject.get(project.id) ?? null })),
+    })) as DetailedRoadmapPhaseView[];
+  });
+}
+
+export async function setDetailedRoadmapTopicStatus(userId: string, topicId: string, status: UserRoadmapTopicProgress["status"]) {
+  const intervals: Record<UserRoadmapTopicProgress["status"], number | null> = {
+    not_started: null,
+    learning: 1,
+    practicing: 3,
+    applied: 7,
+    mastered: 30,
+  };
+  const interval = intervals[status];
+  const reviewedAt = status === "not_started" ? null : new Date();
+  const nextReviewAt = reviewedAt && interval ? new Date(reviewedAt.getTime() + interval * 24 * 60 * 60 * 1000).toISOString() : null;
+  const { data: previous, error: readError } = await supabase
+    .from("user_roadmap_topic_progress")
+    .select("review_count,status")
+    .eq("user_id", userId)
+    .eq("topic_id", topicId)
+    .maybeSingle();
+  if (readError) throw readError;
+  const previousStatus = (previous as { status?: UserRoadmapTopicProgress["status"] } | null)?.status ?? "not_started";
+  const { error } = await supabase.from("user_roadmap_topic_progress").upsert({
+    user_id: userId,
+    topic_id: topicId,
+    status,
+    last_reviewed_at: reviewedAt?.toISOString() ?? null,
+    next_review_at: nextReviewAt,
+    review_interval_days: interval,
+    review_count: ((previous as { review_count?: number } | null)?.review_count ?? 0) + (reviewedAt ? 1 : 0),
+  } as never, { onConflict: "user_id,topic_id" });
+  if (error) throw error;
+  if (previousStatus === "not_started" && status !== "not_started") {
+    void recordProductEvent("topic_started", { topicId });
+  }
+  if (status === "applied" || status === "mastered") {
+    void recordProductEvent("topic_completed", { topicId });
+  }
+}
+
+export async function setDetailedRoadmapProjectProgress(
+  userId: string,
+  projectId: string,
+  values: Pick<UserRoadmapProjectProgress, "status" | "repository_url" | "deployed_url" | "notes">
+) {
+  const { error } = await supabase.from("user_roadmap_project_progress").upsert({
+    user_id: userId,
+    project_id: projectId,
+    ...values,
+    updated_at: new Date().toISOString(),
+  } as never, { onConflict: "user_id,project_id" });
+  if (error) throw error;
+  if (values.status !== "not_started") void recordProductEvent("project_started", { projectId });
+  if (values.deployed_url?.trim()) void recordProductEvent("project_deployed", { projectId });
+}
+
+export async function saveDetailedRoadmapTopicNote(userId: string, topicId: string, note: string) {
+  const { error } = await supabase.from("roadmap_topic_notes").insert({ user_id: userId, topic_id: topicId, note } as never);
+  if (error) throw error;
+}
+
+export function useDetailedRoadmapTopicNotes(userId: string | undefined, topicIds: string[]) {
+  const key = userId && topicIds.length ? ["detailed-roadmap-notes", userId, ...topicIds] : null;
+  return useSWR(key, async () => {
+    const { data, error } = await supabase.from("roadmap_topic_notes").select("*").eq("user_id", userId!).in("topic_id", topicIds).order("created_at", { ascending: false });
+    if (error) throw error;
+    return (data ?? []) as DetailedRoadmapTopicNote[];
+  });
+}
+
 /** Combine static roadmap with per-user progress into phases-with-topics view models. */
 export function usePhasesWithProgress(userId: string | undefined) {
-  const { data: roadmap, isLoading: roadmapLoading, mutate: mutateRoadmap } = useRoadmap();
+  const { data: roadmap, isLoading: roadmapLoading, mutate: mutateRoadmap } = useRoadmap(userId);
   const { data: progress, isLoading: progressLoading, mutate: mutateProgress } = useProgress(userId);
 
   const progressMap = new Map((progress ?? []).map((p) => [p.topic_id, p]));
@@ -154,6 +306,14 @@ export function useTechnology(id: string | undefined) {
     const { data, error } = await supabase.from("technologies").select("*").eq("id", id as string).single();
     if (error) throw error;
     return data as Technology;
+  });
+}
+
+export function useRoleRoadmapIds() {
+  return useSWR("role-roadmap-catalog", async () => {
+    const { data, error } = await supabase.from("role_roadmap_assignments").select("role_id, roadmap_id");
+    if (error) throw error;
+    return (data ?? []) as Array<{ role_id: string; roadmap_id: string }>;
   });
 }
 
@@ -246,8 +406,8 @@ export function useAllTopicNotes(userId: string | undefined) {
  * features all mutually linked") but missing from the registry — `roadmap`
  * already carries `stageExercises`, so no new fetch was needed here either.
  */
-export function useLinkRegistry() {
-  const { data: roadmap } = useRoadmap();
+export function useLinkRegistry(userId?: string) {
+  const { data: roadmap } = useRoadmap(userId);
   const { data: milestones } = useClientSyncMilestones();
   return buildLinkRegistry(
     roadmap?.topics ?? [],
@@ -472,6 +632,7 @@ export async function toggleTopicComplete(
     p_completed: completed,
   } as never);
   if (error) throw error;
+  if (completed) void recordProductEvent("topic_started", { legacyTopicId: topicId });
 }
 
 /** Restore a historical completion during a validated Settings import. */

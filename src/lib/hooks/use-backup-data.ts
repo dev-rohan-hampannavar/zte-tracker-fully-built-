@@ -14,6 +14,11 @@ import type {
   StudyEvent,
   TopicResource,
   PublicStreakSummary,
+  DetailedRoadmapTopicNote,
+  OnboardingResponses,
+  UserRoadmap,
+  UserRoadmapProjectProgress,
+  UserRoadmapTopicProgress,
 } from "@/types/database";
 
 const supabase = createClient();
@@ -36,6 +41,11 @@ export interface BackupDomainData {
   activity_log: ActivityLogEntry[];
   study_events: StudyEvent[];
   public_streak_summary: PublicStreakSummary[];
+  user_roadmaps: UserRoadmap[];
+  onboarding_responses: OnboardingResponses[];
+  user_roadmap_topic_progress: UserRoadmapTopicProgress[];
+  roadmap_topic_notes: DetailedRoadmapTopicNote[];
+  user_roadmap_project_progress: UserRoadmapProjectProgress[];
 }
 
 export function useBackupDomainData(userId: string | undefined) {
@@ -53,6 +63,11 @@ export function useBackupDomainData(userId: string | undefined) {
       activity,
       events,
       streakSummary,
+      enrollments,
+      onboarding,
+      roadmapProgress,
+      roadmapNotes,
+      roadmapProjects,
     ] = await Promise.all([
       supabase.from("advanced_project_progress").select("*").eq("user_id", uid),
       supabase.from("exercise_progress").select("*").eq("user_id", uid),
@@ -65,8 +80,13 @@ export function useBackupDomainData(userId: string | undefined) {
       supabase.from("activity_log").select("*").eq("user_id", uid),
       supabase.from("study_events").select("*").eq("user_id", uid),
       supabase.from("public_streak_summary").select("*").eq("user_id", uid),
+      supabase.from("user_roadmaps").select("*").eq("user_id", uid),
+      supabase.from("onboarding_responses").select("*").eq("user_id", uid),
+      supabase.from("user_roadmap_topic_progress").select("*").eq("user_id", uid),
+      supabase.from("roadmap_topic_notes").select("*").eq("user_id", uid),
+      supabase.from("user_roadmap_project_progress").select("*").eq("user_id", uid),
     ]);
-    const failed = [advanced, exercises, buildInPublic, manualChecks, revision, decisions, resources, planState, activity, events, streakSummary].find((result) => result.error);
+    const failed = [advanced, exercises, buildInPublic, manualChecks, revision, decisions, resources, planState, activity, events, streakSummary, enrollments, onboarding, roadmapProgress, roadmapNotes, roadmapProjects].find((result) => result.error);
     if (failed?.error) throw failed.error;
     return {
       advanced_project_progress: (advanced.data ?? []) as AdvancedProjectProgress[],
@@ -80,6 +100,11 @@ export function useBackupDomainData(userId: string | undefined) {
       activity_log: (activity.data ?? []) as ActivityLogEntry[],
       study_events: (events.data ?? []) as StudyEvent[],
       public_streak_summary: (streakSummary.data ?? []) as PublicStreakSummary[],
+      user_roadmaps: (enrollments.data ?? []) as UserRoadmap[],
+      onboarding_responses: (onboarding.data ?? []) as OnboardingResponses[],
+      user_roadmap_topic_progress: (roadmapProgress.data ?? []) as UserRoadmapTopicProgress[],
+      roadmap_topic_notes: (roadmapNotes.data ?? []) as DetailedRoadmapTopicNote[],
+      user_roadmap_project_progress: (roadmapProjects.data ?? []) as UserRoadmapProjectProgress[],
     } satisfies BackupDomainData;
   });
 }

@@ -444,7 +444,7 @@ function GoalCard({
             </div>
             {goal.description && <p className="text-xs text-muted mt-1">{goal.description}</p>}
             <div className="flex items-center gap-2 mt-2">
-              <Progress value={goal.progress_pct} className="h-1.5 flex-1 max-w-xs" glow={goal.progress_pct >= 75} />
+              <Progress value={goal.progress_pct} className="h-1.5 flex-1 max-w-xs" glow={goal.progress_pct >= 75} label={`${goal.title} progress: ${goal.progress_pct}%`} />
               <span className="text-xs text-muted font-mono-tabular">
                 {goal.milestones.filter((m) => m.status === "completed").length}/{goal.milestones.length} · {goal.progress_pct}%
               </span>

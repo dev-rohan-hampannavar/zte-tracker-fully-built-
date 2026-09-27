@@ -37,8 +37,16 @@ export function RadialProgress({
   const reducedMotion = useReducedMotion();
 
   return (
-    <div className="relative shrink-0" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
+    <div
+      className="relative shrink-0"
+      style={{ width: size, height: size }}
+      role="progressbar"
+      aria-valuenow={Math.round(clamped)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={[label, `${Math.round(clamped)}%`, sublabel].filter(Boolean).join(", ")}
+    >
+      <svg width={size} height={size} className="-rotate-90" aria-hidden="true">
         <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--surface-2)" strokeWidth={stroke} />
         {glow ? (
           <motion.circle
@@ -70,12 +78,15 @@ export function RadialProgress({
           />
         )}
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
+      <div className="absolute inset-0 flex flex-col items-center justify-center" aria-hidden="true">
         <span className="text-xl font-bold font-mono-tabular leading-none">{Math.round(value)}%</span>
         {label && <span className="text-[10px] text-muted mt-1 text-center leading-tight px-1">{label}</span>}
       </div>
       {sublabel && (
-        <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[11px] text-muted whitespace-nowrap">
+        <span
+          className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[11px] text-muted whitespace-nowrap"
+          aria-hidden="true"
+        >
           {sublabel}
         </span>
       )}

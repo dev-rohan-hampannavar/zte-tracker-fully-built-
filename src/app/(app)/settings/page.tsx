@@ -71,6 +71,7 @@ import type {
   TimeBlock,
   EvidenceItem,
   FinancialProfile,
+  UserSettings,
 } from "@/types/database";
 
 
@@ -321,6 +322,8 @@ export default function SettingsPage() {
   // (daily-plan state, revision history, activity, resources, and public
   // streak projection). Older exports remain importable (missing keys are
   // simply skipped).
+  // v5 adds selected account preferences and versioned-roadmap enrollment,
+  // learning progress, notes, and project evidence.
   // v3 adds the Execution OS planning/evidence/financial domains. A v2
   // export is still importable (older keys are simply absent).
   // v2 adds every per-user domain from the Goals/Focus-Timer/Career-CRM/
@@ -330,7 +333,7 @@ export default function SettingsPage() {
   // taken today would silently miss real user data, which is exactly what
   // rule #19 ("never allow a user to lose their data because of a UI
   // operation") means to prevent.
-  const EXPORT_VERSION = 4;
+  const EXPORT_VERSION = 5;
 
   function buildExportPayload() {
     const topicProgress = phases.flatMap((p) =>
@@ -369,6 +372,37 @@ export default function SettingsPage() {
         financialProfile && financialProfile.updated_at !== new Date(0).toISOString()
           ? financialProfile
           : null,
+      account_preferences: settings ? {
+        weekly_goal_type: settings.weekly_goal_type,
+        weekly_goal_value: settings.weekly_goal_value,
+        theme: settings.theme,
+        last_opened_page: settings.last_opened_page,
+        last_opened_phase: settings.last_opened_phase,
+        last_expanded_accordion: settings.last_expanded_accordion,
+        display_name: settings.display_name,
+        public_profile_bio: settings.public_profile_bio,
+        github_username: settings.github_username,
+        weekly_summary_enabled: settings.weekly_summary_enabled,
+        weekly_summary_recipient_email: settings.weekly_summary_recipient_email,
+        weekly_summary_recipient_name: settings.weekly_summary_recipient_name,
+        developer_mode: settings.developer_mode,
+        topic_locking_disabled: settings.topic_locking_disabled,
+        pinned_items: settings.pinned_items,
+        dashboard_tour_seen: settings.dashboard_tour_seen,
+        timezone: settings.timezone,
+        career_plan_version: settings.career_plan_version,
+        career_plan_track: settings.career_plan_track,
+        career_plan_start_date: settings.career_plan_start_date,
+        career_plan_deadline_date: settings.career_plan_deadline_date,
+        career_plan_weekly_hours: settings.career_plan_weekly_hours,
+        career_plan_flagship_project: settings.career_plan_flagship_project,
+        muted_notification_kinds: settings.muted_notification_kinds,
+        daily_commitment_type: settings.daily_commitment_type,
+        daily_commitment_id: settings.daily_commitment_id,
+        daily_commitment_label: settings.daily_commitment_label,
+        daily_commitment_date: settings.daily_commitment_date,
+        daily_commitment_done_at: settings.daily_commitment_done_at,
+      } satisfies Partial<UserSettings> : null,
       ...backupDomains,
     };
   }
@@ -474,6 +508,7 @@ export default function SettingsPage() {
     time_blocks?: TimeBlock[];
     evidence_items?: EvidenceItem[];
     financial_profile?: FinancialProfile | null;
+    account_preferences?: Partial<UserSettings> | null;
     advanced_project_progress?: Array<Record<string, unknown>>;
     exercise_progress?: Array<Record<string, unknown>>;
     build_in_public_status?: Array<Record<string, unknown>>;
@@ -485,6 +520,11 @@ export default function SettingsPage() {
     activity_log?: Array<Record<string, unknown>>;
     study_events?: Array<Record<string, unknown>>;
     public_streak_summary?: Array<Record<string, unknown>>;
+    user_roadmaps?: Array<Record<string, unknown>>;
+    onboarding_responses?: Array<Record<string, unknown>>;
+    user_roadmap_topic_progress?: Array<Record<string, unknown>>;
+    roadmap_topic_notes?: Array<Record<string, unknown>>;
+    user_roadmap_project_progress?: Array<Record<string, unknown>>;
   };
 
   const [importOpen, setImportOpen] = useState(false);
@@ -754,6 +794,45 @@ export default function SettingsPage() {
         }
       }
 
+      if (importPreview.account_preferences) {
+        const preferences = importPreview.account_preferences;
+        const { error } = await supabase.from("user_settings").update({
+          weekly_goal_type: preferences.weekly_goal_type,
+          weekly_goal_value: preferences.weekly_goal_value,
+          theme: preferences.theme,
+          last_opened_page: preferences.last_opened_page,
+          last_opened_phase: preferences.last_opened_phase,
+          last_expanded_accordion: preferences.last_expanded_accordion,
+          display_name: preferences.display_name,
+          public_profile_bio: preferences.public_profile_bio,
+          github_username: preferences.github_username,
+          weekly_summary_enabled: preferences.weekly_summary_enabled,
+          weekly_summary_recipient_email: preferences.weekly_summary_recipient_email,
+          weekly_summary_recipient_name: preferences.weekly_summary_recipient_name,
+          developer_mode: preferences.developer_mode,
+          topic_locking_disabled: preferences.topic_locking_disabled,
+          pinned_items: preferences.pinned_items,
+          dashboard_tour_seen: preferences.dashboard_tour_seen,
+          timezone: preferences.timezone,
+          career_plan_version: preferences.career_plan_version,
+          career_plan_track: preferences.career_plan_track,
+          career_plan_start_date: preferences.career_plan_start_date,
+          career_plan_deadline_date: preferences.career_plan_deadline_date,
+          career_plan_weekly_hours: preferences.career_plan_weekly_hours,
+          career_plan_flagship_project: preferences.career_plan_flagship_project,
+          muted_notification_kinds: preferences.muted_notification_kinds,
+          daily_commitment_type: preferences.daily_commitment_type,
+          daily_commitment_id: preferences.daily_commitment_id,
+          daily_commitment_label: preferences.daily_commitment_label,
+          daily_commitment_date: preferences.daily_commitment_date,
+          daily_commitment_done_at: preferences.daily_commitment_done_at,
+        } as never).eq("user_id", user.id);
+        if (error) {
+          console.error("Import: failed to restore account preferences", error);
+          failures++;
+        }
+      }
+
       const restoreRows = async (key: keyof ImportPayload, table: string, conflict: string) => {
         const values = importPreview[key];
         if (!Array.isArray(values) || values.length === 0) return;
@@ -779,6 +858,18 @@ export default function SettingsPage() {
       await restoreRows("activity_log", "activity_log", "id");
       await restoreRows("study_events", "study_events", "id");
       await restoreRows("public_streak_summary", "public_streak_summary", "user_id");
+      if (Array.isArray(importPreview.user_roadmaps)) {
+        const { error } = await supabase.from("user_roadmaps").update({ status: "paused" } as never).eq("user_id", user.id).eq("status", "active");
+        if (error) {
+          console.error("Import: failed to pause current enrollment before restoring backup", error);
+          failures++;
+        }
+      }
+      await restoreRows("user_roadmaps", "user_roadmaps", "id");
+      await restoreRows("onboarding_responses", "onboarding_responses", "user_id");
+      await restoreRows("user_roadmap_topic_progress", "user_roadmap_topic_progress", "user_id,topic_id");
+      await restoreRows("roadmap_topic_notes", "roadmap_topic_notes", "id");
+      await restoreRows("user_roadmap_project_progress", "user_roadmap_project_progress", "user_id,project_id");
 
       await Promise.all([mutateProgress(), mutateLogs(), mutateNotes(), mutateProjects(), mutateDsa(), mutateCareer(), mutateGoals(), mutateInterviewRounds(), mutateUserSkills(), mutateProjectSkills(), mutateInterviewAttempts(), mutateStudySessions(), mutateFocusSessions(), mutateWeeklyCommitments(), mutateTimeBlocks(), mutateEvidenceItems(), mutateFinancialProfile()]);
       await mutateBackupDomains();
@@ -818,6 +909,7 @@ export default function SettingsPage() {
       return;
     }
     await Promise.all([mutateProgress(), mutateLogs(), mutateNotes(), mutateProjects(), mutateDsa(), mutateCareer(), mutateGoals(), mutateInterviewRounds(), mutateUserSkills(), mutateProjectSkills(), mutateInterviewAttempts(), mutateStudySessions(), mutateFocusSessions(), mutateWeeklyCommitments(), mutateTimeBlocks(), mutateEvidenceItems(), mutateFinancialProfile()]);
+    await mutateBackupDomains();
     setResetOpen(false);
     setResetConfirmText("");
     toast.success("Progress reset");

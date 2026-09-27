@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useUser } from "@/lib/hooks/use-user";
+import { useActiveUserRoadmap } from "@/lib/hooks/use-user-roadmap";
 import { usePhasesWithProgress, updateTopicProgress, toggleTopicComplete, useTechnologies, useMonthByMonth } from "@/lib/hooks/use-roadmap";
+import DetailedLearningPathPage from "@/components/roadmap/detailed-learning-path-page";
 import { useDailyLogs } from "@/lib/hooks/use-daily-logs";
 import { computePhaseScheduleStatus } from "@/lib/plan-position";
 import { TimelineView } from "@/components/roadmap/timeline-view";
@@ -15,7 +17,7 @@ import { generateBuildInPublicDraft } from "@/lib/build-in-public-draft";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -521,6 +523,7 @@ function PhaseCardGrid({
 
 function RoadmapListView() {
   const { user } = useUser();
+  const { data: activeRoadmap } = useActiveUserRoadmap(user?.id);
   const { data: displayName } = useDisplayName(user?.id);
   const { data: userSettings } = useUserSettings(user?.id);
   const { phases, isLoading, mutateProgress } = usePhasesWithProgress(user?.id);
@@ -628,7 +631,30 @@ function RoadmapListView() {
   // badge (accent) from every other listed phase's badge (outline),
   // which otherwise all look identical regardless of relevance.
   const currentPhaseId = useMemo(() => {
-    const candidates = phases.flatMap((phase, phaseIdx) =>
+    // Same Phase 7/9 integration as Dashboard's nextTopic and use-daily-
+    // plan.ts's nextTopic — skip phases before a recorded
+    // starting_phase_id, but only when nothing in those earlier phases
+    // has been touched, so real progress always overrides the
+    // recommendation. See those two for the fuller comment; kept
+    // consistent here rather than extracted into a shared helper, same
+    // reasoning as use-daily-plan.ts (this file doesn't already import
+    // the Phase/PhaseWithTopics types either).
+    const startingPhaseOrderIndex = activeRoadmap?.starting_phase_id
+      ? (phases.find((p) => p.id === activeRoadmap.starting_phase_id)?.order_index ?? null)
+      : null;
+
+    const hasAnyTouchedProgressBeforeStart =
+      startingPhaseOrderIndex !== null &&
+      phases
+        .filter((p) => p.order_index < startingPhaseOrderIndex)
+        .some((p) => (p.stages ?? []).some((s) => s.topics.some((t) => t.progress)));
+
+    const eligiblePhases =
+      startingPhaseOrderIndex !== null && !hasAnyTouchedProgressBeforeStart
+        ? phases.filter((p) => p.order_index >= startingPhaseOrderIndex)
+        : phases;
+
+    const candidates = eligiblePhases.flatMap((phase, phaseIdx) =>
       (phase.stages ?? []).flatMap((stage, stageIdx) =>
         stage.topics.map((topic, topicIdx) => ({ topic, phase, phaseIdx, stageIdx, topicIdx }))
       )
@@ -641,7 +667,7 @@ function RoadmapListView() {
         return a.topicIdx - b.topicIdx;
       })[0];
     return next?.phase.id ?? null;
-  }, [phases]);
+  }, [phases, activeRoadmap]);
 
   // Item 9 — auto-collapse locked/completed roadmap sections in the List
   // (accordion) view. computeStageTopicLocks/isPhaseLocked already knows
@@ -1119,9 +1145,15 @@ function LearningPathTab() {
 }
 
 export default function RoadmapPage() {
+  const { user } = useUser();
+  const { data: activeRoadmap } = useActiveUserRoadmap(user?.id);
   const searchParams = useSearchParams();
   const router = useRouter();
   const activeTab = searchParams.get("tab") === "learning-path" ? "learning-path" : "list";
+
+  if (activeRoadmap && activeRoadmap.roadmap_id !== "zte-core-v1") {
+    return <DetailedLearningPathPage />;
+  }
 
   function setTab(tab: string) {
     router.replace(tab === "list" ? "/roadmap" : `/roadmap?tab=${tab}`, { scroll: false });
@@ -1145,52 +1177,6 @@ export default function RoadmapPage() {
           </TabsList>
         </Tabs>
       </div>
-      </FadeUp>
-
-      {/* ── Phases to skip or shorten ── */}
-      <FadeUp>
-        <Card>
-          <CardHeader>
-            <CardTitle>Phases to skip or shorten</CardTitle>
-            <CardDescription>
-              If time is the constraint, cut in this order. Never skip Phases 01–06 (Exit A) or Phase 08 (DSA). Cutting all optional phases saves ~350–450 hours (~3 months at 30h/wk). Source: career_timeline_zte.docx §21.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/50">
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Phase</th>
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Topic</th>
-                    <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Hours</th>
-                    <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2">Suggestion</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/30">
-                  {([
-                    { phase: "06b", topic: "React Native (Mobile)", hours: 111, suggestion: "Skip unless mobile roles are the target. Exit A2 is optional — it adds hours without opening many more doors for a web-focused junior role.", skip: true },
-                    { phase: "10",  topic: "Monitoring + Analytics", hours: 103, suggestion: "Shorten: keep Sentry basics and one Grafana dashboard. The full 103h is valuable but not a gate for Exit A or ★1.", skip: false },
-                    { phase: "13",  topic: "Advanced Browser APIs", hours: 137, suggestion: "Skip until after Exit ★2. Not an interview topic; no ZTE build-in-public post assigned.", skip: true },
-                    { phase: "14",  topic: "Load Testing + Security", hours: 89,  suggestion: "Shorten for early exits. Keep OWASP Top 10 basics and one load test. Full depth needed only for Exit C+.", skip: false },
-                    { phase: "15",  topic: "Build Tooling + CSS-in-JS", hours: 44,  suggestion: "Skip. ZTE itself notes no posting value for this phase. Low interview signal.", skip: true },
-                    { phase: "20",  topic: "Engineering Judgement (bonus)", hours: 52,  suggestion: "Do only if time allows after Exit 3. Not on the main path.", skip: true },
-                  ] as const).map((row) => (
-                    <tr key={row.phase}>
-                      <td className="py-2 pr-4 text-xs font-medium text-accent">Phase {row.phase}</td>
-                      <td className="py-2 pr-4 text-xs">{row.topic}</td>
-                      <td className="py-2 pr-4 text-right font-mono-tabular text-xs">{row.hours}h</td>
-                      <td className="py-2 text-xs text-muted">{row.suggestion}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-[11px] text-muted mt-3">
-              <span className="text-danger font-semibold">Never skip:</span> Phases 01–06 (Exit A gate) and Phase 08 (DSA — the first real interview-loop gate, 331h). These are non-negotiable regardless of time pressure.
-            </p>
-          </CardContent>
-        </Card>
       </FadeUp>
 
       {activeTab === "list" ? <RoadmapListView /> : <LearningPathTab />}

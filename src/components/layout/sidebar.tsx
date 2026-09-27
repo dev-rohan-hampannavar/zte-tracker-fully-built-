@@ -62,6 +62,7 @@ const NAV = [
   { href: "/activity", label: "Activity History", icon: History },
   { href: "/journal", label: "Journal", icon: NotebookPen },
   { href: "/roadmap", label: "Roadmap", icon: Map },
+  { href: "/learning-path", label: "Detailed Learning Path", icon: GraduationCap },
   { href: "/roadmap-diff", label: "Roadmap Diff", icon: History },
   { href: "/projects", label: "Projects", icon: FolderGit2 },
   { href: "/portfolio", label: "Portfolio", icon: FolderKanban },
@@ -96,7 +97,7 @@ const PINNED_HREFS = new Set(["/dashboard", "/roadmap", "/dsa", "/career", "/jou
 const NAV_SECTIONS: { id: string; label: string; icon: typeof Home; hrefs: string[] }[] = [
   { id: "home", label: "Home", icon: Home, hrefs: ["/dashboard", "/daily-plan", "/weekly-digest", "/monthly-review"] },
   { id: "execute", label: "Execute", icon: Zap, hrefs: ["/goals", "/execution", "/workspace", "/journal", "/activity"] },
-  { id: "learn", label: "Learn", icon: GraduationCap, hrefs: ["/roadmap", "/skills", "/dsa", "/revision", "/exit-ladder", "/roadmap-diff"] },
+  { id: "learn", label: "Learn", icon: GraduationCap, hrefs: ["/roadmap", "/learning-path", "/skills", "/dsa", "/revision", "/exit-ladder", "/roadmap-diff"] },
   { id: "build", label: "Build", icon: Hammer, hrefs: ["/projects", "/portfolio", "/clientsync", "/architecture"] },
   { id: "career", label: "Career", icon: Rocket, hrefs: ["/career-plan", "/job-readiness", "/career-gap", "/milestones", "/career", "/interviews", "/resume", "/achievements", "/leaderboard"] },
   { id: "progress", label: "Progress", icon: BarChart3, hrefs: ["/statistics"] },
@@ -145,15 +146,13 @@ export function Sidebar({ className }: { className?: string }) {
 
   const expanded = pinned || hovering;
 
-  // Collapse back to the default/active-page section whenever the sidebar
-  // closes (mouse leaves and it isn't pinned open) — don't remember manually
-  // opened submenus across hovers.
-  React.useEffect(() => {
-    if (!expanded) {
-      setOpenSections(activeSectionSet());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expanded]);
+  // Collapse back to the active-page section when the pointer leaves an
+  // unpinned sidebar. This keeps hover navigation predictable without a
+  // render-triggering state update from an effect.
+  function handleMouseLeave() {
+    setHovering(false);
+    if (!pinned) setOpenSections(activeSectionSet());
+  }
 
   async function signOut() {
     const supabase = createClient();
@@ -165,7 +164,7 @@ export function Sidebar({ className }: { className?: string }) {
     <aside
       ref={asideRef}
       onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
+      onMouseLeave={handleMouseLeave}
       className={cn(
         "group/sidebar relative flex h-full shrink-0 flex-col border-r border-border bg-surface transition-[width] duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]",
         expanded ? "w-64" : "w-[68px]",

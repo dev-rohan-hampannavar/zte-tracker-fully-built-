@@ -124,7 +124,7 @@ export default function SkillsPage() {
                   <span className="text-xs text-muted font-mono-tabular w-10 text-right">{s.knowledge_pct}%</span>
                 </div>
               </div>
-              <Progress value={s.knowledge_pct} className="h-1.5" glow={s.knowledge_pct >= 75} />
+              <Progress value={s.knowledge_pct} className="h-1.5" glow={s.knowledge_pct >= 75} label={`${s.technology_name} knowledge: ${s.knowledge_pct}%`} />
               <p className="text-[11px] text-muted mt-1">
                 {s.lessons_completed}/{s.lessons_total} lessons
                 {s.last_reviewed_at &&
@@ -158,7 +158,7 @@ export default function SkillsPage() {
                   {m.hardTopics > 0 && ` · ${m.hardDone}/${m.hardTopics} hard`}
                 </span>
               </div>
-              <Progress value={pct(m.done, m.total)} className="h-2" />
+              <Progress value={pct(m.done, m.total)} className="h-2" label={`${band}: ${m.done} of ${m.total} topics`} />
             </div>
           ))}
           <p className="text-xs text-muted mt-2">
@@ -182,7 +182,7 @@ export default function SkillsPage() {
                     {m.done}/{m.total}
                   </span>
                 </div>
-                <Progress value={pct(m.done, m.total)} className="h-1.5" />
+                <Progress value={pct(m.done, m.total)} className="h-1.5" label={`${tag}: ${m.done} of ${m.total}`} />
               </div>
             ))}
           </CardContent>
@@ -218,7 +218,7 @@ export default function SkillsPage() {
                     <span className="text-xs text-muted font-mono-tabular w-14 text-right shrink-0">
                       {done}/{total}
                     </span>
-                    <Progress value={score} className="h-1.5 w-20 shrink-0" />
+                    <Progress value={score} className="h-1.5 w-20 shrink-0" label={`${phase.title} readiness: ${r.label}`} />
                     <Badge variant={r.variant} className={cn("shrink-0 w-28 justify-center")}>
                       {r.label}
                     </Badge>
