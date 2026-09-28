@@ -39,11 +39,11 @@ for (const track of tracks) {
 }
 
 lines.push(
-  "delete from public.role_roadmap_assignments where role_id in ('frontend-developer','backend-developer','fullstack-developer','sde-1','devops-engineer','cloud-engineer','mobile-engineer','qa-engineer','bi-data-analyst','operations-analyst');",
+  "delete from public.role_roadmap_assignments where role_id in ('backend-developer','devops-engineer','cloud-engineer','mobile-engineer','qa-engineer','bi-data-analyst','operations-analyst','sde-1');",
   "insert into public.role_roadmap_assignments (role_id, roadmap_id, priority) values",
-  "  ('frontend-developer','zte-frontend-v1',0), ('mobile-engineer','zte-frontend-v1',0), ('qa-engineer','zte-frontend-v1',0),",
-  "  ('backend-developer','zte-backend-java-v1',0), ('devops-engineer','zte-backend-java-v1',0), ('cloud-engineer','zte-backend-java-v1',0),",
-  "  ('fullstack-developer','zte-fullstack-v1',0), ('sde-1','zte-fullstack-v1',0), ('bi-data-analyst','zte-fullstack-v1',0), ('operations-analyst','zte-fullstack-v1',0)",
+  "  ('frontend-developer','zte-frontend-v1',0), ('react-developer','zte-frontend-v1',0),",
+  "  ('java-developer','zte-backend-java-v1',0), ('java-backend-engineer','zte-backend-java-v1',0), ('spring-boot-developer','zte-backend-java-v1',0),",
+  "  ('fullstack-developer','zte-fullstack-v1',0), ('full-stack-engineer','zte-fullstack-v1',0), ('sde-1','zte-fullstack-v1',0)",
   "on conflict (role_id, roadmap_id) do update set priority=excluded.priority;"
 );
 

@@ -74,6 +74,7 @@ const NAV = [
   { href: "/weekly-digest", label: "Weekly Digest", icon: NotebookText },
   { href: "/monthly-review", label: "Monthly Review", icon: CalendarRange },
   { href: "/career-plan", label: "Career Plan", icon: Rocket },
+  { href: "/careers", label: "Role Explorer", icon: Briefcase },
   { href: "/companies", label: "Companies", icon: Building2 },
   { href: "/technologies", label: "Technologies", icon: Cpu },
   { href: "/career", label: "Career Tracker", icon: Briefcase },
@@ -99,7 +100,7 @@ const NAV_SECTIONS: { id: string; label: string; icon: typeof Home; hrefs: strin
   { id: "execute", label: "Execute", icon: Zap, hrefs: ["/goals", "/execution", "/workspace", "/journal", "/activity"] },
   { id: "learn", label: "Learn", icon: GraduationCap, hrefs: ["/roadmap", "/learning-path", "/skills", "/dsa", "/revision", "/exit-ladder", "/roadmap-diff"] },
   { id: "build", label: "Build", icon: Hammer, hrefs: ["/projects", "/portfolio", "/clientsync", "/architecture"] },
-  { id: "career", label: "Career", icon: Rocket, hrefs: ["/career-plan", "/job-readiness", "/career-gap", "/milestones", "/career", "/interviews", "/resume", "/achievements", "/leaderboard"] },
+  { id: "career", label: "Career", icon: Rocket, hrefs: ["/career-plan", "/careers", "/job-readiness", "/career-gap", "/milestones", "/career", "/interviews", "/resume", "/achievements", "/leaderboard"] },
   { id: "progress", label: "Progress", icon: BarChart3, hrefs: ["/statistics"] },
   { id: "reference", label: "Reference", icon: Library, hrefs: ["/companies", "/technologies", "/reference"] },
 ];

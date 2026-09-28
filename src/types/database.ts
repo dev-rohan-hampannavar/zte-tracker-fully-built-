@@ -928,6 +928,50 @@ export interface TargetRole {
   id: string;
   name: string;
   description: string | null;
+  is_active: boolean;
+}
+
+export interface CareerFamily {
+  id: string;
+  name: string;
+  description: string;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CareerRoleProfile {
+  id: string;
+  family_id: string;
+  name: string;
+  summary: string;
+  prerequisites: string[];
+  core_skills: string[];
+  tool_stack: string[];
+  project_blueprints: string[];
+  interview_focus: string[];
+  dsa_expectation: string;
+  system_design_expectation: string;
+  portfolio_evidence: string[];
+  roadmap_id: string | null;
+  curriculum_status: "mapped_to_detailed_track" | "core_curriculum";
+  coverage_notes: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CareerRole {
+  id: string;
+  target_role_id: string;
+  family_id: string;
+  profile_id: string;
+  role_focus: string | null;
+  roadmap_id: string | null;
+  curriculum_status: "mapped_to_detailed_track" | "core_curriculum";
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface RoleSkillRequirement {
@@ -1673,6 +1717,24 @@ export interface Database {
         Update: Partial<TargetRole>;
         Relationships: [];
       };
+      career_families: {
+        Row: CareerFamily;
+        Insert: Partial<CareerFamily> & { id: string; name: string };
+        Update: Partial<CareerFamily>;
+        Relationships: [];
+      };
+      career_role_profiles: {
+        Row: CareerRoleProfile;
+        Insert: Partial<CareerRoleProfile> & { id: string; family_id: string; name: string; summary: string };
+        Update: Partial<CareerRoleProfile>;
+        Relationships: [];
+      };
+      career_roles: {
+        Row: CareerRole;
+        Insert: Partial<CareerRole> & { id: string; target_role_id: string; family_id: string; profile_id: string; curriculum_status: CareerRole["curriculum_status"] };
+        Update: Partial<CareerRole>;
+        Relationships: [];
+      };
       role_skill_requirements: {
         Row: RoleSkillRequirement;
         Insert: RoleSkillRequirement;
@@ -1815,6 +1877,10 @@ export interface Database {
       };
       set_role_roadmap_assignment: {
         Args: { p_role_id: string; p_roadmap_id: string };
+        Returns: void;
+      };
+      admin_sync_career_role_skills: {
+        Args: { p_role_id: string };
         Returns: void;
       };
       record_study_activity: {

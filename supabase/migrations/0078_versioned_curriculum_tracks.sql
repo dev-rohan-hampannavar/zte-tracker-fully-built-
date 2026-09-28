@@ -124,6 +124,13 @@ grant select, insert, update, delete on public.roadmap_topic_notes to authentica
 -- roles with an authored curriculum. Other roles are not assigned a fake
 -- specialist path and can use the legacy owner's full-stack roadmap only
 -- through the legacy full-stack curriculum fallback in onboarding.
+-- Roadmap shells must exist before the assignment FK is inserted. The full
+-- phases/modules/topics/projects are loaded later by seed_roadmap_tracks.sql.
+insert into public.roadmaps (id, title, track, description, is_public) values
+  ('zte-frontend-v1', 'Frontend Engineering', 'frontend', 'Shared frontend curriculum; detailed content is loaded by seed_roadmap_tracks.sql.', true),
+  ('zte-backend-java-v1', 'Backend Java Engineering', 'backend', 'Shared Java backend curriculum; detailed content is loaded by seed_roadmap_tracks.sql.', true),
+  ('zte-fullstack-v1', 'Full-Stack Engineering', 'full-stack', 'Shared full-stack curriculum; detailed content is loaded by seed_roadmap_tracks.sql.', true)
+on conflict (id) do update set is_public = true;
 update public.roadmaps set is_public = true where id = 'zte-core-v1';
 delete from public.role_roadmap_assignments a
 where a.roadmap_id = 'zte-core-v1'

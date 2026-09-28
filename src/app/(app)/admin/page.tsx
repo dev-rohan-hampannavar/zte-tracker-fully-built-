@@ -9,6 +9,7 @@ import { Loader2 } from "lucide-react";
 import type { Phase } from "@/types/database";
 import { DetailedCurriculumEditor } from "@/components/admin/detailed-curriculum-editor";
 import { ProductAdminConsole } from "@/components/admin/product-admin-console";
+import { CareerRoleCatalogAdmin } from "@/components/admin/career-role-catalog-admin";
 
 const supabase = createClient();
 
@@ -35,6 +36,7 @@ export default function AdminPage() {
   return <div className="mx-auto max-w-6xl p-6">
     <h1 className="mb-1 text-xl font-semibold text-foreground">Platform administration</h1>
     <p className="mb-6 text-sm text-muted">Manage curriculum releases, product flags, and aggregate adoption milestones.</p>
+    <CareerRoleCatalogAdmin />
     <DetailedCurriculumEditor />
     <ProductAdminConsole />
     <section>

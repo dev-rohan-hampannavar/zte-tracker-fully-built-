@@ -1,44 +1,47 @@
-# Production-readiness evidence report
+# Production readiness report
 
-## Repository baseline
+**Review date:** 2026-09-28  
+**Scope:** supplied ZIP, implementation changes, and local checks. No live database or deployment account was available.
 
-- Next.js: 16.3.3
-- React / React DOM: 19.2.4
-- TypeScript: 5.x (lockfile-resolved)
-- Supabase client: `@supabase/ssr` 0.12.4 and `@supabase/supabase-js` 2.111.0
-- Package manager: npm (`package-lock.json`)
-- Routes: 44 `page.tsx` routes (including authenticated `/career-plan` and `/execution`)
-- Components: 58 TSX components
-- Hooks: 29 hook modules
-- Supabase migrations: 55 (through migration 0055; apply migrations 0051–0055 to enable Career Strategy, canonical study events, BI/data readiness, and complete reset behavior)
-- CI: `.github/workflows/ci.yml` runs install, typecheck, lint, unit/security contract tests, curriculum validation, audit, and production build; optional smoke and read-only Supabase release-gate jobs run when their URL/secret inputs are configured.
+## Source snapshot
 
-## Curriculum reconciliation snapshot
+- Next.js 16.3.3, React 19.2.4, TypeScript, and Supabase client/SSR libraries.
+- 50 application pages and 87 ordered SQL migrations after this work.
+- Three shared detailed roadmap tracks: 63 phases, 303 modules, 1,193 topics, and 614 project briefs.
+- Career explorer source catalog: 10 families, 50 shared role profiles, and all 118 job titles from the attached DOCX.
+- Eight exact titles use one of the three detailed tracks; 110 titles use the core curriculum until a suitable track is authored.
+- Legacy curriculum validation reports 112 advisory warnings.
 
-The repository contains conflicting source artifacts and therefore does not permit an honest single-number claim without a product decision:
+## Implemented in source
 
-- `data/seed.json`: 21 phases, 375 topics
-- `src/data/manual-days.json`: 324 execution days
-- Sum of topic `estimated_hours` in `data/seed.json`: 1,834 hours
-- Other metadata/README artifacts contain different totals and legacy phase labels.
+- Searchable and filterable role explorer with interest-based family suggestions.
+- Role profiles with prerequisites, core skills, tools, projects, interview focus, DSA/system-design expectations, and portfolio evidence.
+- Role selection during onboarding and target-role updates from the explorer.
+- Migration 0087 adds catalog tables, target-role activity state, RLS-protected admin writes, role-skill weights, and corrected track assignments.
+- Admin UI to add shared profiles and titles, map a new role only to a published shared track, and activate/deactivate titles.
+- Generator and validator commands for reproducible catalog data.
+- Existing enrollment/progress records remain untouched by migration 0087.
 
-The canonical curriculum version is **not declared** by this pass; the discrepancy is recorded rather than silently choosing one source.
+## Career coverage limits
 
-`npm run validate:curriculum` now checks IDs, phase/stage references, technology mappings, day-number continuity, duplicate titles, and estimates. The current snapshot passes structural checks with 112 warnings (legacy missing estimates and repeated titles); `node scripts/validate-curriculum.mjs --strict` intentionally fails until those source discrepancies are reconciled.
+The catalog covers the exact requested titles and explains the 50 shared-profile groupings. It does not create 118 different specialist curricula. Three authored tracks remain available; only eight titles are mapped to them, and 110 roles fall back to the core curriculum. That is displayed in onboarding and the explorer. The DOCX does not supply a synonym dictionary, so no extra employer-specific aliases were invented.
 
-## Security/data changes
+The role profiles are curated guidance, not a promise about every employer's requirements. Expert review is still needed for the role content and existing curricula. Skill requirements connect to the existing readiness engine, but live scoring behavior depends on the migration and staging evidence.
 
-See [`HARDENING_CHANGELOG.md`](../HARDENING_CHANGELOG.md) and migrations 0047–0055 for the complete implementation record.
+## Security and data
 
-## Career Strategy integration status
+Migration 0087 gates catalog writes with `public.is_admin()` and keeps catalog reads authenticated. User target-role changes upsert the signed-in user's onboarding row under existing row ownership policies. Source code does not prove deployed RLS behavior. No live cross-user, admin, owner-continuity, export/restore, deletion, or public-profile journey was run.
 
-The supplied `Zero_to_Elite_Full_Plan (1).html` is represented as native, typed content in `src/data/full-plan.ts`, with a signed-in `/career-plan` route that composes live roadmap, daily-log, project, DSA, application, and interview evidence. The route reuses the existing design system and links from the sidebar and Dashboard; it is not an iframe or a parallel UI system.
+No production migration was applied. Existing user enrollments and progress were not rewritten in source SQL. Verify that behavior in staging before release.
 
-Core code integration is present in this extracted source package. Settings backup/import now covers user-owned state and reset behavior is migration-backed; manual/focus/daily-plan activity also enters the canonical study-event ledger; readiness includes BI/data roles; Job Readiness includes a transparent job-description analyzer that compares pasted requirements with the canonical technology catalog and live evidence. Release readiness still depends on applying migrations 0051–0055, authenticated backup/RLS/E2E verification, external error monitoring, full visual/mobile/accessibility QA, fixing the deployed health-route drift, and deploying the resulting commit to the user's Vercel project. The public domain was not modified by this local pass.
+## Release gates
 
-## Defect register
+1. Review and apply migration 0087 in staging; confirm 10 families, 50 profiles, 118 active roles, skill weights, and the eight shared-track assignments.
+2. Test onboarding and target-role changes for mapped and core-fallback roles using separate accounts.
+3. Test admin and non-admin catalog writes, published-track assignment rules, user isolation, and public-profile privacy.
+4. Test owner continuity, export/restore, and account deletion on staging data.
+5. Complete mobile, keyboard, screen-reader, performance, monitoring, backup, and restore review.
+6. Resolve or explicitly accept the 112 legacy curriculum warnings after subject-matter review.
+7. Run a complete production build and deployed smoke checks on a supported runner.
 
-- P0 addressed in code: redirect open-redirect path, direct public private-row policies, public-profile admin boundary, service-worker HTML cache isolation, client-controlled slug RPC identity.
-- P1/P2 infrastructure/product acceptance: the source smoke probe now validates that `/api/health` is public JSON and rejects an auth redirect. The current live deployment predates that middleware fix, so live smoke must be rerun after deployment. A 390×844 public-shell check found no horizontal overflow and keyboard focus reaches the email field; the live welcome page also predates the source fallback and still shows legacy seeded copy. Authenticated Supabase/RLS tests, E2E, accessibility, performance, backup round-trip, and curriculum reconciliation remain unresolved until a signed-in deployment test is run.
-
-This report intentionally does not assign a 10/10 score without those verifications.
+**Release status:** Not production-ready until staging and deployment gates pass. The local Windows host previously compiled the app but failed to start the final Next.js TypeScript worker with `spawn EPERM`; see [`test-report.md`](test-report.md) for current checks and limitations.

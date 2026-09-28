@@ -33,7 +33,7 @@ export function useOnboardingResponses(userId: string | undefined) {
 export function useTargetRoles() {
   const supabase = createClient();
   return useSWR("target-roles", async () => {
-    const { data, error } = await supabase.from("target_roles").select("*").order("name");
+    const { data, error } = await supabase.from("target_roles").select("*").eq("is_active", true).order("name");
     if (error) throw error;
     return (data ?? []) as TargetRole[];
   });

@@ -173,7 +173,6 @@ export function computeAllExitStatuses(
     .sort((a, b) => a.order_index - b.order_index)
     .map((e) => {
       const hoursRequired = e.exit_hours_required as number;
-      const hoursLogged = Math.min(totalHoursLogged, hoursRequired);
       const hoursRemaining = Math.max(0, hoursRequired - totalHoursLogged);
       const pctComplete = hoursRequired > 0
         ? Math.min(100, Math.round((totalHoursLogged / hoursRequired) * 100))

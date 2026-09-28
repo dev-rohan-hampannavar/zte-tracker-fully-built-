@@ -205,10 +205,7 @@ export interface CareerCheckpoint {
   description: string;       // what should be true at this point
 }
 
-export function computeCareerCheckpoints(
-  startDate: string,
-  weeklyHours: number // user's actual pace, for computing target dates
-): CareerCheckpoint[] {
+export function computeCareerCheckpoints(startDate: string): CareerCheckpoint[] {
   // From career_timeline_zte.docx §15. Hours are at 30 h/wk (the doc's
   // reference pace). Target dates are computed from the user's actual
   // start_date (not from 30 h/wk — the checkpoint months are milestone

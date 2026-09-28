@@ -24,12 +24,15 @@ Stack: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4 + Supabase (Postgr
    - `Project URL`
    - `anon public` key
 3. Apply every SQL file in `supabase/migrations/` in numeric filename order, including
-   migrations `0077`–`0085`. On an existing project, first compare its migration history
+   migrations `0077`–`0087`. On an existing project, first compare its migration history
    with the files; do not replay migrations that have already been applied.
 4. Run `supabase/seed_data.sql` to load the original roadmap content (21 phases, 375
    topics, 9 exit-ladder rungs), then run `supabase/seed_roadmap_tracks.sql` to load the
    three detailed, role-mapped learning tracks. The latter is generated from the source
    JSON and the owner's original roadmap; see [Regenerating seed data](#6-regenerating-seed-data-roadmap-import).
+   Apply the detailed-track seed before inviting learners to onboard to a mapped role.
+   Migration `0087_career_role_catalog.sql` adds the 10-family, 118-title role explorer,
+   50 shared role profiles, weighted skill requirements, and admin catalog controls.
    Do not run `supabase/seed_rohan_career_plan.sql` unless you intentionally want its
    owner-specific career data and have reviewed its account targeting.
 4. Under **Authentication → Providers**, ensure **Email** is enabled. This app uses
@@ -112,6 +115,10 @@ python3 scripts/generate_seed_sql.py
 npm run validate:roadmap-tracks
 npm run generate:roadmap-tracks
 # Then apply supabase/seed_roadmap_tracks.sql in the Supabase SQL editor
+
+# 6. Rebuild and check the role catalog after editing its reviewed role list
+npm run generate:career-role-catalog
+npm run validate:career-catalog
 ```
 
 `scripts/parse_roadmap.py` extracts phases (band, hours, exit code, build-in-public

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -160,6 +161,7 @@ function OnboardingFlow({
 }) {
   const { data: roleRoadmapIds } = useRoleRoadmapIds();
   const [answers, setAnswers] = useState<OnboardingDraft>(() => deriveDraft(existing));
+  const [roleSearch, setRoleSearch] = useState("");
 
   const step = STEPS[stepIndex];
 
@@ -236,7 +238,11 @@ function OnboardingFlow({
 
             {step === "role" && (
               <StepShell title="What role are you targeting?">
-                {answers.target_role_id && roleRoadmapIds && <p className="mb-3 text-sm text-muted">{roleRoadmapIds.some((assignment) => assignment.role_id === answers.target_role_id) ? "A role-focused detailed learning path is available for this target." : "We’ll use the complete ZTE full-stack curriculum for this target."}</p>}
+                {answers.target_role_id && roleRoadmapIds && <p className="mb-3 text-sm text-muted">{roleRoadmapIds.some((assignment) => assignment.role_id === answers.target_role_id) ? "This target is assigned to a shared detailed roadmap track. The track reuses learning content across related roles and is not a dedicated roadmap for every job title." : "We’ll use the ZTE core curriculum for this target. Browse the role explorer for common skills, project ideas, and interview areas."}</p>}
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                  <Input value={roleSearch} onChange={(event) => setRoleSearch(event.target.value)} placeholder="Search 118 role titles" aria-label="Search role titles" />
+                  <Link href="/careers" className="shrink-0 text-sm text-accent hover:underline">Browse role profiles</Link>
+                </div>
                 <Select
                   value={answers.target_role_id ?? undefined}
                   onValueChange={(v) => persist({ ...answers, target_role_id: v })}
@@ -245,7 +251,7 @@ function OnboardingFlow({
                     <SelectValue placeholder="Choose a target role" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(targetRoles ?? []).map((role) => (
+                    {(targetRoles ?? []).filter((role) => role.name.toLowerCase().includes(roleSearch.trim().toLowerCase())).map((role) => (
                       <SelectItem key={role.id} value={role.id}>
                         {role.name}
                       </SelectItem>
