@@ -1,4 +1,6 @@
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { isOwnerOnlyPath } from "@/lib/owner-only-routes";
 import { createClient } from "@/lib/supabase/server";
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
@@ -37,6 +39,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   // safe recovery path; migration 0088 creates/backfills these profiles.
   if (settingsError || !settings || settings.onboarding_completed === false) {
     redirect("/onboarding");
+  }
+
+  // Owner-only pages are never reachable from the shared workspace.
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  if (settings.is_personalized !== true && isOwnerOnlyPath(pathname)) {
+    redirect("/dashboard");
   }
 
   return (

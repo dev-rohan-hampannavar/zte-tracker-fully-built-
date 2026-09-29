@@ -43,6 +43,9 @@ import {
 import { NotebookText } from "lucide-react";
 import { CalendarRange } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/lib/hooks/use-user";
+import { useUserSettings } from "@/lib/hooks/use-user-settings";
+import { OWNER_ONLY_HREFS } from "@/lib/owner-only-routes";
 import { createClient } from "@/lib/supabase/client";
 import { CareerTrackBadge } from "@/components/career-plan/career-track-badge";
 
@@ -119,6 +122,9 @@ export function Sidebar({ className }: { className?: string }) {
   const [pinned, setPinned] = React.useState(false);
   const [hovering, setHovering] = React.useState(false);
   const asideRef = React.useRef<HTMLElement>(null);
+  const { user } = useUser();
+  const { data: accountSettings } = useUserSettings(user?.id);
+  const ownerMode = accountSettings?.is_personalized === true;
 
   function activeSectionSet() {
     const active = NAV_SECTIONS.find((s) => s.hrefs.some((h) => pathname === h || pathname.startsWith(h + "/")));
@@ -196,6 +202,7 @@ export function Sidebar({ className }: { className?: string }) {
         {NAV_SECTIONS.map((section) => {
           const items = section.hrefs
             .filter((href) => !PINNED_HREFS.has(href))
+            .filter((href) => ownerMode || !(OWNER_ONLY_HREFS as readonly string[]).includes(href))
             .map((href) => NAV.find((item) => item.href === href))
             .filter((item): item is (typeof NAV)[number] => Boolean(item));
           if (items.length === 0) return null;

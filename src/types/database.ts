@@ -1230,6 +1230,7 @@ export interface UserSettings {
   // onboarding (Phase 6) instead.
   roadmap_id: string;
   is_personalized: boolean;
+  is_owner: boolean;
   onboarding_completed: boolean;
   onboarding_completed_at: string | null;
   // Added in migration 0076 (Phase 19 — admin/content management).

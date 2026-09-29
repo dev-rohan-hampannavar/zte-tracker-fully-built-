@@ -1,0 +1,50 @@
+warning: in the working copy of 'src/app/(app)/layout.tsx', CRLF will be replaced by LF the next time Git touches it
+[1mdiff --git a/src/app/(app)/layout.tsx b/src/app/(app)/layout.tsx[m
+[1mindex ce95ccc..b7e2a40 100644[m
+[1m--- a/src/app/(app)/layout.tsx[m
+[1m+++ b/src/app/(app)/layout.tsx[m
+[36m@@ -14,21 +14,27 @@[m [mexport default async function AppLayout({ children }: { children: React.ReactNod[m
+ [m
+   if (!data.user) redirect("/login");[m
+ [m
+[31m-  // Phase 1/6 gate: an account that hasn't completed onboarding has no[m
+[31m-  // roadmap enrollment yet (see migrations 0069/0071/0072), so every[m
+[31m-  // page under (app) — which all assume a roadmap exists — would either[m
+[31m-  // error or silently render empty. Existing accounts default to[m
+[31m-  // onboarding_completed = true (migration 0069's backfill), so this[m
+[31m-  // redirect only affects genuinely new signups; it never fires for the[m
+[31m-  // pre-existing owner account.[m
+   const { data: settingsRaw } = await supabase[m
+     .from("user_settings")[m
+[31m-    .select("onboarding_completed, roadmap_id")[m
+[32m+[m[32m    .select("onboarding_completed")[m
+     .eq("user_id", data.user.id)[m
+     .maybeSingle();[m
+[31m-  const settings = settingsRaw as { onboarding_completed: boolean; roadmap_id: string | null } | null;[m
+[32m+[m[32m  const settings = settingsRaw as { onboarding_completed: boolean } | null;[m
+ [m
+[31m-  if (settings && settings.onboarding_completed === false) {[m
+[32m+[m[32m  // Fail closed. Only an explicit onboarding_completed === true reaches the[m
+[32m+[m[32m  // app. A missing row (trigger didn't fire / row deleted) used to fall[m
+[32m+[m[32m  // through to the owner's dashboard; now it is recreated as "not onboarded"[m
+[32m+[m[32m  // and sent to onboarding.[m
+[32m+[m[32m  if (!settings) {[m
+[32m+[m[32m    await supabase[m
+[32m+[m[32m      .from("user_settings")[m
+[32m+[m[32m      .upsert([m
+[32m+[m[32m        { user_id: data.user.id, onboarding_completed: false, is_personalized: false },[m
+[32m+[m[32m        { onConflict: "user_id", ignoreDuplicates: true }[m
+[32m+[m[32m      );[m
+[32m+[m[32m    redirect("/onboarding");[m
+[32m+[m[32m  }[m
+[32m+[m[32m  if (settings.onboarding_completed !== true) {[m
+     redirect("/onboarding");[m
+   }[m
+ [m
+[36m@@ -48,4 +54,4 @@[m [mexport default async function AppLayout({ children }: { children: React.ReactNod[m
+       <ShortcutsHelp />[m
+     </div>[m
+   );[m
+[31m-}[m
+[32m+[m[32m}[m
+\ No newline at end of file[m

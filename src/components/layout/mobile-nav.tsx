@@ -7,6 +7,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, Settings, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/lib/hooks/use-user";
+import { useUserSettings } from "@/lib/hooks/use-user-settings";
+import { OWNER_ONLY_HREFS } from "@/lib/owner-only-routes";
 import { createClient } from "@/lib/supabase/client";
 import { NAV, SIDEBAR_SECTIONS } from "./sidebar";
 import { CareerTrackBadge } from "@/components/career-plan/career-track-badge";
@@ -26,6 +29,9 @@ const MOBILE_SECTIONS: { label: string | null; hrefs: string[] }[] = [
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const { user } = useUser();
+  const { data: accountSettings } = useUserSettings(user?.id);
+  const ownerMode = accountSettings?.is_personalized === true;
   const pathname = usePathname();
   const router = useRouter();
 
@@ -87,6 +93,7 @@ export function MobileNav() {
             <nav className="flex flex-col gap-3 mt-2">
               {MOBILE_SECTIONS.map((section, i) => {
                 const items = section.hrefs
+                  .filter((href) => ownerMode || !(OWNER_ONLY_HREFS as readonly string[]).includes(href))
                   .map((href) => NAV.find((item) => item.href === href))
                   .filter((item): item is (typeof NAV)[number] => Boolean(item));
                 if (items.length === 0) return null;
