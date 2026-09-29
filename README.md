@@ -24,7 +24,7 @@ Stack: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4 + Supabase (Postgr
    - `Project URL`
    - `anon public` key
 3. Apply every SQL file in `supabase/migrations/` in numeric filename order, including
-   migrations `0077`–`0087`. On an existing project, first compare its migration history
+   migrations `0077`–`0088`. On an existing project, first compare its migration history
    with the files; do not replay migrations that have already been applied.
 4. Run `supabase/seed_data.sql` to load the original roadmap content (21 phases, 375
    topics, 9 exit-ladder rungs), then run `supabase/seed_roadmap_tracks.sql` to load the
@@ -33,6 +33,10 @@ Stack: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4 + Supabase (Postgr
    Apply the detailed-track seed before inviting learners to onboard to a mapped role.
    Migration `0087_career_role_catalog.sql` adds the 10-family, 118-title role explorer,
    50 shared role profiles, weighted skill requirements, and admin catalog controls.
+   Migration `0088_shared_user_workspace_routing.sql` repairs missing account settings
+   rows and routes accounts that complete onboarding into their own shared workspace.
+   Apply every outstanding migration before testing onboarding; the app requires the
+   atomic completion function from `0083` and the account routing from `0088`.
    Do not run `supabase/seed_rohan_career_plan.sql` unless you intentionally want its
    owner-specific career data and have reviewed its account targeting.
 4. Under **Authentication → Providers**, ensure **Email** is enabled. This app uses

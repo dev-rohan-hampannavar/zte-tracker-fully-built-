@@ -14,27 +14,28 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   if (!data.user) redirect("/login");
 
-  const { data: settingsRaw } = await supabase
+  // Phase 1/6 gate: an account that hasn't completed onboarding has no
+  // roadmap enrollment yet (see migrations 0069/0071/0072), so every
+  // page under (app) — which all assume a roadmap exists — would either
+  // error or silently render empty. Existing accounts default to
+  // onboarding_completed = true (migration 0069's backfill), so this
+  // redirect only affects genuinely new signups; it never fires for the
+  // pre-existing owner account.
+  const { data: settingsRaw, error: settingsError } = await supabase
     .from("user_settings")
-    .select("onboarding_completed")
+    .select("onboarding_completed, roadmap_id, is_personalized")
     .eq("user_id", data.user.id)
     .maybeSingle();
-  const settings = settingsRaw as { onboarding_completed: boolean } | null;
+  const settings = settingsRaw as {
+    onboarding_completed: boolean;
+    roadmap_id: string | null;
+    is_personalized: boolean;
+  } | null;
 
-  // Fail closed. Only an explicit onboarding_completed === true reaches the
-  // app. A missing row (trigger didn't fire / row deleted) used to fall
-  // through to the owner's dashboard; now it is recreated as "not onboarded"
-  // and sent to onboarding.
-  if (!settings) {
-    await supabase
-      .from("user_settings")
-      .upsert(
-        { user_id: data.user.id, onboarding_completed: false, is_personalized: false },
-        { onConflict: "user_id", ignoreDuplicates: true }
-      );
-    redirect("/onboarding");
-  }
-  if (settings.onboarding_completed !== true) {
+  // Never fall through to the original owner's experience when a shared
+  // account profile is missing or unreadable. The onboarding route is the
+  // safe recovery path; migration 0088 creates/backfills these profiles.
+  if (settingsError || !settings || settings.onboarding_completed === false) {
     redirect("/onboarding");
   }
 

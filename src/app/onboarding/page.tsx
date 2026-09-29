@@ -10,6 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useUser } from "@/lib/hooks/use-user";
 import { useRoleRoadmapIds, useTechnologies } from "@/lib/hooks/use-roadmap";
+import { useActiveUserRoadmap } from "@/lib/hooks/use-user-roadmap";
+import { useUserSettings } from "@/lib/hooks/use-user-settings";
+import { getErrorMessage } from "@/lib/error-message";
 import {
   useOnboardingResponses,
   useTargetRoles,
@@ -103,9 +106,11 @@ function OptionGrid<T extends string>({
 export default function OnboardingPage() {
   const router = useRouter();
   const { user, loading: userLoading } = useUser();
-  const { data: existing, isLoading: existingLoading } = useOnboardingResponses(user?.id);
-  const { data: targetRoles } = useTargetRoles();
+  const { data: existing, isLoading: existingLoading, error: existingError, mutate: retryExisting } = useOnboardingResponses(user?.id);
+  const { data: targetRoles, error: targetRolesError } = useTargetRoles();
   const { data: technologies } = useTechnologies();
+  const { data: settings, isLoading: settingsLoading, error: settingsError, mutate: retrySettings } = useUserSettings(user?.id);
+  const { data: enrollment, isLoading: enrollmentLoading, error: enrollmentError, mutate: retryEnrollment } = useActiveUserRoadmap(user?.id);
 
   const [stepIndex, setStepIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -113,12 +118,12 @@ export default function OnboardingPage() {
   // Already onboarded (e.g. navigated here directly with a stale tab) —
   // no reason to make them redo it.
   useEffect(() => {
-    if (existing?.completed_at) {
+    if (existing?.completed_at && settings?.onboarding_completed && enrollment) {
       router.replace("/dashboard");
     }
-  }, [existing, router]);
+  }, [existing, settings?.onboarding_completed, enrollment, router]);
 
-  if (userLoading || existingLoading) {
+  if (userLoading || existingLoading || settingsLoading || enrollmentLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <Loader2 className="h-6 w-6 animate-spin text-muted" />
@@ -126,7 +131,24 @@ export default function OnboardingPage() {
     );
   }
 
-  return <OnboardingFlow user={user} existing={existing ?? null} stepIndex={stepIndex} setStepIndex={setStepIndex} submitting={submitting} setSubmitting={setSubmitting} router={router} targetRoles={targetRoles} technologies={technologies} />;
+  const loadError = existingError ?? settingsError ?? enrollmentError;
+  if (loadError) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <Card className="w-full max-w-lg">
+          <CardContent className="space-y-4 p-6">
+            <h1 className="text-lg font-semibold">We couldn&apos;t load your setup</h1>
+            <p className="text-sm text-muted">
+              {getErrorMessage(loadError, "Reload this page and try again. If this continues, the Supabase setup may be incomplete.")}
+            </p>
+            <Button onClick={() => void Promise.all([retryExisting(), retrySettings(), retryEnrollment()])}>Try again</Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return <OnboardingFlow user={user} existing={existing ?? null} stepIndex={stepIndex} setStepIndex={setStepIndex} submitting={submitting} setSubmitting={setSubmitting} router={router} targetRoles={targetRoles} targetRolesError={targetRolesError} technologies={technologies} />;
 }
 
 /**
@@ -147,6 +169,7 @@ function OnboardingFlow({
   setSubmitting,
   router,
   targetRoles,
+  targetRolesError,
   technologies,
 }: {
   user: { id: string } | null;
@@ -157,6 +180,7 @@ function OnboardingFlow({
   setSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   router: ReturnType<typeof useRouter>;
   targetRoles: { id: string; name: string }[] | undefined;
+  targetRolesError: unknown;
   technologies: { id: string; name: string }[] | undefined;
 }) {
   const { data: roleRoadmapIds } = useRoleRoadmapIds();
@@ -178,11 +202,12 @@ function OnboardingFlow({
     if (!user) return;
     try {
       await saveOnboardingDraft(user.id, next);
-    } catch {
+    } catch (error) {
       // Non-fatal: local state still advances the flow. The next
       // successful save (or the final completeOnboarding submit) will
       // catch this back up — we don't block navigation on a draft save
       // failing, only on the final submit.
+      toast.error(`This answer did not save yet. ${getErrorMessage(error, "Please retry before leaving this page.")}`);
     }
   }
 
@@ -201,7 +226,7 @@ function OnboardingFlow({
       toast.success("Your roadmap is ready.");
       router.replace("/dashboard");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Something went wrong. Please try again.");
+      toast.error(getErrorMessage(error, "We couldn't build your roadmap. Please try again."));
       setSubmitting(false);
     }
   }
@@ -238,6 +263,7 @@ function OnboardingFlow({
 
             {step === "role" && (
               <StepShell title="What role are you targeting?">
+                {Boolean(targetRolesError) && <p role="alert" className="mb-3 text-sm text-danger">{getErrorMessage(targetRolesError, "We couldn't load target roles. Refresh and try again.")}</p>}
                 {answers.target_role_id && roleRoadmapIds && <p className="mb-3 text-sm text-muted">{roleRoadmapIds.some((assignment) => assignment.role_id === answers.target_role_id) ? "This target is assigned to a shared detailed roadmap track. The track reuses learning content across related roles and is not a dedicated roadmap for every job title." : "We’ll use the ZTE core curriculum for this target. Browse the role explorer for common skills, project ideas, and interview areas."}</p>}
                 <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                   <Input value={roleSearch} onChange={(event) => setRoleSearch(event.target.value)} placeholder="Search 118 role titles" aria-label="Search role titles" />

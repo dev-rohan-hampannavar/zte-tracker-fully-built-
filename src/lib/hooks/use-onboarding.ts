@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { createClient } from "@/lib/supabase/client";
 import type { OnboardingResponses, TargetRole, Phase } from "@/types/database";
 import { recommendStartingPoint, dsaTargetsForLevel } from "@/lib/personalization-engine";
+import { getErrorMessage } from "@/lib/error-message";
 
 /**
  * Phase 6 (onboarding) + Phase 5 (enrollment) data access. Modeled on the
@@ -73,6 +74,8 @@ export async function saveOnboardingDraft(userId: string, draft: OnboardingDraft
  * (migration 0074) rather than a hardcoded roadmap id. Falls back to
  * 'zte-core-v1' if no target role was chosen or no assignment row exists
  * for it; newly supported roles resolve to authored tracks from that catalog.
+ * Query failures are surfaced instead of silently enrolling the user in the
+ * core track, which can otherwise hide a missing migration or API outage.
  */
 async function resolveRoadmapForRole(
   supabase: ReturnType<typeof createClient>,
@@ -80,20 +83,16 @@ async function resolveRoadmapForRole(
 ): Promise<string> {
   const fallback = "zte-core-v1";
   if (!targetRoleId) return fallback;
-  try {
-    const { data, error } = await supabase
-      .from("role_roadmap_assignments")
-      .select("roadmap_id")
-      .eq("role_id", targetRoleId)
-      .order("priority", { ascending: true })
-      .limit(1)
-      .maybeSingle();
-    if (error) throw error;
-    if (!data) return fallback;
-    return (data as { roadmap_id: string }).roadmap_id;
-  } catch {
-    return fallback;
-  }
+  const { data, error } = await supabase
+    .from("role_roadmap_assignments")
+    .select("roadmap_id")
+    .eq("role_id", targetRoleId)
+    .order("priority", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) return fallback;
+  return (data as { roadmap_id: string }).roadmap_id;
 }
 
 /**
@@ -123,15 +122,12 @@ export async function completeOnboarding(userId: string, finalAnswers: Onboardin
   let roadmapVersionId: string | null = null;
   let requiredTechIds: string[] = [];
   if (finalAnswers.target_role_id) {
-    try {
-      const { data, error } = await supabase
-        .from("role_skill_requirements")
-        .select("technology_id")
-        .eq("role_id", finalAnswers.target_role_id);
-      if (!error) requiredTechIds = (data ?? []).map((row) => (row as { technology_id: string }).technology_id);
-    } catch {
-      requiredTechIds = [];
-    }
+    const { data, error } = await supabase
+      .from("role_skill_requirements")
+      .select("technology_id")
+      .eq("role_id", finalAnswers.target_role_id);
+    if (error) throw error;
+    requiredTechIds = (data ?? []).map((row) => (row as { technology_id: string }).technology_id);
   }
   try {
     if (roadmapId === "zte-core-v1") {
@@ -184,12 +180,12 @@ export async function completeOnboarding(userId: string, finalAnswers: Onboardin
       );
       startingDetailedPhaseId = recommendation.recommendedStartPhaseId || null;
     }
-  } catch {
+  } catch (error) {
     // Missing personalization is safe for the legacy curriculum. A detailed
     // enrollment must have a valid version and phase; don't complete onboarding
     // while assigning the user to a broken or empty learning path.
     if (roadmapId !== "zte-core-v1") {
-      throw new Error("This learning path is not ready yet. Please try again later or choose another role.");
+      throw new Error(getErrorMessage(error, "This learning path is not ready yet. Please try again later or choose another role."));
     }
   }
 

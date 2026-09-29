@@ -24,6 +24,7 @@ import { useNotifications } from "@/lib/hooks/use-notifications";
 import { useActivityLog, ACTIVITY_LABELS } from "@/lib/hooks/use-activity-log";
 import { DailyMission } from "@/components/dashboard/daily-mission";
 import { DetailedTrackDashboard } from "@/components/dashboard/detailed-track-dashboard";
+import { SharedCoreDashboard } from "@/components/dashboard/shared-core-dashboard";
 import { useFeatureFlag } from "@/lib/hooks/use-feature-flag";
 import { FocusTimer } from "@/components/dashboard/focus-timer";
 import { CareerPlanWidget } from "@/components/dashboard/career-plan-widget";
@@ -148,10 +149,46 @@ StatCard.displayName = "StatCard";
 
 // ---- Main Component ----
 export default function DashboardPage() {
-  const { user } = useUser();
+  const { user, loading: userLoading } = useUser();
+  const {
+    data: settings,
+    isLoading: settingsLoading,
+    error: settingsError,
+    mutate: mutateSettings,
+  } = useUserSettings(user?.id);
   const { data: activeRoadmap, isLoading: enrollmentLoading } = useActiveUserRoadmap(user?.id);
   const { data: newDashboardEnabled } = useFeatureFlag("new_dashboard", true);
-  if (user?.id && enrollmentLoading) return <Skeleton className="h-96 w-full" />;
+  if (userLoading || (user?.id && (settingsLoading || enrollmentLoading))) return <Skeleton className="h-96 w-full" />;
+
+  // The account setting is the source of truth for the experience. A shared
+  // core enrollment must never fall through to the original owner's dashboard.
+  if (user?.id && settings?.is_personalized === false) {
+    if (activeRoadmap && activeRoadmap.roadmap_id !== "zte-core-v1") {
+      return <DetailedTrackDashboard userId={user.id} />;
+    }
+    return <SharedCoreDashboard userId={user.id} />;
+  }
+
+  // If account settings cannot be read, fail closed instead of displaying the
+  // private dashboard as a fallback for an account whose mode is unknown.
+  if (user?.id && (settingsError || !settings)) {
+    return (
+      <div role="alert" className="mx-auto max-w-2xl rounded-xl border border-border bg-surface p-6">
+        <h1 className="text-lg font-semibold">Your workspace could not be loaded</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          We couldn&apos;t read this account&apos;s workspace settings. Your data is safe; try again in a moment.
+        </p>
+        <button
+          type="button"
+          onClick={() => void mutateSettings()}
+          className="mt-4 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white"
+        >
+          Try again
+        </button>
+      </div>
+    );
+  }
+
   if (newDashboardEnabled !== false && activeRoadmap && activeRoadmap.roadmap_id !== "zte-core-v1" && user?.id) {
     return <DetailedTrackDashboard userId={user.id} />;
   }
