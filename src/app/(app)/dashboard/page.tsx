@@ -776,7 +776,7 @@ function LegacyDashboardPage({ userId, email, activeRoadmap }: { userId: string 
           <div className="rounded-xl border border-border/40 bg-surface/40 p-3 flex items-start gap-3">
             <span className="text-accent text-xs font-semibold shrink-0 mt-0.5">Rule</span>
             <p className="text-xs text-muted">
-              Switch to dev only when an offer beats your current ops pay (₹4.6L CTC baseline). Until then: keep the job, fund the buffer, keep studying. The worst case is lost study time, not lost income.
+              Switch to dev only when an offer beats your current pay. Until then: keep the job, fund the buffer, keep studying. The worst case is lost study time, not lost income.
             </p>
           </div>
         </FadeUp>

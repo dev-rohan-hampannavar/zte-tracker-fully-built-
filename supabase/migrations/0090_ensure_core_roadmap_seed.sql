@@ -2,7 +2,9 @@
 -- shared core curriculum row was missing from public.roadmaps. 110 of the 118
 -- catalog roles (and any user who skips the role step) resolve to
 -- 'zte-core-v1' because they have no detailed-track assignment, so a missing
--- core row blocks almost every signup. Everything below is idempotent.
+-- core row blocks almost every signup. Migration 0070 seeds it, but a database
+-- restored/reset after 0070 (or one where migrations ran out of order) can
+-- lose it. Everything below is idempotent: safe on healthy databases.
 
 insert into public.roadmaps (id, title, track, description, is_public)
 values ('zte-core-v1', 'Zero to Elite', 'full-stack', 'The original hand-built ZTE curriculum.', true)
@@ -26,7 +28,8 @@ where v.roadmap_id = 'zte-core-v1'
     select 1 from public.roadmap_versions c where c.roadmap_id = 'zte-core-v1' and c.is_current
   );
 
--- Fail loudly at migration time if the seed still isn't in place.
+-- Fail loudly at migration time (not at a user's onboarding click) if the
+-- seed still isn't in place.
 do $$
 begin
   if not exists (select 1 from public.roadmaps where id = 'zte-core-v1') then

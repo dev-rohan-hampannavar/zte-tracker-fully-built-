@@ -238,7 +238,7 @@ export default function InterviewPrepPage() {
         <CardContent className="flex flex-col gap-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {([
-              { theme: "Impact", prompt: "A time you improved a metric, reduced cost, or saved time at Applied Materials. Quantify it (₹, %, hours)." },
+              { theme: "Impact", prompt: "A time you improved a metric, reduced cost, or saved time at your current or previous job. Quantify it (₹, %, hours)." },
               { theme: "Failure + learning", prompt: "A decision that went wrong and what you did next. Interviewers use this to test self-awareness." },
               { theme: "Conflict or disagreement", prompt: "When you disagreed with a colleague or manager. Focus on how you handled it, not who was right." },
               { theme: "Fast learning", prompt: "A skill or process you had to learn quickly under pressure. Ideal: tie to ZTE or any technical thing." },
@@ -296,7 +296,7 @@ export default function InterviewPrepPage() {
             <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">4.</span>Use your ops experience: <span className="text-foreground">&quot;I have 2 years of professional experience and ship production code in ClientSync.&quot;</span></li>
             <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">5.</span>Pay up to ~₹12.75L/year is effectively tax-free under the new regime (FY2025-26). Factor this when comparing offers.</li>
             <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">6.</span>Get it in writing: base, variable, joining bonus, notice period during probation, and probation length.</li>
-            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">7.</span>Switch only when the offer beats your current ops pay. If it doesn&apos;t, keep studying to the next exit — your floor is already funded.</li>
+            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">7.</span>Switch only when the offer beats your current pay. If it doesn&apos;t, keep studying to the next exit — your floor is already funded.</li>
           </ul>
         </CardContent>
       </Card>

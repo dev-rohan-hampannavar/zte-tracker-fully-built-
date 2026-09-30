@@ -37,7 +37,7 @@ Stack: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4 + Supabase (Postgr
    rows and routes accounts that complete onboarding into their own shared workspace.
    Apply every outstanding migration before testing onboarding; the app requires the
    atomic completion function from `0083` and the account routing from `0088`.
-   Do not run `supabase/seed_rohan_career_plan.sql` unless you intentionally want its
+   Do not run `supabase/seed_owner_career_plan.example.sql` unless you intentionally want its
    owner-specific career data and have reviewed its account targeting.
 4. Under **Authentication → Providers**, ensure **Email** is enabled. This app uses
    **magic link** and **email OTP** only — no passwords. Under **Authentication → URL

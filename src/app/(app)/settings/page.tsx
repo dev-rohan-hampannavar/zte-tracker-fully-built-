@@ -1245,7 +1245,7 @@ export default function SettingsPage() {
                 id="display-name-input"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                placeholder="e.g. Rohan K."
+                placeholder="e.g. Alex K."
               />
               <Button variant="secondary" size="sm" onClick={saveDisplayName}>
                 Save
@@ -1276,7 +1276,7 @@ export default function SettingsPage() {
                 id="github-username-input"
                 value={githubUsername}
                 onChange={(e) => setGithubUsername(e.target.value)}
-                placeholder="e.g. rohan-dev"
+                placeholder="e.g. alex-dev"
               />
               <Button variant="secondary" size="sm" onClick={saveGithubUsername}>
                 Save

@@ -47,15 +47,15 @@ export const CAREER_PATH_STAGES: CareerPathExplorerEntry[] = [
     stages: [
       {
         id: "sap-now",
-        title: "Business ops associate",
+        title: "Your current role",
         time: "Now",
-        salary: "₹4.6L",
-        monthly: "₹28k/mo",
+        salary: null,
+        monthly: "Your current pay",
         note: "Build SAP SD/MM exposure on the job daily",
         isNow: true,
         detail: {
           summary:
-            "Your current ops role is the cheapest possible way to get real SAP exposure — you're already inside a system that's normally locked behind expensive certifications.",
+            "Your current role is the cheapest possible way to get real SAP exposure — you're already inside a system that's normally locked behind expensive certifications.",
           points: [
             "Shadow whoever owns SD (Sales & Distribution) or MM (Materials Management) transactions in your current workflow.",
             "Document every transaction code you touch — this becomes interview material later.",
@@ -75,7 +75,7 @@ export const CAREER_PATH_STAGES: CareerPathExplorerEntry[] = [
           summary:
             "Unlike full-stack, SAP consulting has a hard credential gate. Without SD or MM certification, staffing agencies and the big consultancies won't put you in front of a client, regardless of on-the-job exposure.",
           points: [
-            "SD or MM are the standard entry modules — pick based on which matches your current ops exposure.",
+            "SD or MM are the standard entry modules — pick based on which matches your current work exposure.",
             "Budget ₹40–80k and treat it as a direct investment in unlocking the Year 2 salary jump, not a side expense.",
             "S/4HANA-specific certification is increasingly what's asked for, since it's replacing ECC at most large implementations.",
           ],

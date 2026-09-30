@@ -108,7 +108,7 @@ export function computeExitMonthsLabel(exitCode: string, weeklyHours: number): s
 
 // Non-ZTE entries stay the same but get exitCode: null:
 /*
-  { track: "sap",   label: "Now",        exitCode: null, range: "₹4.6 LPA", evidence: "Business ops associate, building SD/MM exposure" },
+  { track: "sap",   label: "Now",        exitCode: null, range: "Current pay", evidence: "Your current role, building SD/MM exposure" },
   // ... remaining sap, ba_pm, ops entries unchanged except exitCode: null
 */
 

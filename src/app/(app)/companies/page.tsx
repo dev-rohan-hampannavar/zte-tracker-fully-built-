@@ -68,20 +68,20 @@ export default function CompaniesPage() {
         />
       </div>
 
-      {/* ── Applied Materials internal bridge ── */}
+      {/* ── Internal bridge (current employer) ── */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Info className="h-5 w-5 text-accent" /> Applied Materials — internal bridge plan
+            <Info className="h-5 w-5 text-accent" /> Internal bridge plan — your current employer
           </CardTitle>
           <CardDescription>
-            Use your current employer as a first step. Source: career_timeline_zte.docx §29.
+            Use your current employer as a first step: internal moves skip most external filters.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-lg border border-border/50 p-3">
-              <p className="text-xs font-semibold mb-2">Internal roles found at Applied Materials India</p>
+              <p className="text-xs font-semibold mb-2">Internal roles worth checking at your company</p>
               <ul className="text-xs text-muted flex flex-col gap-1">
                 <li>• Software Engineer (Java, Spring Boot)</li>
                 <li>• QA / Automation Engineer (Selenium, Python)</li>
@@ -96,7 +96,7 @@ export default function CompaniesPage() {
               <p className="text-xs font-semibold mb-2">4-week action plan (start in month 1)</p>
               <div className="flex flex-col gap-1.5 text-xs text-muted">
                 {([
-                  { week: "Weeks 1–2", action: "Pick one recurring manual report in your ops role. Automate it with SQL + a simple dashboard (ZTE Phase 01 output)." },
+                  { week: "Weeks 1–2", action: "Pick one recurring manual report in your current role. Automate it with SQL + a simple dashboard (ZTE Phase 01 output)." },
                   { week: "Weeks 3–4", action: "Show it to your manager in a 10-min demo. Frame it as a process improvement, not a career pivot." },
                   { week: "Month 3", action: "Ask your manager which internal teams hire ex-ops with SQL skills. Get a name if possible." },
                   { week: "Month 6", action: "Apply to IT Systems Analyst or QA/Automation roles internally — or to external companies if internal door stays closed." },

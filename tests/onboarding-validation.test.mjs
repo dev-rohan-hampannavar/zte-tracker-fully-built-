@@ -84,4 +84,11 @@ const offenders = execSync(
 ).trim();
 assert.equal(offenders, "", `UTC date slicing found in: ${offenders}`);
 
+// 10. No owner-specific personal data in code shared users can see.
+const personal = execSync(
+  `grep -rIniE "applied materials|biz ops associate|rohan|hampannavar" src --include=*.ts --include=*.tsx --include=*.json || true`,
+  { cwd: new URL("..", import.meta.url), encoding: "utf8" }
+).split("\n").filter((l) => l && !l.includes("architecture_manifest") && !l.startsWith("src/types"));
+assert.deepEqual(personal, [], `personal references in shared code:\n${personal.join("\n")}`);
+
 console.log("onboarding validation contracts: passed");

@@ -240,7 +240,7 @@ export default function CareerTrackerPage() {
               <div className="rounded-lg border border-border/50 p-3">
                 <p className="text-xs font-medium mb-1">Referral plan (10 names, refresh quarterly)</p>
                 <ul className="text-xs text-muted flex flex-col gap-1">
-                  <li>• Applied Materials colleagues who moved into tech</li>
+                  <li>• Colleagues from your current company who moved into tech</li>
                   <li>• BCA batchmates now in dev roles</li>
                   <li>• People met through dev.to / LinkedIn posts</li>
                   <li>• Message template: ask for advice or a 15-min call, not a job. Short and specific.</li>

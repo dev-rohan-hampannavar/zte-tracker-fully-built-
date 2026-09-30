@@ -386,7 +386,7 @@ export default function CareerPlanPage() {
             </div>
           </div>
           <div className="overflow-x-auto">
-            <p className="text-xs font-medium mb-2">Who leads at age 26 depending on first dev offer</p>
+            <p className="text-xs font-medium mb-2">Who leads at year 2 depending on first dev offer</p>
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border/50">
@@ -530,11 +530,11 @@ export default function CareerPlanPage() {
               <tbody className="divide-y divide-border/30">
                 {(
                   [
-                    { label: "Age 24 (now)", ops: [4.6, 4.6, 4.6], dev: [4.6, 4.6, 4.6] },
-                    { label: "Age 26",       ops: [5.5, 7.0, 8.5],  dev: [4.0, 7.0, 12.0] },
-                    { label: "Age 28",       ops: [8.0, 11.0, 14.0], dev: [6.5, 11.0, 20.0] },
-                    { label: "Age 31",       ops: [12.5, 18.0, 24.0], dev: [10.5, 17.0, 32.0] },
-                    { label: "Age 34",       ops: [17.0, 26.0, 36.0], dev: [15.0, 25.0, 45.0] },
+                    { label: "Year 0 (now)", ops: [4.6, 4.6, 4.6], dev: [4.6, 4.6, 4.6] },
+                    { label: "Year 2",       ops: [5.5, 7.0, 8.5],  dev: [4.0, 7.0, 12.0] },
+                    { label: "Year 4",       ops: [8.0, 11.0, 14.0], dev: [6.5, 11.0, 20.0] },
+                    { label: "Year 7",       ops: [12.5, 18.0, 24.0], dev: [10.5, 17.0, 32.0] },
+                    { label: "Year 10",       ops: [17.0, 26.0, 36.0], dev: [15.0, 25.0, 45.0] },
                   ] as const
                 ).map((row) => (
                   <tr key={row.label}>
@@ -545,7 +545,7 @@ export default function CareerPlanPage() {
                   </tr>
                 ))}
                 <tr className="border-t-2 border-border/70 font-semibold">
-                  <td className="py-2 pr-4 text-xs">10yr total (₹L, ages 24–34)</td>
+                  <td className="py-2 pr-4 text-xs">10yr total (₹L, years 0–10, illustrative)</td>
                   <td className="py-2 pr-3 text-right font-mono-tabular text-xs">109</td>
                   <td className="py-2 pr-3 text-right font-mono-tabular text-xs">154</td>
                   <td className="py-2 pr-3 text-right font-mono-tabular text-xs">203</td>
@@ -659,7 +659,7 @@ export default function CareerPlanPage() {
         <CardContent>
           <div className="flex flex-col gap-3">
             {([
-              { rank: 1,  code: "O1→O2", path: "Ops",    title: "Supply-chain analytics → Business systems / ERP",        midPay: "₹8–22L",          barrier: "Low",         why: "Lowest barrier; best use of current domain knowledge. Builds on ZTE Phase 01 SQL. Reachable from inside Applied Materials. First step: automate one recurring report with SQL and a dashboard." },
+              { rank: 1,  code: "O1→O2", path: "Ops",    title: "Supply-chain analytics → Business systems / ERP",        midPay: "₹8–22L",          barrier: "Low",         why: "Lowest barrier; best use of current domain knowledge. Builds on ZTE Phase 01 SQL. Often reachable from inside your current employer. First step: automate one recurring report with SQL and a dashboard." },
               { rank: 2,  code: "D1",    path: "Dev",    title: "DevOps / SRE / Platform engineering",                    midPay: "₹12–28L (2–4 yr)", barrier: "Medium",      why: "Best pay-to-barrier on the dev side. Natural after ZTE Phases 06 and 16. Cloud certs (AWS DevOps Pro, CKA) add 20–35% to offers. First step: ship ClientSync through a real pipeline, write up one failure incident-style." },
               { rank: 3,  code: "D4",    path: "Dev→PM", title: "Technical product management",                            midPay: "₹28L (2–5 yr)",   barrier: "High",        why: "Top pay bands after 2–3 years as a dev, using your ops context as a differentiator. Engineer-to-PM inside one company is the most realistic route. Needs 3–5 years of dev first." },
               { rank: 4,  code: "D2",    path: "Dev",    title: "AI / GenAI application engineering",                     midPay: "₹12–30L",         barrier: "Medium-High", why: "High headline pay but many roles filter by degree at GCCs. ZTE Phase 12 (207h) is the entry point. Add one RAG feature to ClientSync after Phase 12. Treat as an option after Exit D, not the plan." },
@@ -729,7 +729,7 @@ export default function CareerPlanPage() {
           </div>
 
           <p className="text-[11px] text-muted mt-2">
-            Third strategy — hybrid-pivot: use ZTE Phases 01 and 05–07 (SQL, backend, testing, APIs) to move into an analytics or business-systems role at or near Applied Materials. Lowers the risk of hybrid because you don&apos;t need a pure dev offer. Pay trajectory not modelled; treat it as a fourth path between ops and hybrid.</p>
+            Third strategy — hybrid-pivot: use ZTE Phases 01 and 05–07 (SQL, backend, testing, APIs) to move into an analytics or business-systems role at or near your current employer. Lowers the risk of hybrid because you don&apos;t need a pure dev offer. Pay trajectory not modelled; treat it as a fourth path between ops and hybrid.</p>
         </CardContent>
       </Card>
 

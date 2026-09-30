@@ -67,7 +67,7 @@ export const PLAN_PATHS: PlanPath[] = [
     ceiling: "₹35–45L",
     ceilingLpa: 45,
     actions: [
-      "Shadow SD/MM transactions in the current ops role and log every transaction code touched.",
+      "Shadow SD/MM transactions in your current role and log every transaction code touched.",
       "Budget ₹40–80k for SD/MM (or S/4HANA) certification — non-negotiable before Year 2.",
       "Target staffing-payroll seats at Deloitte, Accenture, TCS, or IBM once certified.",
     ],
@@ -230,7 +230,7 @@ export const SALARY_REFERENCE: SalaryReference[] = [
   { track: "plan_a", exitCode: "3",    label: "Exit 3",   range: "₹25–40 LPA",  evidence: "Senior distributed systems" },
   { track: "plan_a", exitCode: "E",    label: "Exit E",   range: "₹35–50 LPA",  evidence: "Complete profile / founding engineer" },
 
-  { track: "sap", exitCode: null, label: "Now",       range: "₹4.6 LPA",   evidence: "Business ops associate, building SD/MM exposure" },
+  { track: "sap", exitCode: null, label: "Now",       range: "Current pay",   evidence: "Your current role, building SD/MM exposure" },
   { track: "sap", exitCode: null, label: "Year 2–4",  range: "₹6–10 LPA",  evidence: "Junior SAP consultant (Deloitte/Accenture/TCS/IBM)" },
   { track: "sap", exitCode: null, label: "Year 5–7",  range: "₹15–22 LPA", evidence: "Senior consultant, S/4HANA, client ownership" },
   { track: "sap", exitCode: null, label: "Year 8–10", range: "₹25–35 LPA", evidence: "Solution architect / PM, multi-module" },

@@ -33,7 +33,7 @@ This plan tracks the supplied master prompt against the source package. Source i
 ## Phase 1 — Owner preservation and deployed-state baseline (not verified live)
 
 - **Objective:** Prove how the existing account resolves today and preserve its rows/configuration before multi-roadmap behavior changes.
-- **Affected files:** likely new staging verification scripts/docs; potentially an additive migration after review. Inspect `supabase/seed_rohan_career_plan.sql`, `src/lib/hooks/use-user-settings.ts`, `src/lib/hooks/use-roadmap.ts`, `(app)/layout.tsx`.
+- **Affected files:** likely new staging verification scripts/docs; potentially an additive migration after review. Inspect `supabase/seed_owner_career_plan.example.sql`, `src/lib/hooks/use-user-settings.ts`, `src/lib/hooks/use-roadmap.ts`, `(app)/layout.tsx`.
 - **Database changes:** None until a schema/data export and live schema check are reviewed. Then add an idempotent, operator-resolved enrollment backfill if required; avoid guessed dates/hours.
 - **Security implications:** Do not add email/user-id runtime branches. Resolve owner account for data migration under controlled operator procedure only.
 - **Migration strategy:** Additive, transactional where possible; snapshot and row-count/checksum before/after; rollback instructions.

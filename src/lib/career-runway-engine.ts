@@ -166,7 +166,7 @@ export function computeRunwayAnalysis(inputs: RunwayInputs): RunwayAnalysis {
 
 /**
  * Computes the minimum first-year dev salary needed to beat the
- * current ops income immediately. Used to evaluate whether a first
+ * current income immediately. Used to evaluate whether a first
  * offer is worth accepting.
  *
  * The career docs note: "switch to dev only when an offer beats your
@@ -239,7 +239,7 @@ export function computeCareerCheckpoints(startDate: string): CareerCheckpoint[] 
       month: 18,
       onPlanHours: 2600,
       minimumHours: 0, // doc says "at least one offer above ops pay" — no hours floor
-      description: "At least one dev offer above current ops pay. If not: stay in ops, treat dev as an internal/side skill, consider MBA.",
+      description: "At least one dev offer above current pay. If not: stay in your current role, treat dev as an internal/side skill, consider MBA.",
     },
   ];
 

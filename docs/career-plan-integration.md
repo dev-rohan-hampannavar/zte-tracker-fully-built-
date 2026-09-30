@@ -154,7 +154,7 @@ a separate column (notes are already JSONB-compatible text).
 ### 4.1 Hardcoded exit months in `full-plan.ts`
 
 `SALARY_REFERENCE` includes labels like `"Exit A · ~7 mo"`. This 7-month figure
-is calculated at 40 h/wk. At Rohan's actual 30 h/wk, Exit A is 9.5 months. The
+is calculated at 40 h/wk. At a 30 h/wk pace, Exit A is 9.5 months. The
 label is wrong for anyone not at 40 h/wk.
 
 **Fix:** The `~7 mo` text in `SALARY_REFERENCE` labels becomes a dynamic
@@ -330,7 +330,7 @@ Show computed target date at current weekly pace.
 
 ---
 
-## 9. Data to seed for Rohan (not generic defaults)
+## 9. Data to seed for the account owner (not generic defaults)
 
 The spreadsheet contains example values with explicit instructions to replace
 them. Seed the following as the user's actual financial profile and plan
@@ -387,5 +387,5 @@ Execute in this order to stay safe:
 
 6. **Dashboard** — add the runway warning if buffer > Exit A date.
 
-7. **Seed Rohan's actual values** — run a one-time upsert for
+7. **Seed the owner's actual values** — run a one-time upsert for
    `user_settings` and `financial_profiles` after the migration.
