@@ -5,13 +5,14 @@ import { Activity, Clock, GitCommitHorizontal, GitPullRequest, ListChecks, Brief
 import { EmptyState } from "@/components/ui/empty-state";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion/primitives";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
+import { localDateISO } from "@/lib/utils";
 
 export const revalidate = 0; // authenticated, per-user data — always fresh
 
 function daysAgoISO(days: number) {
   const d = new Date();
   d.setDate(d.getDate() - days);
-  return d.toISOString().slice(0, 10);
+  return localDateISO(d);
 }
 
 /**

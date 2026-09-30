@@ -2,6 +2,11 @@ import type { TopicWithProgress, PhaseWithTopics } from "@/types/database";
 import { weeklyHours } from "@/lib/hooks/use-daily-logs";
 import type { DailyLog } from "@/types/database";
 
+function toLocalIso(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+
 export interface PaceStatus {
   // Hours the roadmap "expects" to have been spent by now, based on
   // cumulative estimated_hours of every completed-or-current topic up to
@@ -99,7 +104,7 @@ export function computeCompletionProjection(
     remainingHours,
     weeklyPaceHours: recentWeeklyAverageHours,
     weeksRemaining,
-    projectedDate: projected.toISOString().slice(0, 10),
+    projectedDate: toLocalIso(projected),
   };
 }
 

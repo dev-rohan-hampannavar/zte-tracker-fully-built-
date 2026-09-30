@@ -1,18 +1,25 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RolePicker } from "@/components/onboarding/role-picker";
 import { useUser } from "@/lib/hooks/use-user";
 import { useRoleRoadmapIds, useTechnologies } from "@/lib/hooks/use-roadmap";
 import { useActiveUserRoadmap } from "@/lib/hooks/use-user-roadmap";
 import { useUserSettings } from "@/lib/hooks/use-user-settings";
 import { getErrorMessage } from "@/lib/error-message";
+import {
+  addMonthsIso,
+  firstInvalidStep,
+  parseWeeklyHours,
+  todayIso,
+  validateOnboardingStep,
+  MAX_WEEKLY_HOURS,
+} from "@/lib/onboarding-validation";
 import {
   useOnboardingResponses,
   useTargetRoles,
@@ -112,7 +119,6 @@ export default function OnboardingPage() {
   const { data: settings, isLoading: settingsLoading, error: settingsError, mutate: retrySettings } = useUserSettings(user?.id);
   const { data: enrollment, isLoading: enrollmentLoading, error: enrollmentError, mutate: retryEnrollment } = useActiveUserRoadmap(user?.id);
 
-  const [stepIndex, setStepIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
   // Already onboarded (e.g. navigated here directly with a stale tab) —
@@ -148,7 +154,7 @@ export default function OnboardingPage() {
     );
   }
 
-  return <OnboardingFlow user={user} existing={existing ?? null} stepIndex={stepIndex} setStepIndex={setStepIndex} submitting={submitting} setSubmitting={setSubmitting} router={router} targetRoles={targetRoles} targetRolesError={targetRolesError} technologies={technologies} />;
+  return <OnboardingFlow user={user} existing={existing ?? null} submitting={submitting} setSubmitting={setSubmitting} router={router} targetRoles={targetRoles} targetRolesError={targetRolesError} technologies={technologies} />;
 }
 
 /**
@@ -163,8 +169,6 @@ export default function OnboardingPage() {
 function OnboardingFlow({
   user,
   existing,
-  stepIndex,
-  setStepIndex,
   submitting,
   setSubmitting,
   router,
@@ -174,8 +178,6 @@ function OnboardingFlow({
 }: {
   user: { id: string } | null;
   existing: OnboardingResponses | null;
-  stepIndex: number;
-  setStepIndex: React.Dispatch<React.SetStateAction<number>>;
   submitting: boolean;
   setSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   router: ReturnType<typeof useRouter>;
@@ -185,20 +187,25 @@ function OnboardingFlow({
 }) {
   const { data: roleRoadmapIds } = useRoleRoadmapIds();
   const [answers, setAnswers] = useState<OnboardingDraft>(() => deriveDraft(existing));
-  const [roleSearch, setRoleSearch] = useState("");
+  // Resume at the first unanswered question. This used to be parent state
+  // that reset to question 1 on every reload or remount, discarding progress
+  // the draft had already saved.
+  const [stepIndex, setStepIndex] = useState(() => resumeStepIndex(deriveDraft(existing)));
+  const [stepError, setStepError] = useState<string | null>(null);
+  const validRoleIds = useMemo(() => (targetRoles ? new Set(targetRoles.map((r) => r.id)) : null), [targetRoles]);
 
   const step = STEPS[stepIndex];
 
   const targetDateChoices = useMemo(() => {
     const now = new Date();
     return [3, 6, 12].map((months) => {
-      const d = new Date(now.getFullYear(), now.getMonth() + months, now.getDate());
-      return { months, iso: d.toISOString().slice(0, 10) };
+      return { months, iso: addMonthsIso(now, months) };
     });
   }, []);
 
   async function persist(next: OnboardingDraft) {
     setAnswers(next);
+    setStepError(null);
     if (!user) return;
     try {
       await saveOnboardingDraft(user.id, next);
@@ -212,14 +219,29 @@ function OnboardingFlow({
   }
 
   function goNext() {
+    const message = validateOnboardingStep(step, answers, { validRoleIds });
+    if (message) {
+      setStepError(message);
+      return;
+    }
+    setStepError(null);
     setStepIndex((i) => Math.min(i + 1, STEPS.length - 1));
   }
   function goBack() {
+    setStepError(null);
     setStepIndex((i) => Math.max(i - 1, 0));
   }
 
   async function handleSubmit() {
     if (!user) return;
+    const invalid = firstInvalidStep(answers, { validRoleIds });
+    if (invalid) {
+      // Send them back to the step that's actually incomplete instead of
+      // letting the database reject the submission with a generic error.
+      setStepIndex(STEPS.indexOf(invalid.step));
+      setStepError(invalid.message);
+      return;
+    }
     setSubmitting(true);
     try {
       await completeOnboarding(user.id, answers);
@@ -265,25 +287,11 @@ function OnboardingFlow({
               <StepShell title="What role are you targeting?">
                 {Boolean(targetRolesError) && <p role="alert" className="mb-3 text-sm text-danger">{getErrorMessage(targetRolesError, "We couldn't load target roles. Refresh and try again.")}</p>}
                 {answers.target_role_id && roleRoadmapIds && <p className="mb-3 text-sm text-muted">{roleRoadmapIds.some((assignment) => assignment.role_id === answers.target_role_id) ? "This target is assigned to a shared detailed roadmap track. The track reuses learning content across related roles and is not a dedicated roadmap for every job title." : "We’ll use the ZTE core curriculum for this target. Browse the role explorer for common skills, project ideas, and interview areas."}</p>}
-                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                  <Input value={roleSearch} onChange={(event) => setRoleSearch(event.target.value)} placeholder="Search 118 role titles" aria-label="Search role titles" />
-                  <Link href="/careers" className="shrink-0 text-sm text-accent hover:underline">Browse role profiles</Link>
-                </div>
-                <Select
+                <RolePicker
+                  roles={targetRoles}
                   value={answers.target_role_id ?? undefined}
-                  onValueChange={(v) => persist({ ...answers, target_role_id: v })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Choose a target role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(targetRoles ?? []).filter((role) => role.name.toLowerCase().includes(roleSearch.trim().toLowerCase())).map((role) => (
-                      <SelectItem key={role.id} value={role.id}>
-                        {role.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  onSelect={(roleId) => persist({ ...answers, target_role_id: roleId })}
+                />
               </StepShell>
             )}
 
@@ -343,12 +351,17 @@ function OnboardingFlow({
                 </div>
                 <Input
                   type="number"
+                  min={1}
+                  max={MAX_WEEKLY_HOURS}
+                  step={1}
+                  inputMode="numeric"
                   className="mt-3"
                   placeholder="Or enter a custom number"
                   value={answers.weekly_hours ?? ""}
-                  onChange={(e) =>
-                    setAnswers({ ...answers, weekly_hours: e.target.value ? Number(e.target.value) : undefined })
-                  }
+                  onChange={(e) => {
+                    setStepError(null);
+                    setAnswers({ ...answers, weekly_hours: parseWeeklyHours(e.target.value) });
+                  }}
                   onBlur={() => persist(answers)}
                 />
               </StepShell>
@@ -374,9 +387,13 @@ function OnboardingFlow({
                 </div>
                 <Input
                   type="date"
+                  min={todayIso()}
                   className="mt-3"
                   value={answers.target_date ?? ""}
-                  onChange={(e) => setAnswers({ ...answers, target_date: e.target.value })}
+                  onChange={(e) => {
+                    setStepError(null);
+                    setAnswers({ ...answers, target_date: e.target.value });
+                  }}
                   onBlur={() => persist(answers)}
                 />
                 <p className="mt-3 text-sm text-muted">Have an existing project worth mentioning? (optional)</p>
@@ -429,6 +446,12 @@ function OnboardingFlow({
               </StepShell>
             )}
 
+            {stepError && (
+              <p role="alert" className="mt-4 text-sm text-danger">
+                {stepError}
+              </p>
+            )}
+
             <div className="mt-6 flex items-center justify-between">
               <Button variant="ghost" onClick={goBack} disabled={stepIndex === 0}>
                 <ArrowLeft className="h-4 w-4" /> Back
@@ -463,6 +486,11 @@ function StepShell({ title, children }: { title: string; children: React.ReactNo
 /** Pulls the resumable fields out of a previously-saved response row.
  * Kept as a plain function (not a hook) since it's pure and only ever
  * called once, as the useState initializer in OnboardingFlow. */
+function resumeStepIndex(draft: OnboardingDraft): number {
+  const invalid = firstInvalidStep(draft);
+  return invalid ? Math.max(0, STEPS.indexOf(invalid.step)) : STEPS.length - 1;
+}
+
 function deriveDraft(existing: OnboardingResponses | null): OnboardingDraft {
   if (!existing) return {};
   return {

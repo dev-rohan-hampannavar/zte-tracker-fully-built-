@@ -26,7 +26,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StaggerContainer, StaggerItem } from "@/components/motion/primitives";
 import { AlertCircle, CalendarClock } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, localDateISO } from "@/lib/utils";
 
 /**
  * One page pulling together everything that's otherwise scattered across
@@ -37,11 +37,11 @@ import { cn } from "@/lib/utils";
  */
 export default function WeeklyDigestPage() {
   const { user } = useUser();
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localDateISO(new Date());
   const weekStart = (() => {
     const d = new Date();
     d.setDate(d.getDate() - d.getDay());
-    return d.toISOString().slice(0, 10);
+    return localDateISO(d);
   })();
 
   const { data: logs } = useDailyLogs(user?.id);

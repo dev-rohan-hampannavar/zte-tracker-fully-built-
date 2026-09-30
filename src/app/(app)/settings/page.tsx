@@ -294,12 +294,20 @@ export default function SettingsPage() {
 
   async function handleSaveGoal() {
     if (!user) return;
+    // Previously any blank/0/garbage value was silently saved as 20 and
+    // negatives were saved as-is. Reject instead of guessing.
+    const parsedGoal = Number(goalValue);
+    const goalMax = goalType === "hours" ? 168 : 500;
+    if (!Number.isInteger(parsedGoal) || parsedGoal < 1 || parsedGoal > goalMax) {
+      toast.error(`Enter a whole number between 1 and ${goalMax}.`);
+      return;
+    }
     setSaving(true);
     const supabase = createClient();
     const { error } = await supabase
       .from("user_settings")
       .upsert(
-        { user_id: user.id, weekly_goal_type: goalType, weekly_goal_value: parseInt(goalValue, 10) || 20 } as never,
+        { user_id: user.id, weekly_goal_type: goalType, weekly_goal_value: parsedGoal } as never,
         { onConflict: "user_id" }
       );
     setSaving(false);
@@ -965,6 +973,8 @@ export default function SettingsPage() {
             <Input
               id="weekly-goal-target"
               type="number"
+              min={1}
+              step={1}
               className="mt-1 w-28"
               value={goalValue}
               onChange={(e) => setGoalValue(e.target.value)}

@@ -8,6 +8,7 @@ import "@fontsource/montserrat/700.css";
 import "@fontsource/montserrat/800.css";
 import { Toaster } from "sonner";
 import { OfflineIndicator } from "@/components/layout/offline-indicator";
+import { AuthHashErrorNotice } from "@/components/layout/auth-hash-error-notice";
 import { InstallPrompt } from "@/components/layout/install-prompt";
 import { SITE_URL, SITE_NAME } from "@/lib/site-config";
 import "./globals.css";
@@ -97,6 +98,7 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         {children}
+        <AuthHashErrorNotice />
         <OfflineIndicator />
         <InstallPrompt />
         <Toaster

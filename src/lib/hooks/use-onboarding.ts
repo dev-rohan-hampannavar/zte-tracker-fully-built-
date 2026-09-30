@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { OnboardingResponses, TargetRole, Phase } from "@/types/database";
 import { recommendStartingPoint, dsaTargetsForLevel } from "@/lib/personalization-engine";
 import { getErrorMessage } from "@/lib/error-message";
+import { firstInvalidStep } from "@/lib/onboarding-validation";
 
 /**
  * Phase 6 (onboarding) + Phase 5 (enrollment) data access. Modeled on the
@@ -114,6 +115,21 @@ async function resolveRoadmapForRole(
 export async function completeOnboarding(userId: string, finalAnswers: OnboardingDraft) {
   const supabase = createClient();
 
+  // Never let an incomplete draft reach the database: the RPC would either
+  // reject it with an opaque error or silently enroll the user on the
+  // fallback track with no role selected.
+  const invalid = firstInvalidStep(finalAnswers);
+  if (invalid) throw new Error(invalid.message);
+
+  const { data: roleRow, error: roleError } = await supabase
+    .from("target_roles")
+    .select("id")
+    .eq("id", finalAnswers.target_role_id as string)
+    .eq("is_active", true)
+    .maybeSingle();
+  if (roleError) throw roleError;
+  if (!roleRow) throw new Error("That role is no longer available. Go back and choose another one.");
+
   const roadmapId = await resolveRoadmapForRole(supabase, finalAnswers.target_role_id);
 
   // A failure to compute a starting point should not block onboarding.
@@ -201,5 +217,17 @@ export async function completeOnboarding(userId: string, finalAnswers: Onboardin
     p_dsa_easy_target: dsaEasyTarget,
     p_dsa_medium_target: dsaMediumTarget,
   } as never);
-  if (error) throw error;
+  if (error) throw new Error(friendlyOnboardingError(error));
+}
+
+/** Maps known complete_onboarding exceptions to actionable copy. */
+function friendlyOnboardingError(error: unknown): string {
+  const message = getErrorMessage(error, "We couldn't build your roadmap. Please try again.");
+  if (/selected roadmap does not exist/i.test(message)) {
+    return "The learning path for this role isn't set up in the database yet (missing core roadmap seed). Apply migration 0090 and try again.";
+  }
+  if (/no longer matches the target role|no longer current/i.test(message)) {
+    return "This learning path was just updated. Reload the page and try again.";
+  }
+  return message;
 }

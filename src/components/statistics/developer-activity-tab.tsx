@@ -11,6 +11,7 @@ import { Clock, GitCommitHorizontal, GitPullRequest, ListChecks, Briefcase, Trop
 import { StaggerContainer, StaggerItem } from "@/components/motion/primitives";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
 import { Skeleton } from "@/components/ui/skeleton";
+import { localDateISO } from "@/lib/utils";
 
 interface GithubBreakdown {
   pushEvents: number;
@@ -21,7 +22,7 @@ interface GithubBreakdown {
 function daysAgoISO(days: number) {
   const d = new Date();
   d.setDate(d.getDate() - days);
-  return d.toISOString().slice(0, 10);
+  return localDateISO(d);
 }
 
 /**

@@ -24,7 +24,7 @@ import { PlanTaskRow } from "@/components/daily-plan/plan-task-row";
 import { EndOfDayReview } from "@/components/daily-plan/end-of-day-review";
 import { BiggestRiskCallout } from "@/components/daily-plan/biggest-risk-callout";
 import { FadeUp, StaggerContainer } from "@/components/motion/primitives";
-import { todayISO } from "@/lib/utils";
+import { todayISO, localDateISO } from "@/lib/utils";
 
 const KIND_ICON: Record<PlanTaskKind, typeof Target> = {
   goal_deadline: Target,
@@ -71,7 +71,7 @@ function LegacyDailyPlanPage({ userId }: { userId: string | undefined }) {
     const d = new Date();
     const day = d.getDay();
     d.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
-    return d.toISOString().slice(0, 10);
+    return localDateISO(d);
   }, []);
   const { data: weekTaskRows } = useDailyPlanTaskStateRange(user?.id, weekStart, planDate);
   // Item 24 — carry counts across the same week range already fetched

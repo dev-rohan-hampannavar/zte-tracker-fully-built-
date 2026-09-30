@@ -67,12 +67,12 @@ const AT_RISK_LAG_FRACTION = 0.15;
 function addWeeks(dateISO: string, weeks: number): string {
   const d = new Date(`${dateISO}T00:00:00`);
   d.setDate(d.getDate() + Math.ceil(weeks * 7));
-  return d.toISOString().slice(0, 10);
+  return toLocalIso(d);
 }
 
 /** Returns today's ISO date (YYYY-MM-DD). */
 function today(): string {
-  return new Date().toISOString().slice(0, 10);
+  return toLocalIso(new Date());
 }
 
 /**
@@ -259,3 +259,7 @@ export const EXIT_HOURS: Record<string, number> = {
   "3": 2943, // Phase 17
   E:   3034, // Phase 19
 };
+
+function toLocalIso(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}

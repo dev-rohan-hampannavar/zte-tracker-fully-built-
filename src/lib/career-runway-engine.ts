@@ -70,11 +70,11 @@ function addMonths(dateISO: string, months: number): string {
   const [year, month, day] = dateISO.split("-").map(Number);
   const d = new Date(year, month - 1 + Math.round(months), day);
   if (d.getDate() !== day) d.setDate(0); // clamp end-of-month
-  return d.toISOString().slice(0, 10);
+  return toLocalIso(d);
 }
 
 function isoToday(): string {
-  return new Date().toISOString().slice(0, 10);
+  return toLocalIso(new Date());
 }
 
 /**
@@ -260,7 +260,7 @@ export function evaluateCheckpoint(
   status: "not_reached" | "below_minimum" | "minimum" | "on_plan" | "exceeded";
   message: string;
 } {
-  const todayISO = new Date().toISOString().slice(0, 10);
+  const todayISO = toLocalIso(new Date());
   const isPast = todayISO >= checkpoint.targetDate;
 
   if (!isPast) {
@@ -287,4 +287,8 @@ export function evaluateCheckpoint(
     status: "exceeded",
     message: `${Math.round(totalHoursLogged - checkpoint.onPlanHours)} hours ahead of plan.`,
   };
+}
+
+function toLocalIso(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }

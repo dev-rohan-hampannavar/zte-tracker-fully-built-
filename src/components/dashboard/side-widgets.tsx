@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, CalendarDays, Bell, Trophy, Quote, Clock3, ListTodo, Percent, Video } from "lucide-react";
 import { useDailyPlan } from "@/lib/hooks/use-daily-plan";
 import { useApplicationMetrics, useInterviewRounds } from "@/lib/hooks/use-career";
-import { cn, formatHours } from "@/lib/utils";
+import { cn, formatHours, localDateISO } from "@/lib/utils";
 import type { DailyLog, LeaderboardEntry } from "@/types/database";
 import { useNotifications, type AppNotification } from "@/lib/hooks/use-notifications";
 import { useLeaderboard } from "@/lib/hooks/use-leaderboard";
@@ -57,7 +57,7 @@ export function WeekGridCard({ logs }: { logs: DailyLog[] }) {
     return Array.from({ length: 7 }, (_, i) => {
       const d = new Date(today);
       d.setDate(today.getDate() - (6 - i));
-      const iso = d.toISOString().slice(0, 10);
+      const iso = localDateISO(d);
       return {
         label: d.toLocaleDateString("en-IN", { weekday: "narrow" }),
         hours: byDate.get(iso) ?? 0,
