@@ -1,0 +1,16 @@
+# Normalize line endings for everyone, regardless of OS/editor settings.
+# Fixes the "LF will be replaced by CRLF" warnings that showed up on every
+# git add/commit from Windows — Git now stores everything as LF and only
+# converts to CRLF in the working directory on checkout for text files.
+* text=auto eol=lf
+
+# Binary files must never be line-ending-normalized — doing so corrupts them.
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

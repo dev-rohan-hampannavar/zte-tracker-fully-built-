@@ -12,6 +12,10 @@ import { cn } from "@/lib/utils";
 import type { Company } from "@/types/database";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FadeUp } from "@/components/motion/primitives";
+import { SharedJobSearch } from "@/components/shared/shared-playbooks";
+import { useOwnerMode } from "@/lib/hooks/use-owner-mode";
+import { Skeleton as GateSkeleton } from "@/components/ui/skeleton";
+import { getOwnerFacts } from "@/lib/owner-facts";
 
 // Item 3 follow-up: the schema/seed data for category, hiring_stage,
 // typical_tech_stack, hiring_difficulty, and notes has existed since Stage 0,
@@ -24,7 +28,7 @@ const DIFFICULTY_VARIANT: Record<NonNullable<Company["hiring_difficulty"]>, "suc
   high: "danger",
 };
 
-export default function CompaniesPage() {
+function OwnerCompaniesPage() {
   const { data: companies, isLoading } = useCompanies();
   const { data: exitLadder } = useExitLadder();
   const [query, setQuery] = useState("");
@@ -72,16 +76,16 @@ export default function CompaniesPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Info className="h-5 w-5 text-accent" /> Internal bridge plan — your current employer
+            <Info className="h-5 w-5 text-accent" /> {getOwnerFacts().employer} — internal bridge plan
           </CardTitle>
           <CardDescription>
-            Use your current employer as a first step: internal moves skip most external filters.
+            Use your current employer as a first step. Source: career_timeline_zte.docx §29.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-lg border border-border/50 p-3">
-              <p className="text-xs font-semibold mb-2">Internal roles worth checking at your company</p>
+              <p className="text-xs font-semibold mb-2">Internal roles found at {getOwnerFacts().employer} India</p>
               <ul className="text-xs text-muted flex flex-col gap-1">
                 <li>• Software Engineer (Java, Spring Boot)</li>
                 <li>• QA / Automation Engineer (Selenium, Python)</li>
@@ -90,13 +94,13 @@ export default function CompaniesPage() {
                 <li>• Java Tech Lead</li>
                 <li>• Data Scientist (B.E./B.Tech/MCA filter on most listings)</li>
               </ul>
-              <p className="text-[11px] text-warning mt-2">⚠ Data Scientist and many AI/ML roles explicitly require B.E./B.Tech/M.Tech/MCA. BCA blocks these ATS filters. IT Systems Analyst and QA/Automation are open.</p>
+              <p className="text-[11px] text-warning mt-2">⚠ Data Scientist and many AI/ML roles explicitly require B.E./B.Tech/M.Tech/MCA. {getOwnerFacts().degree} blocks these ATS filters. IT Systems Analyst and QA/Automation are open.</p>
             </div>
             <div className="rounded-lg border border-border/50 p-3">
               <p className="text-xs font-semibold mb-2">4-week action plan (start in month 1)</p>
               <div className="flex flex-col gap-1.5 text-xs text-muted">
                 {([
-                  { week: "Weeks 1–2", action: "Pick one recurring manual report in your current role. Automate it with SQL + a simple dashboard (ZTE Phase 01 output)." },
+                  { week: "Weeks 1–2", action: "Pick one recurring manual report in your ops role. Automate it with SQL + a simple dashboard (ZTE Phase 01 output)." },
                   { week: "Weeks 3–4", action: "Show it to your manager in a 10-min demo. Frame it as a process improvement, not a career pivot." },
                   { week: "Month 3", action: "Ask your manager which internal teams hire ex-ops with SQL skills. Get a name if possible." },
                   { week: "Month 6", action: "Apply to IT Systems Analyst or QA/Automation roles internally — or to external companies if internal door stays closed." },
@@ -125,7 +129,7 @@ export default function CompaniesPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-muted">
               {([
                 { site: "Wellfound (AngelList)", note: "Best for early-stage startups. Filter: Bangalore, full-stack, 0–2 yrs." },
-                { site: "WorkAtAStartup", note: "Y Combinator companies. High quality, BCA-friendly." },
+                { site: "WorkAtAStartup", note: "Y Combinator companies. High quality, and many roles do not screen by degree." },
                 { site: "LinkedIn", note: "Best for referrals. Apply directly after a referral intro." },
                 { site: "Instahyre", note: "Good mid-stage startups. Direct recruiter contact." },
                 { site: "Naukri", note: "High volume, low signal. Use only after Exit ★1." },
@@ -188,4 +192,12 @@ export default function CompaniesPage() {
       </div>
     </div>
   );
+}
+
+/** Owner workspace keeps the original page; shared accounts get the playbook. Fails closed. */
+export default function CompaniesPage() {
+  const { ownerMode, loading } = useOwnerMode();
+  if (loading) return <GateSkeleton className="h-96 w-full" />;
+  if (ownerMode) return <OwnerCompaniesPage />;
+  return <SharedJobSearch />;
 }

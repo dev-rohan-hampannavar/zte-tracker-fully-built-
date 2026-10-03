@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { RecordNotFound } from "@/components/ui/record-not-found";
 import { useUser } from "@/lib/hooks/use-user";
+import { useUserSettings } from "@/lib/hooks/use-user-settings";
 import { usePhasesWithProgress, toggleTopicComplete, useExitLadder, useClientSyncMilestones, useMasterPhaseTable, useSkillTracks } from "@/lib/hooks/use-roadmap";
 import { useBuildInPublicStatus } from "@/lib/hooks/use-projects";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,6 +25,9 @@ export default function PhaseDetailPage() {
   const { phases, isLoading, mutateProgress } = usePhasesWithProgress(user?.id);
   const { data: exitLadder } = useExitLadder();
   const { data: milestones } = useClientSyncMilestones();
+  const { user: currentUser } = useUser();
+  const { data: accountSettings } = useUserSettings(currentUser?.id);
+  const ownerMode = accountSettings?.is_personalized === true;
   const { data: bipStatus } = useBuildInPublicStatus(user?.id);
   const { data: masterTable } = useMasterPhaseTable();
   const { data: skillTracks } = useSkillTracks();
@@ -123,16 +127,18 @@ export default function PhaseDetailPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <GitCommitHorizontal className="h-4 w-4" /> ClientSync milestone
+                  <GitCommitHorizontal className="h-4 w-4" /> Flagship milestone
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
                 {linkedMilestones.map((m) => (
                   <p key={m.id} className="text-sm text-muted">{m.description}</p>
                 ))}
-                <Link href="/clientsync" className="text-xs text-accent hover:underline w-fit">
-                  Open ClientSync tracker
-                </Link>
+                {ownerMode && (
+                  <Link href="/clientsync" className="text-xs text-accent hover:underline w-fit">
+                    Open flagship tracker
+                  </Link>
+                )}
               </CardContent>
             </Card>
           )}

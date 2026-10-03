@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, LayoutDashboard, Timer, Target, Briefcase, NotebookPen, Gauge, Sun, Download, Brain, CalendarClock } from "lucide-react";
 import { useUser } from "@/lib/hooks/use-user";
+import { useUserSettings } from "@/lib/hooks/use-user-settings";
 import { useTheme } from "@/lib/hooks/use-theme";
 import {
   useRoadmap,
@@ -38,6 +39,10 @@ export function GlobalSearch() {
   const [query, setQuery] = useState("");
   const router = useRouter();
   const { user } = useUser();
+  const { data: accountSettings } = useUserSettings(user?.id);
+  // ClientSync milestones and exit points belong to the private owner
+  // workspace; shared accounts must never see them in search results.
+  const ownerMode = accountSettings?.is_personalized === true;
   const { data: roadmap } = useRoadmap();
   const { data: exitLadder } = useExitLadder();
   const { data: companies } = useCompanies();
@@ -350,6 +355,7 @@ export function GlobalSearch() {
                   )}
                 </Command.Group>
 
+                {ownerMode && (
                 <Command.Group heading="Exit points & salary" className="text-[11px] uppercase tracking-wide text-muted px-2 py-1 mt-2">
                   {(exitLadder ?? []).map((e) => (
                     <Command.Item
@@ -369,7 +375,9 @@ export function GlobalSearch() {
                     </Command.Item>
                   ))}
                 </Command.Group>
+                )}
 
+                {ownerMode && (
                 <Command.Group heading="ClientSync milestones" className="text-[11px] uppercase tracking-wide text-muted px-2 py-1 mt-2">
                   {milestones.map((m) => (
                     <Command.Item
@@ -385,6 +393,7 @@ export function GlobalSearch() {
                     </Command.Item>
                   ))}
                 </Command.Group>
+                )}
 
                 <Command.Group heading="Companies" className="text-[11px] uppercase tracking-wide text-muted px-2 py-1 mt-2">
                   {(companies ?? []).map((c) => (

@@ -43,7 +43,7 @@ export default function PortfolioIdeasPage() {
           <Lightbulb className="h-6 w-6" /> Portfolio Ideas
         </h1>
         <p className="text-sm text-muted mt-1">
-          10 advanced SaaS project ideas from Part VII — pick one to build after ClientSync. Distinct from Capstone builds, the phase-by-phase roadmap projects.
+          10 advanced SaaS project ideas from Part VII — pick one to build after your flagship project. Distinct from Capstone builds, the phase-by-phase roadmap projects.
         </p>
       </div>
       </FadeUp>

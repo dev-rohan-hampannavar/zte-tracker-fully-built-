@@ -3,7 +3,7 @@ begin;
 
 insert into public.orientation (id, overview, who_is_this_for, key_note, job_market_case, build_in_public_guide, quick_start_checklist, critical_advice, weekly_pace_options, phase_summaries, decision_matrix, decision_rule) values (1, 'What This Document Is
 
-This is a ~17.5-month, 290-topic, phase-based software engineering curriculum totaling 3034 realistic hours, designed to take you from a beginner to a job-ready full-stack engineer — with salaries at each Exit Point ranging ₹6–10 LPA at the earliest exit up to ₹35–50 LPA at the final one. It''s structured as a self-study roadmap with built-in "Exit Points" — specific milestones where you''re ready to start applying for jobs at different salary levels.', '[{"category": "Primary audience", "details": "Aspiring software engineers in India, especially those with a BCA degree (addressed explicitly in the doc)"}, {"category": "Career stage", "details": "Complete beginners to those wanting to level up to senior/staff roles"}, {"category": "Time commitment", "details": "Flexible: 25-70 hrs/week depending on how fast you want to finish"}, {"category": "Goal", "details": "Fastest path to employment at product companies, startups, and scale-ups"}, {"category": "Companies targeted", "details": "Early-stage startups → Series A/B → Unicorns → Global remote (Vercel, Supabase, etc.)"}]'::jsonb, 'The document explicitly addresses BCA graduates. It says BCA is fine for most target companies (startups, product companies, dev agencies) but becomes a hard filter at FAANG India and large IT services. It suggests MCA as a path if FAANG is a long-term goal.', 'Especially if you''re a BCA graduate from a Tier‑2 college with zero projects and no work experience.
+This is a ~17.5-month, 290-topic, phase-based software engineering curriculum totaling 3034 realistic hours, designed to take you from a beginner to a job-ready full-stack engineer — with salaries at each Exit Point ranging ₹6–10 LPA at the earliest exit up to ₹35–50 LPA at the final one. It''s structured as a self-study roadmap with built-in "Exit Points" — specific milestones where you''re ready to start applying for jobs at different salary levels.', '[{"category": "Primary audience", "details": "Aspiring software engineers in India, including those without a traditional computer-science degree"}, {"category": "Career stage", "details": "Complete beginners to those wanting to level up to senior/staff roles"}, {"category": "Time commitment", "details": "Flexible: 25-70 hrs/week depending on how fast you want to finish"}, {"category": "Goal", "details": "Fastest path to employment at product companies, startups, and scale-ups"}, {"category": "Companies targeted", "details": "Early-stage startups → Series A/B → Unicorns → Global remote (Vercel, Supabase, etc.)"}]'::jsonb, 'Your degree matters less than your proof of work at most target companies (startups, product companies, dev agencies), but some large employers screen by degree. If one of those is a long-term goal, check their requirements early.', 'Especially if you''re early in your career with few projects and little work experience.
 
 THE HONEST TRUTH – AND THE PLAN
 
@@ -11,13 +11,13 @@ The market is tough, but it''s not closed. Companies still hire – they hire pe
 
 Here''s how it works for you:
 
-— You build a real, deployable project (ClientSync) in the first 6 months — this becomes your portfolio, your proof of skill, and your conversation starter in interviews.
+— You build a real, deployable project (your flagship project) in the first 6 months — this becomes your portfolio, your proof of skill, and your conversation starter in interviews.
 
 — You publish your work publicly — every phase gives you something to show on GitHub, dev.to, or LinkedIn. Recruiters see your progress, not your college name.
 
 — You don''t wait until the end to apply — the ''Exit Points'' let you start applying as early as Phase 06, when you have a live app and a CI/CD pipeline. That''s often enough for early-stage startups.
 
-— The curriculum explicitly addresses the BCA degree filter — it tells you which companies don''t care about your degree (most startups, product companies, dev agencies) and which do (FAANG, large IT services). You focus your energy where it matters.
+— The curriculum is honest about degree filters: it shows which kinds of companies rarely care about your degree (most startups, product companies, dev agencies) and which often do (some large enterprises and IT services). You focus your energy where it matters.
 
 — You learn exactly what''s needed for the job — no fluff, no outdated theory. Every topic is chosen because it''s used in production at top startups. You''re job-ready, not just ''certified''.
 
@@ -25,7 +25,7 @@ Here''s how it works for you:
 
 THE BOTTOM LINE
 
-Your BCA degree is not a blocker – it''s a starting point. What gets you hired is your ability to build and ship. This roadmap gives you the exact path to do that, with clear milestones to keep you on track.
+Your degree is not a blocker. It''s a starting point. What gets you hired is your ability to build and ship. This roadmap gives you the exact path to do that, with clear milestones to keep you on track.
 
 If you follow it consistently, you will have a portfolio, a GitHub history, and the confidence to walk into any interview. The jobs are there – you just need to be visible and credible. This document shows you how.', '"Build in public" gets said so often it''s stopped meaning anything. Here''s what it actually means for this roadmap: at the end of most phases (not every day, not every commit), you post one specific, concrete thing you built or learned — not a status update, not "day 47 of my coding journey." Each phase in this document has a compact BUILD IN PUBLIC callout telling you exactly what to post, what to commit, and where. This section is the reasoning behind that system.
 
@@ -67,7 +67,7 @@ insert into public.why_this_works (failure_mode, mechanism, order_index) values 
 insert into public.why_this_works (failure_mode, mechanism, order_index) values ('Waiting until the very end to apply for jobs', 'Exit Points (A, B, ★1, C, ★2, D, 3, E) — real job-readiness milestones seeded from Phase 06 onward, each with its own target roles and salary band.', 1);
 insert into public.why_this_works (failure_mode, mechanism, order_index) values ('Learning topics before their prerequisites are solid', 'Dependency-ordered resequencing — explicitly reasoned in-document (e.g. Type Narrowing before Discriminated Unions, HMAC-SHA256 before JWT, curl before Postman) rather than following the original curriculum’s grouping.', 2);
 insert into public.why_this_works (failure_mode, mechanism, order_index) values ('Burnout from unsustainable pace', 'Weekly-hours-based timeline options (25–85 hrs/wk) with an explicit daily schedule and "track hours weekly, not daily" rule — a rough day doesn’t derail the plan.', 3);
-insert into public.why_this_works (failure_mode, mechanism, order_index) values ('A portfolio with no depth — one demo, no real product', 'ClientSync — a single real, deployable, two-sided SaaS product built feature-by-feature across every phase, rather than 19 disconnected toy projects.', 4);
+insert into public.why_this_works (failure_mode, mechanism, order_index) values ('A portfolio with no depth — one demo, no real product', 'Your flagship project — a single real, deployable, two-sided SaaS product built feature-by-feature across every phase, rather than 19 disconnected toy projects.', 4);
 insert into public.why_this_works (failure_mode, mechanism, order_index) values ('Degree/college filtering you out before anyone sees your work', 'The document explicitly separates companies that gate on degree (FAANG India, large IT services) from those that don’t (most startups, product companies, dev agencies) — so effort is targeted, not wasted.', 5);
 insert into public.why_this_works (failure_mode, mechanism, order_index) values ('GitHub history that looks fabricated (a dump of commits at the last minute)', 'Conventional Commits from Phase 04 onward + explicit guidance to commit as you go, not in one end-of-phase dump.', 6);
 

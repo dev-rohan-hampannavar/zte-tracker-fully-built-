@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useUser } from "@/lib/hooks/use-user";
+import { useOwnerMode } from "@/lib/hooks/use-owner-mode";
 import { useDsaProgress } from "@/lib/hooks/use-dsa";
 import { useCareerTracker } from "@/lib/hooks/use-career";
 import { useInterviewAttempts } from "@/lib/hooks/use-interview-prep";
@@ -39,6 +40,7 @@ function monthName(monthKey: string) {
 }
 
 export default function MonthlyReviewPage() {
+  const { ownerMode } = useOwnerMode();
   const { user } = useUser();
   const { data: dsa, isLoading: dsaLoading } = useDsaProgress(user?.id);
   const { data: applications, isLoading: appsLoading } = useCareerTracker(user?.id);
@@ -170,7 +172,9 @@ export default function MonthlyReviewPage() {
             { q: "Build-in-public", prompt: "How many posts shipped? Were any posts based on something I actually learned vs something I summarised? Quality beats quantity." },
             { q: "Applications", prompt: "How many sent, how many responses, how many interviews? If response rate is under 5% after 20+ tailored apps, the resume or portfolio needs work first." },
             { q: "Savings", prompt: "Current savings vs 6-month buffer target. Months to buffer at current surplus. Am I on track to have the buffer ready before Exit A?" },
-            { q: "Ops status", prompt: "Is the ops job still safe? Any promotions, changes, or internal moves available? Any friction that needs managing before the switch?" },
+            (ownerMode
+            ? { q: "Ops status", prompt: "Is the ops job still safe? Any promotions, changes, or internal moves available? Any friction that needs managing before the switch?" }
+            : { q: "Current job status", prompt: "Is your current job still stable? Any changes, internal moves, or friction to manage before you switch?" }),
           ] as const).map((item) => (
             <div key={item.q} className="rounded-lg border border-border/50 p-3">
               <p className="text-xs font-semibold text-accent">{item.q}</p>

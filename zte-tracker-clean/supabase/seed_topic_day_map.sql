@@ -1,0 +1,22 @@
+-- Fills public.topic_day_map: topic_id -> the "Day N" lesson plan in the
+-- execution manual (src/data/manual-days.json) that Daily Mission should
+-- show when that topic is up next.
+--
+-- HOW TO FILL THIS IN:
+--   1. Open supabase/topic_day_map_candidates.csv — it has an auto-suggested
+--      day_number per topic (fuzzy-matched on title), with a confidence
+--      column (high / medium / low). "high" rows are almost certainly
+--      right; "low" rows need a manual look at manual.txt or
+--      src/data/manual-days.json to pick the correct day, if one exists.
+--   2. Not every topic needs a row — many-to-one is fine (skip topics with
+--      no clean matching day), and topics left unmapped just won't show a
+--      lesson panel in Daily Mission.
+--   3. Add one line per confirmed mapping below, then run this file
+--      against your Supabase project (same way you ran the other
+--      supabase/seed_*.sql files).
+--
+-- Example:
+-- insert into public.topic_day_map (topic_id, day_number) values ('topic-01-001', 1)
+--   on conflict (topic_id) do update set day_number = excluded.day_number;
+
+-- (add your confirmed rows below)

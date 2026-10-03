@@ -229,7 +229,7 @@ export default function DsaTrackerPage() {
       <Card>
         <CardHeader>
           <CardTitle>Phase 08 — DSA breakdown</CardTitle>
-          <CardDescription>6 blocks, 331 hours total. Source: career_timeline_zte.docx §32.</CardDescription>
+          <CardDescription>6 blocks, 331 hours total. §32.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           <div className="overflow-x-auto">

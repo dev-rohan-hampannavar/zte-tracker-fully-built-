@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { deepFill } from "@/lib/owner-facts";
 
 // Only tracks with a full stage-by-stage breakdown appear in the explorer
 // — currently all four that exist. plan_a is the primary ZTE full-stack
@@ -45,7 +46,7 @@ export function CareerPathExplorer({ userId, activeTrack, onSelectTrack }: Caree
 
   const explorerTrack = EXPLORER_TRACKS.includes(activeTrack) ? activeTrack : "plan_a";
   const entry = useMemo(
-    () => CAREER_PATH_STAGES.find((item) => item.track === explorerTrack),
+    () => deepFill(CAREER_PATH_STAGES.find((item) => item.track === explorerTrack)),
     [explorerTrack]
   );
   const path = PLAN_PATHS.find((item) => item.id === explorerTrack);

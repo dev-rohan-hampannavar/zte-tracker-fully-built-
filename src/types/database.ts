@@ -218,6 +218,14 @@ export interface UserRoadmap {
 // a live-synced preference — see UserSkill / career_tracker for the
 // ongoing evidence-based versions of "what does this user actually
 // know/want now". completed_at is null while onboarding is in progress.
+export interface LessonProgress {
+  user_id: string;
+  lesson_id: string;
+  quiz_correct: number;
+  quiz_total: number;
+  completed_at: string;
+}
+
 export interface OnboardingResponses {
   user_id: string;
   goal:
@@ -1656,6 +1664,12 @@ export interface Database {
         Row: UserRoadmap;
         Insert: Partial<UserRoadmap> & { user_id: string; roadmap_id: string };
         Update: Partial<UserRoadmap>;
+        Relationships: [];
+      };
+      lesson_progress: {
+        Row: LessonProgress;
+        Insert: Partial<LessonProgress> & { user_id: string; lesson_id: string };
+        Update: Partial<LessonProgress>;
         Relationships: [];
       };
       onboarding_responses: {

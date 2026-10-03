@@ -18,6 +18,8 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { useUser } from "@/lib/hooks/use-user";
+import { useUserSettings } from "@/lib/hooks/use-user-settings";
+import { SharedCareerPlan } from "@/components/career/shared-career-plan";
 import { useCareerPlanSettings, saveCareerPlanSettings } from "@/lib/hooks/use-career-plan";
 import { usePhasesWithProgress, useExitLadder, useMonthByMonth } from "@/lib/hooks/use-roadmap";
 import { useDailyLogs } from "@/lib/hooks/use-daily-logs";
@@ -60,6 +62,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { cn, localDateISO } from "@/lib/utils";
+import { getOwnerFacts, fillFacts } from "@/lib/owner-facts";
+import { deepFill } from "@/lib/owner-facts";
+const pay = () => getOwnerFacts().payLpa ?? 0;
 
 function mondayOfToday() {
   const d = new Date();
@@ -85,7 +90,7 @@ function sectionTone(tone: PlanTone) {
   }
 }
 
-export default function CareerPlanPage() {
+function OwnerCareerPlanPage() {
   const { user } = useUser();
   const { data: settings, mutate: mutateSettings, isLoading: settingsLoading } = useCareerPlanSettings(user?.id);
   const { phases, isLoading: phasesLoading } = usePhasesWithProgress(user?.id);
@@ -355,7 +360,7 @@ export default function CareerPlanPage() {
         <CareerPathExplorer userId={user?.id} activeTrack={track} onSelectTrack={(id) => setTrack(id)} />
       </section>
 
-      <Card><CardHeader><CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-accent" /> Salary planning reference</CardTitle><CardDescription>Indicative ranges from the supplied playbook, not promises or compensation advice. Validate current market data before making a decision.</CardDescription></CardHeader><CardContent><div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">{PLAN_PATHS.map((path) => <div key={path.id}><p className="text-sm font-semibold mb-2">{path.title}</p><div className="flex flex-col divide-y divide-border/50">{SALARY_REFERENCE.filter((row) => row.track === path.id).map((row) => <div key={row.label} className="flex items-center justify-between gap-4 py-2"><div><p className="text-xs font-medium">{row.label}{row.exitCode ? <span className="text-muted font-normal"> · {computeExitMonthsLabel(row.exitCode, Number(weeklyHours) || 30)}</span> : null}</p><p className="text-[11px] text-muted">{row.evidence}</p></div><span className="text-sm font-mono-tabular text-accent whitespace-nowrap">{row.range}</span></div>)}</div></div>)}</div><p className="text-[11px] text-muted mt-5">Source context: the supplied Zero to Elite playbook and its internal exit ladder. Ranges are planning inputs; offers depend on role, company, location, interview performance, and market conditions.</p></CardContent></Card>
+      <Card><CardHeader><CardTitle className="flex items-center gap-2"><TrendingUp className="h-5 w-5 text-accent" /> Salary planning reference</CardTitle><CardDescription>Indicative ranges from the supplied playbook, not promises or compensation advice. Validate current market data before making a decision.</CardDescription></CardHeader><CardContent><div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">{PLAN_PATHS.map((path) => <div key={path.id}><p className="text-sm font-semibold mb-2">{path.title}</p><div className="flex flex-col divide-y divide-border/50">{deepFill(SALARY_REFERENCE).filter((row) => row.track === path.id).map((row) => <div key={row.label} className="flex items-center justify-between gap-4 py-2"><div><p className="text-xs font-medium">{row.label}{row.exitCode ? <span className="text-muted font-normal"> · {computeExitMonthsLabel(row.exitCode, Number(weeklyHours) || 30)}</span> : null}</p><p className="text-[11px] text-muted">{row.evidence}</p></div><span className="text-sm font-mono-tabular text-accent whitespace-nowrap">{row.range}</span></div>)}</div></div>)}</div><p className="text-[11px] text-muted mt-5">Source context: the supplied Zero to Elite playbook and its internal exit ladder. Ranges are planning inputs; offers depend on role, company, location, interview performance, and market conditions.</p></CardContent></Card>
 
       {/* ── Pay reality check ── */}
       <Card>
@@ -386,12 +391,12 @@ export default function CareerPlanPage() {
             </div>
           </div>
           <div className="overflow-x-auto">
-            <p className="text-xs font-medium mb-2">Who leads at year 2 depending on first dev offer</p>
+            <p className="text-xs font-medium mb-2">{fillFacts("Who leads at age {{age+2}} depending on first dev offer")}</p>
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border/50">
                   <th className="text-left text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">First dev offer</th>
-                  <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Ops pay at 26 (base)</th>
+                  <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">{fillFacts("Ops pay at {{age+2}} (base)")}</th>
                   <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2 pr-4">Dev pay at 26</th>
                   <th className="text-right text-[11px] uppercase tracking-wider text-muted pb-2">Who leads</th>
                 </tr>
@@ -530,11 +535,11 @@ export default function CareerPlanPage() {
               <tbody className="divide-y divide-border/30">
                 {(
                   [
-                    { label: "Year 0 (now)", ops: [4.6, 4.6, 4.6], dev: [4.6, 4.6, 4.6] },
-                    { label: "Year 2",       ops: [5.5, 7.0, 8.5],  dev: [4.0, 7.0, 12.0] },
-                    { label: "Year 4",       ops: [8.0, 11.0, 14.0], dev: [6.5, 11.0, 20.0] },
-                    { label: "Year 7",       ops: [12.5, 18.0, 24.0], dev: [10.5, 17.0, 32.0] },
-                    { label: "Year 10",       ops: [17.0, 26.0, 36.0], dev: [15.0, 25.0, 45.0] },
+                    { label: fillFacts("Age {{age}} (now)"), ops: [pay(), pay(), pay()], dev: [pay(), pay(), pay()] },
+                    { label: fillFacts("Age {{age+2}}"),   ops: [5.5, 7.0, 8.5],  dev: [4.0, 7.0, 12.0] },
+                    { label: fillFacts("Age {{age+4}}"),   ops: [8.0, 11.0, 14.0], dev: [6.5, 11.0, 20.0] },
+                    { label: fillFacts("Age {{age+7}}"),   ops: [12.5, 18.0, 24.0], dev: [10.5, 17.0, 32.0] },
+                    { label: fillFacts("Age {{age+10}}"),  ops: [17.0, 26.0, 36.0], dev: [15.0, 25.0, 45.0] },
                   ] as const
                 ).map((row) => (
                   <tr key={row.label}>
@@ -545,7 +550,7 @@ export default function CareerPlanPage() {
                   </tr>
                 ))}
                 <tr className="border-t-2 border-border/70 font-semibold">
-                  <td className="py-2 pr-4 text-xs">10yr total (₹L, years 0–10, illustrative)</td>
+                  <td className="py-2 pr-4 text-xs">10yr total (₹L, ages 24–34)</td>
                   <td className="py-2 pr-3 text-right font-mono-tabular text-xs">109</td>
                   <td className="py-2 pr-3 text-right font-mono-tabular text-xs">154</td>
                   <td className="py-2 pr-3 text-right font-mono-tabular text-xs">203</td>
@@ -641,7 +646,7 @@ export default function CareerPlanPage() {
           </div>
           <div className="rounded-lg border border-border/50 p-3 bg-surface-2/30">
             <p className="text-xs font-medium mb-1">What the model leaves out</p>
-            <p className="text-xs text-muted">Cost of study time, tax (pay up to ~₹12.75L is effectively tax-free under new regime), ESOPs and variable pay, MBA or MCA fees, and the pivot options (§26–28) which could improve either path. At 10% P(high), the edge is ~₹8L over ten years — under ₹1L/year. A GCC or FAANG offer often filters BCA, so 10% may be generous. The stronger argument for hybrid is <span className="text-foreground font-medium">asymmetry and cheap information</span>, not average pay — by Exit A you&apos;ll know if you can sustain 30h/wk and if you like the work.</p>
+            <p className="text-xs text-muted">Cost of study time, tax (pay up to ~₹12.75L is effectively tax-free under new regime), ESOPs and variable pay, MBA or MCA fees, and the pivot options (§26–28) which could improve either path. At 10% P(high), the edge is ~₹8L over ten years — under ₹1L/year. A GCC or FAANG offer often filters {getOwnerFacts().degree}, so 10% may be generous. The stronger argument for hybrid is <span className="text-foreground font-medium">asymmetry and cheap information</span>, not average pay — by Exit A you&apos;ll know if you can sustain 30h/wk and if you like the work.</p>
           </div>
         </CardContent>
       </Card>
@@ -742,4 +747,19 @@ export default function CareerPlanPage() {
       <div className="flex flex-wrap items-center gap-4 text-xs text-muted"><span className="inline-flex items-center gap-1"><Clock3 className="h-3.5 w-3.5" />Clock: {formatPlanDate(snapshot.startDate)} → {formatPlanDate(snapshot.deadlineDate)}</span><span className="inline-flex items-center gap-1"><Rocket className="h-3.5 w-3.5" />Flagship: {flagshipProject || FULL_PLAN.flagshipProject}</span><Link href="/execution" className="inline-flex items-center gap-1 text-accent hover:underline"><CalendarClock className="h-3.5 w-3.5" />Open Execution OS <ArrowRight className="h-3.5 w-3.5" /></Link><Link href="/career" className="inline-flex items-center gap-1 text-accent hover:underline">Open Career Tracker <ArrowRight className="h-3.5 w-3.5" /></Link></div>
     </div>
   );
+}
+
+/**
+ * Shared-workspace accounts get a plan generated from their own onboarding
+ * answers. The plan above (fixed tracks, pay ladders, the owner's situation)
+ * is the private owner workspace only. Fails closed: unknown mode never shows
+ * the owner plan.
+ */
+export default function CareerPlanPage() {
+  const { user, loading } = useUser();
+  const { data: settings, isLoading } = useUserSettings(user?.id);
+  if (loading || isLoading) return <Skeleton className="h-96 w-full" />;
+  if (user?.id && settings?.is_personalized === true) return <OwnerCareerPlanPage />;
+  if (user?.id) return <SharedCareerPlan userId={user.id} />;
+  return <Skeleton className="h-96 w-full" />;
 }

@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { useUser } from "@/lib/hooks/use-user";
+import { useOwnerMode } from "@/lib/hooks/use-owner-mode";
 import { useExitLadder, usePhasesWithProgress } from "@/lib/hooks/use-roadmap";
 import { useDailyLogs } from "@/lib/hooks/use-daily-logs";
 import { useCareerPlanSettings } from "@/lib/hooks/use-career-plan";
@@ -57,6 +58,7 @@ function phaseOrderIndex(phases: PhaseWithTopics[], phaseId: string | null) {
 }
 
 export default function ExitLadderPage() {
+  const { ownerMode } = useOwnerMode();
   const { user } = useUser();
   const { data: displayName } = useDisplayName(user?.id);
   const { data: exitLadder, isLoading: ladderLoading } = useExitLadder();
@@ -402,7 +404,7 @@ export default function ExitLadderPage() {
                 {month24.decision === "insufficient-evidence" ? "Insufficient evidence" : month24.decision}
               </Badge>
               <span className="text-sm font-semibold">Month-24 evidence check</span>
-              {planMetrics && <span className="text-[10px] text-muted uppercase tracking-wide">Plan B applications only</span>}
+              {planMetrics && <span className="text-[10px] text-muted uppercase tracking-wide">{ownerMode ? "Plan B applications only" : "Alternative-path applications only"}</span>}
             </div>
             <ul className="text-xs text-muted flex flex-col gap-1">
               {month24.reasons.map((r, i) => (

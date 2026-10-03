@@ -332,7 +332,7 @@ function StatisticsOverviewTab() {
     },
     {
       key: "clientsync",
-      label: "ClientSync",
+      label: "Flagship project",
       icon: Layers,
       href: "/clientsync",
       pct: pct(milestonesComplete, milestones.length),

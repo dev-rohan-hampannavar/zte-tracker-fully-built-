@@ -19,7 +19,6 @@ import { computeAchievements } from "@/lib/achievements";
 import { EmptyState } from "@/components/ui/empty-state";
 import { DownloadProfilePdfButton } from "@/components/profile/download-profile-pdf-button";
 import { getGithubActivity } from "@/lib/github-activity";
-import { PLAN_PATHS, type CareerPlanTrack } from "@/data/full-plan";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion/primitives";
 import { SITE_URL, SITE_NAME } from "@/lib/site-config";
 
@@ -103,7 +102,7 @@ async function getProfileData(slug: string) {
 
   const { data: settings } = (await supabase
     .from("user_settings")
-    .select("user_id, public_profile_enabled, display_name, public_profile_bio, github_username, career_plan_track")
+    .select("user_id, public_profile_enabled, display_name, public_profile_bio, github_username")
     .eq("public_profile_slug", slug)
     .single()) as {
     data: {
@@ -112,13 +111,30 @@ async function getProfileData(slug: string) {
       display_name: string | null;
       public_profile_bio: string | null;
       github_username: string | null;
-      career_plan_track: CareerPlanTrack | null;
     } | null;
   };
 
   if (!settings || !settings.public_profile_enabled) return null;
 
   const userId = settings.user_id;
+
+  // The person's own target role (from their onboarding answers), not a
+  // fixed plan taxonomy. Looked up server-side; direct table access stays
+  // owner-only by RLS.
+  let careerTarget: string | null = null;
+  const { data: onboarding } = (await supabase
+    .from("onboarding_responses")
+    .select("target_role_id")
+    .eq("user_id", userId)
+    .maybeSingle()) as { data: { target_role_id: string | null } | null };
+  if (onboarding?.target_role_id) {
+    const { data: roleRow } = (await supabase
+      .from("target_roles")
+      .select("name")
+      .eq("id", onboarding.target_role_id)
+      .maybeSingle()) as { data: { name: string } | null };
+    careerTarget = roleRow?.name ?? null;
+  }
 
   // Kicked off here (as soon as github_username is known) rather than
   // after this function returns, so it runs concurrently with the 8
@@ -156,7 +172,7 @@ async function getProfileData(slug: string) {
     displayName: settings.display_name,
     bio: settings.public_profile_bio,
     githubUsername: settings.github_username,
-    careerPlanTrack: settings.career_plan_track,
+    careerTarget,
     phases: (phases ?? []) as Phase[],
     topics: (topics ?? []) as Topic[],
     capstones: (capstones ?? []) as Capstone[],
@@ -183,7 +199,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   const data = await getProfileData(slug);
   if (!data) notFound();
 
-  const { displayName, bio, githubUsername, careerPlanTrack, phases, topics, capstones, progress, dsa, projects, buildInPublic, streak, exitLadder, githubActivity } = data;
+  const { displayName, bio, githubUsername, careerTarget, phases, topics, capstones, progress, dsa, projects, buildInPublic, streak, exitLadder, githubActivity } = data;
 
   // JSON-LD ProfilePage schema (spec item 16). Only fields backed by real
   // data on this page — no fabricated ratings, prices, or org info. Google
@@ -314,9 +330,9 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             <DownloadProfilePdfButton />
           </div>
           {bio && <p className="text-sm text-foreground/90 mt-2 leading-relaxed max-w-xl">{bio}</p>}
-          {careerPlanTrack && (
+          {careerTarget && (
             <Badge variant="outline" className="mt-2 gap-1.5 w-fit">
-              Career target: {PLAN_PATHS.find((p) => p.id === careerPlanTrack)?.title ?? careerPlanTrack}
+              Career target: {careerTarget}
             </Badge>
           )}
           {currentlyBuilding && (

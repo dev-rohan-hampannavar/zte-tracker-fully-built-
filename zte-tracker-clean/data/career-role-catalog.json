@@ -1,0 +1,3818 @@
+{
+  "version": 1,
+  "generated_at": "2026-09-28",
+  "families": [
+    {
+      "id": "software-development",
+      "name": "Software Development",
+      "description": "Build user-facing websites, APIs, backend services, and general-purpose software across established programming ecosystems.",
+      "sort_order": 0
+    },
+    {
+      "id": "mobile-development",
+      "name": "Mobile Development",
+      "description": "Create native and cross-platform applications, including interaction design, device integration, testing, and app releases.",
+      "sort_order": 1
+    },
+    {
+      "id": "data-ai",
+      "name": "Data / AI",
+      "description": "Turn data into decisions and production models, including analytics, data platforms, machine learning, and generative AI applications.",
+      "sort_order": 2
+    },
+    {
+      "id": "cloud-infrastructure",
+      "name": "Cloud / Infrastructure",
+      "description": "Provision and operate cloud platforms and distributed systems with a focus on reliability, security, automation, and cost.",
+      "sort_order": 3
+    },
+    {
+      "id": "cybersecurity",
+      "name": "Cybersecurity",
+      "description": "Identify and reduce security risk through secure engineering, cloud controls, vulnerability analysis, and incident response.",
+      "sort_order": 4
+    },
+    {
+      "id": "software-quality",
+      "name": "Software Quality",
+      "description": "Build confidence in software through risk-based test strategy, exploratory testing, automation, and quality engineering.",
+      "sort_order": 5
+    },
+    {
+      "id": "systems-hardware",
+      "name": "Systems / Hardware",
+      "description": "Develop and integrate software that runs close to devices, networks, operating systems, and hardware constraints.",
+      "sort_order": 6
+    },
+    {
+      "id": "database-architecture",
+      "name": "Database / Architecture",
+      "description": "Design and operate data stores, distributed services, and software architectures around reliability and quality attributes.",
+      "sort_order": 7
+    },
+    {
+      "id": "enterprise-technology",
+      "name": "Enterprise Technology",
+      "description": "Customize and integrate business platforms so enterprise workflows remain secure, maintainable, and governed.",
+      "sort_order": 8
+    },
+    {
+      "id": "specialized-technology",
+      "name": "Specialized Technology",
+      "description": "Build products in specialized domains such as blockchain, games, and extended reality, with strong platform and performance skills.",
+      "sort_order": 9
+    }
+  ],
+  "profiles": [
+    {
+      "id": "software-development--frontend-developer",
+      "family_id": "software-development",
+      "name": "Frontend Developer",
+      "summary": "Frontend Developer work centers on accessible semantic html, css layout and responsive design, javascript and typescript and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "Accessible semantic HTML",
+        "CSS layout and responsive design",
+        "JavaScript and TypeScript",
+        "Component architecture and state",
+        "Browser performance and testing",
+        "HTTP and web security"
+      ],
+      "tool_stack": [
+        "React",
+        "TypeScript",
+        "HTML",
+        "CSS",
+        "Next.js",
+        "Playwright",
+        "Git",
+        "HTTP",
+        "SQL",
+        "Docker",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Build an accessible, responsive product interface with forms, routing, and measured performance.",
+        "Add component tests and a browser test for a critical user journey."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-development--backend-developer",
+      "family_id": "software-development",
+      "name": "Backend Developer",
+      "summary": "Backend Developer work centers on http apis and service boundaries, relational data modeling, authentication and authorization and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "HTTP APIs and service boundaries",
+        "Relational data modeling",
+        "Authentication and authorization",
+        "Caching and background work",
+        "Observability and deployment",
+        "API testing and versioning"
+      ],
+      "tool_stack": [
+        "Node.js",
+        "REST",
+        "PostgreSQL",
+        "SQL",
+        "Redis",
+        "Docker",
+        "Git",
+        "HTTP",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Design and deploy a versioned API with authentication, relational persistence, and validation.",
+        "Add rate limits, structured logs, health checks, and integration tests."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-development--full-stack-developer",
+      "family_id": "software-development",
+      "name": "Full Stack Developer",
+      "summary": "Full Stack Developer work centers on end-to-end feature delivery, accessible responsive ui, api and service design and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "End-to-end feature delivery",
+        "Accessible responsive UI",
+        "API and service design",
+        "Relational persistence",
+        "Authentication and authorization",
+        "Production testing and deployment"
+      ],
+      "tool_stack": [
+        "TypeScript",
+        "React",
+        "Node.js",
+        "REST",
+        "PostgreSQL",
+        "Docker",
+        "Git",
+        "HTTP",
+        "SQL",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Ship a full-stack workflow with role-aware access, persistence, and a responsive UI.",
+        "Deploy it with automated tests, monitoring, and a concise architecture note."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-development--java-developer",
+      "family_id": "software-development",
+      "name": "Java Developer",
+      "summary": "Java Developer work centers on java language and jvm fundamentals, object-oriented design and collections, spring boot services and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "Java language and JVM fundamentals",
+        "Object-oriented design and collections",
+        "Spring Boot services",
+        "SQL and persistence",
+        "Testing and observability",
+        "Concurrency and performance"
+      ],
+      "tool_stack": [
+        "Java",
+        "Spring Boot",
+        "SQL",
+        "PostgreSQL",
+        "JUnit",
+        "Docker",
+        "Git",
+        "HTTP",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Build a Spring Boot service with transactional persistence and API documentation.",
+        "Add unit and integration tests, metrics, and a container image."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-development--python-developer",
+      "family_id": "software-development",
+      "name": "Python Developer",
+      "summary": "Python Developer work centers on python language and packaging, typed application design, web framework fundamentals and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "Python language and packaging",
+        "Typed application design",
+        "Web framework fundamentals",
+        "SQL and data access",
+        "Testing and deployment",
+        "Concurrency and performance"
+      ],
+      "tool_stack": [
+        "Python",
+        "FastAPI",
+        "Django",
+        "SQL",
+        "PostgreSQL",
+        "Pytest",
+        "Git",
+        "HTTP",
+        "Docker",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Build a typed Python API with migrations, validation, and background work.",
+        "Publish test results, operational notes, and a reproducible deployment."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-development--dot-net-developer",
+      "family_id": "software-development",
+      "name": ".NET Developer",
+      "summary": ".NET Developer work centers on c# and .net runtime, asp.net core apis, entity framework and sql and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "C# and .NET runtime",
+        "ASP.NET Core APIs",
+        "Entity Framework and SQL",
+        "Identity and authorization",
+        "Testing and observability",
+        "Cloud deployment"
+      ],
+      "tool_stack": [
+        "C#",
+        ".NET",
+        "ASP.NET Core",
+        "SQL Server",
+        "xUnit",
+        "Docker",
+        "Git",
+        "HTTP",
+        "SQL",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Build an ASP.NET Core service with identity, persistence, and API versioning.",
+        "Automate tests and deployment, and document security boundaries."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-development--go-developer",
+      "family_id": "software-development",
+      "name": "Go Developer",
+      "summary": "Go Developer work centers on go language and tooling, http services and middleware, concurrency with goroutines and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "Go language and tooling",
+        "HTTP services and middleware",
+        "Concurrency with goroutines",
+        "SQL and data access",
+        "Testing and profiling",
+        "Containerized deployment"
+      ],
+      "tool_stack": [
+        "Go",
+        "HTTP",
+        "PostgreSQL",
+        "Docker",
+        "Kubernetes",
+        "OpenTelemetry",
+        "Git",
+        "SQL",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Build a concurrent Go service with clear shutdown and bounded resource use.",
+        "Add benchmarks, tracing, containerization, and failure tests."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-development--rust-developer",
+      "family_id": "software-development",
+      "name": "Rust Developer",
+      "summary": "Rust Developer work centers on ownership and borrowing, error handling and traits, systems interfaces and memory and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "Ownership and borrowing",
+        "Error handling and traits",
+        "Systems interfaces and memory",
+        "Async Rust where appropriate",
+        "Testing, benchmarks and tooling",
+        "Safe interoperability"
+      ],
+      "tool_stack": [
+        "Rust",
+        "Cargo",
+        "Linux",
+        "C",
+        "WebAssembly",
+        "Criterion",
+        "Git",
+        "HTTP",
+        "SQL",
+        "Docker",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Implement a safe systems utility with a documented error model and CLI.",
+        "Benchmark it, test edge cases, and explain ownership and API choices."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-development--php-developer",
+      "family_id": "software-development",
+      "name": "PHP Developer",
+      "summary": "PHP Developer work centers on modern php and composer, http request lifecycle, sql and persistence and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "Modern PHP and Composer",
+        "HTTP request lifecycle",
+        "SQL and persistence",
+        "Authentication and validation",
+        "Testing and deployment",
+        "Security and performance"
+      ],
+      "tool_stack": [
+        "PHP",
+        "Composer",
+        "Laravel",
+        "MySQL",
+        "PHPUnit",
+        "Docker",
+        "Git",
+        "HTTP",
+        "SQL",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Build a validated Laravel workflow backed by relational data and queues.",
+        "Add authorization tests, deployment automation, and performance evidence."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-development--ruby-developer",
+      "family_id": "software-development",
+      "name": "Ruby Developer",
+      "summary": "Ruby Developer work centers on ruby language and object model, rails conventions and routing, active record and sql and shipping reliable solutions in software development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic programming and command-line use",
+        "Git fundamentals and basic HTTP concepts"
+      ],
+      "core_skills": [
+        "Ruby language and object model",
+        "Rails conventions and routing",
+        "Active Record and SQL",
+        "Background jobs and caching",
+        "RSpec and system testing",
+        "Production operations"
+      ],
+      "tool_stack": [
+        "Ruby",
+        "Rails",
+        "PostgreSQL",
+        "Redis",
+        "RSpec",
+        "Sidekiq",
+        "Git",
+        "HTTP",
+        "SQL",
+        "Docker",
+        "Unit and integration testing"
+      ],
+      "project_blueprints": [
+        "Deliver a Rails workflow with background processing and clear domain models.",
+        "Add request/system tests and document production operations."
+      ],
+      "interview_focus": [
+        "Language and runtime fundamentals",
+        "Data structures and practical problem solving",
+        "API and data modeling",
+        "Testing and debugging",
+        "Code review and trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "mobile-development--android-developer",
+      "family_id": "mobile-development",
+      "name": "Android Developer",
+      "summary": "Android Developer work centers on kotlin and android sdk, jetpack compose or views, lifecycle and navigation and shipping reliable solutions in mobile development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Programming fundamentals in a target mobile language",
+        "Git and HTTP basics"
+      ],
+      "core_skills": [
+        "Kotlin and Android SDK",
+        "Jetpack Compose or Views",
+        "Lifecycle and navigation",
+        "Local persistence and networking",
+        "Accessibility and testing",
+        "Play release basics"
+      ],
+      "tool_stack": [
+        "Kotlin",
+        "Android",
+        "Jetpack Compose",
+        "Room",
+        "JUnit",
+        "Gradle",
+        "Git",
+        "Platform IDE",
+        "REST",
+        "Local persistence",
+        "UI testing"
+      ],
+      "project_blueprints": [
+        "Build an Android app with offline-aware state and accessible navigation.",
+        "Add UI tests and a release-ready build with crash-handling notes."
+      ],
+      "interview_focus": [
+        "Platform lifecycle and architecture",
+        "State, persistence, and networking",
+        "UI accessibility",
+        "Testing and release",
+        "Performance and privacy trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "mobile-development--ios-developer",
+      "family_id": "mobile-development",
+      "name": "iOS Developer",
+      "summary": "iOS Developer work centers on swift and swiftui, uikit interoperability, concurrency and app lifecycle and shipping reliable solutions in mobile development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Programming fundamentals in a target mobile language",
+        "Git and HTTP basics"
+      ],
+      "core_skills": [
+        "Swift and SwiftUI",
+        "UIKit interoperability",
+        "Concurrency and app lifecycle",
+        "Persistence and networking",
+        "Accessibility and XCTest",
+        "App Store release basics"
+      ],
+      "tool_stack": [
+        "Swift",
+        "SwiftUI",
+        "UIKit",
+        "XCTest",
+        "Core Data",
+        "Xcode",
+        "Git",
+        "Platform IDE",
+        "REST",
+        "Local persistence",
+        "UI testing"
+      ],
+      "project_blueprints": [
+        "Build an iOS app with async data loading and resilient local state.",
+        "Add XCTest coverage and document accessibility and privacy choices."
+      ],
+      "interview_focus": [
+        "Platform lifecycle and architecture",
+        "State, persistence, and networking",
+        "UI accessibility",
+        "Testing and release",
+        "Performance and privacy trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "mobile-development--flutter-developer",
+      "family_id": "mobile-development",
+      "name": "Flutter Developer",
+      "summary": "Flutter Developer work centers on dart and flutter widgets, state management and navigation, platform channels and plugins and shipping reliable solutions in mobile development. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Programming fundamentals in a target mobile language",
+        "Git and HTTP basics"
+      ],
+      "core_skills": [
+        "Dart and Flutter widgets",
+        "State management and navigation",
+        "Platform channels and plugins",
+        "Offline data and API integration",
+        "Responsive accessibility and testing",
+        "Store builds and release"
+      ],
+      "tool_stack": [
+        "Dart",
+        "Flutter",
+        "Firebase",
+        "REST",
+        "Riverpod",
+        "Integration Test",
+        "Git",
+        "Platform IDE",
+        "Local persistence",
+        "UI testing"
+      ],
+      "project_blueprints": [
+        "Build a cross-platform app with shared navigation and local persistence.",
+        "Test critical flows on two platforms and document platform-specific behavior."
+      ],
+      "interview_focus": [
+        "Platform lifecycle and architecture",
+        "State, persistence, and networking",
+        "UI accessibility",
+        "Testing and release",
+        "Performance and privacy trade-offs"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "data-ai--data-analyst",
+      "family_id": "data-ai",
+      "name": "Data Analyst",
+      "summary": "Data Analyst work centers on sql querying and data quality, descriptive statistics, metric definitions and experimentation and shipping reliable solutions in data / ai. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL or spreadsheet fundamentals",
+        "Basic probability and statistics"
+      ],
+      "core_skills": [
+        "SQL querying and data quality",
+        "Descriptive statistics",
+        "Metric definitions and experimentation",
+        "Dashboard design",
+        "Data storytelling",
+        "Privacy-aware analysis"
+      ],
+      "tool_stack": [
+        "SQL",
+        "Python",
+        "Excel",
+        "Power BI",
+        "Tableau",
+        "Statistics",
+        "Jupyter",
+        "Git",
+        "Experiment tracking"
+      ],
+      "project_blueprints": [
+        "Create a metric-backed dashboard from a documented, quality-checked dataset.",
+        "Write an analysis that explains assumptions, caveats, and a decision."
+      ],
+      "interview_focus": [
+        "SQL or Python reasoning",
+        "Statistics and evaluation design",
+        "Data quality and leakage",
+        "Production constraints",
+        "Communicating uncertainty"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "data-ai--data-engineer",
+      "family_id": "data-ai",
+      "name": "Data Engineer",
+      "summary": "Data Engineer work centers on sql and data modeling, batch and incremental pipelines, orchestration and retries and shipping reliable solutions in data / ai. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL or spreadsheet fundamentals",
+        "Basic probability and statistics"
+      ],
+      "core_skills": [
+        "SQL and data modeling",
+        "Batch and incremental pipelines",
+        "Orchestration and retries",
+        "Warehouse and lake concepts",
+        "Data quality and lineage",
+        "Cost and reliability operations"
+      ],
+      "tool_stack": [
+        "SQL",
+        "Python",
+        "Airflow",
+        "Spark",
+        "dbt",
+        "Snowflake",
+        "Jupyter",
+        "Git",
+        "Experiment tracking"
+      ],
+      "project_blueprints": [
+        "Build an incremental pipeline with idempotent loads and data quality checks.",
+        "Orchestrate retries and publish lineage, freshness, and cost metrics."
+      ],
+      "interview_focus": [
+        "SQL or Python reasoning",
+        "Statistics and evaluation design",
+        "Data quality and leakage",
+        "Production constraints",
+        "Communicating uncertainty"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "data-ai--data-scientist",
+      "family_id": "data-ai",
+      "name": "Data Scientist",
+      "summary": "Data Scientist work centers on probability and statistical inference, exploratory analysis, feature engineering and shipping reliable solutions in data / ai. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL or spreadsheet fundamentals",
+        "Basic probability and statistics"
+      ],
+      "core_skills": [
+        "Probability and statistical inference",
+        "Exploratory analysis",
+        "Feature engineering",
+        "Model evaluation and validation",
+        "Experiment design",
+        "Clear analytical communication"
+      ],
+      "tool_stack": [
+        "Python",
+        "pandas",
+        "scikit-learn",
+        "Statistics",
+        "Jupyter",
+        "SQL",
+        "Git",
+        "Experiment tracking"
+      ],
+      "project_blueprints": [
+        "Run a reproducible analysis with a leakage-safe validation design.",
+        "Compare a baseline and candidate model and communicate uncertainty."
+      ],
+      "interview_focus": [
+        "SQL or Python reasoning",
+        "Statistics and evaluation design",
+        "Data quality and leakage",
+        "Production constraints",
+        "Communicating uncertainty"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "data-ai--machine-learning-engineer",
+      "family_id": "data-ai",
+      "name": "Machine Learning Engineer",
+      "summary": "Machine Learning Engineer work centers on supervised learning and evaluation, feature and data pipelines, model serving and shipping reliable solutions in data / ai. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL or spreadsheet fundamentals",
+        "Basic probability and statistics"
+      ],
+      "core_skills": [
+        "Supervised learning and evaluation",
+        "Feature and data pipelines",
+        "Model serving",
+        "Monitoring and drift",
+        "Reproducible experiments",
+        "Latency and cost trade-offs"
+      ],
+      "tool_stack": [
+        "Python",
+        "PyTorch",
+        "scikit-learn",
+        "FastAPI",
+        "Docker",
+        "MLflow",
+        "SQL",
+        "Jupyter",
+        "Git",
+        "Experiment tracking"
+      ],
+      "project_blueprints": [
+        "Serve a versioned model behind an API with reproducible artifacts.",
+        "Measure quality, latency, drift, and rollback behavior."
+      ],
+      "interview_focus": [
+        "SQL or Python reasoning",
+        "Statistics and evaluation design",
+        "Data quality and leakage",
+        "Production constraints",
+        "Communicating uncertainty"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "data-ai--ai-engineer",
+      "family_id": "data-ai",
+      "name": "AI Engineer",
+      "summary": "AI Engineer work centers on model selection and evaluation, retrieval and grounding, tool and workflow orchestration and shipping reliable solutions in data / ai. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL or spreadsheet fundamentals",
+        "Basic probability and statistics"
+      ],
+      "core_skills": [
+        "Model selection and evaluation",
+        "Retrieval and grounding",
+        "Tool and workflow orchestration",
+        "Safety and access controls",
+        "Latency and cost measurement",
+        "Production monitoring"
+      ],
+      "tool_stack": [
+        "Python",
+        "REST",
+        "Embeddings",
+        "Vector databases",
+        "Evaluation",
+        "Docker",
+        "SQL",
+        "Jupyter",
+        "Git",
+        "Experiment tracking"
+      ],
+      "project_blueprints": [
+        "Deliver a grounded AI workflow with retrieval, tools, and access controls.",
+        "Evaluate task success, unsafe outputs, latency, and cost against a fixed set."
+      ],
+      "interview_focus": [
+        "SQL or Python reasoning",
+        "Statistics and evaluation design",
+        "Data quality and leakage",
+        "Production constraints",
+        "Communicating uncertainty"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "data-ai--llm-engineer",
+      "family_id": "data-ai",
+      "name": "LLM Engineer",
+      "summary": "LLM Engineer work centers on prompt and structured output design, embeddings and retrieval, rag evaluation and shipping reliable solutions in data / ai. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL or spreadsheet fundamentals",
+        "Basic probability and statistics"
+      ],
+      "core_skills": [
+        "Prompt and structured output design",
+        "Embeddings and retrieval",
+        "RAG evaluation",
+        "Tool calling and orchestration",
+        "Guardrails and red-team tests",
+        "Serving cost and latency"
+      ],
+      "tool_stack": [
+        "Python",
+        "LLM APIs",
+        "Embeddings",
+        "Vector databases",
+        "RAG",
+        "Evaluation",
+        "SQL",
+        "Jupyter",
+        "Git",
+        "Experiment tracking"
+      ],
+      "project_blueprints": [
+        "Build a retrieval-augmented assistant with citations and explicit fallback behavior.",
+        "Create an evaluation set for grounding, refusal, latency, and cost."
+      ],
+      "interview_focus": [
+        "SQL or Python reasoning",
+        "Statistics and evaluation design",
+        "Data quality and leakage",
+        "Production constraints",
+        "Communicating uncertainty"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "data-ai--mlops-engineer",
+      "family_id": "data-ai",
+      "name": "MLOps Engineer",
+      "summary": "MLOps Engineer work centers on model packaging and reproducibility, feature and model registries, training and deployment pipelines and shipping reliable solutions in data / ai. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL or spreadsheet fundamentals",
+        "Basic probability and statistics"
+      ],
+      "core_skills": [
+        "Model packaging and reproducibility",
+        "Feature and model registries",
+        "Training and deployment pipelines",
+        "Serving observability",
+        "Drift and rollback",
+        "Compute governance"
+      ],
+      "tool_stack": [
+        "Python",
+        "Docker",
+        "Kubernetes",
+        "MLflow",
+        "Airflow",
+        "Prometheus",
+        "SQL",
+        "Jupyter",
+        "Git",
+        "Experiment tracking"
+      ],
+      "project_blueprints": [
+        "Automate model training, approval, deployment, and rollback.",
+        "Expose model/data lineage, serving health, and drift signals."
+      ],
+      "interview_focus": [
+        "SQL or Python reasoning",
+        "Statistics and evaluation design",
+        "Data quality and leakage",
+        "Production constraints",
+        "Communicating uncertainty"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cloud-infrastructure--devops-engineer",
+      "family_id": "cloud-infrastructure",
+      "name": "DevOps Engineer",
+      "summary": "DevOps Engineer work centers on linux and networking foundations, infrastructure as code, ci/cd and release safety and shipping reliable solutions in cloud / infrastructure. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Linux command-line fundamentals",
+        "Networking basics and Git"
+      ],
+      "core_skills": [
+        "Linux and networking foundations",
+        "Infrastructure as code",
+        "CI/CD and release safety",
+        "Containers and orchestration",
+        "Monitoring and incident response",
+        "Secrets and least privilege"
+      ],
+      "tool_stack": [
+        "Linux",
+        "Docker",
+        "Kubernetes",
+        "Terraform",
+        "GitHub Actions",
+        "Prometheus",
+        "Git",
+        "Infrastructure as code",
+        "Containers",
+        "Monitoring"
+      ],
+      "project_blueprints": [
+        "Provision an application stack as code with a repeatable deployment pipeline.",
+        "Demonstrate rollback, secret handling, monitoring, and recovery."
+      ],
+      "interview_focus": [
+        "Linux and networking troubleshooting",
+        "Infrastructure and deployment design",
+        "Reliability and incident response",
+        "Security and identity",
+        "Cost and operational trade-offs"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cloud-infrastructure--cloud-engineer",
+      "family_id": "cloud-infrastructure",
+      "name": "Cloud Engineer",
+      "summary": "Cloud Engineer work centers on cloud networking and identity, compute and storage primitives, infrastructure as code and shipping reliable solutions in cloud / infrastructure. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Linux command-line fundamentals",
+        "Networking basics and Git"
+      ],
+      "core_skills": [
+        "Cloud networking and identity",
+        "Compute and storage primitives",
+        "Infrastructure as code",
+        "Resilience and backup",
+        "Cost controls and observability",
+        "Secure deployment"
+      ],
+      "tool_stack": [
+        "AWS",
+        "Azure",
+        "Terraform",
+        "Linux",
+        "Docker",
+        "IAM",
+        "Git",
+        "Infrastructure as code",
+        "Containers",
+        "Monitoring"
+      ],
+      "project_blueprints": [
+        "Deploy a multi-service workload with least-privilege identity and private networking.",
+        "Show backup recovery, budget alerts, and resilience trade-offs."
+      ],
+      "interview_focus": [
+        "Linux and networking troubleshooting",
+        "Infrastructure and deployment design",
+        "Reliability and incident response",
+        "Security and identity",
+        "Cost and operational trade-offs"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cloud-infrastructure--sre",
+      "family_id": "cloud-infrastructure",
+      "name": "SRE",
+      "summary": "SRE work centers on slis, slos and error budgets, linux, networking and distributed systems, incident command and postmortems and shipping reliable solutions in cloud / infrastructure. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Linux command-line fundamentals",
+        "Networking basics and Git"
+      ],
+      "core_skills": [
+        "SLIs, SLOs and error budgets",
+        "Linux, networking and distributed systems",
+        "Incident command and postmortems",
+        "Capacity and performance",
+        "Automation and toil reduction",
+        "Resilience testing"
+      ],
+      "tool_stack": [
+        "Linux",
+        "Kubernetes",
+        "Prometheus",
+        "Grafana",
+        "OpenTelemetry",
+        "Terraform",
+        "Git",
+        "Infrastructure as code",
+        "Containers",
+        "Monitoring"
+      ],
+      "project_blueprints": [
+        "Define SLOs for a service and build dashboards and alerts from user impact.",
+        "Run a failure exercise and publish an actionable postmortem."
+      ],
+      "interview_focus": [
+        "Linux and networking troubleshooting",
+        "Infrastructure and deployment design",
+        "Reliability and incident response",
+        "Security and identity",
+        "Cost and operational trade-offs"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cloud-infrastructure--platform-engineer",
+      "family_id": "cloud-infrastructure",
+      "name": "Platform Engineer",
+      "summary": "Platform Engineer work centers on kubernetes and container platforms, internal developer platforms, infrastructure as code and shipping reliable solutions in cloud / infrastructure. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Linux command-line fundamentals",
+        "Networking basics and Git"
+      ],
+      "core_skills": [
+        "Kubernetes and container platforms",
+        "Internal developer platforms",
+        "Infrastructure as code",
+        "Golden paths and templates",
+        "Platform security and tenancy",
+        "Developer experience metrics"
+      ],
+      "tool_stack": [
+        "Kubernetes",
+        "Terraform",
+        "Helm",
+        "Backstage",
+        "Argo CD",
+        "OPA",
+        "Linux",
+        "Git",
+        "Infrastructure as code",
+        "Containers",
+        "Monitoring"
+      ],
+      "project_blueprints": [
+        "Create a paved deployment path with templates and policy checks.",
+        "Measure developer task time and document tenancy and upgrade strategy."
+      ],
+      "interview_focus": [
+        "Linux and networking troubleshooting",
+        "Infrastructure and deployment design",
+        "Reliability and incident response",
+        "Security and identity",
+        "Cost and operational trade-offs"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cloud-infrastructure--cloud-architect",
+      "family_id": "cloud-infrastructure",
+      "name": "Cloud Architect",
+      "summary": "Cloud Architect work centers on cloud reference architectures, identity and network design, resilience and disaster recovery and shipping reliable solutions in cloud / infrastructure. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Linux command-line fundamentals",
+        "Networking basics and Git"
+      ],
+      "core_skills": [
+        "Cloud reference architectures",
+        "Identity and network design",
+        "Resilience and disaster recovery",
+        "Security and compliance boundaries",
+        "FinOps and service selection",
+        "Architecture decision records"
+      ],
+      "tool_stack": [
+        "AWS",
+        "Azure",
+        "Networking",
+        "IAM",
+        "Terraform",
+        "FinOps",
+        "Linux",
+        "Git",
+        "Infrastructure as code",
+        "Containers",
+        "Monitoring"
+      ],
+      "project_blueprints": [
+        "Produce a cloud architecture for a workload with quantified availability and cost goals.",
+        "Include threat boundaries, recovery design, and recorded decisions."
+      ],
+      "interview_focus": [
+        "Linux and networking troubleshooting",
+        "Infrastructure and deployment design",
+        "Reliability and incident response",
+        "Security and identity",
+        "Cost and operational trade-offs"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cloud-infrastructure--infrastructure-engineer",
+      "family_id": "cloud-infrastructure",
+      "name": "Infrastructure Engineer",
+      "summary": "Infrastructure Engineer work centers on linux and network operations, configuration management, virtualization and containers and shipping reliable solutions in cloud / infrastructure. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Linux command-line fundamentals",
+        "Networking basics and Git"
+      ],
+      "core_skills": [
+        "Linux and network operations",
+        "Configuration management",
+        "Virtualization and containers",
+        "Infrastructure automation",
+        "Monitoring and recovery",
+        "Change and access control"
+      ],
+      "tool_stack": [
+        "Linux",
+        "Ansible",
+        "Terraform",
+        "VMware",
+        "Networking",
+        "Prometheus",
+        "Git",
+        "Infrastructure as code",
+        "Containers",
+        "Monitoring"
+      ],
+      "project_blueprints": [
+        "Automate a repeatable host or cluster build with configuration checks.",
+        "Demonstrate patching, monitoring, recovery, and controlled change."
+      ],
+      "interview_focus": [
+        "Linux and networking troubleshooting",
+        "Infrastructure and deployment design",
+        "Reliability and incident response",
+        "Security and identity",
+        "Cost and operational trade-offs"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cybersecurity--cybersecurity-analyst",
+      "family_id": "cybersecurity",
+      "name": "Cybersecurity Analyst",
+      "summary": "Cybersecurity Analyst work centers on threat modeling and risk, security control fundamentals, vulnerability triage and shipping reliable solutions in cybersecurity. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Networking and Linux fundamentals",
+        "Basic web, operating-system, or cloud concepts"
+      ],
+      "core_skills": [
+        "Threat modeling and risk",
+        "Security control fundamentals",
+        "Vulnerability triage",
+        "Identity and endpoint protection",
+        "Incident handling",
+        "Clear evidence and reporting"
+      ],
+      "tool_stack": [
+        "Linux",
+        "OWASP",
+        "NIST CSF",
+        "SIEM",
+        "Wireshark",
+        "MITRE ATT&CK",
+        "Git",
+        "Threat modeling",
+        "Vulnerability analysis",
+        "Incident documentation"
+      ],
+      "project_blueprints": [
+        "Triage a realistic vulnerability set and prioritize fixes by evidence and impact.",
+        "Write a concise incident or risk report with reproducible findings."
+      ],
+      "interview_focus": [
+        "Threat and vulnerability analysis",
+        "Evidence-based investigation",
+        "Secure design and controls",
+        "Incident response",
+        "Risk communication"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cybersecurity--application-security-engineer",
+      "family_id": "cybersecurity",
+      "name": "Application Security Engineer",
+      "summary": "Application Security Engineer work centers on secure design and threat modeling, web and api vulnerability classes, sast, dast and dependency analysis and shipping reliable solutions in cybersecurity. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Networking and Linux fundamentals",
+        "Basic web, operating-system, or cloud concepts"
+      ],
+      "core_skills": [
+        "Secure design and threat modeling",
+        "Web and API vulnerability classes",
+        "SAST, DAST and dependency analysis",
+        "Secure code review",
+        "Developer security workflows",
+        "Risk-based remediation"
+      ],
+      "tool_stack": [
+        "OWASP",
+        "Burp Suite",
+        "SAST",
+        "DAST",
+        "Threat modeling",
+        "CI/CD",
+        "Linux",
+        "Git",
+        "Vulnerability analysis",
+        "Incident documentation"
+      ],
+      "project_blueprints": [
+        "Threat-model a web application and add security checks to its delivery pipeline.",
+        "Reproduce, fix, and retest a vulnerability with regression coverage."
+      ],
+      "interview_focus": [
+        "Threat and vulnerability analysis",
+        "Evidence-based investigation",
+        "Secure design and controls",
+        "Incident response",
+        "Risk communication"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cybersecurity--cloud-security-engineer",
+      "family_id": "cybersecurity",
+      "name": "Cloud Security Engineer",
+      "summary": "Cloud Security Engineer work centers on cloud iam and policy, network segmentation, workload and data protection and shipping reliable solutions in cybersecurity. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Networking and Linux fundamentals",
+        "Basic web, operating-system, or cloud concepts"
+      ],
+      "core_skills": [
+        "Cloud IAM and policy",
+        "Network segmentation",
+        "Workload and data protection",
+        "Configuration posture management",
+        "Detection and incident response",
+        "Compliance evidence"
+      ],
+      "tool_stack": [
+        "AWS",
+        "Azure",
+        "IAM",
+        "CloudTrail",
+        "Kubernetes",
+        "CIS Benchmarks",
+        "Linux",
+        "Git",
+        "Threat modeling",
+        "Vulnerability analysis",
+        "Incident documentation"
+      ],
+      "project_blueprints": [
+        "Harden a cloud workload using least privilege and policy-as-code.",
+        "Demonstrate detection, evidence collection, and a safe incident response."
+      ],
+      "interview_focus": [
+        "Threat and vulnerability analysis",
+        "Evidence-based investigation",
+        "Secure design and controls",
+        "Incident response",
+        "Risk communication"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "cybersecurity--soc-analyst",
+      "family_id": "cybersecurity",
+      "name": "SOC Analyst",
+      "summary": "SOC Analyst work centers on log sources and siem queries, alert triage and enrichment, endpoint and network indicators and shipping reliable solutions in cybersecurity. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Networking and Linux fundamentals",
+        "Basic web, operating-system, or cloud concepts"
+      ],
+      "core_skills": [
+        "Log sources and SIEM queries",
+        "Alert triage and enrichment",
+        "Endpoint and network indicators",
+        "Incident escalation",
+        "Detection tuning",
+        "Evidence handling and reporting"
+      ],
+      "tool_stack": [
+        "SIEM",
+        "Splunk",
+        "Microsoft Sentinel",
+        "Wireshark",
+        "MITRE ATT&CK",
+        "EDR",
+        "Linux",
+        "Git",
+        "Threat modeling",
+        "Vulnerability analysis",
+        "Incident documentation"
+      ],
+      "project_blueprints": [
+        "Investigate a simulated alert using correlated endpoint and network evidence.",
+        "Write a timeline, confidence statement, escalation, and detection improvement."
+      ],
+      "interview_focus": [
+        "Threat and vulnerability analysis",
+        "Evidence-based investigation",
+        "Secure design and controls",
+        "Incident response",
+        "Risk communication"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-quality--qa-engineer",
+      "family_id": "software-quality",
+      "name": "QA Engineer",
+      "summary": "QA Engineer work centers on test strategy and risk, requirements and acceptance criteria, exploratory testing and shipping reliable solutions in software quality. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Understanding of a web or API product workflow",
+        "Basic test-case and defect writing"
+      ],
+      "core_skills": [
+        "Test strategy and risk",
+        "Requirements and acceptance criteria",
+        "Exploratory testing",
+        "Defect isolation and reporting",
+        "API and integration testing",
+        "Release quality signals"
+      ],
+      "tool_stack": [
+        "Test design",
+        "Postman",
+        "SQL",
+        "Jira",
+        "Browser DevTools",
+        "CI/CD",
+        "Git",
+        "Issue tracking",
+        "API testing",
+        "Browser automation",
+        "CI"
+      ],
+      "project_blueprints": [
+        "Create a risk-based test plan for a realistic feature and execute exploratory sessions.",
+        "Report defects with reliable reproduction and release-quality evidence."
+      ],
+      "interview_focus": [
+        "Risk-based test planning",
+        "Automation design",
+        "Defect isolation",
+        "CI reliability",
+        "Quality trade-offs"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-quality--test-automation-engineer",
+      "family_id": "software-quality",
+      "name": "Test Automation Engineer",
+      "summary": "Test Automation Engineer work centers on test pyramid and scope, browser and api automation, stable fixtures and test data and shipping reliable solutions in software quality. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Understanding of a web or API product workflow",
+        "Basic test-case and defect writing"
+      ],
+      "core_skills": [
+        "Test pyramid and scope",
+        "Browser and API automation",
+        "Stable fixtures and test data",
+        "CI execution and reporting",
+        "Flake diagnosis",
+        "Coverage tied to product risk"
+      ],
+      "tool_stack": [
+        "Playwright",
+        "Selenium",
+        "Cypress",
+        "Postman",
+        "TypeScript",
+        "CI/CD",
+        "Git",
+        "Issue tracking",
+        "API testing",
+        "Browser automation",
+        "CI"
+      ],
+      "project_blueprints": [
+        "Automate a critical browser and API journey with stable test data.",
+        "Run it in CI and explain coverage, flake handling, and failure diagnosis."
+      ],
+      "interview_focus": [
+        "Risk-based test planning",
+        "Automation design",
+        "Defect isolation",
+        "CI reliability",
+        "Quality trade-offs"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "software-quality--software-development-engineer-in-test",
+      "family_id": "software-quality",
+      "name": "Software Development Engineer in Test",
+      "summary": "Software Development Engineer in Test work centers on programming for testability, automation framework design, api, ui and contract testing and shipping reliable solutions in software quality. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Understanding of a web or API product workflow",
+        "Basic test-case and defect writing"
+      ],
+      "core_skills": [
+        "Programming for testability",
+        "Automation framework design",
+        "API, UI and contract testing",
+        "CI and test observability",
+        "Reliability and flake reduction",
+        "Quality architecture"
+      ],
+      "tool_stack": [
+        "TypeScript",
+        "Playwright",
+        "API testing",
+        "JUnit",
+        "CI/CD",
+        "Docker",
+        "Git",
+        "Issue tracking",
+        "Browser automation",
+        "CI"
+      ],
+      "project_blueprints": [
+        "Build a maintainable test harness for a service and its UI.",
+        "Add contract tests and CI diagnostics that isolate failures quickly."
+      ],
+      "interview_focus": [
+        "Risk-based test planning",
+        "Automation design",
+        "Defect isolation",
+        "CI reliability",
+        "Quality trade-offs"
+      ],
+      "dsa_expectation": "basic-to-intermediate",
+      "system_design_expectation": "foundational",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "systems-hardware--embedded-engineer",
+      "family_id": "systems-hardware",
+      "name": "Embedded Engineer",
+      "summary": "Embedded Engineer work centers on c/c++ and memory constraints, microcontroller peripherals, rtos and concurrency and shipping reliable solutions in systems / hardware. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "C programming fundamentals",
+        "Digital logic and basic electronics"
+      ],
+      "core_skills": [
+        "C/C++ and memory constraints",
+        "Microcontroller peripherals",
+        "RTOS and concurrency",
+        "Hardware interfaces",
+        "Debugging and test rigs",
+        "Power and timing budgets"
+      ],
+      "tool_stack": [
+        "C",
+        "C++",
+        "Embedded Linux",
+        "FreeRTOS",
+        "JTAG",
+        "I2C",
+        "Git",
+        "C/C++ toolchain",
+        "Debugger",
+        "Hardware test tools",
+        "CI"
+      ],
+      "project_blueprints": [
+        "Implement a sensor-to-control prototype with timing and resource constraints.",
+        "Test faults and hardware interfaces using a repeatable rig."
+      ],
+      "interview_focus": [
+        "C/C++ and resource constraints",
+        "Hardware/software interfaces",
+        "Debugging and measurement",
+        "Reliability and safety",
+        "System integration"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "systems-hardware--firmware-engineer",
+      "family_id": "systems-hardware",
+      "name": "Firmware Engineer",
+      "summary": "Firmware Engineer work centers on c/c++ and toolchains, bootloaders and device lifecycle, drivers and peripheral control and shipping reliable solutions in systems / hardware. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "C programming fundamentals",
+        "Digital logic and basic electronics"
+      ],
+      "core_skills": [
+        "C/C++ and toolchains",
+        "Bootloaders and device lifecycle",
+        "Drivers and peripheral control",
+        "RTOS scheduling",
+        "Hardware debugging",
+        "Secure update and recovery"
+      ],
+      "tool_stack": [
+        "C",
+        "C++",
+        "FreeRTOS",
+        "ARM",
+        "JTAG",
+        "UART",
+        "Git",
+        "C/C++ toolchain",
+        "Debugger",
+        "Hardware test tools",
+        "CI"
+      ],
+      "project_blueprints": [
+        "Build a firmware feature with boot, update, and recovery behavior.",
+        "Capture timing and memory budgets plus hardware test evidence."
+      ],
+      "interview_focus": [
+        "C/C++ and resource constraints",
+        "Hardware/software interfaces",
+        "Debugging and measurement",
+        "Reliability and safety",
+        "System integration"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "systems-hardware--iot-engineer",
+      "family_id": "systems-hardware",
+      "name": "IoT Engineer",
+      "summary": "IoT Engineer work centers on device connectivity and protocols, embedded and cloud boundaries, provisioning and identity and shipping reliable solutions in systems / hardware. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "C programming fundamentals",
+        "Digital logic and basic electronics"
+      ],
+      "core_skills": [
+        "Device connectivity and protocols",
+        "Embedded and cloud boundaries",
+        "Provisioning and identity",
+        "Telemetry and fleet operations",
+        "Offline and failure handling",
+        "Device security"
+      ],
+      "tool_stack": [
+        "C",
+        "MQTT",
+        "AWS IoT",
+        "Linux",
+        "TLS",
+        "Prometheus",
+        "Git",
+        "C/C++ toolchain",
+        "Debugger",
+        "Hardware test tools",
+        "CI"
+      ],
+      "project_blueprints": [
+        "Connect a device fleet through authenticated messaging with offline buffering.",
+        "Demonstrate provisioning, telemetry, and revocation for a device."
+      ],
+      "interview_focus": [
+        "C/C++ and resource constraints",
+        "Hardware/software interfaces",
+        "Debugging and measurement",
+        "Reliability and safety",
+        "System integration"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "systems-hardware--systems-engineer",
+      "family_id": "systems-hardware",
+      "name": "Systems Engineer",
+      "summary": "Systems Engineer work centers on requirements and interfaces, system decomposition, reliability and fault analysis and shipping reliable solutions in systems / hardware. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "C programming fundamentals",
+        "Digital logic and basic electronics"
+      ],
+      "core_skills": [
+        "Requirements and interfaces",
+        "System decomposition",
+        "Reliability and fault analysis",
+        "Integration and verification",
+        "Operational constraints",
+        "Technical documentation"
+      ],
+      "tool_stack": [
+        "Linux",
+        "Networking",
+        "Python",
+        "Requirements",
+        "SysML",
+        "Docker",
+        "Git",
+        "C/C++ toolchain",
+        "Debugger",
+        "Hardware test tools",
+        "CI"
+      ],
+      "project_blueprints": [
+        "Translate stakeholder needs into verifiable requirements and interface contracts.",
+        "Run an integration verification plan and record risks and traceability."
+      ],
+      "interview_focus": [
+        "C/C++ and resource constraints",
+        "Hardware/software interfaces",
+        "Debugging and measurement",
+        "Reliability and safety",
+        "System integration"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "systems-hardware--network-engineer",
+      "family_id": "systems-hardware",
+      "name": "Network Engineer",
+      "summary": "Network Engineer work centers on tcp/ip and subnetting, routing and switching, dns, dhcp and tls and shipping reliable solutions in systems / hardware. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "C programming fundamentals",
+        "Digital logic and basic electronics"
+      ],
+      "core_skills": [
+        "TCP/IP and subnetting",
+        "Routing and switching",
+        "DNS, DHCP and TLS",
+        "Network monitoring",
+        "Firewall and segmentation",
+        "Troubleshooting and change control"
+      ],
+      "tool_stack": [
+        "TCP/IP",
+        "Cisco IOS",
+        "DNS",
+        "BGP",
+        "Wireshark",
+        "Firewalls",
+        "Git",
+        "C/C++ toolchain",
+        "Debugger",
+        "Hardware test tools",
+        "CI"
+      ],
+      "project_blueprints": [
+        "Design and simulate a segmented network with routing and failure recovery.",
+        "Include an addressing plan, monitoring, and verified troubleshooting runbook."
+      ],
+      "interview_focus": [
+        "C/C++ and resource constraints",
+        "Hardware/software interfaces",
+        "Debugging and measurement",
+        "Reliability and safety",
+        "System integration"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "database-architecture--database-engineer",
+      "family_id": "database-architecture",
+      "name": "Database Engineer",
+      "summary": "Database Engineer work centers on relational modeling and sql, indexing and query plans, transactions and concurrency and shipping reliable solutions in database / architecture. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL fundamentals",
+        "Basic data modeling and application architecture"
+      ],
+      "core_skills": [
+        "Relational modeling and SQL",
+        "Indexing and query plans",
+        "Transactions and concurrency",
+        "Replication and partitioning",
+        "Backup and recovery",
+        "Data access security"
+      ],
+      "tool_stack": [
+        "PostgreSQL",
+        "SQL",
+        "Redis",
+        "Kafka",
+        "Debezium",
+        "pg_stat_statements",
+        "Git",
+        "Architecture diagrams",
+        "Containers",
+        "Observability"
+      ],
+      "project_blueprints": [
+        "Model a transactional workload and tune its slow queries using measured plans.",
+        "Demonstrate migration safety, replication, and recovery."
+      ],
+      "interview_focus": [
+        "Data and service boundaries",
+        "Performance and scaling",
+        "Failure and recovery design",
+        "Consistency trade-offs",
+        "Architecture communication"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "database-architecture--database-administrator",
+      "family_id": "database-architecture",
+      "name": "Database Administrator",
+      "summary": "Database Administrator work centers on database installation and configuration, backup and point-in-time recovery, performance and capacity and shipping reliable solutions in database / architecture. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL fundamentals",
+        "Basic data modeling and application architecture"
+      ],
+      "core_skills": [
+        "Database installation and configuration",
+        "Backup and point-in-time recovery",
+        "Performance and capacity",
+        "Access control and auditing",
+        "Replication and failover",
+        "Upgrade and incident procedures"
+      ],
+      "tool_stack": [
+        "PostgreSQL",
+        "SQL Server",
+        "SQL",
+        "Backup and recovery",
+        "Replication",
+        "Monitoring",
+        "Git",
+        "Architecture diagrams",
+        "Containers",
+        "Observability"
+      ],
+      "project_blueprints": [
+        "Build a database operations runbook for backup, restore, upgrades, and failover.",
+        "Present measured performance and access-audit evidence."
+      ],
+      "interview_focus": [
+        "Data and service boundaries",
+        "Performance and scaling",
+        "Failure and recovery design",
+        "Consistency trade-offs",
+        "Architecture communication"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "database-architecture--software-architect",
+      "family_id": "database-architecture",
+      "name": "Software Architect",
+      "summary": "Software Architect work centers on quality attributes and trade-offs, service and component boundaries, api and data design and shipping reliable solutions in database / architecture. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL fundamentals",
+        "Basic data modeling and application architecture"
+      ],
+      "core_skills": [
+        "Quality attributes and trade-offs",
+        "Service and component boundaries",
+        "API and data design",
+        "Security and resilience",
+        "Architecture decisions",
+        "Migration and technical governance"
+      ],
+      "tool_stack": [
+        "C4 model",
+        "UML",
+        "REST",
+        "PostgreSQL",
+        "Docker",
+        "Architecture decisions",
+        "SQL",
+        "Git",
+        "Architecture diagrams",
+        "Containers",
+        "Observability"
+      ],
+      "project_blueprints": [
+        "Write a system design with quality attributes, boundaries, and migration stages.",
+        "Validate key assumptions with a small technical spike and ADRs."
+      ],
+      "interview_focus": [
+        "Data and service boundaries",
+        "Performance and scaling",
+        "Failure and recovery design",
+        "Consistency trade-offs",
+        "Architecture communication"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "database-architecture--distributed-systems-engineer",
+      "family_id": "database-architecture",
+      "name": "Distributed Systems Engineer",
+      "summary": "Distributed Systems Engineer work centers on consistency and failure models, partitioning and replication, messaging and idempotency and shipping reliable solutions in database / architecture. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL fundamentals",
+        "Basic data modeling and application architecture"
+      ],
+      "core_skills": [
+        "Consistency and failure models",
+        "Partitioning and replication",
+        "Messaging and idempotency",
+        "Consensus concepts",
+        "Observability and recovery",
+        "Load and fault testing"
+      ],
+      "tool_stack": [
+        "Kafka",
+        "PostgreSQL",
+        "Redis",
+        "Kubernetes",
+        "gRPC",
+        "OpenTelemetry",
+        "SQL",
+        "Git",
+        "Architecture diagrams",
+        "Containers",
+        "Observability"
+      ],
+      "project_blueprints": [
+        "Build an idempotent event workflow that tolerates retries and partial failure.",
+        "Demonstrate ordering, recovery, and observability under injected faults."
+      ],
+      "interview_focus": [
+        "Data and service boundaries",
+        "Performance and scaling",
+        "Failure and recovery design",
+        "Consistency trade-offs",
+        "Architecture communication"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "database-architecture--solutions-architect",
+      "family_id": "database-architecture",
+      "name": "Solutions Architect",
+      "summary": "Solutions Architect work centers on stakeholder discovery, capability and integration mapping, solution options and trade-offs and shipping reliable solutions in database / architecture. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "SQL fundamentals",
+        "Basic data modeling and application architecture"
+      ],
+      "core_skills": [
+        "Stakeholder discovery",
+        "Capability and integration mapping",
+        "Solution options and trade-offs",
+        "Security and non-functional requirements",
+        "Delivery sequencing",
+        "Architecture communication"
+      ],
+      "tool_stack": [
+        "C4 model",
+        "AWS",
+        "Azure",
+        "REST",
+        "IAM",
+        "Architecture decisions",
+        "SQL",
+        "Git",
+        "Architecture diagrams",
+        "Containers",
+        "Observability"
+      ],
+      "project_blueprints": [
+        "Translate a business workflow into an integration architecture with options and costs.",
+        "Present security, migration, and operational decisions to mixed stakeholders."
+      ],
+      "interview_focus": [
+        "Data and service boundaries",
+        "Performance and scaling",
+        "Failure and recovery design",
+        "Consistency trade-offs",
+        "Architecture communication"
+      ],
+      "dsa_expectation": "intermediate",
+      "system_design_expectation": "applied",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "enterprise-technology--sap-technical-developer",
+      "family_id": "enterprise-technology",
+      "name": "SAP Technical Developer",
+      "summary": "SAP Technical Developer work centers on sap architecture and transport flow, abap development fundamentals, data models and apis and shipping reliable solutions in enterprise technology. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic relational data and workflow modeling",
+        "Platform and integration fundamentals"
+      ],
+      "core_skills": [
+        "SAP architecture and transport flow",
+        "ABAP development fundamentals",
+        "Data models and APIs",
+        "Extension and integration patterns",
+        "Testing and authorization",
+        "Business process discovery"
+      ],
+      "tool_stack": [
+        "SAP ABAP",
+        "SAP HANA",
+        "OData",
+        "SAP Fiori",
+        "Git",
+        "SAP BTP",
+        "Platform development tools",
+        "API integration",
+        "Automated testing",
+        "Release management"
+      ],
+      "project_blueprints": [
+        "Extend an SAP business process with a documented API or application change.",
+        "Show transport, authorization, and test evidence in a non-production environment."
+      ],
+      "interview_focus": [
+        "Platform data and access model",
+        "Workflow and integration design",
+        "Testing and release management",
+        "Governance and limits",
+        "Business process discovery"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "enterprise-technology--salesforce-developer",
+      "family_id": "enterprise-technology",
+      "name": "Salesforce Developer",
+      "summary": "Salesforce Developer work centers on salesforce data model and security, apex and lightning, flows and declarative automation and shipping reliable solutions in enterprise technology. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic relational data and workflow modeling",
+        "Platform and integration fundamentals"
+      ],
+      "core_skills": [
+        "Salesforce data model and security",
+        "Apex and Lightning",
+        "Flows and declarative automation",
+        "SOQL and integrations",
+        "Testing and deployment",
+        "Governor limits"
+      ],
+      "tool_stack": [
+        "Apex",
+        "SOQL",
+        "LWC",
+        "Salesforce Flow",
+        "Salesforce CLI",
+        "REST",
+        "Platform development tools",
+        "Git",
+        "API integration",
+        "Automated testing",
+        "Release management"
+      ],
+      "project_blueprints": [
+        "Build a Salesforce workflow with secure data access and a tested integration.",
+        "Document governor-limit handling and a repeatable deployment."
+      ],
+      "interview_focus": [
+        "Platform data and access model",
+        "Workflow and integration design",
+        "Testing and release management",
+        "Governance and limits",
+        "Business process discovery"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "enterprise-technology--servicenow-developer",
+      "family_id": "enterprise-technology",
+      "name": "ServiceNow Developer",
+      "summary": "ServiceNow Developer work centers on servicenow platform data model, business rules and scripting, flow designer and integrations and shipping reliable solutions in enterprise technology. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic relational data and workflow modeling",
+        "Platform and integration fundamentals"
+      ],
+      "core_skills": [
+        "ServiceNow platform data model",
+        "Business rules and scripting",
+        "Flow Designer and integrations",
+        "Access controls",
+        "Update sets and testing",
+        "Service process mapping"
+      ],
+      "tool_stack": [
+        "ServiceNow",
+        "JavaScript",
+        "Flow Designer",
+        "REST",
+        "ATF",
+        "CMDB",
+        "Platform development tools",
+        "Git",
+        "API integration",
+        "Automated testing",
+        "Release management"
+      ],
+      "project_blueprints": [
+        "Automate a service workflow with scoped access and traceable state transitions.",
+        "Add ATF coverage and a documented update-set release."
+      ],
+      "interview_focus": [
+        "Platform data and access model",
+        "Workflow and integration design",
+        "Testing and release management",
+        "Governance and limits",
+        "Business process discovery"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "enterprise-technology--power-platform-developer",
+      "family_id": "enterprise-technology",
+      "name": "Power Platform Developer",
+      "summary": "Power Platform Developer work centers on power apps canvas and model-driven apps, dataverse data and security, power automate flows and shipping reliable solutions in enterprise technology. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Basic relational data and workflow modeling",
+        "Platform and integration fundamentals"
+      ],
+      "core_skills": [
+        "Power Apps canvas and model-driven apps",
+        "Dataverse data and security",
+        "Power Automate flows",
+        "Connectors and integration",
+        "ALM and environment strategy",
+        "Usability and governance"
+      ],
+      "tool_stack": [
+        "Power Apps",
+        "Power Automate",
+        "Dataverse",
+        "Power BI",
+        "Connectors",
+        "ALM",
+        "Platform development tools",
+        "Git",
+        "API integration",
+        "Automated testing",
+        "Release management"
+      ],
+      "project_blueprints": [
+        "Deliver a governed Power Platform app and automated approval flow.",
+        "Show environment promotion, connector permissions, and user acceptance evidence."
+      ],
+      "interview_focus": [
+        "Platform data and access model",
+        "Workflow and integration design",
+        "Testing and release management",
+        "Governance and limits",
+        "Business process discovery"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "specialized-technology--blockchain-developer",
+      "family_id": "specialized-technology",
+      "name": "Blockchain Developer",
+      "summary": "Blockchain Developer work centers on distributed ledger fundamentals, wallets and transaction lifecycle, contract and protocol integration and shipping reliable solutions in specialized technology. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Programming fundamentals",
+        "Mathematics or platform basics relevant to the specialization"
+      ],
+      "core_skills": [
+        "Distributed ledger fundamentals",
+        "Wallets and transaction lifecycle",
+        "Contract and protocol integration",
+        "Threat modeling",
+        "Testnets and observability",
+        "Key management and incident response"
+      ],
+      "tool_stack": [
+        "Solidity",
+        "Ethereum",
+        "Foundry",
+        "Hardhat",
+        "OpenZeppelin",
+        "Ethers.js",
+        "Git",
+        "Platform SDK",
+        "Automated testing",
+        "Profiling",
+        "Release tooling"
+      ],
+      "project_blueprints": [
+        "Build and test a contract workflow on a local chain or testnet.",
+        "Include adversarial tests, access assumptions, and key-handling guidance."
+      ],
+      "interview_focus": [
+        "Core platform/tool fundamentals",
+        "System decomposition",
+        "Testing and performance",
+        "Security and operational risks",
+        "Project decisions and iteration"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "specialized-technology--game-developer",
+      "family_id": "specialized-technology",
+      "name": "Game Developer",
+      "summary": "Game Developer work centers on engine and gameplay loop, input, physics and animation, asset and scene pipelines and shipping reliable solutions in specialized technology. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Programming fundamentals",
+        "Mathematics or platform basics relevant to the specialization"
+      ],
+      "core_skills": [
+        "Engine and gameplay loop",
+        "Input, physics and animation",
+        "Asset and scene pipelines",
+        "Performance profiling",
+        "Save and progression systems",
+        "Playtesting and release"
+      ],
+      "tool_stack": [
+        "Unity",
+        "Unreal Engine",
+        "C#",
+        "C++",
+        "Blender",
+        "Git LFS",
+        "Git",
+        "Platform SDK",
+        "Automated testing",
+        "Profiling",
+        "Release tooling"
+      ],
+      "project_blueprints": [
+        "Build a playable vertical slice with input, feedback, and a measurable performance budget.",
+        "Collect playtest feedback and document build/release steps."
+      ],
+      "interview_focus": [
+        "Core platform/tool fundamentals",
+        "System decomposition",
+        "Testing and performance",
+        "Security and operational risks",
+        "Project decisions and iteration"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    },
+    {
+      "id": "specialized-technology--xr-developer",
+      "family_id": "specialized-technology",
+      "name": "XR Developer",
+      "summary": "XR Developer work centers on 3d interaction and spatial ui, tracking and input, performance and comfort and shipping reliable solutions in specialized technology. Related titles share this profile; the title itself does not imply identical tools at every employer.",
+      "prerequisites": [
+        "Programming fundamentals",
+        "Mathematics or platform basics relevant to the specialization"
+      ],
+      "core_skills": [
+        "3D interaction and spatial UI",
+        "Tracking and input",
+        "Performance and comfort",
+        "Scene and asset pipelines",
+        "Device testing",
+        "Privacy and safety"
+      ],
+      "tool_stack": [
+        "Unity",
+        "Unreal Engine",
+        "OpenXR",
+        "C#",
+        "Blender",
+        "Spatial UI",
+        "Git",
+        "Platform SDK",
+        "Automated testing",
+        "Profiling",
+        "Release tooling"
+      ],
+      "project_blueprints": [
+        "Build an XR interaction that works across target devices and comfort constraints.",
+        "Measure frame timing and test accessibility and safety considerations."
+      ],
+      "interview_focus": [
+        "Core platform/tool fundamentals",
+        "System decomposition",
+        "Testing and performance",
+        "Security and operational risks",
+        "Project decisions and iteration"
+      ],
+      "dsa_expectation": "foundational",
+      "system_design_expectation": "domain-specific",
+      "portfolio_evidence": [
+        "A runnable project with setup instructions and a clear problem statement",
+        "Tests or validation evidence tied to important requirements",
+        "A short decision note that explains one meaningful trade-off"
+      ],
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "coverage_notes": "Curriculum coverage is set per exact job title below. Related titles share this role profile, but a track mapped to one title does not imply that every sibling title has a matching specialist curriculum."
+    }
+  ],
+  "roles": [
+    {
+      "id": "frontend-developer",
+      "title": "Frontend Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--frontend-developer",
+      "target_role_id": "frontend-developer",
+      "roadmap_id": "zte-frontend-v1",
+      "curriculum_status": "mapped_to_detailed_track",
+      "role_focus": null
+    },
+    {
+      "id": "react-developer",
+      "title": "React Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--frontend-developer",
+      "target_role_id": "react-developer",
+      "roadmap_id": "zte-frontend-v1",
+      "curriculum_status": "mapped_to_detailed_track",
+      "role_focus": "React component systems, TypeScript, and server-rendered web applications."
+    },
+    {
+      "id": "angular-developer",
+      "title": "Angular Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--frontend-developer",
+      "target_role_id": "angular-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "vue-developer",
+      "title": "Vue Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--frontend-developer",
+      "target_role_id": "vue-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "ui-engineer",
+      "title": "UI Engineer",
+      "family_id": "software-development",
+      "profile_id": "software-development--frontend-developer",
+      "target_role_id": "ui-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "web-developer",
+      "title": "Web Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--frontend-developer",
+      "target_role_id": "web-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "backend-developer",
+      "title": "Backend Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--backend-developer",
+      "target_role_id": "backend-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "api-developer",
+      "title": "API Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--backend-developer",
+      "target_role_id": "api-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "server-side-developer",
+      "title": "Server-side Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--backend-developer",
+      "target_role_id": "server-side-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "full-stack-developer",
+      "title": "Full Stack Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--full-stack-developer",
+      "target_role_id": "fullstack-developer",
+      "roadmap_id": "zte-fullstack-v1",
+      "curriculum_status": "mapped_to_detailed_track",
+      "role_focus": null
+    },
+    {
+      "id": "full-stack-engineer",
+      "title": "Full Stack Engineer",
+      "family_id": "software-development",
+      "profile_id": "software-development--full-stack-developer",
+      "target_role_id": "full-stack-engineer",
+      "roadmap_id": "zte-fullstack-v1",
+      "curriculum_status": "mapped_to_detailed_track",
+      "role_focus": null
+    },
+    {
+      "id": "software-engineer",
+      "title": "Software Engineer",
+      "family_id": "software-development",
+      "profile_id": "software-development--full-stack-developer",
+      "target_role_id": "sde-1",
+      "roadmap_id": "zte-fullstack-v1",
+      "curriculum_status": "mapped_to_detailed_track",
+      "role_focus": "Broad software engineering foundations; the shared full-stack track is a starting curriculum, not a title-specific syllabus."
+    },
+    {
+      "id": "java-developer",
+      "title": "Java Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--java-developer",
+      "target_role_id": "java-developer",
+      "roadmap_id": "zte-backend-java-v1",
+      "curriculum_status": "mapped_to_detailed_track",
+      "role_focus": null
+    },
+    {
+      "id": "java-backend-engineer",
+      "title": "Java Backend Engineer",
+      "family_id": "software-development",
+      "profile_id": "software-development--java-developer",
+      "target_role_id": "java-backend-engineer",
+      "roadmap_id": "zte-backend-java-v1",
+      "curriculum_status": "mapped_to_detailed_track",
+      "role_focus": "Java service design with Spring Boot, persistence, and production operations."
+    },
+    {
+      "id": "spring-boot-developer",
+      "title": "Spring Boot Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--java-developer",
+      "target_role_id": "spring-boot-developer",
+      "roadmap_id": "zte-backend-java-v1",
+      "curriculum_status": "mapped_to_detailed_track",
+      "role_focus": "Java service design with Spring Boot, persistence, and production operations."
+    },
+    {
+      "id": "python-developer",
+      "title": "Python Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--python-developer",
+      "target_role_id": "python-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "python-backend-developer",
+      "title": "Python Backend Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--python-developer",
+      "target_role_id": "python-backend-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "django-developer",
+      "title": "Django Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--python-developer",
+      "target_role_id": "django-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "fastapi-developer",
+      "title": "FastAPI Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--python-developer",
+      "target_role_id": "fastapi-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "dot-net-developer",
+      "title": ".NET Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--dot-net-developer",
+      "target_role_id": "dot-net-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "c-sharp-developer",
+      "title": "C# Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--dot-net-developer",
+      "target_role_id": "c-sharp-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "asp-dot-net-developer",
+      "title": "ASP.NET Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--dot-net-developer",
+      "target_role_id": "asp-dot-net-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "go-developer",
+      "title": "Go Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--go-developer",
+      "target_role_id": "go-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "go-backend-engineer",
+      "title": "Go Backend Engineer",
+      "family_id": "software-development",
+      "profile_id": "software-development--go-developer",
+      "target_role_id": "go-backend-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "rust-developer",
+      "title": "Rust Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--rust-developer",
+      "target_role_id": "rust-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "systems-programmer",
+      "title": "Systems Programmer",
+      "family_id": "software-development",
+      "profile_id": "software-development--rust-developer",
+      "target_role_id": "systems-programmer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "php-developer",
+      "title": "PHP Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--php-developer",
+      "target_role_id": "php-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "laravel-developer",
+      "title": "Laravel Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--php-developer",
+      "target_role_id": "laravel-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "ruby-developer",
+      "title": "Ruby Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--ruby-developer",
+      "target_role_id": "ruby-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "ruby-on-rails-developer",
+      "title": "Ruby on Rails Developer",
+      "family_id": "software-development",
+      "profile_id": "software-development--ruby-developer",
+      "target_role_id": "ruby-on-rails-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "android-developer",
+      "title": "Android Developer",
+      "family_id": "mobile-development",
+      "profile_id": "mobile-development--android-developer",
+      "target_role_id": "android-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "android-engineer",
+      "title": "Android Engineer",
+      "family_id": "mobile-development",
+      "profile_id": "mobile-development--android-developer",
+      "target_role_id": "android-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "ios-developer",
+      "title": "iOS Developer",
+      "family_id": "mobile-development",
+      "profile_id": "mobile-development--ios-developer",
+      "target_role_id": "ios-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "ios-engineer",
+      "title": "iOS Engineer",
+      "family_id": "mobile-development",
+      "profile_id": "mobile-development--ios-developer",
+      "target_role_id": "ios-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "flutter-developer",
+      "title": "Flutter Developer",
+      "family_id": "mobile-development",
+      "profile_id": "mobile-development--flutter-developer",
+      "target_role_id": "flutter-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "react-native-developer",
+      "title": "React Native Developer",
+      "family_id": "mobile-development",
+      "profile_id": "mobile-development--flutter-developer",
+      "target_role_id": "react-native-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "cross-platform-mobile-developer",
+      "title": "Cross-platform Mobile Developer",
+      "family_id": "mobile-development",
+      "profile_id": "mobile-development--flutter-developer",
+      "target_role_id": "cross-platform-mobile-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "data-analyst",
+      "title": "Data Analyst",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--data-analyst",
+      "target_role_id": "bi-data-analyst",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "business-intelligence-analyst",
+      "title": "Business Intelligence Analyst",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--data-analyst",
+      "target_role_id": "business-intelligence-analyst",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "product-analyst",
+      "title": "Product Analyst",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--data-analyst",
+      "target_role_id": "product-analyst",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "data-engineer",
+      "title": "Data Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--data-engineer",
+      "target_role_id": "data-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "big-data-engineer",
+      "title": "Big Data Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--data-engineer",
+      "target_role_id": "big-data-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "etl-engineer",
+      "title": "ETL Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--data-engineer",
+      "target_role_id": "etl-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "data-scientist",
+      "title": "Data Scientist",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--data-scientist",
+      "target_role_id": "data-scientist",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "applied-data-scientist",
+      "title": "Applied Data Scientist",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--data-scientist",
+      "target_role_id": "applied-data-scientist",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "machine-learning-engineer",
+      "title": "Machine Learning Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--machine-learning-engineer",
+      "target_role_id": "machine-learning-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "applied-ml-engineer",
+      "title": "Applied ML Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--machine-learning-engineer",
+      "target_role_id": "applied-ml-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "ai-engineer",
+      "title": "AI Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--ai-engineer",
+      "target_role_id": "ai-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "applied-ai-engineer",
+      "title": "Applied AI Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--ai-engineer",
+      "target_role_id": "applied-ai-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "llm-engineer",
+      "title": "LLM Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--llm-engineer",
+      "target_role_id": "llm-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "generative-ai-engineer",
+      "title": "Generative AI Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--llm-engineer",
+      "target_role_id": "generative-ai-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "ai-application-engineer",
+      "title": "AI Application Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--llm-engineer",
+      "target_role_id": "ai-application-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "mlops-engineer",
+      "title": "MLOps Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--mlops-engineer",
+      "target_role_id": "mlops-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "ml-platform-engineer",
+      "title": "ML Platform Engineer",
+      "family_id": "data-ai",
+      "profile_id": "data-ai--mlops-engineer",
+      "target_role_id": "ml-platform-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "devops-engineer",
+      "title": "DevOps Engineer",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--devops-engineer",
+      "target_role_id": "devops-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "devops-platform-engineer",
+      "title": "DevOps Platform Engineer",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--devops-engineer",
+      "target_role_id": "devops-platform-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "cloud-engineer",
+      "title": "Cloud Engineer",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--cloud-engineer",
+      "target_role_id": "cloud-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "cloud-infrastructure-engineer",
+      "title": "Cloud Infrastructure Engineer",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--cloud-engineer",
+      "target_role_id": "cloud-infrastructure-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "sre",
+      "title": "SRE",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--sre",
+      "target_role_id": "sre",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "reliability-engineer",
+      "title": "Reliability Engineer",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--sre",
+      "target_role_id": "reliability-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "platform-engineer",
+      "title": "Platform Engineer",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--platform-engineer",
+      "target_role_id": "platform-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "developer-platform-engineer",
+      "title": "Developer Platform Engineer",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--platform-engineer",
+      "target_role_id": "developer-platform-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "cloud-architect",
+      "title": "Cloud Architect",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--cloud-architect",
+      "target_role_id": "cloud-architect",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "cloud-solutions-architect",
+      "title": "Cloud Solutions Architect",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--cloud-architect",
+      "target_role_id": "cloud-solutions-architect",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "infrastructure-engineer",
+      "title": "Infrastructure Engineer",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--infrastructure-engineer",
+      "target_role_id": "infrastructure-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "infrastructure-automation-engineer",
+      "title": "Infrastructure Automation Engineer",
+      "family_id": "cloud-infrastructure",
+      "profile_id": "cloud-infrastructure--infrastructure-engineer",
+      "target_role_id": "infrastructure-automation-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "cybersecurity-analyst",
+      "title": "Cybersecurity Analyst",
+      "family_id": "cybersecurity",
+      "profile_id": "cybersecurity--cybersecurity-analyst",
+      "target_role_id": "cybersecurity-analyst",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "security-engineer",
+      "title": "Security Engineer",
+      "family_id": "cybersecurity",
+      "profile_id": "cybersecurity--cybersecurity-analyst",
+      "target_role_id": "security-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "application-security-engineer",
+      "title": "Application Security Engineer",
+      "family_id": "cybersecurity",
+      "profile_id": "cybersecurity--application-security-engineer",
+      "target_role_id": "application-security-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "product-security-engineer",
+      "title": "Product Security Engineer",
+      "family_id": "cybersecurity",
+      "profile_id": "cybersecurity--application-security-engineer",
+      "target_role_id": "product-security-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "cloud-security-engineer",
+      "title": "Cloud Security Engineer",
+      "family_id": "cybersecurity",
+      "profile_id": "cybersecurity--cloud-security-engineer",
+      "target_role_id": "cloud-security-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "soc-analyst",
+      "title": "SOC Analyst",
+      "family_id": "cybersecurity",
+      "profile_id": "cybersecurity--soc-analyst",
+      "target_role_id": "soc-analyst",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "security-operations-engineer",
+      "title": "Security Operations Engineer",
+      "family_id": "cybersecurity",
+      "profile_id": "cybersecurity--soc-analyst",
+      "target_role_id": "security-operations-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "qa-engineer",
+      "title": "QA Engineer",
+      "family_id": "software-quality",
+      "profile_id": "software-quality--qa-engineer",
+      "target_role_id": "qa-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "test-engineer",
+      "title": "Test Engineer",
+      "family_id": "software-quality",
+      "profile_id": "software-quality--qa-engineer",
+      "target_role_id": "test-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "test-automation-engineer",
+      "title": "Test Automation Engineer",
+      "family_id": "software-quality",
+      "profile_id": "software-quality--test-automation-engineer",
+      "target_role_id": "test-automation-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "automation-qa-engineer",
+      "title": "Automation QA Engineer",
+      "family_id": "software-quality",
+      "profile_id": "software-quality--test-automation-engineer",
+      "target_role_id": "automation-qa-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "software-development-engineer-in-test",
+      "title": "Software Development Engineer in Test",
+      "family_id": "software-quality",
+      "profile_id": "software-quality--software-development-engineer-in-test",
+      "target_role_id": "software-development-engineer-in-test",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "sdet",
+      "title": "SDET",
+      "family_id": "software-quality",
+      "profile_id": "software-quality--software-development-engineer-in-test",
+      "target_role_id": "sdet",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "embedded-engineer",
+      "title": "Embedded Engineer",
+      "family_id": "systems-hardware",
+      "profile_id": "systems-hardware--embedded-engineer",
+      "target_role_id": "embedded-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "embedded-software-engineer",
+      "title": "Embedded Software Engineer",
+      "family_id": "systems-hardware",
+      "profile_id": "systems-hardware--embedded-engineer",
+      "target_role_id": "embedded-software-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "firmware-engineer",
+      "title": "Firmware Engineer",
+      "family_id": "systems-hardware",
+      "profile_id": "systems-hardware--firmware-engineer",
+      "target_role_id": "firmware-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "iot-engineer",
+      "title": "IoT Engineer",
+      "family_id": "systems-hardware",
+      "profile_id": "systems-hardware--iot-engineer",
+      "target_role_id": "iot-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "iot-developer",
+      "title": "IoT Developer",
+      "family_id": "systems-hardware",
+      "profile_id": "systems-hardware--iot-engineer",
+      "target_role_id": "iot-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "systems-engineer",
+      "title": "Systems Engineer",
+      "family_id": "systems-hardware",
+      "profile_id": "systems-hardware--systems-engineer",
+      "target_role_id": "systems-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "c-cpp-developer",
+      "title": "C/C++ Developer",
+      "family_id": "systems-hardware",
+      "profile_id": "systems-hardware--systems-engineer",
+      "target_role_id": "c-cpp-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "network-engineer",
+      "title": "Network Engineer",
+      "family_id": "systems-hardware",
+      "profile_id": "systems-hardware--network-engineer",
+      "target_role_id": "network-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "network-administrator",
+      "title": "Network Administrator",
+      "family_id": "systems-hardware",
+      "profile_id": "systems-hardware--network-engineer",
+      "target_role_id": "network-administrator",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "database-engineer",
+      "title": "Database Engineer",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--database-engineer",
+      "target_role_id": "database-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "database-developer",
+      "title": "Database Developer",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--database-engineer",
+      "target_role_id": "database-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "database-administrator",
+      "title": "Database Administrator",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--database-administrator",
+      "target_role_id": "database-administrator",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "postgresql-dba",
+      "title": "PostgreSQL DBA",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--database-administrator",
+      "target_role_id": "postgresql-dba",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "sql-server-dba",
+      "title": "SQL Server DBA",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--database-administrator",
+      "target_role_id": "sql-server-dba",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "software-architect",
+      "title": "Software Architect",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--software-architect",
+      "target_role_id": "software-architect",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "application-architect",
+      "title": "Application Architect",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--software-architect",
+      "target_role_id": "application-architect",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "distributed-systems-engineer",
+      "title": "Distributed Systems Engineer",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--distributed-systems-engineer",
+      "target_role_id": "distributed-systems-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "backend-systems-engineer",
+      "title": "Backend Systems Engineer",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--distributed-systems-engineer",
+      "target_role_id": "backend-systems-engineer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "solutions-architect",
+      "title": "Solutions Architect",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--solutions-architect",
+      "target_role_id": "solutions-architect",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "technical-architect",
+      "title": "Technical Architect",
+      "family_id": "database-architecture",
+      "profile_id": "database-architecture--solutions-architect",
+      "target_role_id": "technical-architect",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "sap-technical-developer",
+      "title": "SAP Technical Developer",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--sap-technical-developer",
+      "target_role_id": "sap-technical-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "sap-functional-consultant",
+      "title": "SAP Functional Consultant",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--sap-technical-developer",
+      "target_role_id": "sap-functional-consultant",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "sap-technical-consultant",
+      "title": "SAP Technical Consultant",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--sap-technical-developer",
+      "target_role_id": "sap-technical-consultant",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "salesforce-developer",
+      "title": "Salesforce Developer",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--salesforce-developer",
+      "target_role_id": "salesforce-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "salesforce-administrator",
+      "title": "Salesforce Administrator",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--salesforce-developer",
+      "target_role_id": "salesforce-administrator",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "salesforce-consultant",
+      "title": "Salesforce Consultant",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--salesforce-developer",
+      "target_role_id": "salesforce-consultant",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "servicenow-developer",
+      "title": "ServiceNow Developer",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--servicenow-developer",
+      "target_role_id": "servicenow-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "servicenow-administrator",
+      "title": "ServiceNow Administrator",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--servicenow-developer",
+      "target_role_id": "servicenow-administrator",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "servicenow-consultant",
+      "title": "ServiceNow Consultant",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--servicenow-developer",
+      "target_role_id": "servicenow-consultant",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "power-platform-developer",
+      "title": "Power Platform Developer",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--power-platform-developer",
+      "target_role_id": "power-platform-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "power-automate-developer",
+      "title": "Power Automate Developer",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--power-platform-developer",
+      "target_role_id": "power-automate-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "power-apps-developer",
+      "title": "Power Apps Developer",
+      "family_id": "enterprise-technology",
+      "profile_id": "enterprise-technology--power-platform-developer",
+      "target_role_id": "power-apps-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "blockchain-developer",
+      "title": "Blockchain Developer",
+      "family_id": "specialized-technology",
+      "profile_id": "specialized-technology--blockchain-developer",
+      "target_role_id": "blockchain-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "smart-contract-developer",
+      "title": "Smart Contract Developer",
+      "family_id": "specialized-technology",
+      "profile_id": "specialized-technology--blockchain-developer",
+      "target_role_id": "smart-contract-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "game-developer",
+      "title": "Game Developer",
+      "family_id": "specialized-technology",
+      "profile_id": "specialized-technology--game-developer",
+      "target_role_id": "game-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "gameplay-programmer",
+      "title": "Gameplay Programmer",
+      "family_id": "specialized-technology",
+      "profile_id": "specialized-technology--game-developer",
+      "target_role_id": "gameplay-programmer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "xr-developer",
+      "title": "XR Developer",
+      "family_id": "specialized-technology",
+      "profile_id": "specialized-technology--xr-developer",
+      "target_role_id": "xr-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "ar-developer",
+      "title": "AR Developer",
+      "family_id": "specialized-technology",
+      "profile_id": "specialized-technology--xr-developer",
+      "target_role_id": "ar-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    },
+    {
+      "id": "vr-developer",
+      "title": "VR Developer",
+      "family_id": "specialized-technology",
+      "profile_id": "specialized-technology--xr-developer",
+      "target_role_id": "vr-developer",
+      "roadmap_id": null,
+      "curriculum_status": "core_curriculum",
+      "role_focus": null
+    }
+  ]
+}

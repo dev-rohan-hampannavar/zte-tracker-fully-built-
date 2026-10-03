@@ -9,6 +9,7 @@ import { ShortcutsHelp } from "@/components/layout/shortcuts-help";
 import { RouteTransition } from "@/components/motion/route-transition";
 import { FeatureFlagGate } from "@/components/layout/feature-flag-gate";
 import { ReturnUsageRecorder } from "@/components/layout/return-usage-recorder";
+import { OwnerFactsBoundary } from "@/components/layout/owner-facts-boundary";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -56,7 +57,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <AppTopbar />
         <main className="flex-1 overflow-y-auto">
           <div className="mx-auto max-w-6xl px-4 py-6 md:px-8 md:py-8">
-            <FeatureFlagGate><RouteTransition>{children}</RouteTransition></FeatureFlagGate>
+            <OwnerFactsBoundary>
+              <FeatureFlagGate><RouteTransition>{children}</RouteTransition></FeatureFlagGate>
+            </OwnerFactsBoundary>
           </div>
         </main>
       </div>

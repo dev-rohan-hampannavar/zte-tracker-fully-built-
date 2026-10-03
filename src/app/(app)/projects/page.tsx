@@ -131,7 +131,7 @@ export default function ProjectsPage() {
       <div>
         <h1 className="text-page-title font-semibold tracking-tight">Projects</h1>
         <p className="text-sm text-muted mt-1">
-          Stage-level build exercises, plus phase capstones like ClientSync and Trackify.
+          Stage-level build exercises, plus phase capstones you can show in a portfolio.
         </p>
       </div>
       </FadeUp>

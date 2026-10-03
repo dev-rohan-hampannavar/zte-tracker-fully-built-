@@ -24,7 +24,7 @@ const TYPE_ICON: Record<PinnedItem["type"], typeof BookOpen> = {
 const TYPE_LABEL: Record<PinnedItem["type"], string> = {
   topic: "Topic",
   project: "Project",
-  clientsync_milestone: "ClientSync milestone",
+  clientsync_milestone: "Flagship milestone",
 };
 
 /**
@@ -116,7 +116,7 @@ export default function WorkspacePage() {
           <Pin className="h-6 w-6 text-accent" /> Workspace
         </h1>
         <p className="text-sm text-muted mt-1">
-          Pin the topic, project, or ClientSync milestone you&apos;re actively working on for quick access.
+          Pin the topic, project, or flagship milestone you&apos;re actively working on for quick access.
           {pinned.length > 0 && ` ${pinned.length}/${MAX_PINNED_ITEMS} pinned.`}
         </p>
       </div>
@@ -131,7 +131,7 @@ export default function WorkspacePage() {
         <Card>
           <CardContent className="pt-6 pb-6 text-center">
             <p className="text-sm text-muted">
-              Nothing pinned yet. Open a topic, project, or ClientSync milestone and pin it to see it here.
+              Nothing pinned yet. Open a topic, project, or flagship milestone and pin it to see it here.
             </p>
           </CardContent>
         </Card>

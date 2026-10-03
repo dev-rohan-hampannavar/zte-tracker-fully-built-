@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useUser } from "@/lib/hooks/use-user";
+import { useOwnerMode } from "@/lib/hooks/use-owner-mode";
 import {
   useCareerTracker,
   useApplicationMetrics,
@@ -27,6 +28,7 @@ import { cn } from "@/lib/utils";
 import { getStaleApplications } from "@/lib/plan-position";
 import { StaggerContainer, StaggerItem, FadeUp } from "@/components/motion/primitives";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
+import { getOwnerFacts } from "@/lib/owner-facts";
 
 const STATUS_VARIANT: Record<ApplicationStatus, "default" | "warning" | "success" | "danger" | "accent" | "outline"> = {
   wishlist: "outline",
@@ -39,6 +41,7 @@ const STATUS_VARIANT: Record<ApplicationStatus, "default" | "warning" | "success
 };
 
 export default function CareerTrackerPage() {
+  const { ownerMode } = useOwnerMode();
   const { user } = useUser();
   const { data: entries, mutate, isLoading } = useCareerTracker(user?.id);
   const staleApplications = useMemo(() => getStaleApplications(entries ?? []), [entries]);
@@ -240,11 +243,11 @@ export default function CareerTrackerPage() {
               <div className="rounded-lg border border-border/50 p-3">
                 <p className="text-xs font-medium mb-1">Referral plan (10 names, refresh quarterly)</p>
                 <ul className="text-xs text-muted flex flex-col gap-1">
-                  <li>• Colleagues from your current company who moved into tech</li>
-                  <li>• BCA batchmates now in dev roles</li>
+                  <li>{ownerMode ? `• ${getOwnerFacts().employer} colleagues who moved into tech` : "• Colleagues from your current company who moved into tech"}</li>
+                  <li>{ownerMode ? `• ${getOwnerFacts().degree} batchmates now in dev roles` : "• Classmates and former colleagues now in tech roles"}</li>
                   <li>• People met through dev.to / LinkedIn posts</li>
                   <li>• Message template: ask for advice or a 15-min call, not a job. Short and specific.</li>
-                  <li>• ZTE: BCA is a hard ATS filter at FAANG / IT-services / PSUs — referrals bypass it.</li>
+                  <li>{ownerMode ? `• ZTE: ${getOwnerFacts().degree} is a hard ATS filter at FAANG / IT-services / PSUs — referrals bypass it.` : "• Some employers screen by degree in their applicant systems. A referral usually gets past that filter."}</li>
                 </ul>
               </div>
             </div>
@@ -261,7 +264,7 @@ export default function CareerTrackerPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {(["plan_a", "plan_b"] as const).map((plan) => {
               const m = planMetrics.find((p) => p.career_plan === plan);
-              const label = plan === "plan_a" ? "Plan A — SDE Sprint" : "Plan B — Alternative fork";
+              const label = ownerMode ? (plan === "plan_a" ? "Plan A — SDE Sprint" : "Plan B — Alternative fork") : (plan === "plan_a" ? "Primary path" : "Alternative path");
               return (
                 <Card key={plan} className={cn(plan === "plan_b" && "border-info/30")}>
                   <CardContent noHeader className="flex flex-col gap-2">
@@ -337,7 +340,7 @@ export default function CareerTrackerPage() {
             <Badge variant={STATUS_VARIANT[entry.application_status]}>{entry.application_status}</Badge>
             {entry.career_plan === "plan_a" && (
               <Badge variant="outline" className="text-[10px]">
-                Plan A
+                {ownerMode ? "Plan A" : "Primary"}
               </Badge>
             )}
             {entry.offer && <Badge variant="success">Offer</Badge>}
@@ -421,8 +424,8 @@ export default function CareerTrackerPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="plan_a">Plan A — SDE Sprint</SelectItem>
-                    <SelectItem value="plan_b">Plan B — Alternative fork</SelectItem>
+                    <SelectItem value="plan_a">{ownerMode ? "Plan A — SDE Sprint" : "Primary path"}</SelectItem>
+                    <SelectItem value="plan_b">{ownerMode ? "Plan B — Alternative fork" : "Alternative path"}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

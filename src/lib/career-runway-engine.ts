@@ -135,7 +135,7 @@ export function computeRunwayAnalysis(inputs: RunwayInputs): RunwayAnalysis {
       actionRequired = `Save ₹${Math.round(stillToSave / 1000)}K before applying, or reduce expenses. At ₹${monthlySurplus.toLocaleString("en-IN")}/month surplus, buffer takes ${bufferMonths} months.`;
     } else {
       warningLevel = "tight";
-      summary = `Buffer will be ready ${lag} months after Exit A (${bufferMonths} months to save). Keep the ops job until buffer is funded.`;
+      summary = `Buffer will be ready ${lag} months after Exit A (${bufferMonths} months to save). Keep your current job until the buffer is funded.`;
       actionRequired = `The plan already handles this — apply at Exit A, but don't resign until the buffer is in place.`;
     }
   } else if (fp.savings >= bufferTarget) {
@@ -206,7 +206,7 @@ export interface CareerCheckpoint {
 }
 
 export function computeCareerCheckpoints(startDate: string): CareerCheckpoint[] {
-  // From career_timeline_zte.docx §15. Hours are at 30 h/wk (the doc's
+  // From. Hours are at 30 h/wk (the doc's
   // reference pace). Target dates are computed from the user's actual
   // start_date (not from 30 h/wk — the checkpoint months are milestone
   // markers, not pace-dependent).
@@ -227,7 +227,7 @@ export function computeCareerCheckpoints(startDate: string): CareerCheckpoint[] 
       month: 10,
       onPlanHours: 1235,
       minimumHours: 900,
-      description: "Exit A reached: ClientSync live, green CI, Docker. Start applying. If missed, extend by 2 months once only.",
+      description: "Exit A reached: your flagship project is live, with green CI and Docker. Start applying. If missed, extend by 2 months once only.",
     },
     {
       month: 14,

@@ -33,6 +33,8 @@ import { CalendarView } from "@/components/roadmap/calendar-view";
 import { FadeUp } from "@/components/motion/primitives";
 import { LearningPathView } from "@/components/roadmap/learning-path-view";
 import { useUserSettings } from "@/lib/hooks/use-user-settings";
+import { PersonalPlanCard } from "@/components/roadmap/personal-plan-card";
+import { RolePathForUser } from "@/components/shared/role-path-guide";
 import { useTopicLockingDisabled } from "@/lib/hooks/use-topic-locking";
 import { computeStageTopicLocks, type TopicLockInfo } from "@/lib/topic-prerequisites";
 import { computePhaseReadiness } from "@/lib/phase-readiness";
@@ -1144,6 +1146,27 @@ function LearningPathTab() {
   );
 }
 
+/** Personal plan on top of the roadmap for shared-workspace accounts only. */
+function SharedPlanHeader({ userId }: { userId: string }) {
+  const { data: settings } = useUserSettings(userId);
+  const { phases } = usePhasesWithProgress(userId);
+  if (settings?.is_personalized !== false) return null;
+  const topics = phases.flatMap((p) => p.topics);
+  const next = topics.find((t) => !t.progress?.completed);
+  return (
+    <div className="flex flex-col gap-4">
+      <PersonalPlanCard
+        userId={userId}
+        remainingHours={topics.filter((t) => !t.progress?.completed).reduce((sum, t) => sum + (t.estimated_hours ?? 0), 0)}
+        completedTopics={topics.filter((t) => t.progress?.completed).length}
+        totalTopics={topics.length}
+        nextTopicTitle={next?.title ?? null}
+      />
+      <RolePathForUser userId={userId} collapsible />
+    </div>
+  );
+}
+
 export default function RoadmapPage() {
   const { user } = useUser();
   const { data: activeRoadmap } = useActiveUserRoadmap(user?.id);
@@ -1178,6 +1201,8 @@ export default function RoadmapPage() {
         </Tabs>
       </div>
       </FadeUp>
+
+      {user?.id && <SharedPlanHeader userId={user.id} />}
 
       {activeTab === "list" ? <RoadmapListView /> : <LearningPathTab />}
     </div>

@@ -482,7 +482,7 @@ export default function ReferencePage() {
                               <th className="py-2 pr-4">Learn</th>
                               <th className="py-2 pr-4">Problems</th>
                               <th className="py-2 pr-4">Project</th>
-                              <th className="py-2 pr-4">ClientSync</th>
+                              <th className="py-2 pr-4">Flagship project</th>
                               <th className="py-2 pr-4">Realistic total</th>
                             </tr>
                           </thead>
@@ -682,7 +682,7 @@ export default function ReferencePage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <GraduationCap className="h-4 w-4" /> Degree filter — BCA vs. MCA
+                  <GraduationCap className="h-4 w-4" /> Degree filter
                 </CardTitle>
                 <p className="text-xs text-muted mt-1">
                   Which target companies gate on degree, and which don&apos;t.

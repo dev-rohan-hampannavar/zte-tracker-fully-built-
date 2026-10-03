@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/lib/hooks/use-user";
 import { useUserSettings } from "@/lib/hooks/use-user-settings";
-import { OWNER_ONLY_HREFS } from "@/lib/owner-only-routes";
+import { OWNER_ONLY_HREFS, SHARED_ONLY_HREFS } from "@/lib/owner-only-routes";
 import { createClient } from "@/lib/supabase/client";
 import { NAV, SIDEBAR_SECTIONS } from "./sidebar";
 import { CareerTrackBadge } from "@/components/career-plan/career-track-badge";
@@ -93,7 +93,7 @@ export function MobileNav() {
             <nav className="flex flex-col gap-3 mt-2">
               {MOBILE_SECTIONS.map((section, i) => {
                 const items = section.hrefs
-                  .filter((href) => ownerMode || !(OWNER_ONLY_HREFS as readonly string[]).includes(href))
+                  .filter((href) => (ownerMode ? !(SHARED_ONLY_HREFS as readonly string[]).includes(href) : !(OWNER_ONLY_HREFS as readonly string[]).includes(href)))
                   .map((href) => NAV.find((item) => item.href === href))
                   .filter((item): item is (typeof NAV)[number] => Boolean(item));
                 if (items.length === 0) return null;
@@ -120,7 +120,7 @@ export function MobileNav() {
                         >
                           <Icon className="h-4 w-4" />
                           {label}
-                          {href === "/career-plan" && <CareerTrackBadge className="ml-auto" />}
+                          {href === "/career-plan" && ownerMode && <CareerTrackBadge className="ml-auto" />}
                         </Link>
                       );
                     })}

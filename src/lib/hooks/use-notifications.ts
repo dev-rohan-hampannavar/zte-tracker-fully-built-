@@ -132,7 +132,7 @@ export function useNotifications() {
       result.push({
         id: "milestone-pending",
         kind: "milestone_pending",
-        title: `${pendingMilestones.length} ClientSync milestone${pendingMilestones.length === 1 ? "" : "s"} pending`,
+        title: `${pendingMilestones.length} flagship milestone${pendingMilestones.length === 1 ? "" : "s"} pending`,
         detail: "Roadmap topics are done, but the deliverable (repo, deploy, or demo) isn't marked complete yet.",
         href: "/clientsync",
       });

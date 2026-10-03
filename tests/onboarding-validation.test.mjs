@@ -84,11 +84,22 @@ const offenders = execSync(
 ).trim();
 assert.equal(offenders, "", `UTC date slicing found in: ${offenders}`);
 
-// 10. No owner-specific personal data in code shared users can see.
-const personal = execSync(
-  `grep -rIniE "applied materials|biz ops associate|rohan|hampannavar" src --include=*.ts --include=*.tsx --include=*.json || true`,
+// 10. Personal facts (employer, handle, degree, pay, role title) must not exist in
+// shipped source at all. They live in the owner-only owner_private_facts table
+// and are read at runtime through {{tokens}} / getOwnerFacts().
+const flagged = execSync(
+  `grep -rIliE "applied materials|biz ops associate|business ops associate|rohan|hampannavar|[^0-9.]4\\.6 ?(L|LPA)|28k/mo" src --include=*.ts --include=*.tsx --include=*.json || true`,
   { cwd: new URL("..", import.meta.url), encoding: "utf8" }
-).split("\n").filter((l) => l && !l.includes("architecture_manifest") && !l.startsWith("src/types"));
-assert.deepEqual(personal, [], `personal references in shared code:\n${personal.join("\n")}`);
+).split("\n").filter((f) => f && !f.includes("architecture_manifest") && !f.startsWith("src/types"));
+assert.deepEqual(flagged, [], `personal facts found in shipped source: ${flagged.join(", ")}`);
+
+const factsMigration = readFileSync(new URL("../supabase/migrations/0094_owner_private_facts.sql", import.meta.url), "utf8");
+assert.match(factsMigration, /enable row level security/i);
+assert.match(factsMigration, /is_owner\s*=\s*true/i, "the read policy must require the verified owner");
+assert.ok(!/for (insert|update|delete)/i.test(factsMigration.replace(/--.*$/gm, "")), "no write policies for clients");
+const boundary = readFileSync(new URL("../src/components/layout/owner-facts-boundary.tsx", import.meta.url), "utf8");
+assert.match(boundary, /ownerMode \? "owner-private-facts" : null/, "only the owner may query the facts table");
+const layoutSrc = readFileSync(new URL("../src/app/(app)/layout.tsx", import.meta.url), "utf8");
+assert.match(layoutSrc, /OwnerFactsBoundary/);
 
 console.log("onboarding validation contracts: passed");

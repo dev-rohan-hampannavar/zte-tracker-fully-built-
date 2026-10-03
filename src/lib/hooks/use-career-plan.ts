@@ -26,7 +26,7 @@ export const DEFAULT_CAREER_PLAN_SETTINGS: CareerPlanSettings = {
   career_plan_start_date: null,
   career_plan_deadline_date: null,
   career_plan_weekly_hours: 40,
-  career_plan_flagship_project: "ClientSync",
+  career_plan_flagship_project: "My flagship project",
 };
 
 function coerceTrack(value: unknown): CareerPlanTrack {

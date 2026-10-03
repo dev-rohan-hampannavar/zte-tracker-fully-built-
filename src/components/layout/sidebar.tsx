@@ -45,7 +45,7 @@ import { CalendarRange } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/lib/hooks/use-user";
 import { useUserSettings } from "@/lib/hooks/use-user-settings";
-import { OWNER_ONLY_HREFS } from "@/lib/owner-only-routes";
+import { OWNER_ONLY_HREFS, SHARED_ONLY_HREFS } from "@/lib/owner-only-routes";
 import { createClient } from "@/lib/supabase/client";
 import { CareerTrackBadge } from "@/components/career-plan/career-track-badge";
 
@@ -65,6 +65,7 @@ const NAV = [
   { href: "/activity", label: "Activity History", icon: History },
   { href: "/journal", label: "Journal", icon: NotebookPen },
   { href: "/roadmap", label: "Roadmap", icon: Map },
+  { href: "/learn", label: "Lessons", icon: GraduationCap },
   { href: "/learning-path", label: "Detailed Learning Path", icon: GraduationCap },
   { href: "/roadmap-diff", label: "Roadmap Diff", icon: History },
   { href: "/projects", label: "Projects", icon: FolderGit2 },
@@ -101,7 +102,7 @@ const PINNED_HREFS = new Set(["/dashboard", "/roadmap", "/dsa", "/career", "/jou
 const NAV_SECTIONS: { id: string; label: string; icon: typeof Home; hrefs: string[] }[] = [
   { id: "home", label: "Home", icon: Home, hrefs: ["/dashboard", "/daily-plan", "/weekly-digest", "/monthly-review"] },
   { id: "execute", label: "Execute", icon: Zap, hrefs: ["/goals", "/execution", "/workspace", "/journal", "/activity"] },
-  { id: "learn", label: "Learn", icon: GraduationCap, hrefs: ["/roadmap", "/learning-path", "/skills", "/dsa", "/revision", "/exit-ladder", "/roadmap-diff"] },
+  { id: "learn", label: "Learn", icon: GraduationCap, hrefs: ["/roadmap", "/learn", "/learning-path", "/skills", "/dsa", "/revision", "/exit-ladder", "/roadmap-diff"] },
   { id: "build", label: "Build", icon: Hammer, hrefs: ["/projects", "/portfolio", "/clientsync", "/architecture"] },
   { id: "career", label: "Career", icon: Rocket, hrefs: ["/career-plan", "/careers", "/job-readiness", "/career-gap", "/milestones", "/career", "/interviews", "/resume", "/achievements", "/leaderboard"] },
   { id: "progress", label: "Progress", icon: BarChart3, hrefs: ["/statistics"] },
@@ -202,7 +203,7 @@ export function Sidebar({ className }: { className?: string }) {
         {NAV_SECTIONS.map((section) => {
           const items = section.hrefs
             .filter((href) => !PINNED_HREFS.has(href))
-            .filter((href) => ownerMode || !(OWNER_ONLY_HREFS as readonly string[]).includes(href))
+            .filter((href) => (ownerMode ? !(SHARED_ONLY_HREFS as readonly string[]).includes(href) : !(OWNER_ONLY_HREFS as readonly string[]).includes(href)))
             .map((href) => NAV.find((item) => item.href === href))
             .filter((item): item is (typeof NAV)[number] => Boolean(item));
           if (items.length === 0) return null;
@@ -277,7 +278,7 @@ export function Sidebar({ className }: { className?: string }) {
                             >
                               {label}
                             </span>
-                            {href === "/career-plan" && expanded && (
+                            {href === "/career-plan" && expanded && ownerMode && (
                               <CareerTrackBadge className="ml-auto" />
                             )}
                           </Link>

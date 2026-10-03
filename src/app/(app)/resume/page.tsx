@@ -14,8 +14,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { Copy, Check, FileDown } from "lucide-react";
 import { FadeUp } from "@/components/motion/primitives";
+import { SharedResumeStudio } from "@/components/shared/shared-playbooks";
+import { useOwnerMode } from "@/lib/hooks/use-owner-mode";
+import { Skeleton as GateSkeleton } from "@/components/ui/skeleton";
+import { getOwnerFacts, fillFacts } from "@/lib/owner-facts";
 
-export default function ResumePage() {
+function OwnerResumePage() {
   const { user } = useUser();
   const { phases, isLoading: phasesLoading } = usePhasesWithProgress(user?.id);
   const { data: projectProgress, isLoading: projLoading } = useProjectProgress(user?.id);
@@ -254,18 +258,18 @@ export default function ResumePage() {
             <div className="rounded-lg border border-border/50 p-4">
               <p className="text-xs font-semibold text-accent uppercase tracking-wide mb-2">Dev CV (use for dev roles)</p>
               <ul className="text-xs text-muted flex flex-col gap-1.5">
-                <li><span className="text-foreground font-medium">Header:</span> [Name] | Bangalore | [phone] | [email] | GitHub: [your-handle] | Live: [project URL]</li>
-                <li><span className="text-foreground font-medium">Summary (2 lines):</span> Full-stack developer (Next.js, TypeScript, PostgreSQL) with [X] years of [operations / previous field] experience at [company]. Ships production-style projects with CI, Docker and tests.</li>
-                <li><span className="text-foreground font-medium">Projects first:</span> [flagship project] → [capstone names]. Live URL, CI badge, one measurable result per project.</li>
-                <li><span className="text-foreground font-medium">Experience:</span> [Your current role], [company] — listed as &quot;[X] years professional experience&quot; with any automation work.</li>
+                <li><span className="text-foreground font-medium">Header:</span> [Name] | Bangalore | [phone] | [email] | GitHub: {getOwnerFacts().handle} | Live: [ClientSync URL]</li>
+                <li><span className="text-foreground font-medium">Summary (2 lines):</span> Full-stack developer (Next.js, TypeScript, PostgreSQL) with two years of operations experience at {getOwnerFacts().employer}. Ships production-style projects with CI, Docker and tests.</li>
+                <li><span className="text-foreground font-medium">Projects first:</span> ClientSync → [capstone names]. Live URL, CI badge, one measurable result per project.</li>
+                <li><span className="text-foreground font-medium">Experience:</span> {getOwnerFacts().roleTitle}, {getOwnerFacts().employer} — listed as &quot;2 years professional experience&quot; with any automation work.</li>
                 <li><span className="text-foreground font-medium">Skills:</span> TypeScript, React, Next.js, Node, PostgreSQL, SQL, Git, Docker, CI/CD. Only list what you can talk about for 5 minutes.</li>
-                <li><span className="text-foreground font-medium">Education:</span> BCA, [university], 2025</li>
+                <li><span className="text-foreground font-medium">Education:</span> {getOwnerFacts().degree}, [university], 2025</li>
               </ul>
             </div>
             <div className="rounded-lg border border-border/50 p-4">
               <p className="text-xs font-semibold text-warning uppercase tracking-wide mb-2">Ops CV (keep for internal moves / ops roles only)</p>
               <ul className="text-xs text-muted flex flex-col gap-1.5">
-                <li>[Current company] achievements with numbers (cost, time, error rate).</li>
+                <li>{getOwnerFacts().employer} achievements with numbers (cost, time, error rate).</li>
                 <li>SQL and analytics skills, process improvements.</li>
                 <li>Any automation work as a bridge signal.</li>
                 <li className="text-warning font-medium">Never send this for a dev role.</li>
@@ -277,13 +281,13 @@ export default function ResumePage() {
             <p className="text-xs font-medium mb-2">LinkedIn headline change plan</p>
             <div className="flex flex-col gap-2">
               {([
-                { when: "Now", headline: "[Current role] at [company] | Learning full-stack development in public" },
-                { when: "At Exit A", headline: "[Current role] → Full-Stack Developer (Next.js, TypeScript) | Building in public" },
+                { when: "Now", headline: "{{role}} at {{employer}} | Learning full-stack development in public" },
+                { when: "At Exit A", headline: "{{role}} → Full-Stack Developer (Next.js, TypeScript) | Building in public" },
                 { when: "After first offer", headline: "Update to the new role and post once." },
               ] as const).map((row) => (
                 <div key={row.when} className="flex gap-3 rounded-lg border border-border/50 p-3">
                   <span className="text-[10px] uppercase text-muted shrink-0 w-20">{row.when}</span>
-                  <p className="text-xs text-foreground">{row.headline}</p>
+                  <p className="text-xs text-foreground">{fillFacts(row.headline)}</p>
                 </div>
               ))}
             </div>
@@ -292,7 +296,7 @@ export default function ResumePage() {
           <div>
             <p className="text-xs font-medium mb-2">60-second interview pitch</p>
             <div className="rounded-lg border border-border/50 bg-surface-2/30 p-3 text-xs text-muted leading-relaxed">
-              &quot;I&apos;ve spent [X] years in [your previous field] at [company], working on [specific process]. I taught myself full-stack development over the past [X] months and built <span className="text-foreground">[flagship project]</span>, a [description]. I like this work because [reason tied to something you shipped]. I&apos;m looking for a team where I can bring both the business context and the engineering.&quot;
+              &quot;I&apos;ve spent two years in business operations at {getOwnerFacts().employer}, working on [specific process]. I taught myself full-stack development over the past [X] months and built <span className="text-foreground">ClientSync</span>, a [description]. I like this work because [reason tied to something you shipped]. I&apos;m looking for a team where I can bring both the business context and the engineering.&quot;
               <p className="mt-2 text-[11px] text-accent">Replace every bracket with real details before using.</p>
             </div>
           </div>
@@ -358,4 +362,12 @@ export default function ResumePage() {
       )}
     </div>
   );
+}
+
+/** Owner workspace keeps the original page; shared accounts get the playbook. Fails closed. */
+export default function ResumePage() {
+  const { ownerMode, loading } = useOwnerMode();
+  if (loading) return <GateSkeleton className="h-96 w-full" />;
+  if (ownerMode) return <OwnerResumePage />;
+  return <SharedResumeStudio />;
 }

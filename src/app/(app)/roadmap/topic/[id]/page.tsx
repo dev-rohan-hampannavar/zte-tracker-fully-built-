@@ -474,7 +474,7 @@ export default function TopicDetailPage() {
               ref={notesTextareaRef}
               value={newNote}
               onChange={(e) => setNewNote(e.target.value)}
-              placeholder="Add a journal entry for this topic… use [[Name]] to link a topic, project, or ClientSync milestone"
+              placeholder="Add a journal entry for this topic… use [[Name]] to link a topic or project"
               className="flex-1"
               rows={2}
             />

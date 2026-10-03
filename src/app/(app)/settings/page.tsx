@@ -80,7 +80,7 @@ import type {
 // want to mute.
 const NOTIFICATION_KIND_OPTIONS: { kind: NotificationKind; label: string; description: string }[] = [
   { kind: "revision_overdue", label: "Revision overdue", description: "Topics past their spaced-repetition review date." },
-  { kind: "milestone_pending", label: "ClientSync milestone pending", description: "A phase's roadmap topics are done but its deliverable isn't marked complete." },
+  { kind: "milestone_pending", label: "Flagship milestone pending", description: "A phase's roadmap topics are done but its deliverable isn't marked complete." },
   { kind: "ready_to_apply", label: "Ready to apply", description: "An exit-ladder tier just became fully complete." },
   { kind: "exit_almost_ready", label: "Exit tier almost ready", description: "An exit-ladder tier is 90%+ complete." },
   { kind: "project_inactive", label: "Project inactive", description: "An in-progress project hasn't been updated in 14+ days." },
@@ -1258,7 +1258,7 @@ export default function SettingsPage() {
               id="profile-bio-input"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              placeholder='e.g. "BCA grad building in public toward a full-stack role. Self-taught, shipping projects weekly."'
+              placeholder='e.g. "Career switcher building in public toward a backend role. Shipping projects weekly."'
               className="mt-1 min-h-20"
               maxLength={280}
             />

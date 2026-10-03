@@ -21,8 +21,12 @@ import type { InterviewAttemptResult, InterviewRoundType } from "@/types/databas
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion/primitives";
 import { motion, AnimatePresence } from "framer-motion";
 import { TimedInterviewSimulator } from "@/components/interviews/timed-interview-simulator";
+import { SharedInterviewPrep } from "@/components/shared/shared-playbooks";
+import { useOwnerMode } from "@/lib/hooks/use-owner-mode";
+import { useUser as useAccountUser } from "@/lib/hooks/use-user";
+import { Skeleton as GateSkeleton } from "@/components/ui/skeleton";
 
-export default function InterviewPrepPage() {
+function OwnerInterviewPrepPage() {
   const { user } = useUser();
   const [roundType, setRoundType] = useState<InterviewRoundType>("technical");
   const { data: questions, isLoading: questionsLoading } = useInterviewQuestions(roundType);
@@ -296,7 +300,7 @@ export default function InterviewPrepPage() {
             <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">4.</span>Use your ops experience: <span className="text-foreground">&quot;I have 2 years of professional experience and ship production code in ClientSync.&quot;</span></li>
             <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">5.</span>Pay up to ~₹12.75L/year is effectively tax-free under the new regime (FY2025-26). Factor this when comparing offers.</li>
             <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">6.</span>Get it in writing: base, variable, joining bonus, notice period during probation, and probation length.</li>
-            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">7.</span>Switch only when the offer beats your current pay. If it doesn&apos;t, keep studying to the next exit — your floor is already funded.</li>
+            <li className="flex gap-2"><span className="text-accent font-semibold shrink-0">7.</span>Switch only when the offer beats your current ops pay. If it doesn&apos;t, keep studying to the next exit — your floor is already funded.</li>
           </ul>
         </CardContent>
       </Card>
@@ -347,4 +351,13 @@ export default function InterviewPrepPage() {
       </Card>
     </div>
   );
+}
+
+/** Owner workspace keeps the original page; shared accounts get the playbook. Fails closed. */
+export default function InterviewPrepPage() {
+  const { ownerMode, loading } = useOwnerMode();
+  const { user } = useAccountUser();
+  if (loading) return <GateSkeleton className="h-96 w-full" />;
+  if (ownerMode) return <OwnerInterviewPrepPage />;
+  return user?.id ? <SharedInterviewPrep userId={user.id} /> : <GateSkeleton className="h-96 w-full" />;
 }

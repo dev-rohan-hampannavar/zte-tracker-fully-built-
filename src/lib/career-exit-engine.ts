@@ -245,7 +245,7 @@ export function exitMonthsLabel(hoursRequired: number, weeklyHours: number): str
 
 /**
  * Canonical exit hours by exit code. Used to seed exit_ladder and
- * as a reference in tests. Values from career_timeline_zte.docx §8
+ * as a reference in tests. Values from
  * and career_tracker.xlsx Exit Plan sheet.
  */
 export const EXIT_HOURS: Record<string, number> = {

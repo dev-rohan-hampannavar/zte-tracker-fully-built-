@@ -1,4 +1,5 @@
 import type { CareerPlanTrack } from "@/data/full-plan";
+import { deepFill, getOwnerFacts } from "@/lib/owner-facts";
 
 export interface CareerStageDetail {
   summary: string;
@@ -37,8 +38,8 @@ export const CAREER_PATH_STAGES: CareerPathExplorerEntry[] = [
   {
     track: "sap",
     chart: [
-      { yr: "Now", lo: 4.6, hi: 4.6 },
-      { yr: "Y2", lo: 4.6, hi: 5 },
+      { yr: "Now", get lo() { return getOwnerFacts().payLpa ?? 0; }, get hi() { return getOwnerFacts().payLpa ?? 0; } },
+      { yr: "Y2", get lo() { return getOwnerFacts().payLpa ?? 0; }, hi: 5 },
       { yr: "Y4", lo: 6, hi: 10 },
       { yr: "Y7", lo: 15, hi: 22 },
       { yr: "Y10", lo: 25, hi: 35 },
@@ -47,15 +48,15 @@ export const CAREER_PATH_STAGES: CareerPathExplorerEntry[] = [
     stages: [
       {
         id: "sap-now",
-        title: "Your current role",
+        title: "{{role_long}}",
         time: "Now",
-        salary: null,
-        monthly: "Your current pay",
+        salary: "{{pay}}",
+        monthly: "{{pay_monthly}}",
         note: "Build SAP SD/MM exposure on the job daily",
         isNow: true,
         detail: {
           summary:
-            "Your current role is the cheapest possible way to get real SAP exposure — you're already inside a system that's normally locked behind expensive certifications.",
+            "Your current ops role is the cheapest possible way to get real SAP exposure — you're already inside a system that's normally locked behind expensive certifications.",
           points: [
             "Shadow whoever owns SD (Sales & Distribution) or MM (Materials Management) transactions in your current workflow.",
             "Document every transaction code you touch — this becomes interview material later.",
@@ -75,7 +76,7 @@ export const CAREER_PATH_STAGES: CareerPathExplorerEntry[] = [
           summary:
             "Unlike full-stack, SAP consulting has a hard credential gate. Without SD or MM certification, staffing agencies and the big consultancies won't put you in front of a client, regardless of on-the-job exposure.",
           points: [
-            "SD or MM are the standard entry modules — pick based on which matches your current work exposure.",
+            "SD or MM are the standard entry modules — pick based on which matches your current ops exposure.",
             "Budget ₹40–80k and treat it as a direct investment in unlocking the Year 2 salary jump, not a side expense.",
             "S/4HANA-specific certification is increasingly what's asked for, since it's replacing ECC at most large implementations.",
           ],
@@ -433,7 +434,7 @@ export const CAREER_PATH_STAGES: CareerPathExplorerEntry[] = [
           points: [
             "Target roles: junior/associate full-stack developer at seed-to-Series-B startups and dev agencies.",
             "What gets you hired: a deployed, tested, CI/CD'd project a hiring manager can click through in 2 minutes.",
-            "BCA is fine here — early-stage startups, agencies, and most Indian product companies don't hard-filter on degree at this level.",
+            "{{degree}} is fine here — early-stage startups, agencies, and most Indian product companies don't hard-filter on degree at this level.",
           ],
           companies: ["Early-stage startups (seed–Series A)", "Dev agencies", "Remote/global startups via Wellfound"],
         },
@@ -511,5 +512,5 @@ export const CAREER_PATH_STAGES: CareerPathExplorerEntry[] = [
 ];
 
 export function getCareerPathStages(track: CareerPlanTrack): CareerPathExplorerEntry | undefined {
-  return CAREER_PATH_STAGES.find((entry) => entry.track === track);
+  return deepFill(CAREER_PATH_STAGES.find((entry) => entry.track === track));
 }

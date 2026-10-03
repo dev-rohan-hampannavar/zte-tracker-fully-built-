@@ -254,7 +254,7 @@ export function TopicDetailSheet({
             <Textarea
               value={newNote}
               onChange={(e) => setNewNote(e.target.value)}
-              placeholder="Add a journal entry… use [[Name]] to link a topic, project, or ClientSync milestone"
+              placeholder="Add a journal entry… use [[Name]] to link a topic or project"
               className="flex-1"
               rows={2}
             />
